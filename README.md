@@ -38,7 +38,7 @@ Each of the  product configurations' test sequence generation times (in millisec
 
 # e-Mail SPL
 
-The feature model of the e-Mail SPL is given below. There are 5 features.  e-Mail SPL is a product line of email clients that offers the feature_ _addressbook_ for creating an addressbook of email contacts, _autoresponder_ for autoresponding incoming emails between a specified date interval, _forward_ for forwarding incoming emails, _encrypt_ for encrypting outgoing emails and, _sign_ or signing outgoing emails. A basic e-Mail client provides events for composing a new email and for reading an incoming email.
+The feature model of the e-Mail SPL is given below. There are 5 features.  e-Mail SPL is a product line of email clients that offers the feature _addressbook_ for creating an addressbook of email contacts, _autoresponder_ for autoresponding incoming emails between a specified date interval, _forward_ for forwarding incoming emails, _encrypt_ for encrypting outgoing emails and, _sign_ or signing outgoing emails. A basic e-Mail client provides events for composing a new email and for reading an incoming email.
 
 ![Feature Model_eM](SPL_Figures/eM_FeatureModel.png)
 
