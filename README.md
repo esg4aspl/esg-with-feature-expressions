@@ -163,3 +163,5 @@ The randomly selected 10 product configurations' test sequence generation times 
 | P9       | TRUE    | TRUE     | TRUE          | TRUE           | TRUE      | FALSE  | TRUE     | FALSE              | TRUE       | 7                  | 22,90                              |
 | P10      | TRUE    | TRUE     | TRUE          | TRUE           | FALSE     | TRUE   | TRUE     | TRUE               | TRUE       | 8                  | 21,87                              |
 |          |         |          |               |                |           |        |          |                    |            |                    | **22,53**                              |
+
+[Click for downloading the ESG-Fx models of SPLs](SPL_ESGFxs/SPL_ESGFxs.zip)
