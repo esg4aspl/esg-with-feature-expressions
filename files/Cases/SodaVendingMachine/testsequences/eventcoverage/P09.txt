@@ -1,0 +1,3 @@
+4 : free, soda, serveSoda, take
+3 : free, cancel, return
+Event coverage is 100.0%

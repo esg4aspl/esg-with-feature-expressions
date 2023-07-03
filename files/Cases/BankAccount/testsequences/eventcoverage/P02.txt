@@ -1,0 +1,6 @@
+4 : get_balance, select_deposit, enter_deposit_amount, put_money
+3 : select_withdraw, enter_withdraw_amount, take_money
+2 : request_an_interest_rate, confirm_interest_rate_approved
+2 : request_an_interest_rate, confirm_interest_rate_disapproved
+4 : request_an_interest_rate, confirm_interest_rate_approved, enter_days_left, get_estimated_interest_for_days_left
+Event coverage is 100.0%

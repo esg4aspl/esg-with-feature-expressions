@@ -21,7 +21,7 @@ public class TestSequenceGenerationTimeMeasurementWriter {
 			if (file.length() > 0) {
 				writer.append(df.format(time) + "\n");
 			} else {
-				writer.write("Test Sequence Generation Time(ms) of Product " + ESGFxName + "\n");
+				writer.write(ESGFxName + "\n");
 				writer.append(df.format(time) + "\n");
 		
 			}

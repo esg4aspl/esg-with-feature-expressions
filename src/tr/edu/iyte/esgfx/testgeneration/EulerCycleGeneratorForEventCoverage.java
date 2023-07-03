@@ -32,13 +32,15 @@ public class EulerCycleGeneratorForEventCoverage {
 	private List<Vertex> vertexStack;
 	private List<Vertex> eulerCycle;
 	private Map<Vertex, List<Vertex>> adjacencyMap;
+	private Map<String, FeatureExpression> featureExpressionMap;
 
-	public EulerCycleGeneratorForEventCoverage() {
+	public EulerCycleGeneratorForEventCoverage(Map<String, FeatureExpression> featureExpressionMap) {
 		this.toCover = new LinkedHashSet<>();
 		this.featureTruthValueMap = new LinkedHashMap<>();
 		this.vertexStack = new Stack<>();
 		this.eulerCycle = new LinkedList<>();
 		this.adjacencyMap = new LinkedHashMap<>();
+		this.featureExpressionMap = featureExpressionMap;
 
 	}
 
@@ -56,27 +58,75 @@ public class EulerCycleGeneratorForEventCoverage {
 
 	}
 
+	private void findToCover(ESG ESGFx) {
+		List<Vertex> vertexList = ESGFx.getRealVertexList();
+
+//		System.out.println("findToCover");
+		for (Vertex vertex : vertexList) {
+			VertexRefinedByFeatureExpression vertexRefinedByFeatureExpression = (VertexRefinedByFeatureExpression) vertex;
+//			System.out.println(vertexRefinedByFeatureExpression.getEvent().getName() + " "	+ vertexRefinedByFeatureExpression.getFeatureExpression().getFeature().getName() + " " + vertexRefinedByFeatureExpression.getFeatureExpression().evaluate());
+
+			if (vertexRefinedByFeatureExpression.getFeatureExpression().evaluate()) {
+				toCover.add(vertexRefinedByFeatureExpression);
+
+			}
+
+		}
+	}
+
+	private void findAdjMap() {
+
+		Iterator<Vertex> keySetIterator = adjacencyMap.keySet().iterator();
+
+		while (keySetIterator.hasNext()) {
+			Vertex key = keySetIterator.next();
+			Iterator<Vertex> adjacentVertexListIterator = adjacencyMap.get(key).iterator();
+			while (adjacentVertexListIterator.hasNext()) {
+				Vertex adjVertex = adjacentVertexListIterator.next();
+				// System.out.println("adjVertex " + adjVertex);
+				if (!toCover.contains(adjVertex) && !adjVertex.isPseudoStartVertex()
+						&& !adjVertex.isPseudoEndVertex()) {
+//					System.out.println("adjVertex " + adjVertex + " is removed");
+					adjacentVertexListIterator.remove();
+				}
+			}
+		}
+		/*
+		 * while (keySetIterator.hasNext()) { Vertex key = keySetIterator.next();
+		 * System.out.print("Vertex " + key + " -> "); Iterator<Vertex>
+		 * adjacentVertexListIterator = adjacencyMap.get(key).iterator(); while
+		 * (adjacentVertexListIterator.hasNext()) {
+		 * System.out.print(adjacentVertexListIterator.next().getEvent().getName()); }
+		 * System.out.println(); }
+		 */
+	}
+
 	public void generateEulerCycle(ESG stronglyConnectedBalancedESGFx) {
 		ESG ESGFx = new ESGFx(stronglyConnectedBalancedESGFx);
-		toCover.addAll(ESGFx.getRealVertexList());
+		findToCover(ESGFx);
+//		System.out.println("toCover " + toCover);
 		adjacencyMap.putAll(((ESGFx) ESGFx).getAdjacencyMap());
+		findAdjMap();
 		Vertex currentVertex = ESGFx.getPseudoStartVertex();
 		((Stack<Vertex>) vertexStack).push(currentVertex);
 		boolean generationStarted = false;
 
 		while (!vertexStack.isEmpty()) {
+//			System.out.println("currentVertex " + currentVertex);
 			List<Vertex> adjacentVertexList = adjacencyMap.get(currentVertex);
 			Iterator<Vertex> adjacentVertexListIterator = adjacentVertexList.iterator();
-//			System.out.println("currentVertex " + currentVertex);
+
 //			System.out.println("adjacentVertexList " + adjacentVertexList);
 //			System.out.println("toCover " + toCover);
-			
 
 			if (currentVertex.isPseudoStartVertex()) {
 //				System.out.println("currentVertex isPseudoStartVertex " + currentVertex.isPseudoStartVertex());
 				featureTruthValueMap.clear();
 			} else if (!currentVertex.isPseudoStartVertex() && !currentVertex.isPseudoEndVertex()) {
-				fillFeatureTruthValueMap(currentVertex);
+				if (!featureTruthValueMap.containsKey(
+						((VertexRefinedByFeatureExpression) currentVertex).getFeatureExpression().getFeature())) {
+					fillFeatureTruthValueMap(currentVertex);
+				}
 			}
 
 			if (!adjacentVertexList.isEmpty() && !toCover.isEmpty()) {
@@ -133,8 +183,9 @@ public class EulerCycleGeneratorForEventCoverage {
 
 				// continue;
 			} else if (!adjacentVertexList.isEmpty() && toCover.isEmpty()
-					&& containsOnlyOnePseudoEnd(adjacentVertexList)
-					&& (!currentVertex.isPseudoStartVertex() && !currentVertex.isPseudoEndVertex()) && !generationStarted) {
+//					&& containsOnlyOnePseudoEnd(adjacentVertexList)
+					&& (!currentVertex.isPseudoStartVertex() && !currentVertex.isPseudoEndVertex())
+					&& !generationStarted) {
 //				System.out.println("BEKLENEN");
 				((Stack<Vertex>) vertexStack).push(currentVertex);
 				currentVertex = adjacentVertexListIterator.next();
@@ -255,7 +306,7 @@ public class EulerCycleGeneratorForEventCoverage {
 			}
 		}
 //		System.out.println("result is " + result);
-//		 System.out.println("isCompatible METHOD FINISH");
+//		System.out.println("isCompatible METHOD FINISH");
 		return result;
 	}
 

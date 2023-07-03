@@ -1,0 +1,10 @@
+4 : get_balance, select_deposit, enter_deposit_amount, put_money
+3 : select_withdraw, enter_withdraw_amount, take_money
+1 : enter_daily_withdraw_limit
+1 : enter_overdraft_limit
+2 : request_an_interest_rate, confirm_interest_rate_approved
+2 : request_an_interest_rate, confirm_interest_rate_disapproved
+2 : select_withdraw, cancel_withdraw
+4 : select_withdraw, enter_withdraw_amount, confirm_daily_limit_excess, confirm_overdraft_limit_excess
+6 : select_withdraw, enter_withdraw_amount, take_money, get_balance, select_deposit, cancel_deposit
+Event coverage is 100.0%

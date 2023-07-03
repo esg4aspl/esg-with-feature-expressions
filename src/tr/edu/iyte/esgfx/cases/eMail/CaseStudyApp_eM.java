@@ -23,8 +23,12 @@ public class CaseStudyApp_eM extends CaseStudyUtilities_eM {
 
 	public static void main(String[] args) throws IOException {
 
-		int productID = 10;
-		String ESGFxName = "P" + Integer.toString(productID);
+		int productID = 23;
+		String productName = "P";
+		if (productID < 10)
+			productName = "P0";
+
+		String ESGFxName = productName + Integer.toString(productID);
 
 		MXEFileToESGFxConverter MXEFileToESGFxConverter = new MXEFileToESGFxConverter();
 		MXEFileToESGFxConverter.parseFeatureModel(featureModelFilePath);
@@ -38,20 +42,25 @@ public class CaseStudyApp_eM extends CaseStudyUtilities_eM {
 		}
 
 		Map<String, FeatureExpression> featureExpressionMap = MXEFileToESGFxConverter.getFeatureExpressionMap();
-
 		double startTime1 = System.nanoTime();
+		CaseStudyUtilities_eM.configureProduct(productID, featureExpressionMap);
+
+		System.out.println("featureExpressionMap ");
+		for (Entry<String, FeatureExpression> entry : featureExpressionMap.entrySet()) {
+			System.out.println(
+					entry.getKey() + " " + entry.getValue().getFeature().getName() + " " + entry.getValue().evaluate());
+		}
+
 		ESG ESGFx = StronglyConnectedBalancedESGFxGeneration.getStronglyConnectedBalancedESGFxGeneration(ESG);
 //		System.out.println(ESGFx);
 
-		EulerCycleGeneratorForEventCoverage eulerCycleGeneratorForEventCoverage = new EulerCycleGeneratorForEventCoverage();
+		EulerCycleGeneratorForEventCoverage eulerCycleGeneratorForEventCoverage = new EulerCycleGeneratorForEventCoverage(
+				featureExpressionMap);
 		eulerCycleGeneratorForEventCoverage.generateEulerCycle(ESGFx);
-
 		List<Vertex> eulerCycle = eulerCycleGeneratorForEventCoverage.getEulerCycle();
 
 		EulerCycleToTestSequenceGenerator eulerCycleToTestSequenceGenerator = new EulerCycleToTestSequenceGenerator();
 		eulerCycleToTestSequenceGenerator.CESgenerator(eulerCycle);
-
-		CaseStudyUtilities_eM.configureProduct(productID, featureExpressionMap);
 
 		TestSequenceSelectionBasedOnProductConfiguration TestSequenceSelectionBasedOnProductConfiguration = new TestSequenceSelectionBasedOnProductConfiguration();
 
@@ -60,25 +69,23 @@ public class CaseStudyApp_eM extends CaseStudyUtilities_eM {
 
 		double stopTime1 = System.nanoTime();
 		double timeElapsed1 = (stopTime1 - startTime1) / (double) 1000000;
-		
+
 		System.out.println("Product Configuration: ");
 		for (Entry<String, FeatureExpression> entry : featureExpressionMap.entrySet()) {
 			System.out.print(entry.getKey() + " - " + entry.getValue().evaluate() + "\n");
 		}
-		
+
 		EventCoverageAnalyser eventCoverageAnalyser = new EventCoverageAnalyser();
 		eventCoverageAnalyser.esgEventSequenceSetPrinter(CESsOfESG);
 
 		System.out.println("Execution time of test product test sequence generation in miliseconds  : " + timeElapsed1);
 
-	
 		double coverage = eventCoverageAnalyser.analyseEventCoverage(ESG, CESsOfESG, featureExpressionMap);
-
+		System.out.println("Event coverage: %" + coverage);
 		TestSuiteFileWriter.writeEventSequenceSetAndCoverageAnalysisToFile(testsequencesFolderPath + ESGFxName + ".txt",
 				CESsOfESG, coverage);
 
 		TestSequenceGenerationTimeMeasurementWriter.writeTimeMeasurement(timeElapsed1, timemeasurementFolderPath,
 				ESGFxName);
 	}
-
 }

@@ -1,0 +1,2 @@
+7 : pay, change, tea, serveTea, open, take, close
+Event coverage is 100.0%

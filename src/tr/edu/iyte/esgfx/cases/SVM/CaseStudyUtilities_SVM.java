@@ -56,6 +56,8 @@ public class CaseStudyUtilities_SVM {
 
 	}
 
+	//soda
+//	7 : pay, change, soda, serveSoda, open, take, close
 	private static void p1(Map<String, FeatureExpression> featureExpressionMap) {
 		featureExpressionMap.get("s").setTruthValue(true);
 		featureExpressionMap.get("t").setTruthValue(false);
@@ -63,31 +65,41 @@ public class CaseStudyUtilities_SVM {
 		featureExpressionMap.get("c").setTruthValue(false);
 	}
 
+	//tea
+//	7 : pay, change, tea, serveTea, open, take, close
 	private static void p2(Map<String, FeatureExpression> featureExpressionMap) {	
 		featureExpressionMap.get("s").setTruthValue(false);
 		featureExpressionMap.get("t").setTruthValue(true);
-		featureExpressionMap.get("f").setTruthValue(true);
+		featureExpressionMap.get("f").setTruthValue(false);
 		featureExpressionMap.get("c").setTruthValue(false);
 	}
 	
+	//soda, tea
+//	7 : pay, change, soda, serveSoda, open, take, close
+//	7 : pay, change, tea, serveTea, open, take, close
 	private static void p3(Map<String, FeatureExpression> featureExpressionMap) {
 		featureExpressionMap.get("s").setTruthValue(true);
 		featureExpressionMap.get("t").setTruthValue(true);
-		Negation neg = (Negation)featureExpressionMap.get("!f");
-		neg.setTruthValueExplicitly(true);
-		featureExpressionMap.get("f").setTruthValue(true);
+		//Negation neg = (Negation)featureExpressionMap.get("!f");
+		//neg.setTruthValueExplicitly(true);
+		featureExpressionMap.get("f").setTruthValue(false);
 		featureExpressionMap.get("c").setTruthValue(false);
 	}
 
+	
+	//soda, free
+//	4 : free, soda, serveSoda, take
 	private static void p4(Map<String, FeatureExpression> featureExpressionMap) {
 		featureExpressionMap.get("s").setTruthValue(true);
-		featureExpressionMap.get("t").setTruthValue(true);
-		Negation neg = (Negation)featureExpressionMap.get("!f");
-		neg.setTruthValueExplicitly(true);
+		//featureExpressionMap.get("t").setTruthValue(true);
+		//Negation neg = (Negation)featureExpressionMap.get("!f");
+		//neg.setTruthValueExplicitly(true);
 		featureExpressionMap.get("f").setTruthValue(true);
 		featureExpressionMap.get("c").setTruthValue(false);
 	}
 
+	//tea, free
+//	4 : free, tea, serveTea, take
 	private static void p5(Map<String, FeatureExpression> featureExpressionMap) {
 		featureExpressionMap.get("s").setTruthValue(false);
 		featureExpressionMap.get("t").setTruthValue(true);
@@ -95,41 +107,56 @@ public class CaseStudyUtilities_SVM {
 		featureExpressionMap.get("c").setTruthValue(false);
 	}
 
+	//soda, cancel
+//	7 : pay, change, soda, serveSoda, open, take, close
+//	7 : pay, change, cancel, return
 	private static void p6(Map<String, FeatureExpression> featureExpressionMap) {
-		
 		featureExpressionMap.get("s").setTruthValue(true);
 		featureExpressionMap.get("t").setTruthValue(false);
-		Negation neg = (Negation)featureExpressionMap.get("!f");
-		neg.setTruthValueExplicitly(true);
-		featureExpressionMap.get("f").setTruthValue(true);
+		//Negation neg = (Negation)featureExpressionMap.get("!f");
+		//neg.setTruthValueExplicitly(true);
+		featureExpressionMap.get("f").setTruthValue(false);
 		featureExpressionMap.get("c").setTruthValue(true);
 	}
 
+	//tea, cancel
+//	7 : pay, change, tea, serveTea, open, take, close
+//	7 : pay, change, cancel, return
 	private static void p7(Map<String, FeatureExpression> featureExpressionMap) {
 		featureExpressionMap.get("s").setTruthValue(false);
 		featureExpressionMap.get("t").setTruthValue(true);
-		featureExpressionMap.get("f").setTruthValue(true);
+		featureExpressionMap.get("f").setTruthValue(false);
 		featureExpressionMap.get("c").setTruthValue(true);
 	}
 	
+	//soda,tea, cancel
+//	7 : pay, change, soda, serveSoda, open, take, close
+//	7 : pay, change, tea, serveTea, open, take, close
+//	7 : pay, change, cancel, return
 	private static void p8(Map<String, FeatureExpression> featureExpressionMap) {		
 		featureExpressionMap.get("s").setTruthValue(true);
 		featureExpressionMap.get("t").setTruthValue(true);
-		Negation neg = (Negation)featureExpressionMap.get("!f");
-		neg.setTruthValueExplicitly(true);
-		featureExpressionMap.get("f").setTruthValue(true);
+		//Negation neg = (Negation)featureExpressionMap.get("!f");
+		//neg.setTruthValueExplicitly(true);
+		featureExpressionMap.get("f").setTruthValue(false);
 		featureExpressionMap.get("c").setTruthValue(true);
 	}
 
+	//soda, free, cancel
+//	3 : free, soda, serveSoda, take
+//	3 : free, cancel, return
 	private static void p9(Map<String, FeatureExpression> featureExpressionMap) {		
 		featureExpressionMap.get("s").setTruthValue(true);
 		featureExpressionMap.get("t").setTruthValue(false);
-		Negation neg = (Negation)featureExpressionMap.get("!f");
-		neg.setTruthValueExplicitly(true);
+		//Negation neg = (Negation)featureExpressionMap.get("!f");
+		//neg.setTruthValueExplicitly(true);
 		featureExpressionMap.get("f").setTruthValue(true);
 		featureExpressionMap.get("c").setTruthValue(true);
 	}
 
+	//tea, free, cancel
+//	4 : free, tea, serveTea, take
+//	3 : free, cancel, return
 	private static void p10(Map<String, FeatureExpression> featureExpressionMap) {		
 		featureExpressionMap.get("s").setTruthValue(false);
 		featureExpressionMap.get("t").setTruthValue(true);
@@ -137,15 +164,22 @@ public class CaseStudyUtilities_SVM {
 		featureExpressionMap.get("c").setTruthValue(true);
 	}
 
+	//soda, tea, free
+//	4 : free, soda, serveSoda, take
+//	4 : free, tea, serveTea, take
 	private static void p11(Map<String, FeatureExpression> featureExpressionMap) {
 		featureExpressionMap.get("s").setTruthValue(true);
 		featureExpressionMap.get("t").setTruthValue(true);
-		Negation neg = (Negation)featureExpressionMap.get("!f");
-		neg.setTruthValueExplicitly(true);
+		//Negation neg = (Negation)featureExpressionMap.get("!f");
+		//neg.setTruthValueExplicitly(true);
 		featureExpressionMap.get("f").setTruthValue(true);
 		featureExpressionMap.get("c").setTruthValue(false);
 	}
 
+	//soda, tea, free, cancel
+//	7 : pay, change, soda, serveSoda, open, take, close
+//	4 : free, tea, serveTea, take
+//	3 : free, cancel, return
 	private static void p12(Map<String, FeatureExpression> featureExpressionMap) {
 		featureExpressionMap.get("s").setTruthValue(true);
 		featureExpressionMap.get("t").setTruthValue(true);
