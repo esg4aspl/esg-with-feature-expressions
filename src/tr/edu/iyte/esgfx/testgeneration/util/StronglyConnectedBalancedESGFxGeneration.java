@@ -13,13 +13,14 @@ import java.util.Iterator;
 public class StronglyConnectedBalancedESGFxGeneration {
 
 	public static ESG getStronglyConnectedBalancedESGFxGeneration(ESG ESG) {
-
+		
+		ESG ESGFx = new ESGFx(ESG);
 		StronglyConnectedBalancedESGGenerator balancedESGGenerator = new StronglyConnectedBalancedESGGenerator();
 
 		Graph<Vertex, Edge> balancedAndStronglyConnectedESG = balancedESGGenerator
-				.generateBalancedAndStronglyConnectedESG(ESG);
+				.generateBalancedAndStronglyConnectedESG(ESGFx);
 		
-		ESG ESGFx = convertJgraphToESG(balancedAndStronglyConnectedESG, ESG);
+		ESGFx = convertJgraphToESG(balancedAndStronglyConnectedESG, ESGFx);
 		
 		return ESGFx;
 

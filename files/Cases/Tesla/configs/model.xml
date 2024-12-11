@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<featureModel>
+	<properties>
+		<graphics key="autolayoutconstraints" value="false"/>
+		<graphics key="legendautolayout" value="true"/>
+		<graphics key="showconstraints" value="true"/>
+		<graphics key="showshortnames" value="false"/>
+		<graphics key="layout" value="horizontal"/>
+		<graphics key="showcollapsedconstraints" value="true"/>
+		<graphics key="legendhidden" value="false"/>
+		<graphics key="layoutalgorithm" value="1"/>
+	</properties>
+	<struct>
+		<and abstract="true" mandatory="true" name="T">
+			<alt abstract="true" mandatory="true" name="Model">
+				<graphics key="collapsed" value="false"/>
+				<feature name="M3"/>
+				<feature name="MY"/>
+				<feature name="MX"/>
+				<feature name="MS"/>
+			</alt>
+			<alt abstract="true" mandatory="true" name="Payment">
+				<graphics key="collapsed" value="false"/>
+				<feature name="C"/>
+				<feature name="L"/>
+				<feature name="F"/>
+			</alt>
+			<alt abstract="true" name="Savings">
+				<graphics key="collapsed" value="false"/>
+				<feature name="5Y"/>
+				<feature name="Mo"/>
+			</alt>
+			<alt abstract="true" mandatory="true" name="Drivetrain">
+				<graphics key="collapsed" value="false"/>
+				<feature name="RWD"/>
+				<feature name="LRRWD"/>
+				<feature name="LRAWD"/>
+				<feature name="PAWD"/>
+				<feature name="AWD"/>
+				<feature name="PD"/>
+			</alt>
+			<alt abstract="true" mandatory="true" name="Color">
+				<graphics key="collapsed" value="false"/>
+				<feature name="SG"/>
+				<feature name="PWh"/>
+				<feature name="DBM"/>
+				<feature name="SB"/>
+				<feature name="UR"/>
+				<feature name="QS"/>
+			</alt>
+			<alt abstract="true" mandatory="true" name="Wheels">
+				<graphics key="collapsed" value="false"/>
+				<feature name="PW"/>
+				<feature name="NW"/>
+				<feature name="WW"/>
+				<feature name="GW"/>
+				<feature name="IW"/>
+				<feature name="UW"/>
+				<feature name="CW"/>
+				<feature name="TuW"/>
+				<feature name="TeW"/>
+				<feature name="AW"/>
+			</alt>
+			<alt abstract="true" mandatory="true" name="Interior">
+				<graphics key="collapsed" value="false"/>
+				<feature name="ABI"/>
+				<feature name="BWI"/>
+				<feature name="CI"/>
+			</alt>
+			<alt abstract="true" mandatory="true" name="Number of Seats">
+				<graphics key="collapsed" value="false"/>
+				<feature name="S5"/>
+				<feature name="S6"/>
+				<feature name="S7"/>
+			</alt>
+			<alt abstract="true" mandatory="true" name="Steering Wheel">
+				<graphics key="collapsed" value="false"/>
+				<feature name="WS"/>
+				<feature name="YS"/>
+			</alt>
+			<feature name="FSD"/>
+			<or abstract="true" name="Charging">
+				<graphics key="collapsed" value="false"/>
+				<feature name="HC"/>
+				<feature name="MC"/>
+			</or>
+			<or abstract="true" name="Accessories">
+				<graphics key="collapsed" value="false"/>
+				<feature name="CCT"/>
+				<feature name="AWL"/>
+				<feature name="RR"/>
+				<feature name="SS"/>
+				<feature name="CC"/>
+				<feature name="ACT"/>
+			</or>
+			<feature name="TP"/>
+			<feature name="DAP"/>
+			<feature mandatory="true" name="AD"/>
+			<feature mandatory="true" name="S"/>
+			<feature mandatory="true" name="Ca"/>
+		</and>
+	</struct>
+	<constraints>
+		<rule>
+			<imp>
+				<var>RWD</var>
+				<var>M3</var>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<disj>
+					<var>LRRWD</var>
+					<disj>
+						<var>LRAWD</var>
+						<var>PAWD</var>
+					</disj>
+				</disj>
+				<disj>
+					<var>M3</var>
+					<var>MY</var>
+				</disj>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<disj>
+					<var>AWD</var>
+					<var>PD</var>
+				</disj>
+				<disj>
+					<var>MX</var>
+					<var>MS</var>
+				</disj>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<disj>
+					<var>PW</var>
+					<var>NW</var>
+				</disj>
+				<var>M3</var>
+			</imp>
+		</rule>
+		<rule>
+			<eq>
+				<var>WW</var>
+				<conj>
+					<var>M3</var>
+					<var>PAWD</var>
+				</conj>
+			</eq>
+		</rule>
+		<rule>
+			<imp>
+				<disj>
+					<var>GW</var>
+					<var>IW</var>
+				</disj>
+				<var>MY</var>
+			</imp>
+		</rule>
+		<rule>
+			<eq>
+				<var>UW</var>
+				<conj>
+					<var>MY</var>
+					<var>PAWD</var>
+				</conj>
+			</eq>
+		</rule>
+		<rule>
+			<imp>
+				<disj>
+					<var>CW</var>
+					<var>TuW</var>
+				</disj>
+				<var>MX</var>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<disj>
+					<var>TeW</var>
+					<var>AW</var>
+				</disj>
+				<var>MS</var>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>CI</var>
+				<disj>
+					<var>MX</var>
+					<var>MS</var>
+				</disj>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>YS</var>
+				<disj>
+					<var>MX</var>
+					<var>MS</var>
+				</disj>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>CCT</var>
+				<disj>
+					<var>M3</var>
+					<var>MY</var>
+				</disj>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>RR</var>
+				<disj>
+					<var>M3</var>
+					<var>MS</var>
+				</disj>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>SS</var>
+				<disj>
+					<var>MY</var>
+					<var>MS</var>
+				</disj>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>CC</var>
+				<var>MX</var>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>ACT</var>
+				<var>MX</var>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>TP</var>
+				<disj>
+					<var>MY</var>
+					<var>MX</var>
+				</disj>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>MX</var>
+				<var>TP</var>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>DAP</var>
+				<disj>
+					<var>MX</var>
+					<var>MS</var>
+				</disj>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<disj>
+					<var>M3</var>
+					<var>MS</var>
+				</disj>
+				<var>S5</var>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<conj>
+					<var>MY</var>
+					<var>LRAWD</var>
+				</conj>
+				<disj>
+					<var>S5</var>
+					<var>S7</var>
+				</disj>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<conj>
+					<var>MY</var>
+					<var>LRRWD</var>
+				</conj>
+				<var>S5</var>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<conj>
+					<var>MY</var>
+					<var>PAWD</var>
+				</conj>
+				<var>S5</var>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<conj>
+					<var>MX</var>
+					<var>PD</var>
+				</conj>
+				<var>S6</var>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>5Y</var>
+				<var>C</var>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>Mo</var>
+				<disj>
+					<var>F</var>
+					<var>L</var>
+				</disj>
+			</imp>
+		</rule>
+	</constraints>
+</featureModel>

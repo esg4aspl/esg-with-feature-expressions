@@ -13,16 +13,20 @@ public class FeatureExpression {
 	}
 
 	public FeatureExpression(Feature feature) {
-//		System.out.println("FeatureExpression class " + feature);
 		setFeature(feature);
 		setTruthValue(false);
 	}
 
 	public FeatureExpression(Feature feature, boolean truthValue) {
 		setFeature(feature);
-		setTruthValue(false);
+		setTruthValue(truthValue);
 	}
-
+	
+	public FeatureExpression(FeatureExpression featureExpression) {
+		setFeature(featureExpression.getFeature());
+		setTruthValue(featureExpression.evaluate());
+	}
+	
 	public Feature getFeature() {
 		return feature;
 	}

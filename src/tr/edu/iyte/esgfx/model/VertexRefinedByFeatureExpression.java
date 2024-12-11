@@ -27,8 +27,7 @@ public class VertexRefinedByFeatureExpression extends VertexSimple {
 
 		if (object instanceof VertexRefinedByFeatureExpression) {
 			VertexRefinedByFeatureExpression toCompare = (VertexRefinedByFeatureExpression) object;
-			if (this.featureExpression.equals(toCompare.getFeatureExpression())
-					&& this.getEvent().getName().equals(toCompare.getEvent().getName())) {
+			if (this.toString().equals(toCompare.toString())) {
 				return true;
 			} else
 				return false;
@@ -37,10 +36,16 @@ public class VertexRefinedByFeatureExpression extends VertexSimple {
 		return false;
 
 	}
-
-	@Override
+	
 	public String toString() {
-		return super.toString();
+		
+		if (this.getEvent().getName().trim().equals("[") || this.getEvent().getName().trim().equals("]")) {
+			return super.toString();
+		}else {
+			String str = this.getEvent().getName().trim() + "/" + this.featureExpression.toString();
+			return str;
+		}
+
 	}
 
 }

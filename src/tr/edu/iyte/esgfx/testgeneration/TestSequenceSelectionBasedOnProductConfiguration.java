@@ -24,7 +24,9 @@ public class TestSequenceSelectionBasedOnProductConfiguration {
 			Entry<EventSequence, FeatureExpression> eventSequenceFeatureExpression = eventSequenceFeatureExpressionMapIterator
 					.next();
 
-//			System.out.print(eventSequenceFeatureExpression.getKey() + " - "+ ((Conjunction) eventSequenceFeatureExpression.getValue()).toString() + " "+ ((Conjunction) eventSequenceFeatureExpression.getValue()).evaluate() + "\n");
+//			System.out.print(eventSequenceFeatureExpression.getKey() + " - "
+//					+ ((Conjunction) eventSequenceFeatureExpression.getValue()).toString() + " "
+//					+ ((Conjunction) eventSequenceFeatureExpression.getValue()).evaluate() + "\n");
 
 			if (((Conjunction) eventSequenceFeatureExpression.getValue()).evaluate()) {
 				CESsOfESG.add(eventSequenceFeatureExpression.getKey());

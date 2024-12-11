@@ -1,0 +1,87 @@
+Product ID,Features,Mutation Operator,Mutation Element,Mutant ID,Is Mutant Valid?,Is Fault Detected?
+1,P01: <t>,Event Omitter,pay/!f,1,true,true
+1,P01: <t>,Event Omitter,serveTea/t,2,true,true
+1,P01: <t>,Event Omitter,change/!f,3,true,true
+1,P01: <t>,Event Omitter,tea/t,4,true,true
+1,P01: <t>,Event Omitter,open/!f,5,true,true
+1,P01: <t>,Event Omitter,take/!f,6,true,true
+1,P01: <t>,Event Omitter,close/!f,7,true,true
+2,P02: <f- t>,Event Omitter,serveTea/t,1,true,true
+2,P02: <f- t>,Event Omitter,free/f,2,true,true
+2,P02: <f- t>,Event Omitter,tea/t,3,true,true
+2,P02: <f- t>,Event Omitter,take/f,4,true,true
+3,P03: <c- t>,Event Omitter,pay/!f,1,true,true
+3,P03: <c- t>,Event Omitter,cancel/c,2,true,true
+3,P03: <c- t>,Event Omitter,return/c,3,true,true
+3,P03: <c- t>,Event Omitter,serveTea/t,4,true,true
+3,P03: <c- t>,Event Omitter,change/!f,5,true,true
+3,P03: <c- t>,Event Omitter,tea/t,6,true,true
+3,P03: <c- t>,Event Omitter,open/!f,7,true,true
+3,P03: <c- t>,Event Omitter,take/!f,8,true,true
+3,P03: <c- t>,Event Omitter,close/!f,9,true,true
+4,P04: <f- c- t>,Event Omitter,cancel/c,1,true,true
+4,P04: <f- c- t>,Event Omitter,return/c,2,true,true
+4,P04: <f- c- t>,Event Omitter,serveTea/t,3,true,true
+4,P04: <f- c- t>,Event Omitter,free/f,4,true,true
+4,P04: <f- c- t>,Event Omitter,tea/t,5,true,true
+4,P04: <f- c- t>,Event Omitter,take/f,6,true,true
+5,P05: <s>,Event Omitter,soda/s,1,true,true
+5,P05: <s>,Event Omitter,serveSoda/s,2,true,true
+5,P05: <s>,Event Omitter,pay/!f,3,true,true
+5,P05: <s>,Event Omitter,change/!f,4,true,true
+5,P05: <s>,Event Omitter,open/!f,5,true,true
+5,P05: <s>,Event Omitter,take/!f,6,true,true
+5,P05: <s>,Event Omitter,close/!f,7,true,true
+6,P06: <s- f>,Event Omitter,soda/s,1,true,true
+6,P06: <s- f>,Event Omitter,serveSoda/s,2,true,true
+6,P06: <s- f>,Event Omitter,free/f,3,true,true
+6,P06: <s- f>,Event Omitter,take/f,4,true,true
+7,P07: <s- c>,Event Omitter,soda/s,1,true,true
+7,P07: <s- c>,Event Omitter,serveSoda/s,2,true,true
+7,P07: <s- c>,Event Omitter,pay/!f,3,true,true
+7,P07: <s- c>,Event Omitter,cancel/c,4,true,true
+7,P07: <s- c>,Event Omitter,return/c,5,true,true
+7,P07: <s- c>,Event Omitter,change/!f,6,true,true
+7,P07: <s- c>,Event Omitter,open/!f,7,true,true
+7,P07: <s- c>,Event Omitter,take/!f,8,true,true
+7,P07: <s- c>,Event Omitter,close/!f,9,true,true
+8,P08: <s- f- c>,Event Omitter,soda/s,1,true,true
+8,P08: <s- f- c>,Event Omitter,serveSoda/s,2,true,true
+8,P08: <s- f- c>,Event Omitter,cancel/c,3,true,true
+8,P08: <s- f- c>,Event Omitter,return/c,4,true,true
+8,P08: <s- f- c>,Event Omitter,free/f,5,true,true
+8,P08: <s- f- c>,Event Omitter,take/f,6,true,true
+9,P09: <s- c- t>,Event Omitter,soda/s,1,true,true
+9,P09: <s- c- t>,Event Omitter,serveSoda/s,2,true,true
+9,P09: <s- c- t>,Event Omitter,pay/!f,3,true,true
+9,P09: <s- c- t>,Event Omitter,cancel/c,4,true,true
+9,P09: <s- c- t>,Event Omitter,return/c,5,true,true
+9,P09: <s- c- t>,Event Omitter,serveTea/t,6,true,true
+9,P09: <s- c- t>,Event Omitter,change/!f,7,true,true
+9,P09: <s- c- t>,Event Omitter,tea/t,8,true,true
+9,P09: <s- c- t>,Event Omitter,open/!f,9,true,true
+9,P09: <s- c- t>,Event Omitter,take/!f,10,true,true
+9,P09: <s- c- t>,Event Omitter,close/!f,11,true,true
+10,P10: <s- t>,Event Omitter,soda/s,1,true,true
+10,P10: <s- t>,Event Omitter,serveSoda/s,2,true,true
+10,P10: <s- t>,Event Omitter,pay/!f,3,true,true
+10,P10: <s- t>,Event Omitter,serveTea/t,4,true,true
+10,P10: <s- t>,Event Omitter,change/!f,5,true,true
+10,P10: <s- t>,Event Omitter,tea/t,6,true,true
+10,P10: <s- t>,Event Omitter,open/!f,7,true,true
+10,P10: <s- t>,Event Omitter,take/!f,8,true,true
+10,P10: <s- t>,Event Omitter,close/!f,9,true,true
+11,P11: <s- f- t>,Event Omitter,soda/s,1,true,true
+11,P11: <s- f- t>,Event Omitter,serveSoda/s,2,true,true
+11,P11: <s- f- t>,Event Omitter,serveTea/t,3,true,true
+11,P11: <s- f- t>,Event Omitter,free/f,4,true,true
+11,P11: <s- f- t>,Event Omitter,tea/t,5,true,true
+11,P11: <s- f- t>,Event Omitter,take/f,6,true,true
+12,P12: <s- f- c- t>,Event Omitter,soda/s,1,true,true
+12,P12: <s- f- c- t>,Event Omitter,serveSoda/s,2,true,true
+12,P12: <s- f- c- t>,Event Omitter,cancel/c,3,true,true
+12,P12: <s- f- c- t>,Event Omitter,return/c,4,true,true
+12,P12: <s- f- c- t>,Event Omitter,serveTea/t,5,true,true
+12,P12: <s- f- c- t>,Event Omitter,free/f,6,true,true
+12,P12: <s- f- c- t>,Event Omitter,tea/t,7,true,true
+12,P12: <s- f- c- t>,Event Omitter,take/f,8,true,true

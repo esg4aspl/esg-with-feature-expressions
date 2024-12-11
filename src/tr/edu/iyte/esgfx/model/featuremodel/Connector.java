@@ -32,7 +32,6 @@ public abstract class Connector implements Implicant {
 			String name = feature.getName();
 			str += name.toLowerCase();
 		}
-		
 		return str;
 	}
 	

@@ -1,0 +1,53 @@
+Product ID,Features,Mutation Operator,Mutation Element,Mutant ID,Is Mutant Valid?,Is Fault Detected?
+1,P01: <e- au>,Feature Omitter,au,1,true,true
+2,P02: <e- ad>,Feature Omitter,ad,1,true,true
+3,P03: <e- au- ad>,Feature Omitter,au,1,true,true
+3,P03: <e- au- ad>,Feature Omitter,ad,2,true,true
+4,P04: <e- ad- en>,Feature Omitter,ad,1,true,true
+4,P04: <e- ad- en>,Feature Omitter,en,2,true,true
+5,P05: <e- en>,Feature Omitter,en,1,true,true
+6,P06: <e- au- en>,Feature Omitter,au,1,true,true
+6,P06: <e- au- en>,Feature Omitter,en,2,true,true
+7,P07: <e- au- ad- en>,Feature Omitter,au,1,true,true
+7,P07: <e- au- ad- en>,Feature Omitter,ad,2,true,true
+7,P07: <e- au- ad- en>,Feature Omitter,en,3,true,true
+8,P08: <e- ad- en- s>,Feature Omitter,ad,1,true,true
+8,P08: <e- ad- en- s>,Feature Omitter,en,2,true,true
+8,P08: <e- ad- en- s>,Feature Omitter,s,3,true,true
+9,P09: <e- s>,Feature Omitter,s,1,true,true
+10,P10: <e- au- s>,Feature Omitter,au,1,true,true
+10,P10: <e- au- s>,Feature Omitter,s,2,true,true
+11,P11: <e- ad- s>,Feature Omitter,ad,1,true,true
+11,P11: <e- ad- s>,Feature Omitter,s,2,true,true
+12,P12: <e- au- ad- s>,Feature Omitter,au,1,true,true
+12,P12: <e- au- ad- s>,Feature Omitter,ad,2,true,true
+12,P12: <e- au- ad- s>,Feature Omitter,s,3,true,true
+13,P13: <e- au- ad- en- s>,Feature Omitter,au,1,true,true
+13,P13: <e- au- ad- en- s>,Feature Omitter,ad,2,true,true
+13,P13: <e- au- ad- en- s>,Feature Omitter,en,3,true,true
+13,P13: <e- au- ad- en- s>,Feature Omitter,s,4,true,true
+14,P14: <e- en- s>,Feature Omitter,en,1,true,true
+14,P14: <e- en- s>,Feature Omitter,s,2,true,true
+15,P15: <e- au- en- s>,Feature Omitter,au,1,true,true
+15,P15: <e- au- en- s>,Feature Omitter,en,2,true,true
+15,P15: <e- au- en- s>,Feature Omitter,s,3,true,true
+16,P16: <e- ad- s- f>,Feature Omitter,ad,1,true,true
+16,P16: <e- ad- s- f>,Feature Omitter,s,2,true,true
+16,P16: <e- ad- s- f>,Feature Omitter,f,3,true,true
+17,P17: <e- f>,Feature Omitter,f,1,true,true
+18,P18: <e- au- f>,Feature Omitter,au,1,true,true
+18,P18: <e- au- f>,Feature Omitter,f,2,true,true
+19,P19: <e- ad- f>,Feature Omitter,ad,1,true,true
+19,P19: <e- ad- f>,Feature Omitter,f,2,true,true
+20,P20: <e- au- ad- f>,Feature Omitter,au,1,true,true
+20,P20: <e- au- ad- f>,Feature Omitter,ad,2,true,true
+20,P20: <e- au- ad- f>,Feature Omitter,f,3,true,true
+21,P21: <e- au- ad- s- f>,Feature Omitter,au,1,true,true
+21,P21: <e- au- ad- s- f>,Feature Omitter,ad,2,true,true
+21,P21: <e- au- ad- s- f>,Feature Omitter,s,3,true,true
+21,P21: <e- au- ad- s- f>,Feature Omitter,f,4,true,true
+22,P22: <e- s- f>,Feature Omitter,s,1,true,true
+22,P22: <e- s- f>,Feature Omitter,f,2,true,true
+23,P23: <e- au- s- f>,Feature Omitter,au,1,true,true
+23,P23: <e- au- s- f>,Feature Omitter,s,2,true,true
+23,P23: <e- au- s- f>,Feature Omitter,f,3,true,true

@@ -1,2 +1,2 @@
 7 : pay, change, soda, serveSoda, open, take, close
-Event coverage is 100.0%
+Edge coverage is 100.0%

@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<featureModel>
+	<properties>
+		<graphics key="autolayoutconstraints" value="false"/>
+		<graphics key="legendautolayout" value="true"/>
+		<graphics key="showconstraints" value="true"/>
+		<graphics key="showshortnames" value="false"/>
+		<graphics key="layout" value="horizontal"/>
+		<graphics key="showcollapsedconstraints" value="true"/>
+		<graphics key="legendhidden" value="false"/>
+		<graphics key="layoutalgorithm" value="1"/>
+	</properties>
+	<struct>
+		<and abstract="true" mandatory="true" name="sas">
+			<or abstract="true" mandatory="true" name="userAccess">
+				<graphics key="collapsed" value="false"/>
+				<feature name="ta"/>
+				<feature name="sa"/>
+			</or>
+			<alt abstract="true" mandatory="true" name="submitAttendanceMethod">
+				<graphics key="collapsed" value="false"/>
+				<feature name="a"/>
+				<feature name="b"/>
+				<feature name="f"/>
+				<feature name="q"/>
+			</alt>
+			<alt abstract="true" mandatory="true" name="notification">
+				<graphics key="collapsed" value="false"/>
+				<feature name="e"/>
+				<feature name="s"/>
+			</alt>
+			<or abstract="true" mandatory="true" name="recordInformation">
+				<graphics key="collapsed" value="false"/>
+				<feature name="vr"/>
+				<feature name="ur"/>
+				<feature name="mas"/>
+				<feature name="taa"/>
+			</or>
+			<or abstract="true" mandatory="true" name="classManagement">
+				<feature name="vc"/>
+				<feature name="anc"/>
+				<feature name="ucd"/>
+				<feature name="dc"/>
+			</or>
+			<or abstract="true" mandatory="true" name="classSchedule">
+				<graphics key="collapsed" value="false"/>
+				<feature name="vs"/>
+				<feature name="ans"/>
+				<feature name="es"/>
+				<feature name="ass"/>
+			</or>
+		</and>
+	</struct>
+	<constraints>
+		<rule>
+			<imp>
+				<var>ass</var>
+				<conj>
+					<var>ucd</var>
+					<conj>
+						<var>ans</var>
+						<var>es</var>
+					</conj>
+				</conj>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<disj>
+					<var>anc</var>
+					<disj>
+						<var>ans</var>
+						<disj>
+							<var>dc</var>
+							<var>ur</var>
+						</disj>
+					</disj>
+				</disj>
+				<var>ta</var>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<disj>
+					<var>vr</var>
+					<var>mas</var>
+				</disj>
+				<var>sa</var>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>taa</var>
+				<var>ur</var>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>ucd</var>
+				<conj>
+					<var>ta</var>
+					<var>anc</var>
+				</conj>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>ta</var>
+				<disj>
+					<var>vs</var>
+					<var>vc</var>
+				</disj>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>es</var>
+				<conj>
+					<var>ta</var>
+					<var>ans</var>
+				</conj>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<disj>
+					<var>a</var>
+					<var>q</var>
+				</disj>
+				<var>e</var>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<disj>
+					<var>b</var>
+					<var>f</var>
+				</disj>
+				<var>s</var>
+			</imp>
+		</rule>
+	</constraints>
+</featureModel>

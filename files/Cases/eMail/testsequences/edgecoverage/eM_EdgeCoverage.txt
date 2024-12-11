@@ -1,0 +1,207 @@
+P01: <e, au>
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+2 : open_mailbox, select_email
+3 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+2 : enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+Edge coverage is 100.0%
+
+P02: <e, ad>
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+2 : open_mailbox, select_email
+3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+Edge coverage is 100.0%
+
+P03: <e, au, ad>
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+2 : open_mailbox, select_email
+3 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+2 : enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+Edge coverage is 100.0%
+
+P04: <e, ad, en>
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+2 : open_mailbox, select_email
+3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+9 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+Edge coverage is 100.0%
+
+P05: <e, en>
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+2 : open_mailbox, select_email
+7 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+7 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+Edge coverage is 100.0%
+
+P06: <e, au, en>
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+2 : open_mailbox, select_email
+3 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+2 : enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+7 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+7 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+Edge coverage is 100.0%
+
+P07: <e, au, ad, en>
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+2 : open_mailbox, select_email
+3 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+2 : enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+9 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+Edge coverage is 100.0%
+
+P08: <e, ad, en, s>
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+2 : open_mailbox, select_email
+3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+9 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+4 : compose_new_email, enter_receiver's_email_address, sign_mail, send_email
+Edge coverage is 100.0%
+
+P09: <e, s>
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+2 : open_mailbox, select_email
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+7 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+Edge coverage is 100.0%
+
+P10: <e, au, s>
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+2 : open_mailbox, select_email
+3 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+2 : enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+7 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+Edge coverage is 100.0%
+
+P11: <e, ad, s>
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+2 : open_mailbox, select_email
+3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+8 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+Edge coverage is 100.0%
+
+P12: <e, au, ad, s>
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+2 : open_mailbox, select_email
+3 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+2 : enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+8 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+Edge coverage is 100.0%
+
+P13: <e, au, ad, en, s>
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+2 : open_mailbox, select_email
+3 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+2 : enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+9 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+4 : compose_new_email, enter_receiver's_email_address, sign_mail, send_email
+Edge coverage is 100.0%
+
+P14: <e, en, s>
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+2 : open_mailbox, select_email
+7 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+8 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+Edge coverage is 100.0%
+
+P15: <e, au, en, s>
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+2 : open_mailbox, select_email
+3 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+2 : enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+7 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+8 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+Edge coverage is 100.0%
+
+P16: <e, ad, s, f>
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+2 : open_mailbox, select_email
+3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver
+4 : open_mailbox, select_email, enter_forward_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+8 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+Edge coverage is 100.0%
+
+P17: <e, f>
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+2 : open_mailbox, select_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+4 : open_mailbox, select_email, enter_forward_receiver's_email_address, send_email
+Edge coverage is 100.0%
+
+P18: <e, au, f>
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+2 : open_mailbox, select_email
+3 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+2 : enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+4 : open_mailbox, select_email, enter_forward_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+Edge coverage is 100.0%
+
+P19: <e, ad, f>
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+2 : open_mailbox, select_email
+3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+4 : open_mailbox, select_email, enter_forward_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+Edge coverage is 100.0%
+
+P20: <e, au, ad, f>
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+2 : open_mailbox, select_email
+3 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+2 : enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+4 : open_mailbox, select_email, enter_forward_receiver's_email_address, send_email
+Edge coverage is 100.0%
+
+P21: <e, au, ad, s, f>
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+2 : open_mailbox, select_email
+3 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+2 : enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+4 : open_mailbox, select_email, enter_forward_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+Edge coverage is 100.0%
+
+P22: <e, s, f>
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+2 : open_mailbox, select_email
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+4 : open_mailbox, select_email, enter_forward_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+Edge coverage is 100.0%
+
+P23: <e, au, s, f>
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+2 : open_mailbox, select_email
+3 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+2 : enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+4 : open_mailbox, select_email, enter_forward_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+7 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+Edge coverage is 100.0%
+

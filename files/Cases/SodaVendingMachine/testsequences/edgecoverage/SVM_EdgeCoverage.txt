@@ -1,0 +1,58 @@
+P01: <!f, t>
+7 : pay, change, tea, serveTea, open, take, close
+Edge coverage is 100.0%
+
+P02: <f, t>
+4 : free, tea, serveTea, take
+Edge coverage is 100.0%
+
+P03: <!f, c, t>
+7 : pay, change, tea, serveTea, open, take, close
+4 : pay, change, cancel, return
+Edge coverage is 100.0%
+
+P04: <f, c, t>
+4 : free, tea, serveTea, take
+3 : free, cancel, return
+Edge coverage is 100.0%
+
+P05: <s, !f>
+7 : pay, change, soda, serveSoda, open, take, close
+Edge coverage is 100.0%
+
+P06: <s, f>
+4 : free, soda, serveSoda, take
+Edge coverage is 100.0%
+
+P07: <s, !f, c>
+7 : pay, change, soda, serveSoda, open, take, close
+4 : pay, change, cancel, return
+Edge coverage is 100.0%
+
+P08: <s, f, c>
+4 : free, soda, serveSoda, take
+3 : free, cancel, return
+Edge coverage is 100.0%
+
+P09: <s, !f, c, t>
+7 : pay, change, soda, serveSoda, open, take, close
+7 : pay, change, tea, serveTea, open, take, close
+4 : pay, change, cancel, return
+Edge coverage is 100.0%
+
+P10: <s, !f, t>
+7 : pay, change, soda, serveSoda, open, take, close
+7 : pay, change, tea, serveTea, open, take, close
+Edge coverage is 100.0%
+
+P11: <s, f, t>
+4 : free, soda, serveSoda, take
+4 : free, tea, serveTea, take
+Edge coverage is 100.0%
+
+P12: <s, f, c, t>
+4 : free, soda, serveSoda, take
+4 : free, tea, serveTea, take
+3 : free, cancel, return
+Edge coverage is 100.0%
+

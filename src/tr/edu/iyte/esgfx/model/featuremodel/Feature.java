@@ -113,5 +113,10 @@ public class Feature implements Implicant, Comparable<Feature> {
 		} else
 			return 1;
 	}
+	
+	@Override
+	public int hashCode() {
+		return name.hashCode();
+	}
 
 }

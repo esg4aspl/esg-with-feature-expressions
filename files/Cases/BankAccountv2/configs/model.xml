@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<featureModel>
+	<properties>
+		<graphics key="autolayoutconstraints" value="false"/>
+		<graphics key="legendautolayout" value="true"/>
+		<graphics key="showconstraints" value="true"/>
+		<graphics key="showshortnames" value="false"/>
+		<graphics key="layout" value="horizontal"/>
+		<graphics key="showcollapsedconstraints" value="true"/>
+		<graphics key="legendhidden" value="false"/>
+		<graphics key="layoutalgorithm" value="1"/>
+	</properties>
+	<struct>
+		<and mandatory="true" name="b">
+			<graphics key="collapsed" value="false"/>
+			<feature mandatory="true" name="d"/>
+			<feature mandatory="true" name="w"/>
+			<alt abstract="true" mandatory="true" name="currency">
+				<feature name="tl"/>
+				<feature name="eu"/>
+				<feature name="us"/>
+			</alt>
+			<feature name="up"/>
+			<feature name="t"/>
+			<or abstract="true" name="cancellation">
+				<feature name="cd"/>
+				<feature name="cw"/>
+			</or>
+			<alt abstract="true" name="extraMoney">
+				<feature name="c"/>
+				<feature name="o"/>
+			</alt>
+			<feature name="i"/>
+			<feature name="ie"/>
+			<feature name="dl"/>
+		</and>
+	</struct>
+	<constraints>
+		<rule>
+			<imp>
+				<var>ie</var>
+				<var>i</var>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>dl</var>
+				<conj>
+					<var>w</var>
+					<var>cw</var>
+				</conj>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>o</var>
+				<conj>
+					<var>cw</var>
+					<var>dl</var>
+				</conj>
+			</imp>
+		</rule>
+	</constraints>
+</featureModel>

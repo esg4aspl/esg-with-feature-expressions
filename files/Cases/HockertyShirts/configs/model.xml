@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<featureModel>
+	<properties>
+		<graphics key="autolayoutconstraints" value="false"/>
+		<graphics key="legendautolayout" value="true"/>
+		<graphics key="showconstraints" value="true"/>
+		<graphics key="showshortnames" value="false"/>
+		<graphics key="layout" value="horizontal"/>
+		<graphics key="showcollapsedconstraints" value="true"/>
+		<graphics key="legendhidden" value="false"/>
+		<graphics key="layoutalgorithm" value="1"/>
+	</properties>
+	<struct>
+		<and mandatory="true" name="HS">
+			<graphics key="collapsed" value="false"/>
+			<alt abstract="true" mandatory="true" name="Fabric">
+				<graphics key="collapsed" value="true"/>
+				<feature name="M"/>
+				<feature name="C"/>
+				<feature name="D"/>
+				<feature name="B"/>
+				<feature name="Be"/>
+				<feature name="Cr"/>
+				<feature name="W"/>
+				<feature name="Mc"/>
+				<feature name="F"/>
+				<feature name="Mcd"/>
+				<feature name="P"/>
+				<feature name="H"/>
+				<feature name="S"/>
+				<feature name="R"/>
+				<feature name="G"/>
+				<feature name="V"/>
+				<feature name="Va"/>
+				<feature name="Vi"/>
+				<feature name="Mi"/>
+				<feature name="Ber"/>
+				<feature name="Mu"/>
+				<feature name="T"/>
+				<feature name="O"/>
+				<feature name="St"/>
+				<feature name="Ve"/>
+				<feature name="J"/>
+				<feature name="Sc"/>
+				<feature name="Ha"/>
+				<feature name="Hu"/>
+				<feature name="Ca"/>
+				<feature name="He"/>
+				<feature name="E"/>
+				<feature name="Jo"/>
+				<feature name="N"/>
+				<feature name="El"/>
+				<feature name="L"/>
+				<feature name="K"/>
+				<feature name="Ev"/>
+				<feature name="Ta"/>
+				<feature name="Car"/>
+				<feature name="A"/>
+				<feature name="So"/>
+				<feature name="Li"/>
+				<feature name="Y"/>
+				<feature name="Ell"/>
+				<feature name="Et"/>
+				<feature name="Cu"/>
+				<feature name="Fl"/>
+				<feature name="Ew"/>
+				<feature name="I"/>
+				<feature name="Tap"/>
+				<feature name="Ar"/>
+				<feature name="Arm"/>
+				<feature name="Wa"/>
+				<feature name="Ol"/>
+				<feature name="Ma"/>
+				<feature name="Al"/>
+				<feature name="Ho"/>
+				<feature name="Bea"/>
+				<feature name="Ti"/>
+				<feature name="Val"/>
+				<feature name="Rk"/>
+				<feature name="Wn"/>
+				<feature name="Gi"/>
+				<feature name="Mid"/>
+				<feature name="Cra"/>
+				<feature name="Fe"/>
+				<feature name="Mar"/>
+				<feature name="Co"/>
+				<feature name="Or"/>
+				<feature name="Br"/>
+				<feature name="Bro"/>
+				<feature name="Re"/>
+				<feature name="Am"/>
+				<feature name="Bev"/>
+				<feature name="Sw"/>
+				<feature name="Ba"/>
+				<feature name="Se"/>
+				<feature name="Di"/>
+				<feature name="Maj"/>
+				<feature name="Alt"/>
+				<feature name="Ch"/>
+				<feature name="Ga"/>
+				<feature name="Van"/>
+				<feature name="Cl"/>
+				<feature name="Tam"/>
+				<feature name="Rei"/>
+				<feature name="Ry"/>
+				<feature name="Tr"/>
+				<feature name="Mau"/>
+				<feature name="Hol"/>
+				<feature name="Che"/>
+				<feature name="Z"/>
+				<feature name="Po"/>
+				<feature name="Gl"/>
+				<feature name="Nu"/>
+				<feature name="Gy"/>
+				<feature name="Si"/>
+				<feature name="Pr"/>
+				<feature name="Sa"/>
+				<feature name="Cas"/>
+				<feature name="Ka"/>
+				<feature name="Th"/>
+				<feature name="Mo"/>
+				<feature name="Pe"/>
+				<feature name="Le"/>
+				<feature name="To"/>
+				<feature name="Ke"/>
+				<feature name="Hal"/>
+				<feature name="By"/>
+				<feature name="Lev"/>
+				<feature name="Mcg"/>
+				<feature name="Cal"/>
+				<feature name="Ra"/>
+				<feature name="Ja"/>
+				<feature name="Kat"/>
+				<feature name="Vic"/>
+				<feature name="Hut"/>
+				<feature name="Mcc"/>
+				<feature name="Ro"/>
+				<feature name="Kay"/>
+				<feature name="Reg"/>
+				<feature name="Sh"/>
+				<feature name="Bl"/>
+				<feature name="Coa"/>
+				<feature name="Mai"/>
+				<feature name="Jay"/>
+				<feature name="Mcm"/>
+				<feature name="Ri"/>
+				<feature name="Na"/>
+				<feature name="My"/>
+				<feature name="Ben"/>
+				<feature name="An"/>
+				<feature name="Wi"/>
+				<feature name="Ken"/>
+				<feature name="Ree"/>
+				<feature name="Elv"/>
+				<feature name="Calh"/>
+				<feature name="Eli"/>
+				<feature name="Mart"/>
+				<feature name="We"/>
+				<feature name="Ru"/>
+				<feature name="Arb"/>
+				<feature name="At"/>
+				<feature name="Kl"/>
+				<feature name="Man"/>
+				<feature name="Saf"/>
+				<feature name="Mil"/>
+				<feature name="Sco"/>
+				<feature name="Cha"/>
+				<feature name="Kayc"/>
+				<feature name="Gar"/>
+				<feature name="Fa"/>
+				<feature name="Marv"/>
+				<feature name="How"/>
+				<feature name="Bri"/>
+				<feature name="Bens"/>
+				<feature name="Set"/>
+				<feature name="Holl"/>
+				<feature name="Az"/>
+				<feature name="Ya"/>
+				<feature name="Reu"/>
+				<feature name="Nay"/>
+				<feature name="Ak"/>
+				<feature name="Har"/>
+			</alt>
+			<and abstract="true" mandatory="true" name="Style">
+				<graphics key="collapsed" value="true"/>
+				<alt abstract="true" mandatory="true" name="Collar">
+					<graphics key="collapsed" value="true"/>
+					<feature name="NK"/>
+					<feature name="Kc"/>
+					<feature name="Bd"/>
+					<feature name="Suc"/>
+					<feature name="Wc"/>
+					<feature name="Rc"/>
+				</alt>
+				<alt abstract="true" mandatory="true" name="Cuffs">
+					<graphics key="collapsed" value="true"/>
+					<feature name="Sc1b"/>
+					<feature name="Sc2b"/>
+					<feature name="Tbc"/>
+					<feature name="R1b"/>
+					<feature name="Ds"/>
+				</alt>
+				<alt abstract="true" mandatory="true" name="Sleeves">
+					<graphics key="collapsed" value="true"/>
+					<feature name="Ls"/>
+					<feature name="Ss"/>
+				</alt>
+				<alt abstract="true" mandatory="true" name="Wearing">
+					<graphics key="collapsed" value="true"/>
+					<feature name="Tu"/>
+					<feature name="UnT"/>
+				</alt>
+				<alt abstract="true" mandatory="true" name="Chestpocket">
+					<graphics key="collapsed" value="true"/>
+					<feature name="Np"/>
+					<feature name="Sta"/>
+				</alt>
+			</and>
+			<and abstract="true" name="Accents">
+				<graphics key="collapsed" value="false"/>
+				<alt abstract="true" name="Font">
+					<graphics key="collapsed" value="true"/>
+					<feature name="BAB"/>
+					<feature name="ODI"/>
+					<feature name="YD"/>
+					<feature name="NAG"/>
+				</alt>
+				<alt abstract="true" name="Thread Color">
+					<graphics key="collapsed" value="true"/>
+					<feature name="LC"/>
+					<feature name="LB"/>
+					<feature name="Go"/>
+					<feature name="Cop"/>
+					<feature name="Rr"/>
+					<feature name="LP"/>
+					<feature name="Pu"/>
+					<feature name="DB"/>
+					<feature name="MB"/>
+					<feature name="Gr"/>
+					<feature name="LG"/>
+					<feature name="MG"/>
+					<feature name="DG"/>
+					<feature name="Bla"/>
+					<feature name="Sil"/>
+				</alt>
+				<alt abstract="true" name="Initial Position">
+					<graphics key="collapsed" value="true"/>
+					<feature name="Ches"/>
+					<feature name="Cuf"/>
+				</alt>
+				<alt abstract="true" name="Contrasted Collar">
+					<graphics key="collapsed" value="true"/>
+					<feature name="DC"/>
+					<feature name="AC"/>
+					<feature name="IC"/>
+				</alt>
+				<alt abstract="true" name="Contrasting Cuffs">
+					<graphics key="collapsed" value="true"/>
+					<feature name="DCu"/>
+					<feature name="ACu"/>
+					<feature name="ICu"/>
+				</alt>
+				<alt abstract="true" name="Contrasting Button Hole/Stitch">
+				<graphics key="collapsed" value="true"/>
+				<feature name="DSt"/>
+				<feature name="ASt"/>
+				<feature name="OCu"/>
+			</alt>
+			<alt abstract="true" name="Buttons">
+				<graphics key="collapsed" value="false"/>
+				<feature name="DBu"/>
+				<alt name="CBu">
+					<graphics key="collapsed" value="false"/>
+					<feature name="WB"/>
+					<feature name="BluB"/>
+					<feature name="RB"/>
+					<feature name="BB"/>
+				</alt>
+			</alt>
+			<feature name="In"/>
+		</and>
+		<and mandatory="true" name="Me">
+			<graphics key="collapsed" value="true"/>
+			<alt abstract="true" mandatory="true" name="Shoulders">
+				<graphics key="collapsed" value="true"/>
+				<feature name="SS"/>
+				<feature name="AS"/>
+				<feature name="StS"/>
+			</alt>
+			<alt abstract="true" mandatory="true" name="Abdomen">
+				<graphics key="collapsed" value="true"/>
+				<feature name="TA"/>
+				<feature name="AA"/>
+				<feature name="LA"/>
+			</alt>
+			<alt abstract="true" mandatory="true" name="Torso">
+				<graphics key="collapsed" value="true"/>
+				<feature name="SCh"/>
+				<feature name="ACh"/>
+				<feature name="CCh"/>
+			</alt>
+			<alt abstract="true" mandatory="true" name="Stance">
+				<graphics key="collapsed" value="true"/>
+				<feature name="SSta"/>
+				<feature name="ASta"/>
+				<feature name="CSta"/>
+			</alt>
+		</and>
+		<feature mandatory="true" name="Ord"/>
+		<feature mandatory="true" name="Shi"/>
+		<feature mandatory="true" name="PO"/>
+	</and>
+</struct>
+<constraints>
+	<rule>
+		<imp>
+			<disj>
+				<var>Font</var>
+				<disj>
+					<var>Initial Position</var>
+					<var>Thread Color</var>
+				</disj>
+			</disj>
+			<var>In</var>
+		</imp>
+	</rule>
+	<rule>
+		<eq>
+			<disj>
+				<var>WB</var>
+				<disj>
+					<var>BluB</var>
+					<disj>
+						<var>RB</var>
+						<var>BB</var>
+					</disj>
+				</disj>
+			</disj>
+			<var>CBu</var>
+		</eq>
+	</rule>
+</constraints>
+</featureModel>

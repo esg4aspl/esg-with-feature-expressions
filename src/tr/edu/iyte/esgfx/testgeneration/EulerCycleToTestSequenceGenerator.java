@@ -1,20 +1,17 @@
 package tr.edu.iyte.esgfx.testgeneration;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
+//import java.util.Map.Entry;
 import java.util.Set;
 
-import org.jgrapht.GraphPath;
-import org.jgrapht.graph.DefaultWeightedEdge;
-
 import tr.edu.iyte.esg.eventsequence.EventSequence;
-import tr.edu.iyte.esg.model.Edge;
+
 import tr.edu.iyte.esg.model.Vertex;
 import tr.edu.iyte.esgfx.model.VertexRefinedByFeatureExpression;
 import tr.edu.iyte.esgfx.model.featureexpression.Conjunction;
@@ -64,12 +61,13 @@ public class EulerCycleToTestSequenceGenerator {
 				((Conjunction) featureExpression).addOperand(vertexRefinedByFeatureExpression.getFeatureExpression());
 			}
 		}
-/*
-		System.out.println("Event Sequence & Feature Expression Map: ");
-		for (Entry<EventSequence, FeatureExpression> entry : eventSequenceFeatureExpressionMap.entrySet()) {
-			System.out.print(entry.getKey() + " - " + ((Conjunction) entry.getValue()).toString() + "\n");
-		}
-*/
+
+//		System.out.println("Event Sequence & Feature Expression Map: ");
+//		for (Entry<EventSequence, FeatureExpression> entry : eventSequenceFeatureExpressionMap.entrySet()) {
+//			System.out.print(entry.getKey() + " - " + ((Conjunction) entry.getValue()).toString() + "\n");
+//		}
+//		System.out.println("----------------------");
+
 		return CESsOfESG;
 
 	}
