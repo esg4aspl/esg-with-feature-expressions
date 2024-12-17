@@ -9,6 +9,7 @@ public class CaseStudyUtilities_SVM extends CaseStudyUtilities {
 		featureModelFilePath = "files/Cases/SodaVendingMachine/configs/model.xml";
 		detailedFaultDetectionResults = "files/Cases/SodaVendingMachine/testsequences/edgecoverage/faultdetection/SVM_detailedFaultDetectionResults";
 		faultDetectionResultsForSPL = "files/Cases/SodaVendingMachine/testsequences/edgecoverage/faultdetection/SVM_faultDetectionResultsForSPL.csv";
+		
 		testsequencesFolderPath = "files/Cases/SodaVendingMachine/testsequences/";
 
 		timemeasurementFolderPath = "files/Cases/SodaVendingMachine/timemeasurement/";
@@ -20,6 +21,8 @@ public class CaseStudyUtilities_SVM extends CaseStudyUtilities {
 		
 		featureESGSetFolderPath_FeatureInsertion = "files/Cases/SodaVendingMachinev2/featureESGModels";
 		featureESGSetFolderPath_FeatureOmission = "files/Cases/SodaVendingMachine/featureESGModels";
+		
+		productConfigurationFilePath = "files/Cases/SodaVendingMachine/productConfigurations_SVM.txt";
 	}
 
 }
