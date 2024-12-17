@@ -43,7 +43,7 @@ public class TestSuiteFileWriter {
 			int numberOfFeatures, Set<EventSequence> eventSequenceSet, double edgeCoverage) throws IOException {
 		FileWriter fileWriter = new FileWriter(filePath, true); // set second parameter to true for append mode
 		PrintWriter printWriter = new PrintWriter(fileWriter);
-		printWriter.println(productConfiguration + " : " + numberOfFeatures + " features");
+		printWriter.println(productConfiguration /*+ " : " + numberOfFeatures + " features"*/);
 		for (EventSequence es : eventSequenceSet) {
 			String eventSequence = "";
 
