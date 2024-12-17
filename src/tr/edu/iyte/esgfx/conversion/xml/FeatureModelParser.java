@@ -75,17 +75,15 @@ public class FeatureModelParser extends DefaultHandler {
 				featureModel.setRoot(currentFeature);
 			} else {
 				currentFeature.setParent(featureModel.getRoot());
-				System.out.println("HERE");
-				System.out.println("parent Feature: " + featureModel.getRoot());
-				System.out.println("current Feature: " + currentFeature.getName());
+//				System.out.println("HERE");
+//				System.out.println("parent Feature: " + featureModel.getRoot());
+//				System.out.println("current Feature: " + currentFeature.getName());
 				featureModel.addANDFeature(featureModel.getRoot(), currentFeature);
 			}
-
 			featureModel.addFeature(currentFeature);
-
-			System.out.println(currentFeature.getName() + " isAbstract:" + currentFeature.isAbstract() + " isMandatory:"
-					+ currentFeature.isMandatory() + " parent Feature:" + parentFeature.getName());
-			System.out.println("Is Root?" + featureModel.getRoot().equals(currentFeature));
+//			System.out.println(currentFeature.getName() + " isAbstract:" + currentFeature.isAbstract() + " isMandatory:"
+//					+ currentFeature.isMandatory() + " parent Feature:" + parentFeature.getName());
+//			System.out.println("Is Root?" + featureModel.getRoot().equals(currentFeature));
 			break;
 		case "or":
 			isOrEnded = false;
@@ -127,11 +125,11 @@ public class FeatureModelParser extends DefaultHandler {
 			isAbstract = Boolean.parseBoolean(attributes.getValue("abstract"));
 			isMandatory = Boolean.parseBoolean(attributes.getValue("mandatory"));
 			name = attributes.getValue("name");
-			System.out.println("ALT");
-			System.out.println("isAbstract: " + isAbstract);
-			System.out.println("isMandatory: " + isMandatory);
-			System.out.println("name: " + name);
-			System.out.println("parentFeature: " + parentFeature.getName());
+//			System.out.println("ALT");
+//			System.out.println("isAbstract: " + isAbstract);
+//			System.out.println("isMandatory: " + isMandatory);
+//			System.out.println("name: " + name);
+//			System.out.println("parentFeature: " + parentFeature.getName());
 			currentFeature = new Feature(name, isAbstract, isMandatory);
 			currentFeature.setParent(parentFeature);
 			featureModel.addFeature(currentFeature);
