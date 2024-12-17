@@ -21,6 +21,8 @@ public class CaseStudyUtilities_Tesla extends CaseStudyUtilities {
 		
 		featureESGSetFolderPath_FeatureInsertion = "files/Cases/Teslav2/featureESGModels";
 		featureESGSetFolderPath_FeatureOmission = "files/Cases/Tesla/featureESGModels";
+		
+		productConfigurationFilePath = "files/Cases/BankAccountv2/productConfigurations_BAv2.txt";
 	}
 
 }
