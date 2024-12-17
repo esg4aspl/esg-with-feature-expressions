@@ -24,5 +24,7 @@ public class CaseStudyUtilities_SAS extends CaseStudyUtilities {
 
 		featureESGSetFolderPath_FeatureInsertion = "files/Cases/StudentAttendanceSystemv2/featureESGModels";
 		featureESGSetFolderPath_FeatureOmission = "files/Cases/StudentAttendanceSystem/featureESGModels";
+		
+		productConfigurationFilePath = "files/Cases/StudentAttendanceSystem/productConfigurations_SAS.txt";
 	}
 }
