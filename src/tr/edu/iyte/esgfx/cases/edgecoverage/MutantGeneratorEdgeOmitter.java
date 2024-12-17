@@ -43,16 +43,29 @@ public class MutantGeneratorEdgeOmitter extends CaseStudyUtilities {
 
 		int productID = 0;
 		while (solver.isSatisfiable()) {
+			productID++;
+			// Generate product name
+			String productName = "P" + (productID < 10 ? "0" : "") + productID;
+			StringBuilder productConfiguration = new StringBuilder(productName + ": <");
+			int numberOfFeatures = 0;
+			
 			int[] model = solver.model();
 			for (int i = 0; i < model.length; i++) {
 				FeatureExpression featureExpression = featureExpressionList.get(i);
-//				String featureName = featureExpression.getFeature().getName();
 				if (model[i] > 0) {
+					String featureName = featureExpression.getFeature().getName();
 					featureExpression.setTruthValue(true);
+					productConfiguration.append(featureName).append(", ");
+					numberOfFeatures++;
 				} else {
 					featureExpression.setTruthValue(false);
 				}
 			}
+			// Finalize product configuration string
+			if (numberOfFeatures > 0) {
+				productConfiguration.setLength(productConfiguration.length() - 2); // Remove trailing ", "
+			}
+			productConfiguration.append(">:").append(numberOfFeatures).append(" features");			
 
 			// Add a clause to block the current model to find the next one
 			VecInt blockingClause = new VecInt();
@@ -65,21 +78,7 @@ public class MutantGeneratorEdgeOmitter extends CaseStudyUtilities {
 					featureExpressionMapFromFeatureModel);
 
 			if (isProductConfigurationValid) {
-				productID++;
-				String productName = "P";
-				if (productID < 10)
-					productName = "P0";
-
 				String ESGFxName = productName + Integer.toString(productID);
-				String productConfiguration = ESGFxName + ": <";
-				for (Entry<String, FeatureExpression> entry : featureExpressionMapFromFeatureModel.entrySet()) {
-//					System.out.print(entry.getKey() + " - " + entry.getValue().evaluate() + "\n");
-					if (entry.getValue().evaluate() == true) {
-						productConfiguration += entry.getKey() + ", ";
-					}
-				}
-				productConfiguration = productConfiguration.substring(0, productConfiguration.length() - 2);
-				productConfiguration += ">";
 
 				ProductESGFxGenerator productESGFxGenerator = new ProductESGFxGenerator();
 				ESG productESGFx = productESGFxGenerator.generateProductESGFx(productID, ESGFxName, ESGFx);
@@ -109,7 +108,7 @@ public class MutantGeneratorEdgeOmitter extends CaseStudyUtilities {
 					String mutationElement = entry.getKey();
 					ESG mutantESGFx = entry.getValue();
 					int mutantID = ((ESGFx) mutantESGFx).getID();
-					System.out.println("Edge: " + mutationElement + " Mutant: " + mutantID);
+//					System.out.println("Edge: " + mutationElement + " Mutant: " + mutantID);
 
 					boolean isFaultDetected = faultDetector.isFaultDetected(mutantESGFx);
 					if (isFaultDetected) {
@@ -125,7 +124,7 @@ public class MutantGeneratorEdgeOmitter extends CaseStudyUtilities {
 
 					boolean isMutantValid = mutationOperator.getValidMutantESGFxSet().contains(mutantESGFx);
 					FaultDetectionResultRecorder.writeDetailedFaultDetectionResult(
-							detailedFaultDetectionResults + "_EdgeOmitter", productID, productConfiguration,
+							detailedFaultDetectionResults + "_EdgeOmitter", productID, productConfiguration.toString(),
 							mutationOperator.getName(), mutationElement, mutantID, isMutantValid, isFaultDetected);
 				}
 
@@ -135,6 +134,8 @@ public class MutantGeneratorEdgeOmitter extends CaseStudyUtilities {
 						invalidMutantFaultCount, mutantESGFxSet.size(), totalFaultCount);
 				System.out.println("Mutant count: " + mutantESGFxSet.size());
 				System.out.println("Fault count: " + totalFaultCount);
+			}else {
+				productID--;
 			}
 		}
 	}

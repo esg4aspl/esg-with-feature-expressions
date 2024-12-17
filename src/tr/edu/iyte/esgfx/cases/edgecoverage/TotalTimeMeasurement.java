@@ -6,7 +6,6 @@ import org.sat4j.core.VecInt;
 import org.sat4j.minisat.SolverFactory;
 
 import org.sat4j.specs.ISolver;
-import org.sat4j.tools.ModelIterator;
 
 import tr.edu.iyte.esg.model.ESG;
 import tr.edu.iyte.esg.model.Vertex;
@@ -24,20 +23,23 @@ import tr.edu.iyte.esgfx.testgeneration.util.StronglyConnectedBalancedESGFxGener
 public class TotalTimeMeasurement extends CaseStudyUtilities {
 
 	public void measureToTalTimeForEdgeCoverage() throws Exception {
+		
+
 		featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFilePath,
 				ESGFxFilePath);
 
 		List<FeatureExpression> featureExpressionList = getFeatureExpressionList(featureExpressionMapFromFeatureModel);
 
+		double startTime1 = System.nanoTime();
+		// Initialize solver and add clauses
 		SATSolverGenerationFromFeatureModel satSolverGenerationFromFeatureModel = new SATSolverGenerationFromFeatureModel();
-
-		ISolver solver = new ModelIterator(SolverFactory.newDefault());
+		ISolver solver = SolverFactory.newDefault(); // No ModelIterator
 		satSolverGenerationFromFeatureModel.addSATClauses(solver, featureModel, featureExpressionMapFromFeatureModel,
 				featureExpressionList);
 
 		int productID = 0;
-		double startTime1 = System.nanoTime();
 		while (solver.isSatisfiable()) {
+			
 			int[] model = solver.model();
 			for (int i = 0; i < model.length; i++) {
 				FeatureExpression featureExpression = featureExpressionList.get(i);
@@ -48,21 +50,21 @@ public class TotalTimeMeasurement extends CaseStudyUtilities {
 				}
 			}
 
-			// Add a clause to block the current model to find the next one
+			// Add a blocking clause to exclude the current model
 			VecInt blockingClause = new VecInt();
-			for (int i = 0; i < model.length; i++) {
-				blockingClause.push(-model[i]);
+			for (int literal : solver.model()) {
+				blockingClause.push(-literal);
 			}
-			solver.addClause(blockingClause);
+			solver.addClause(blockingClause); // Explicitly exclude the current model
 
 			boolean isProductConfigurationValid = isProductConfigurationValid(featureModel,
 					featureExpressionMapFromFeatureModel);
 
 			if (isProductConfigurationValid) {
 				productID++;
-				String productName = "P";
-				if (productID < 10)
-					productName = "P0";
+				
+				// Generate product name
+				String productName = "P" + (productID < 10 ? "0" : "") + productID;
 				String ESGFxName = productName + Integer.toString(productID);
 
 				ProductESGFxGenerator productESGFxGenerator = new ProductESGFxGenerator();

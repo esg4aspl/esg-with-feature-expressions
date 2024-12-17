@@ -7,7 +7,6 @@ import java.util.Map.Entry;
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.SolverFactory;
 import org.sat4j.specs.ISolver;
-import org.sat4j.tools.ModelIterator;
 
 import tr.edu.iyte.esg.eventsequence.EventSequence;
 import tr.edu.iyte.esg.model.ESG;
@@ -35,24 +34,38 @@ public class MutantGeneratorEventInserter extends CaseStudyUtilities {
 		List<FeatureExpression> featureExpressionList = getFeatureExpressionList(featureExpressionMapFromFeatureModel);
 		printFeatureExpressionList(featureExpressionList);
 
+		// Initialize solver and add clauses
 		SATSolverGenerationFromFeatureModel satSolverGenerationFromFeatureModel = new SATSolverGenerationFromFeatureModel();
-		ISolver solver = new ModelIterator(SolverFactory.newDefault());
-
+		ISolver solver = SolverFactory.newDefault(); // No ModelIterator
 		satSolverGenerationFromFeatureModel.addSATClauses(solver, featureModel, featureExpressionMapFromFeatureModel,
 				featureExpressionList);
 
 		int productID = 0;
 		while (solver.isSatisfiable()) {
+			productID++;
+			// Generate product name
+			String productName = "P" + (productID < 10 ? "0" : "") + productID;
+			
+			StringBuilder productConfiguration = new StringBuilder(productName + ": <");
+			int numberOfFeatures = 0;
+			
 			int[] model = solver.model();
 			for (int i = 0; i < model.length; i++) {
 				FeatureExpression featureExpression = featureExpressionList.get(i);
-//				String featureName = featureExpression.getFeature().getName();
 				if (model[i] > 0) {
 					featureExpression.setTruthValue(true);
+					String featureFeatureName = featureExpression.getFeature().getName();
+					productConfiguration.append(featureFeatureName).append(", ");
+					numberOfFeatures++;
 				} else {
 					featureExpression.setTruthValue(false);
 				}
 			}
+			// Finalize product configuration string
+			if (numberOfFeatures > 0) {
+				productConfiguration.setLength(productConfiguration.length() - 2); // Remove trailing ", "
+			}
+			productConfiguration.append(">:").append(numberOfFeatures).append(" features");			
 
 			// Add a clause to block the current model to find the next one
 			VecInt blockingClause = new VecInt();
@@ -65,22 +78,8 @@ public class MutantGeneratorEventInserter extends CaseStudyUtilities {
 					featureExpressionMapFromFeatureModel);
 
 			if (isProductConfigurationValid) {
-				productID++;
-				String productName = "P";
-				if (productID < 10)
-					productName = "P0";
-
 				String ESGFxName = productName + Integer.toString(productID);
-				String productConfiguration = ESGFxName + ": <";
-				for (Entry<String, FeatureExpression> entry : featureExpressionMapFromFeatureModel.entrySet()) {
-//					System.out.print(entry.getKey() + " - " + entry.getValue().evaluate() + "\n");
-					if (entry.getValue().evaluate() == true) {
-						productConfiguration += entry.getKey() + ", ";
-					}
-				}
-				productConfiguration = productConfiguration.substring(0, productConfiguration.length() - 2);
-				productConfiguration += ">";
-
+				
 				ProductESGFxGenerator productESGFxGenerator = new ProductESGFxGenerator();
 				ESG productESGFx = productESGFxGenerator.generateProductESGFx(productID, ESGFxName, ESGFx);
 
@@ -125,7 +124,7 @@ public class MutantGeneratorEventInserter extends CaseStudyUtilities {
 
 					boolean isMutantValid = mutationOperator.getValidMutantESGFxSet().contains(mutantESGFx);
 					FaultDetectionResultRecorder.writeDetailedFaultDetectionResult(
-							detailedFaultDetectionResults + "_EventInserter", productID, productConfiguration,
+							detailedFaultDetectionResults + "_EventInserter", productID, productConfiguration.toString(),
 							mutationOperator.getName(), mutationElement, mutantID, isMutantValid, isFaultDetected);
 				}
 
@@ -135,6 +134,8 @@ public class MutantGeneratorEventInserter extends CaseStudyUtilities {
 						invalidMutantFaultCount, mutantESGFxSet.size(), totalFaultCount);
 				System.out.println("Mutant count: " + mutantESGFxSet.size());
 				System.out.println("Fault count: " + totalFaultCount);
+			}else {
+				productID--;
 			}
 		}
 	}
