@@ -20,6 +20,8 @@ public class CaseStudyUtilities_BAv2 extends CaseStudyUtilities {
 		
 		featureESGSetFolderPath_FeatureInsertion = "files/Cases/BankAccountv3/featureESGModels";
 		featureESGSetFolderPath_FeatureOmission = "files/Cases/BankAccountv2/featureESGModels";
+		
+		productConfigurationFilePath = "files/Cases/BankAccountv2/productConfigurations_BAv2.txt";
 	}
 
 }
