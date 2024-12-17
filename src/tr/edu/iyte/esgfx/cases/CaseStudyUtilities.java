@@ -41,10 +41,8 @@ public class CaseStudyUtilities {
 		MXEFileToESGFxConverter MXEFileToESGFxConverter = new MXEFileToESGFxConverter();
 
 		featureModel = MXEFileToESGFxConverter.parseFeatureModel(featureModelFilePath);
-
-		System.out.println(featureModel.toString());
-
 		ESGFx = MXEFileToESGFxConverter.parseMXEFileForESGFxCreation(ESGFxFilePath);
+
 
 		featureExpressionMapFromFeatureModel = MXEFileToESGFxConverter.getFeatureExpressionMap();
 
@@ -92,6 +90,7 @@ public class CaseStudyUtilities {
 
 	protected void printFeatureExpressionList(List<FeatureExpression> featureExpressionList) {
 
+		System.out.println("Feature Expression List");
 		Iterator<FeatureExpression> featureExpressionListIterator = featureExpressionList.iterator();
 
 		while (featureExpressionListIterator.hasNext()) {
@@ -100,11 +99,13 @@ public class CaseStudyUtilities {
 			System.out.println(featureExpression.getFeature().getName() + " - " + (index + 1));
 
 		}
+		System.out.println("-----------------------------");
 
 	}
 
 	protected void printFeatureExpressionMapFromFeatureModel(
 			Map<String, FeatureExpression> featureExpressionMapFromFeatureModel) {
+		System.out.println("Feature Expression Map From Feature Model");
 		for (Map.Entry<String, FeatureExpression> entry : featureExpressionMapFromFeatureModel.entrySet()) {
 			String featureName = entry.getKey();
 			FeatureExpression featureExpression = entry.getValue();
@@ -112,5 +113,4 @@ public class CaseStudyUtilities {
 		}
 		System.out.println("-----------------------------");
 	}
-
 }

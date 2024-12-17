@@ -4,13 +4,13 @@ import tr.edu.iyte.esgfx.productconfigurationgeneration.AutomaticProductConfigur
 
 public class AutomaticProductConfigurationGeneration extends CaseStudyUtilities {
 	
-	public void generateProductConfigurations() throws Exception {
+	public void writeAllProductConfigurationsToFile() throws Exception {
 		featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFilePath,
 				ESGFxFilePath);
-		printFeatureExpressionMapFromFeatureModel(featureExpressionMapFromFeatureModel);
+//		printFeatureExpressionMapFromFeatureModel(featureExpressionMapFromFeatureModel);
 		
 		AutomaticProductConfigurationGenerator automaticProductConfigurationGenerator = new AutomaticProductConfigurationGenerator();
-		automaticProductConfigurationGenerator.getAllProductConfigurations(featureModel, featureExpressionMapFromFeatureModel);
+		automaticProductConfigurationGenerator.writeAllProductConfigurationsToFile(featureModel, featureExpressionMapFromFeatureModel);
 	}
 
 }
