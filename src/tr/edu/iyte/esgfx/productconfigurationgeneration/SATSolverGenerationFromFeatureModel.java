@@ -54,99 +54,65 @@ public class SATSolverGenerationFromFeatureModel {
 			Feature feature = featureIterator.next();
 			String featureName = feature.getName();
 
-			System.out.println("Feature " + featureName);
+//			System.out.println("Feature " + featureName);
 
 			if (featureModel.getRoot().equals(feature)) {
-				System.out.println("Feature " + featureName + " is root");
+//				System.out.println("Feature " + featureName + " is root");
 				if (isRootFeatureInFeatureESGFx(featureModel, featureExpressionMapFromFeatureModel)) {
 					VecInt vecInt = new VecInt();
 					vecInt.push(getIDByFeatureName(featureName, featureExpressionList));
 					solver.addClause(vecInt);
 
-					System.out.println("VecInt " + featureName + " " + vecInt);
+//					System.out.println("VecInt " + featureName + " " + vecInt);
 				}
 			}
 			/*
 			 * abstract/concrete mandatory/optional OR/XOR
-			 * 
-			 * 
-			 * 
-			 * 
 			 */
-			if (feature.isAbstract()) {
 
-				if (feature.isMandatory()) {
-					if (featureModel.isORFeature(feature)) {
-						System.out.println("Feature " + featureName + " is abstract, mandatory OR feature");
-						addMandatoryORFeatureClauses(solver, featureModel, feature, featureExpressionList,
-								optionalConcreteFeatures);
-						System.out.println("------------------------------------------------------");
-
-					} else if (featureModel.isXORFeature(feature)) {
-						System.out.println("Feature " + featureName + " is abstract, mandatory XOR feature");
-						addMandatoryXORFeatureClauses(solver, featureModel, feature, featureExpressionList);
-						System.out.println("------------------------------------------------------");
-					}
-				} else {
-					if (featureModel.isORFeature(feature)) {
-						System.out.println("Feature " + featureName + " is abstract, optional OR feature");
-						addOptionalORFeatureClauses(solver, featureModel, feature, featureExpressionList,
-								optionalConcreteFeatures);
-						System.out.println("------------------------------------------------------");
-
-					} else if (featureModel.isXORFeature(feature)) {
-						System.out.println("Feature " + featureName + " is abstract, optional XOR feature");
-						addOptionalXORFeatureClauses(solver, featureModel, feature, featureExpressionList);
-						System.out.println("------------------------------------------------------");
-					}
+			if (feature.isMandatory()) {
+				if (featureModel.isORFeature(feature)) {
+//					System.out.println("Feature " + featureName + " is concrete, mandatory OR feature");
+					addMandatoryORFeatureClauses(solver, featureModel, feature, featureExpressionList,
+							optionalConcreteFeatures);
+//					System.out.println("------------------------------------------------------");
+				} else if (featureModel.isXORFeature(feature)) {
+//					System.out.println("Feature " + featureName + " is concrete, mandatory XOR feature");
+					addMandatoryXORFeatureClauses(solver, featureModel, feature, featureExpressionList);
+//					System.out.println("------------------------------------------------------");
+				} else if (!feature.isAbstract()) {
+//					System.out.println("Feature " + featureName + " is concrete and mandatory");
+					VecInt vecInt = new VecInt();
+					vecInt.push(getIDByFeatureName(featureName, featureExpressionList));
+					solver.addClause(vecInt);
+//					printVecInt(vecInt, featureName);
+//					System.out.println("------------------------------------------------------");
 				}
 			} else {
-				if (feature.isMandatory()) {
-					if (featureModel.isORFeature(feature)) {
-						System.out.println("Feature " + featureName + " is concrete, mandatory OR feature");
-						addMandatoryORFeatureClauses(solver, featureModel, feature, featureExpressionList,
-								optionalConcreteFeatures);
-						System.out.println("------------------------------------------------------");
-					} else if (featureModel.isXORFeature(feature)) {
-						System.out.println("Feature " + featureName + " is concrete, mandatory XOR feature");
-						addMandatoryXORFeatureClauses(solver, featureModel, feature, featureExpressionList);
-						System.out.println("------------------------------------------------------");
-					} else {
-						System.out.println("Feature " + featureName + " is concrete and mandatory");
-						VecInt vecInt = new VecInt();
-						vecInt.push(getIDByFeatureName(featureName, featureExpressionList));
-						solver.addClause(vecInt);
-						printVecInt(vecInt, featureName);
-						System.out.println("------------------------------------------------------");
+				if (featureModel.isORFeature(feature)) {
+//					System.out.println("Feature " + featureName + " is concrete, optional OR feature");
+					addOptionalORFeatureClauses(solver, featureModel, feature, featureExpressionList,
+							optionalConcreteFeatures);
+//					System.out.println("------------------------------------------------------");
+				} else if (featureModel.isXORFeature(feature)) {
+//					System.out.println("Feature " + featureName + " is concrete, optional XOR feature");
+					addOptionalXORFeatureClauses(solver, featureModel, feature, featureExpressionList);
+//					System.out.println("------------------------------------------------------");
+				} else if (!feature.isAbstract()) {
+					Feature parent = feature.getParent();
+					if (featureModel.isANDFeature(parent)) {
+//						System.out.println("Feature " + featureName + " is concrete and optional");
+						optionalConcreteFeatures.add(feature);
+//						System.out.println("------------------------------------------------------");
 					}
-				} else {
-					if (featureModel.isXORFeature(feature)) {
-						System.out.println("Feature " + featureName + " is concrete, optional XOR feature");
-						addOptionalXORFeatureClauses(solver, featureModel, feature, featureExpressionList);
-						System.out.println("------------------------------------------------------");
-					} else if (featureModel.isORFeature(feature)) {
-						System.out.println("Feature " + featureName + " is concrete, optional OR feature");
-						addOptionalORFeatureClauses(solver, featureModel, feature, featureExpressionList,
-								optionalConcreteFeatures);
-						System.out.println("------------------------------------------------------");
-					} else {
 
-						Feature parent = feature.getParent();
-
-						if (featureModel.isANDFeature(parent)) {
-							System.out.println("Feature " + featureName + " is concrete and optional");
-							optionalConcreteFeatures.add(feature);
-							System.out.println("------------------------------------------------------");
-						}
-
-					}
 				}
-
 			}
+
 		}
 
 		addOptionalConcreteFeatureClauses(solver, optionalConcreteFeatures, featureExpressionList);
-		System.out.println("------------------------------------------------------");
+//		System.out.println("------------------------------------------------------");
 
 	}
 
@@ -164,13 +130,13 @@ public class SATSolverGenerationFromFeatureModel {
 
 			while (childORFeaturesIterator.hasNext()) {
 				Feature childFeature = childORFeaturesIterator.next();
-				System.out.println("Child OR feature: " + childFeature.getName());
+//				System.out.println("Child OR feature: " + childFeature.getName());
 				vecInt.push(getIDByFeatureName(childFeature.getName(), featureExpressionList));
 				sb.append(childFeature.getName() + " ");
 
 				optionalConcreteFeatures.add(childFeature);
 			}
-			printVecInt(vecInt, sb.toString());
+//			printVecInt(vecInt, sb.toString());
 			solver.addClause(vecInt);
 		}
 	}
@@ -184,7 +150,7 @@ public class SATSolverGenerationFromFeatureModel {
 	private void addMandatoryXORFeatureClauses(ISolver solver, FeatureModel featureModel, Feature feature,
 			List<FeatureExpression> featureExpressionList) throws ContradictionException {
 
-		System.out.println("Feature " + feature.getName() + " in addMandatoryXORFeatureClauses");
+//		System.out.println("Feature " + feature.getName() + " in addMandatoryXORFeatureClauses");
 		Set<Feature> childXORFeatures = featureModel.getChildXORFeatures(feature);
 
 		if (childXORFeatures.size() > 0) {
@@ -196,7 +162,7 @@ public class SATSolverGenerationFromFeatureModel {
 			while (childXORFeaturesIterator.hasNext()) {
 
 				Feature childFeature = childXORFeaturesIterator.next();
-				System.out.println("childFeature " + childFeature.getName());
+//				System.out.println("childFeature " + childFeature.getName());
 
 				sb.append(childFeature.getName() + " ");
 				vecInt.push(getIDByFeatureName(childFeature.getName(), featureExpressionList));
@@ -206,7 +172,7 @@ public class SATSolverGenerationFromFeatureModel {
 				while (cloneChildXORFeaturesIterator.hasNext()) {
 
 					Feature nextChildFeature = cloneChildXORFeaturesIterator.next();
-					System.out.println("nextChildFeature " + nextChildFeature.getName());
+//					System.out.println("nextChildFeature " + nextChildFeature.getName());
 					if (nextChildFeature.hashCode() > childFeature.hashCode()) {
 						StringBuilder sb2 = new StringBuilder();
 						VecInt vecInt2 = new VecInt(2);
@@ -216,13 +182,13 @@ public class SATSolverGenerationFromFeatureModel {
 						sb2.append("!" + nextChildFeature.getName() + " ");
 						vecInt2.push(-getIDByFeatureName(nextChildFeature.getName(), featureExpressionList));
 
-						printVecInt(vecInt2, sb2.toString());
+//						printVecInt(vecInt2, sb2.toString());
 						solver.addClause(vecInt2);
 					}
 				}
 			}
 
-			printVecInt(vecInt, sb.toString());
+//			printVecInt(vecInt, sb.toString());
 			solver.addClause(vecInt);
 		}
 	}
@@ -254,7 +220,7 @@ public class SATSolverGenerationFromFeatureModel {
 				sb.append(childFeature.getName() + " ");
 				vecInt.push(-getIDByFeatureName(childFeature.getName(), featureExpressionList));
 			}
-			printVecInt(vecInt, sb.toString());
+//			printVecInt(vecInt, sb.toString());
 			solver.addClause(vecInt);
 		}
 	}
@@ -273,7 +239,7 @@ public class SATSolverGenerationFromFeatureModel {
 				vecInt.push(getIDByFeatureName(optionalConcreteFeature.getName(), featureExpressionList));
 
 			}
-			printVecInt(vecInt, sb.toString());
+//			printVecInt(vecInt, sb.toString());
 			solver.addClause(vecInt);
 
 		}
@@ -302,15 +268,24 @@ public class SATSolverGenerationFromFeatureModel {
 	private Integer getIDByFeatureName(String featureName, List<FeatureExpression> featureExpressionList) {
 
 		Iterator<FeatureExpression> featureExpressionListIterator = featureExpressionList.iterator();
-
+		boolean isNegation = false;
+		if (featureName.contains("!")) {
+			
+			featureName = featureName.substring(1);
+			isNegation = true;
+		}
 		while (featureExpressionListIterator.hasNext()) {
 			FeatureExpression featureExpression = featureExpressionListIterator.next();
-			if (featureExpression.getFeature().getName().equals(featureName)) {
-				return featureExpressionList.indexOf(featureExpression) + 1;
+			String name = featureExpression.getFeature().getName();
+			if (name.equals(featureName)) {
+				if (isNegation) {
+					return (featureExpressionList.indexOf(featureExpression) + 1) * (-1);
+				} else
+					return featureExpressionList.indexOf(featureExpression) + 1;
 			}
 
 		}
-		System.out.println("Feature " + featureName + " NOT found in featureExpressionList");
+//		System.out.println("Feature " + featureName + " NOT found in featureExpressionList");
 		return 0;
 	}
 
@@ -385,7 +360,7 @@ public class SATSolverGenerationFromFeatureModel {
 		while (impConstraintIterator.hasNext()) {
 			Implication impConstraint = impConstraintIterator.next();
 
-			System.out.println("Implication: " + impConstraint.toString());
+//			System.out.println("Implication: " + impConstraint.toString());
 
 			String lhsType = impConstraint.getLHStype();
 			String rhsType = impConstraint.getRHStype();
@@ -397,7 +372,7 @@ public class SATSolverGenerationFromFeatureModel {
 			Implicant rhsImplicant = impConstraint.getRightHandSide();
 
 			if (lhsType.equals("var") && rhsType.equals("var")) {
-				System.out.println("Implication: Feature->Feature");
+//				System.out.println("Implication: Feature->Feature");
 
 				Feature lhsFeature = (Feature) lhsImplicant;
 				Feature rhsFeature = (Feature) rhsImplicant;
@@ -407,9 +382,9 @@ public class SATSolverGenerationFromFeatureModel {
 				vecInt.push(getIDByFeatureName(rhsFeature.getName(), featureExpressionList));
 				solver.addClause(vecInt);
 
-				printVecInt(vecInt, "!" + lhsFeature.getName() + " OR " + rhsFeature.getName());
+//				printVecInt(vecInt, "!" + lhsFeature.getName() + " OR " + rhsFeature.getName());
 			} else if (lhsType.equals("var") && rhsType.equals("disj")) {
-				System.out.println("Implication: Feature->Disjunction");
+//				System.out.println("Implication: Feature->Disjunction");
 
 				Feature lhsFeature = (Feature) lhsImplicant;
 				Connector rhsDisjunction = (ConnectorOR) rhsImplicant;
@@ -424,10 +399,10 @@ public class SATSolverGenerationFromFeatureModel {
 				}
 				solver.addClause(vecInt);
 
-				printVecInt(vecInt, "!" + lhsName + " OR " + rhsName);
+//				printVecInt(vecInt, "!" + lhsName + " OR " + rhsName);
 
 			} else if (lhsType.equals("var") && rhsType.equals("conj")) {
-				System.out.println("Implication: Feature->Conjunction");
+//				System.out.println("Implication: Feature->Conjunction");
 				Feature lhsFeature = (Feature) lhsImplicant;
 				Connector rhsConjunction = (ConnectorAND) rhsImplicant;
 
@@ -438,18 +413,18 @@ public class SATSolverGenerationFromFeatureModel {
 					vecInt.push(-getIDByFeatureName(lhsFeature.getName(), featureExpressionList));
 					vecInt.push(getIDByFeatureName(conjunctionFeature.getName(), featureExpressionList));
 					solver.addClause(vecInt);
-					printVecInt(vecInt, "!" + lhsFeature.getName() + " OR " + conjunctionFeature.getName());
+//					printVecInt(vecInt, "!" + lhsFeature.getName() + " OR " + conjunctionFeature.getName());
 				}
 
 			} else if (lhsType.equals("disj") && rhsType.equals("var")) {
-				System.out.println("Implication: Disjunction->Feature");
+//				System.out.println("Implication: Disjunction->Feature");
 
 				Connector lhsDisjunction = (ConnectorOR) lhsImplicant;
-				System.out.println("lhsDisjunction " + lhsDisjunction.toString());
+//				System.out.println("lhsDisjunction " + lhsDisjunction.toString());
 				Set<Feature> disjunctionFeatures = lhsDisjunction.getFeatureSet();
 
 				Feature rhsFeature = (Feature) rhsImplicant;
-				System.out.println("rhsFeature " + rhsFeature.getName());
+//				System.out.println("rhsFeature " + rhsFeature.getName());
 
 				for (Feature disjunctionFeature : disjunctionFeatures) {
 					if (disjunctionFeature.isAbstract()) {
@@ -458,21 +433,21 @@ public class SATSolverGenerationFromFeatureModel {
 							VecInt vecInt = new VecInt();
 							vecInt.push(-getIDByFeatureName(childFeature.getName(), featureExpressionList));
 							vecInt.push(getIDByFeatureName(rhsFeature.getName(), featureExpressionList));
-							printVecInt(vecInt, "!" + childFeature.getName() + " OR " + rhsFeature.getName());
+//							printVecInt(vecInt, "!" + childFeature.getName() + " OR " + rhsFeature.getName());
 							solver.addClause(vecInt);
 						}
 					} else {
 						VecInt vecInt = new VecInt();
 						vecInt.push(-getIDByFeatureName(disjunctionFeature.getName(), featureExpressionList));
 						vecInt.push(getIDByFeatureName(rhsFeature.getName(), featureExpressionList));
-						printVecInt(vecInt, "!" + disjunctionFeature.getName() + " OR " + rhsFeature.getName());
+//						printVecInt(vecInt, "!" + disjunctionFeature.getName() + " OR " + rhsFeature.getName());
 						solver.addClause(vecInt);
 					}
 
 				}
 
 			} else if (lhsType.equals("disj") && rhsType.equals("disj")) {
-				System.out.println("Implication: Disjunction->Disjunction");
+//				System.out.println("Implication: Disjunction->Disjunction");
 
 				Connector lhsDisjunction = (ConnectorOR) lhsImplicant;
 				Set<Feature> lhsDisjunctionFeatures = lhsDisjunction.getFeatureSet();
@@ -491,12 +466,12 @@ public class SATSolverGenerationFromFeatureModel {
 						sb.append(" OR " + rhsDisjunctionFeature.getName());
 						vecInt.push(getIDByFeatureName(rhsDisjunctionFeature.getName(), featureExpressionList));
 					}
-					printVecInt(vecInt, sb.toString());
+//					printVecInt(vecInt, sb.toString());
 					solver.addClause(vecInt);
 				}
 
 			} else if (lhsType.equals("disj") && rhsType.equals("conj")) {
-				System.out.println("Implication: Disjunction->Conjunction");
+//				System.out.println("Implication: Disjunction->Conjunction");
 				Connector lhsDisjunction = (ConnectorOR) lhsImplicant;
 				Set<Feature> lhsDisjunctionFeatures = lhsDisjunction.getFeatureSet();
 
@@ -515,13 +490,13 @@ public class SATSolverGenerationFromFeatureModel {
 						sb.append(" OR " + rhsConjunctionFeature.getName());
 						vecInt.push(getIDByFeatureName(rhsConjunctionFeature.getName(), featureExpressionList));
 
-						printVecInt(vecInt, sb.toString());
+//						printVecInt(vecInt, sb.toString());
 						solver.addClause(vecInt);
 					}
 				}
 
 			} else if (lhsType.equals("conj") && rhsType.equals("var")) {
-				System.out.println("Implication: Conjunction->Feature");
+//				System.out.println("Implication: Conjunction->Feature");
 				Connector lhsConjunction = (ConnectorAND) lhsImplicant;
 				Set<Feature> lhsConjunctionFeatures = lhsConjunction.getFeatureSet();
 
@@ -538,11 +513,11 @@ public class SATSolverGenerationFromFeatureModel {
 				sb.append(rhsFeature.getName());
 				vecInt.push(getIDByFeatureName(rhsFeature.getName(), featureExpressionList));
 
-				printVecInt(vecInt, sb.toString());
+//				printVecInt(vecInt, sb.toString());
 				solver.addClause(vecInt);
 
 			} else if (lhsType.equals("conj") && rhsType.equals("disj")) {
-				System.out.println("Implication: Conjunction->Disjunction");
+//				System.out.println("Implication: Conjunction->Disjunction");
 				Connector lhsConjunction = (ConnectorAND) lhsImplicant;
 				Set<Feature> lhsConjunctionFeatures = lhsConjunction.getFeatureSet();
 
@@ -560,11 +535,11 @@ public class SATSolverGenerationFromFeatureModel {
 					sb.append(rhsDisjunctionFeature.getName() + " OR ");
 					vecInt.push(getIDByFeatureName(rhsDisjunctionFeature.getName(), featureExpressionList));
 				}
-				printVecInt(vecInt, sb.toString());
+//				printVecInt(vecInt, sb.toString());
 				solver.addClause(vecInt);
 
 			} else if (lhsType.equals("conj") && rhsType.equals("conj")) {
-				System.out.println("Implication: Conjunction->Conjunction");
+//				System.out.println("Implication: Conjunction->Conjunction");
 				Connector lhsConjunction = (ConnectorAND) lhsImplicant;
 				Set<Feature> lhsConjunctionFeatures = lhsConjunction.getFeatureSet();
 
@@ -582,7 +557,7 @@ public class SATSolverGenerationFromFeatureModel {
 					sb.append(rhsConjunctionFeature.getName());
 					vecInt.push(getIDByFeatureName(rhsConjunctionFeature.getName(), featureExpressionList));
 
-					printVecInt(vecInt, sb.toString());
+//					printVecInt(vecInt, sb.toString());
 					solver.addClause(vecInt);
 				}
 			}

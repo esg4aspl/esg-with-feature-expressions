@@ -5,130 +5,72 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.SolverFactory;
-import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.ISolver;
-import org.sat4j.specs.TimeoutException;
-import org.sat4j.tools.ModelIterator;
 
-import tr.edu.iyte.esgfx.model.featureexpression.Conjunction;
-import tr.edu.iyte.esgfx.model.featureexpression.Disjunction;
-import tr.edu.iyte.esgfx.model.featureexpression.ExclusiveDisjunction;
+import tr.edu.iyte.esgfx.cases.CaseStudyUtilities;
+import tr.edu.iyte.esgfx.cases.resultrecordingutilities.ProductConfigurationFileWriter;
 import tr.edu.iyte.esgfx.model.featureexpression.FeatureExpression;
-import tr.edu.iyte.esgfx.model.featureexpression.Negation;
-
 import tr.edu.iyte.esgfx.model.featuremodel.FeatureModel;
 
-import tr.edu.iyte.esgfx.model.featureexpression.Implication;
+public class AutomaticProductConfigurationGenerator extends CaseStudyUtilities {
 
-public class AutomaticProductConfigurationGenerator {
-
-	public Set<Map<String, FeatureExpression>> getAllProductConfigurations(FeatureModel featureModel,
+	public void writeAllProductConfigurationsToFile(FeatureModel featureModel,
 			Map<String, FeatureExpression> featureExpressionMapFromFeatureModel)
-			throws ContradictionException, TimeoutException {
+			throws Exception {
 
-		Set<Map<String, FeatureExpression>> setOfFeatureExpressionMaps = new LinkedHashSet<>();
-		SATSolverGenerationFromFeatureModel satSolverGenerationFromFeatureModel = new SATSolverGenerationFromFeatureModel();
-
+		System.out.println(featureModel);
+		System.out.println("-----------------------------");
+		generateFeatureExpressionMapFromFeatureModel(featureModelFilePath, ESGFxFilePath);
+		printFeatureExpressionMapFromFeatureModel(featureExpressionMapFromFeatureModel);
 		List<FeatureExpression> featureExpressionList = getFeatureExpressionList(featureExpressionMapFromFeatureModel);
 		printFeatureExpressionList(featureExpressionList);
-		System.out.println("-----------------------------------------------");
+		
+		System.out.println("Number of vertices: " + ESGFx.getVertexList().size());
+		System.out.println("Number of real vertices: " + ESGFx.getRealVertexList().size());
+		
+		System.out.println("Number of edges: " + ESGFx.getEdgeList().size());
+		System.out.println("Number of real edges: " + ESGFx.getRealEdgeList().size());
+		System.out.println("-----------------------------");
 
-		ISolver solver = new ModelIterator(SolverFactory.newDefault());
+		SATSolverGenerationFromFeatureModel satSolverGenerationFromFeatureModel = new SATSolverGenerationFromFeatureModel();
+		ISolver solver = SolverFactory.newDefault();
 		satSolverGenerationFromFeatureModel.addSATClauses(solver, featureModel, featureExpressionMapFromFeatureModel,
 				featureExpressionList);
-
-		System.out.println("-----------------------------------------------");
 
 		int productID = 0;
 		while (solver.isSatisfiable()) {
 			productID++;
-//			String productName = "P";
-//			if (productID < 10)
-//				productName = "P0";
-//			
-//			String ESGFxName = productName + Integer.toString(productID);
-//
-//			String productConfiguration = ESGFxName + ": <";
-//			int numberOfFeatures = 0;
-			
-			int[] model = solver.model();
-			for (int i = 0; i < model.length; i++) {
-				FeatureExpression featureExpression = featureExpressionList.get(i);
-				String featureName = featureExpression.getFeature().getName();
-				if (model[i] > 0) {
-//					System.out.println(featureName + " = true");
-					featureExpression.setTruthValue(true);
-//					productConfiguration += featureName + ", ";
-//					numberOfFeatures++;
-				} else {
-//					System.out.println(featureName + " = false");
-					featureExpression.setTruthValue(false);
+
+			// Generate product name
+			String productName = "P" + (productID < 10 ? "0" : "") + productID;
+
+			// Process solution and write directly to the output file
+			String productConfiguration = processSolution(solver.model(), featureExpressionList, productName);
+
+			boolean isProductConfigurationValid = isProductConfigurationValid(featureModel,
+					featureExpressionMapFromFeatureModel);
+
+			if (isProductConfigurationValid) {
+				if (productConfiguration != null) {
+					ProductConfigurationFileWriter.printProductConfiragutionToFile(productConfigurationFilePath,
+							productConfiguration);
+					// Add a blocking clause to exclude the current model
+					VecInt blockingClause = new VecInt();
+					for (int literal : solver.model()) {
+						blockingClause.push(-literal);
+					}
+					solver.addClause(blockingClause); // Explicitly exclude the current model
 				}
+			}else {
+				productID--;
 			}
-//			productConfiguration = productConfiguration.substring(0, productConfiguration.length() - 2);
-//			productConfiguration += ">:" + numberOfFeatures  + " features";
-//			System.out.println(productConfiguration);
-//			System.out.println("-----------------------------------");
-			
-			// Add a clause to block the current model to find the next one
-			VecInt blockingClause = new VecInt();
-			for (int i = 0; i < model.length; i++) {
-				blockingClause.push(-model[i]);
-			}
-			solver.addClause(blockingClause);
-
 		}
-
 		System.out.println("Number of Products: " + productID);
-		return setOfFeatureExpressionMaps;
-
 	}
-
-//	private FeatureExpression cloneFeatureExpression(FeatureExpression featureExpression, boolean truthValue) {
-//
-//		if (featureExpression instanceof Conjunction) {
-////				System.out.println("Conjunction");
-//			FeatureExpression conjunction = new Conjunction();
-//			for (FeatureExpression operand : ((Conjunction) featureExpression).getOperands()) {
-//				((Conjunction) conjunction).addOperand(operand);
-//			}
-//			conjunction.setTruthValue(truthValue);
-//			return conjunction;
-//		} else if (featureExpression instanceof Disjunction) {
-////				System.out.println("Disjunction");
-//			FeatureExpression disjunction = new Disjunction();
-//			for (FeatureExpression operand : ((Disjunction) featureExpression).getOperands()) {
-//				((Disjunction) disjunction).addOperand(operand);
-//			}
-//			disjunction.setTruthValue(truthValue);
-//			return disjunction;
-//		} else if (featureExpression instanceof ExclusiveDisjunction) {
-////				System.out.println("ExclusiveDisjunction");
-//			FeatureExpression exclusiveDisjunction = new ExclusiveDisjunction();
-//			for (FeatureExpression operand : ((ExclusiveDisjunction) featureExpression).getOperands()) {
-//				((ExclusiveDisjunction) exclusiveDisjunction).addOperand(operand);
-//			}
-//			exclusiveDisjunction.setTruthValue(truthValue);
-//			return exclusiveDisjunction;
-//		} else if (featureExpression instanceof Implication) {
-////				System.out.println("Implication");
-//			FeatureExpression implication = new Implication(((Implication) featureExpression).getLeftOperand(),
-//					((Implication) featureExpression).getRightOperand());
-//			implication.setTruthValue(truthValue);
-//			return implication;
-//		} else if (featureExpression instanceof Negation) {
-////				System.out.println("Negation");
-//			FeatureExpression negation = new Negation(featureExpression);
-//			negation.setTruthValue(truthValue);
-//		}
-////			System.out.println("FeatureExpression");
-//		return new FeatureExpression(featureExpression.getFeature(), truthValue);
-//	}
 
 	/*
 	 * This method puts feature expression objects into an array list starting from
@@ -160,34 +102,32 @@ public class AutomaticProductConfigurationGenerator {
 
 		return featureExpressionList;
 	}
+	
+	private String processSolution(int[] model, List<FeatureExpression> featureExpressionList,
+			String productName) {
+		StringBuilder productConfiguration = new StringBuilder(productName + ": <");
+		int numberOfFeatures = 0;
 
-	private void printFeatureExpressionList(List<FeatureExpression> featureExpressionList) {
-
-		Iterator<FeatureExpression> featureExpressionListIterator = featureExpressionList.iterator();
-
-		while (featureExpressionListIterator.hasNext()) {
-			FeatureExpression featureExpression = featureExpressionListIterator.next();
-			int index = featureExpressionList.indexOf(featureExpression);
-			System.out.println(featureExpression.getFeature().getName() + " - " + (index + 1));
-
+		for (int i = 0; i < model.length; i++) {
+			FeatureExpression featureExpression = featureExpressionList.get(i);
+			String featureName = featureExpression.getFeature().getName();
+			if (model[i] > 0) {
+				featureExpression.setTruthValue(true);
+				productConfiguration.append(featureName).append(", ");
+				numberOfFeatures++;
+			} else {
+				featureExpression.setTruthValue(false);
+			}
 		}
 
-	}
-
-	public void matchFeatureExpressions(Map<String, FeatureExpression> featureExpressionMapFromFeatureModel,
-			Map<String, FeatureExpression> productConfigurationMap) {
-		for (Entry<String, FeatureExpression> entry : productConfigurationMap.entrySet()) {
-			FeatureExpression featureExpressionInProductConfiguration = entry.getValue();
-			String featureName = entry.getKey();
-//				System.out.println("Feature name: " + featureName + " - " + featureExpressionInProductConfiguration.evaluate());
-//				if (featureName.equals("b") || featureName.equals("d") || featureName.equals("w")) {
-//					featureExpressionMapFromFeatureModel.get(featureName)
-//					.setTruthValue(true);
-//					System.out.println("HERE");
-//				}else
-			featureExpressionMapFromFeatureModel.get(featureName)
-					.setTruthValue(featureExpressionInProductConfiguration.evaluate());
+		// Finalize product configuration string
+		if (numberOfFeatures > 0) {
+			productConfiguration.setLength(productConfiguration.length() - 2); // Remove trailing ", "
 		}
-	}
+		productConfiguration.append(">:").append(numberOfFeatures).append(" features");
 
+		// Return the product configuration string
+		return productConfiguration.toString();
+	}
+	
 }
