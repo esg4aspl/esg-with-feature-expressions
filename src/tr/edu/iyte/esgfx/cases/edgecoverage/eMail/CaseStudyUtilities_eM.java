@@ -21,5 +21,7 @@ public class CaseStudyUtilities_eM extends CaseStudyUtilities {
 		
 		featureESGSetFolderPath_FeatureInsertion = "files/Cases/eMailv2/featureESGModels";
 		featureESGSetFolderPath_FeatureOmission = "files/Cases/eMail/featureESGModels";
+		
+		productConfigurationFilePath = "files/Cases/eMail/productConfigurations_eM.txt";
 	}
 }
