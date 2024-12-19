@@ -1,0 +1,498 @@
+P01: <b, d, w, cw, tl>:5 features
+P02: <b, d, w, cw, dl, tl>:6 features
+P03: <b, d, w, cw, dl, o, tl>:7 features
+P04: <b, d, w, cw, dl, o, cd, tl>:8 features
+P05: <b, d, w, cd, tl>:5 features
+P06: <b, d, w, cw, cd, tl>:6 features
+P07: <b, d, w, cw, dl, cd, tl>:7 features
+P08: <b, d, w, cw, dl, cd, c, tl>:8 features
+P09: <b, d, w, cw, c, tl>:6 features
+P10: <b, d, w, cw, dl, c, tl>:7 features
+P11: <b, d, w, cd, c, tl>:6 features
+P12: <b, d, w, cw, cd, c, tl>:7 features
+P13: <b, d, w, cd, c, i, tl>:7 features
+P14: <b, d, w, i, tl>:5 features
+P15: <b, d, w, cw, i, tl>:6 features
+P16: <b, d, w, cw, dl, i, tl>:7 features
+P17: <b, d, w, cw, dl, o, i, tl>:8 features
+P18: <b, d, w, cw, dl, o, cd, i, tl>:9 features
+P19: <b, d, w, cd, i, tl>:6 features
+P20: <b, d, w, cw, cd, i, tl>:7 features
+P21: <b, d, w, cw, dl, cd, i, tl>:8 features
+P22: <b, d, w, cw, dl, cd, c, i, tl>:9 features
+P23: <b, d, w, c, i, tl>:6 features
+P24: <b, d, w, cw, c, i, tl>:7 features
+P25: <b, d, w, cw, dl, c, i, tl>:8 features
+P26: <b, d, w, cw, cd, c, i, tl>:8 features
+P27: <b, d, w, cd, c, i, ie, tl>:8 features
+P28: <b, d, w, i, ie, tl>:6 features
+P29: <b, d, w, cw, i, ie, tl>:7 features
+P30: <b, d, w, cw, dl, i, ie, tl>:8 features
+P31: <b, d, w, cw, dl, o, i, ie, tl>:9 features
+P32: <b, d, w, cw, dl, o, cd, i, ie, tl>:10 features
+P33: <b, d, w, cd, i, ie, tl>:7 features
+P34: <b, d, w, cw, cd, i, ie, tl>:8 features
+P35: <b, d, w, cw, dl, cd, i, ie, tl>:9 features
+P36: <b, d, w, cw, dl, cd, c, i, ie, tl>:10 features
+P37: <b, d, w, c, i, ie, tl>:7 features
+P38: <b, d, w, cw, c, i, ie, tl>:8 features
+P39: <b, d, w, cw, dl, c, i, ie, tl>:9 features
+P40: <b, d, w, cw, cd, c, i, ie, tl>:9 features
+P41: <b, d, w, cd, c, i, ie, eu>:8 features
+P42: <b, d, w, cw, eu>:5 features
+P43: <b, d, w, cw, dl, eu>:6 features
+P44: <b, d, w, cw, dl, o, eu>:7 features
+P45: <b, d, w, cw, dl, o, cd, eu>:8 features
+P46: <b, d, w, cd, eu>:5 features
+P47: <b, d, w, cw, cd, eu>:6 features
+P48: <b, d, w, cw, dl, cd, eu>:7 features
+P49: <b, d, w, cw, dl, cd, c, eu>:8 features
+P50: <b, d, w, cw, c, eu>:6 features
+P51: <b, d, w, cw, dl, c, eu>:7 features
+P52: <b, d, w, cd, c, eu>:6 features
+P53: <b, d, w, cw, cd, c, eu>:7 features
+P54: <b, d, w, cd, c, i, eu>:7 features
+P55: <b, d, w, i, eu>:5 features
+P56: <b, d, w, cw, i, eu>:6 features
+P57: <b, d, w, cw, dl, i, eu>:7 features
+P58: <b, d, w, cw, dl, o, i, eu>:8 features
+P59: <b, d, w, cw, dl, o, cd, i, eu>:9 features
+P60: <b, d, w, cd, i, eu>:6 features
+P61: <b, d, w, cw, cd, i, eu>:7 features
+P62: <b, d, w, cw, dl, cd, i, eu>:8 features
+P63: <b, d, w, cw, dl, cd, c, i, eu>:9 features
+P64: <b, d, w, c, i, eu>:6 features
+P65: <b, d, w, cw, c, i, eu>:7 features
+P66: <b, d, w, cw, dl, c, i, eu>:8 features
+P67: <b, d, w, cw, cd, c, i, eu>:8 features
+P68: <b, d, w, cw, cd, c, i, ie, eu>:9 features
+P69: <b, d, w, i, ie, eu>:6 features
+P70: <b, d, w, cw, i, ie, eu>:7 features
+P71: <b, d, w, cw, dl, i, ie, eu>:8 features
+P72: <b, d, w, cw, dl, o, i, ie, eu>:9 features
+P73: <b, d, w, cw, dl, o, cd, i, ie, eu>:10 features
+P74: <b, d, w, cd, i, ie, eu>:7 features
+P75: <b, d, w, cw, cd, i, ie, eu>:8 features
+P76: <b, d, w, cw, dl, cd, i, ie, eu>:9 features
+P77: <b, d, w, cw, dl, cd, c, i, ie, eu>:10 features
+P78: <b, d, w, c, i, ie, eu>:7 features
+P79: <b, d, w, cw, c, i, ie, eu>:8 features
+P80: <b, d, w, cw, dl, c, i, ie, eu>:9 features
+P81: <b, d, w, cd, c, i, ie, us>:8 features
+P82: <b, d, w, cw, us>:5 features
+P83: <b, d, w, cw, dl, us>:6 features
+P84: <b, d, w, cw, dl, o, us>:7 features
+P85: <b, d, w, cw, dl, o, cd, us>:8 features
+P86: <b, d, w, cd, us>:5 features
+P87: <b, d, w, cw, cd, us>:6 features
+P88: <b, d, w, cw, dl, cd, us>:7 features
+P89: <b, d, w, cw, dl, cd, c, us>:8 features
+P90: <b, d, w, cw, c, us>:6 features
+P91: <b, d, w, cw, dl, c, us>:7 features
+P92: <b, d, w, cd, c, us>:6 features
+P93: <b, d, w, cw, cd, c, us>:7 features
+P94: <b, d, w, cd, c, i, us>:7 features
+P95: <b, d, w, i, us>:5 features
+P96: <b, d, w, cw, i, us>:6 features
+P97: <b, d, w, cw, dl, i, us>:7 features
+P98: <b, d, w, cw, dl, o, i, us>:8 features
+P99: <b, d, w, cw, dl, o, cd, i, us>:9 features
+P100: <b, d, w, cd, i, us>:6 features
+P101: <b, d, w, cw, cd, i, us>:7 features
+P102: <b, d, w, cw, dl, cd, i, us>:8 features
+P103: <b, d, w, cw, dl, cd, c, i, us>:9 features
+P104: <b, d, w, c, i, us>:6 features
+P105: <b, d, w, cw, c, i, us>:7 features
+P106: <b, d, w, cw, dl, c, i, us>:8 features
+P107: <b, d, w, cw, cd, c, i, us>:8 features
+P108: <b, d, w, cw, cd, c, i, ie, us>:9 features
+P109: <b, d, w, i, ie, us>:6 features
+P110: <b, d, w, cw, i, ie, us>:7 features
+P111: <b, d, w, cw, dl, i, ie, us>:8 features
+P112: <b, d, w, cw, dl, o, i, ie, us>:9 features
+P113: <b, d, w, cw, dl, o, cd, i, ie, us>:10 features
+P114: <b, d, w, cd, i, ie, us>:7 features
+P115: <b, d, w, cw, cd, i, ie, us>:8 features
+P116: <b, d, w, cw, dl, cd, i, ie, us>:9 features
+P117: <b, d, w, cw, dl, cd, c, i, ie, us>:10 features
+P118: <b, d, w, c, i, ie, us>:7 features
+P119: <b, d, w, cw, c, i, ie, us>:8 features
+P120: <b, d, w, cw, dl, c, i, ie, us>:9 features
+P121: <b, d, w, cd, c, i, ie, us, up>:9 features
+P122: <b, d, w, tl, up>:5 features
+P123: <b, d, w, cw, tl, up>:6 features
+P124: <b, d, w, cw, dl, tl, up>:7 features
+P125: <b, d, w, cw, dl, o, tl, up>:8 features
+P126: <b, d, w, cw, dl, o, cd, tl, up>:9 features
+P127: <b, d, w, cd, tl, up>:6 features
+P128: <b, d, w, cw, cd, tl, up>:7 features
+P129: <b, d, w, cw, dl, cd, tl, up>:8 features
+P130: <b, d, w, cw, dl, cd, c, tl, up>:9 features
+P131: <b, d, w, c, tl, up>:6 features
+P132: <b, d, w, cw, c, tl, up>:7 features
+P133: <b, d, w, cw, dl, c, tl, up>:8 features
+P134: <b, d, w, cd, c, tl, up>:7 features
+P135: <b, d, w, cw, cd, c, tl, up>:8 features
+P136: <b, d, w, cd, c, i, tl, up>:8 features
+P137: <b, d, w, i, tl, up>:6 features
+P138: <b, d, w, cw, i, tl, up>:7 features
+P139: <b, d, w, cw, dl, i, tl, up>:8 features
+P140: <b, d, w, cw, dl, o, i, tl, up>:9 features
+P141: <b, d, w, cw, dl, o, cd, i, tl, up>:10 features
+P142: <b, d, w, cd, i, tl, up>:7 features
+P143: <b, d, w, cw, cd, i, tl, up>:8 features
+P144: <b, d, w, cw, dl, cd, i, tl, up>:9 features
+P145: <b, d, w, cw, dl, cd, c, i, tl, up>:10 features
+P146: <b, d, w, c, i, tl, up>:7 features
+P147: <b, d, w, cw, c, i, tl, up>:8 features
+P148: <b, d, w, cw, dl, c, i, tl, up>:9 features
+P149: <b, d, w, cw, cd, c, i, tl, up>:9 features
+P150: <b, d, w, cd, c, i, ie, tl, up>:9 features
+P151: <b, d, w, i, ie, tl, up>:7 features
+P152: <b, d, w, cw, i, ie, tl, up>:8 features
+P153: <b, d, w, cw, dl, i, ie, tl, up>:9 features
+P154: <b, d, w, cw, dl, o, i, ie, tl, up>:10 features
+P155: <b, d, w, cw, dl, o, cd, i, ie, tl, up>:11 features
+P156: <b, d, w, cd, i, ie, tl, up>:8 features
+P157: <b, d, w, cw, cd, i, ie, tl, up>:9 features
+P158: <b, d, w, cw, dl, cd, i, ie, tl, up>:10 features
+P159: <b, d, w, cw, dl, cd, c, i, ie, tl, up>:11 features
+P160: <b, d, w, c, i, ie, tl, up>:8 features
+P161: <b, d, w, cw, c, i, ie, tl, up>:9 features
+P162: <b, d, w, cw, dl, c, i, ie, tl, up>:10 features
+P163: <b, d, w, cw, cd, c, i, ie, tl, up>:10 features
+P164: <b, d, w, cd, c, i, ie, eu, up>:9 features
+P165: <b, d, w, eu, up>:5 features
+P166: <b, d, w, cw, eu, up>:6 features
+P167: <b, d, w, cw, dl, eu, up>:7 features
+P168: <b, d, w, cw, dl, o, eu, up>:8 features
+P169: <b, d, w, cw, dl, o, cd, eu, up>:9 features
+P170: <b, d, w, cd, eu, up>:6 features
+P171: <b, d, w, cw, cd, eu, up>:7 features
+P172: <b, d, w, cw, dl, cd, eu, up>:8 features
+P173: <b, d, w, cw, dl, cd, c, eu, up>:9 features
+P174: <b, d, w, c, eu, up>:6 features
+P175: <b, d, w, cw, c, eu, up>:7 features
+P176: <b, d, w, cw, dl, c, eu, up>:8 features
+P177: <b, d, w, cd, c, eu, up>:7 features
+P178: <b, d, w, cw, cd, c, eu, up>:8 features
+P179: <b, d, w, cd, c, i, eu, up>:8 features
+P180: <b, d, w, i, eu, up>:6 features
+P181: <b, d, w, cw, i, eu, up>:7 features
+P182: <b, d, w, cw, dl, i, eu, up>:8 features
+P183: <b, d, w, cw, dl, o, i, eu, up>:9 features
+P184: <b, d, w, cw, dl, o, cd, i, eu, up>:10 features
+P185: <b, d, w, cd, i, eu, up>:7 features
+P186: <b, d, w, cw, cd, i, eu, up>:8 features
+P187: <b, d, w, cw, dl, cd, i, eu, up>:9 features
+P188: <b, d, w, cw, dl, cd, c, i, eu, up>:10 features
+P189: <b, d, w, c, i, eu, up>:7 features
+P190: <b, d, w, cw, c, i, eu, up>:8 features
+P191: <b, d, w, cw, dl, c, i, eu, up>:9 features
+P192: <b, d, w, cw, cd, c, i, eu, up>:9 features
+P193: <b, d, w, cw, cd, c, i, ie, eu, up>:10 features
+P194: <b, d, w, i, ie, eu, up>:7 features
+P195: <b, d, w, cw, i, ie, eu, up>:8 features
+P196: <b, d, w, cw, dl, i, ie, eu, up>:9 features
+P197: <b, d, w, cw, dl, o, i, ie, eu, up>:10 features
+P198: <b, d, w, cw, dl, o, cd, i, ie, eu, up>:11 features
+P199: <b, d, w, cd, i, ie, eu, up>:8 features
+P200: <b, d, w, cw, cd, i, ie, eu, up>:9 features
+P201: <b, d, w, cw, dl, cd, i, ie, eu, up>:10 features
+P202: <b, d, w, cw, dl, cd, c, i, ie, eu, up>:11 features
+P203: <b, d, w, c, i, ie, eu, up>:8 features
+P204: <b, d, w, cw, c, i, ie, eu, up>:9 features
+P205: <b, d, w, cw, dl, c, i, ie, eu, up>:10 features
+P206: <b, d, w, cw, cd, c, i, ie, us, up>:10 features
+P207: <b, d, w, us, up>:5 features
+P208: <b, d, w, cw, us, up>:6 features
+P209: <b, d, w, cw, dl, us, up>:7 features
+P210: <b, d, w, cw, dl, o, us, up>:8 features
+P211: <b, d, w, cw, dl, o, cd, us, up>:9 features
+P212: <b, d, w, cd, us, up>:6 features
+P213: <b, d, w, cw, cd, us, up>:7 features
+P214: <b, d, w, cw, dl, cd, us, up>:8 features
+P215: <b, d, w, cw, dl, cd, c, us, up>:9 features
+P216: <b, d, w, c, us, up>:6 features
+P217: <b, d, w, cw, c, us, up>:7 features
+P218: <b, d, w, cw, dl, c, us, up>:8 features
+P219: <b, d, w, cd, c, us, up>:7 features
+P220: <b, d, w, cw, cd, c, us, up>:8 features
+P221: <b, d, w, cd, c, i, us, up>:8 features
+P222: <b, d, w, i, us, up>:6 features
+P223: <b, d, w, cw, i, us, up>:7 features
+P224: <b, d, w, cw, dl, i, us, up>:8 features
+P225: <b, d, w, cw, dl, o, i, us, up>:9 features
+P226: <b, d, w, cw, dl, o, cd, i, us, up>:10 features
+P227: <b, d, w, cd, i, us, up>:7 features
+P228: <b, d, w, cw, cd, i, us, up>:8 features
+P229: <b, d, w, cw, dl, cd, i, us, up>:9 features
+P230: <b, d, w, cw, dl, cd, c, i, us, up>:10 features
+P231: <b, d, w, c, i, us, up>:7 features
+P232: <b, d, w, cw, c, i, us, up>:8 features
+P233: <b, d, w, cw, dl, c, i, us, up>:9 features
+P234: <b, d, w, cw, cd, c, i, us, up>:9 features
+P235: <b, d, w, c, i, ie, us, up>:8 features
+P236: <b, d, w, i, ie, us, up>:7 features
+P237: <b, d, w, cw, i, ie, us, up>:8 features
+P238: <b, d, w, cw, dl, i, ie, us, up>:9 features
+P239: <b, d, w, cw, dl, o, i, ie, us, up>:10 features
+P240: <b, d, w, cw, dl, o, cd, i, ie, us, up>:11 features
+P241: <b, d, w, cd, i, ie, us, up>:8 features
+P242: <b, d, w, cw, cd, i, ie, us, up>:9 features
+P243: <b, d, w, cw, dl, cd, i, ie, us, up>:10 features
+P244: <b, d, w, cw, dl, cd, c, i, ie, us, up>:11 features
+P245: <b, d, w, cw, c, i, ie, us, up>:9 features
+P246: <b, d, w, cw, dl, c, i, ie, us, up>:10 features
+P247: <b, d, w, cw, dl, cd, c, i, ie, us, up, t>:12 features
+P248: <b, d, w, tl, t>:5 features
+P249: <b, d, w, cw, tl, t>:6 features
+P250: <b, d, w, cw, dl, tl, t>:7 features
+P251: <b, d, w, cw, dl, o, tl, t>:8 features
+P252: <b, d, w, cw, dl, o, cd, tl, t>:9 features
+P253: <b, d, w, cd, tl, t>:6 features
+P254: <b, d, w, cw, cd, tl, t>:7 features
+P255: <b, d, w, cw, dl, cd, tl, t>:8 features
+P256: <b, d, w, cw, dl, cd, c, tl, t>:9 features
+P257: <b, d, w, c, tl, t>:6 features
+P258: <b, d, w, cw, c, tl, t>:7 features
+P259: <b, d, w, cw, dl, c, tl, t>:8 features
+P260: <b, d, w, cd, c, tl, t>:7 features
+P261: <b, d, w, cw, cd, c, tl, t>:8 features
+P262: <b, d, w, cd, c, i, tl, t>:8 features
+P263: <b, d, w, i, tl, t>:6 features
+P264: <b, d, w, cw, i, tl, t>:7 features
+P265: <b, d, w, cw, dl, i, tl, t>:8 features
+P266: <b, d, w, cw, dl, o, i, tl, t>:9 features
+P267: <b, d, w, cw, dl, o, cd, i, tl, t>:10 features
+P268: <b, d, w, cd, i, tl, t>:7 features
+P269: <b, d, w, cw, cd, i, tl, t>:8 features
+P270: <b, d, w, cw, dl, cd, i, tl, t>:9 features
+P271: <b, d, w, cw, dl, cd, c, i, tl, t>:10 features
+P272: <b, d, w, c, i, tl, t>:7 features
+P273: <b, d, w, cw, c, i, tl, t>:8 features
+P274: <b, d, w, cw, dl, c, i, tl, t>:9 features
+P275: <b, d, w, cw, cd, c, i, tl, t>:9 features
+P276: <b, d, w, cd, c, i, ie, tl, t>:9 features
+P277: <b, d, w, i, ie, tl, t>:7 features
+P278: <b, d, w, cw, i, ie, tl, t>:8 features
+P279: <b, d, w, cw, dl, i, ie, tl, t>:9 features
+P280: <b, d, w, cw, dl, o, i, ie, tl, t>:10 features
+P281: <b, d, w, cw, dl, o, cd, i, ie, tl, t>:11 features
+P282: <b, d, w, cd, i, ie, tl, t>:8 features
+P283: <b, d, w, cw, cd, i, ie, tl, t>:9 features
+P284: <b, d, w, cw, dl, cd, i, ie, tl, t>:10 features
+P285: <b, d, w, cw, dl, cd, c, i, ie, tl, t>:11 features
+P286: <b, d, w, c, i, ie, tl, t>:8 features
+P287: <b, d, w, cw, c, i, ie, tl, t>:9 features
+P288: <b, d, w, cw, dl, c, i, ie, tl, t>:10 features
+P289: <b, d, w, cw, cd, c, i, ie, tl, t>:10 features
+P290: <b, d, w, cd, c, i, ie, eu, t>:9 features
+P291: <b, d, w, eu, t>:5 features
+P292: <b, d, w, cw, eu, t>:6 features
+P293: <b, d, w, cw, dl, eu, t>:7 features
+P294: <b, d, w, cw, dl, o, eu, t>:8 features
+P295: <b, d, w, cw, dl, o, cd, eu, t>:9 features
+P296: <b, d, w, cd, eu, t>:6 features
+P297: <b, d, w, cw, cd, eu, t>:7 features
+P298: <b, d, w, cw, dl, cd, eu, t>:8 features
+P299: <b, d, w, cw, dl, cd, c, eu, t>:9 features
+P300: <b, d, w, c, eu, t>:6 features
+P301: <b, d, w, cw, c, eu, t>:7 features
+P302: <b, d, w, cw, dl, c, eu, t>:8 features
+P303: <b, d, w, cd, c, eu, t>:7 features
+P304: <b, d, w, cw, cd, c, eu, t>:8 features
+P305: <b, d, w, cd, c, i, eu, t>:8 features
+P306: <b, d, w, i, eu, t>:6 features
+P307: <b, d, w, cw, i, eu, t>:7 features
+P308: <b, d, w, cw, dl, i, eu, t>:8 features
+P309: <b, d, w, cw, dl, o, i, eu, t>:9 features
+P310: <b, d, w, cw, dl, o, cd, i, eu, t>:10 features
+P311: <b, d, w, cd, i, eu, t>:7 features
+P312: <b, d, w, cw, cd, i, eu, t>:8 features
+P313: <b, d, w, cw, dl, cd, i, eu, t>:9 features
+P314: <b, d, w, cw, dl, cd, c, i, eu, t>:10 features
+P315: <b, d, w, c, i, eu, t>:7 features
+P316: <b, d, w, cw, c, i, eu, t>:8 features
+P317: <b, d, w, cw, dl, c, i, eu, t>:9 features
+P318: <b, d, w, cw, cd, c, i, eu, t>:9 features
+P319: <b, d, w, cw, cd, c, i, ie, eu, t>:10 features
+P320: <b, d, w, i, ie, eu, t>:7 features
+P321: <b, d, w, cw, i, ie, eu, t>:8 features
+P322: <b, d, w, cw, dl, i, ie, eu, t>:9 features
+P323: <b, d, w, cw, dl, o, i, ie, eu, t>:10 features
+P324: <b, d, w, cw, dl, o, cd, i, ie, eu, t>:11 features
+P325: <b, d, w, cd, i, ie, eu, t>:8 features
+P326: <b, d, w, cw, cd, i, ie, eu, t>:9 features
+P327: <b, d, w, cw, dl, cd, i, ie, eu, t>:10 features
+P328: <b, d, w, cw, dl, cd, c, i, ie, eu, t>:11 features
+P329: <b, d, w, c, i, ie, eu, t>:8 features
+P330: <b, d, w, cw, c, i, ie, eu, t>:9 features
+P331: <b, d, w, cw, dl, c, i, ie, eu, t>:10 features
+P332: <b, d, w, cd, c, i, ie, us, t>:9 features
+P333: <b, d, w, us, t>:5 features
+P334: <b, d, w, cw, us, t>:6 features
+P335: <b, d, w, cw, dl, us, t>:7 features
+P336: <b, d, w, cw, dl, o, us, t>:8 features
+P337: <b, d, w, cw, dl, o, cd, us, t>:9 features
+P338: <b, d, w, cd, us, t>:6 features
+P339: <b, d, w, cw, cd, us, t>:7 features
+P340: <b, d, w, cw, dl, cd, us, t>:8 features
+P341: <b, d, w, cw, dl, cd, c, us, t>:9 features
+P342: <b, d, w, c, us, t>:6 features
+P343: <b, d, w, cw, c, us, t>:7 features
+P344: <b, d, w, cw, dl, c, us, t>:8 features
+P345: <b, d, w, cd, c, us, t>:7 features
+P346: <b, d, w, cw, cd, c, us, t>:8 features
+P347: <b, d, w, cd, c, i, us, t>:8 features
+P348: <b, d, w, i, us, t>:6 features
+P349: <b, d, w, cw, i, us, t>:7 features
+P350: <b, d, w, cw, dl, i, us, t>:8 features
+P351: <b, d, w, cw, dl, o, i, us, t>:9 features
+P352: <b, d, w, cw, dl, o, cd, i, us, t>:10 features
+P353: <b, d, w, cd, i, us, t>:7 features
+P354: <b, d, w, cw, cd, i, us, t>:8 features
+P355: <b, d, w, cw, dl, cd, i, us, t>:9 features
+P356: <b, d, w, cw, dl, cd, c, i, us, t>:10 features
+P357: <b, d, w, c, i, us, t>:7 features
+P358: <b, d, w, cw, c, i, us, t>:8 features
+P359: <b, d, w, cw, dl, c, i, us, t>:9 features
+P360: <b, d, w, cw, cd, c, i, us, t>:9 features
+P361: <b, d, w, cw, cd, c, i, ie, us, t>:10 features
+P362: <b, d, w, i, ie, us, t>:7 features
+P363: <b, d, w, cw, i, ie, us, t>:8 features
+P364: <b, d, w, cw, dl, i, ie, us, t>:9 features
+P365: <b, d, w, cw, dl, o, i, ie, us, t>:10 features
+P366: <b, d, w, cw, dl, o, cd, i, ie, us, t>:11 features
+P367: <b, d, w, cd, i, ie, us, t>:8 features
+P368: <b, d, w, cw, cd, i, ie, us, t>:9 features
+P369: <b, d, w, cw, dl, cd, i, ie, us, t>:10 features
+P370: <b, d, w, cw, dl, cd, c, i, ie, us, t>:11 features
+P371: <b, d, w, c, i, ie, us, t>:8 features
+P372: <b, d, w, cw, c, i, ie, us, t>:9 features
+P373: <b, d, w, cw, dl, c, i, ie, us, t>:10 features
+P374: <b, d, w, cd, c, i, ie, us, up, t>:10 features
+P375: <b, d, w, tl, up, t>:6 features
+P376: <b, d, w, cw, tl, up, t>:7 features
+P377: <b, d, w, cw, dl, tl, up, t>:8 features
+P378: <b, d, w, cw, dl, o, tl, up, t>:9 features
+P379: <b, d, w, cw, dl, o, cd, tl, up, t>:10 features
+P380: <b, d, w, cd, tl, up, t>:7 features
+P381: <b, d, w, cw, cd, tl, up, t>:8 features
+P382: <b, d, w, cw, dl, cd, tl, up, t>:9 features
+P383: <b, d, w, cw, dl, cd, c, tl, up, t>:10 features
+P384: <b, d, w, c, tl, up, t>:7 features
+P385: <b, d, w, cw, c, tl, up, t>:8 features
+P386: <b, d, w, cw, dl, c, tl, up, t>:9 features
+P387: <b, d, w, cd, c, tl, up, t>:8 features
+P388: <b, d, w, cw, cd, c, tl, up, t>:9 features
+P389: <b, d, w, cd, c, i, tl, up, t>:9 features
+P390: <b, d, w, i, tl, up, t>:7 features
+P391: <b, d, w, cw, i, tl, up, t>:8 features
+P392: <b, d, w, cw, dl, i, tl, up, t>:9 features
+P393: <b, d, w, cw, dl, o, i, tl, up, t>:10 features
+P394: <b, d, w, cw, dl, o, cd, i, tl, up, t>:11 features
+P395: <b, d, w, cd, i, tl, up, t>:8 features
+P396: <b, d, w, cw, cd, i, tl, up, t>:9 features
+P397: <b, d, w, cw, dl, cd, i, tl, up, t>:10 features
+P398: <b, d, w, cw, dl, cd, c, i, tl, up, t>:11 features
+P399: <b, d, w, c, i, tl, up, t>:8 features
+P400: <b, d, w, cw, c, i, tl, up, t>:9 features
+P401: <b, d, w, cw, dl, c, i, tl, up, t>:10 features
+P402: <b, d, w, cw, cd, c, i, tl, up, t>:10 features
+P403: <b, d, w, cd, c, i, ie, tl, up, t>:10 features
+P404: <b, d, w, i, ie, tl, up, t>:8 features
+P405: <b, d, w, cw, i, ie, tl, up, t>:9 features
+P406: <b, d, w, cw, dl, i, ie, tl, up, t>:10 features
+P407: <b, d, w, cw, dl, o, i, ie, tl, up, t>:11 features
+P408: <b, d, w, cw, dl, o, cd, i, ie, tl, up, t>:12 features
+P409: <b, d, w, cd, i, ie, tl, up, t>:9 features
+P410: <b, d, w, cw, cd, i, ie, tl, up, t>:10 features
+P411: <b, d, w, cw, dl, cd, i, ie, tl, up, t>:11 features
+P412: <b, d, w, cw, dl, cd, c, i, ie, tl, up, t>:12 features
+P413: <b, d, w, c, i, ie, tl, up, t>:9 features
+P414: <b, d, w, cw, c, i, ie, tl, up, t>:10 features
+P415: <b, d, w, cw, dl, c, i, ie, tl, up, t>:11 features
+P416: <b, d, w, cw, cd, c, i, ie, tl, up, t>:11 features
+P417: <b, d, w, cd, c, i, ie, eu, up, t>:10 features
+P418: <b, d, w, eu, up, t>:6 features
+P419: <b, d, w, cw, eu, up, t>:7 features
+P420: <b, d, w, cw, dl, eu, up, t>:8 features
+P421: <b, d, w, cw, dl, o, eu, up, t>:9 features
+P422: <b, d, w, cw, dl, o, cd, eu, up, t>:10 features
+P423: <b, d, w, cd, eu, up, t>:7 features
+P424: <b, d, w, cw, cd, eu, up, t>:8 features
+P425: <b, d, w, cw, dl, cd, eu, up, t>:9 features
+P426: <b, d, w, cw, dl, cd, c, eu, up, t>:10 features
+P427: <b, d, w, c, eu, up, t>:7 features
+P428: <b, d, w, cw, c, eu, up, t>:8 features
+P429: <b, d, w, cw, dl, c, eu, up, t>:9 features
+P430: <b, d, w, cd, c, eu, up, t>:8 features
+P431: <b, d, w, cw, cd, c, eu, up, t>:9 features
+P432: <b, d, w, cd, c, i, eu, up, t>:9 features
+P433: <b, d, w, i, eu, up, t>:7 features
+P434: <b, d, w, cw, i, eu, up, t>:8 features
+P435: <b, d, w, cw, dl, i, eu, up, t>:9 features
+P436: <b, d, w, cw, dl, o, i, eu, up, t>:10 features
+P437: <b, d, w, cw, dl, o, cd, i, eu, up, t>:11 features
+P438: <b, d, w, cd, i, eu, up, t>:8 features
+P439: <b, d, w, cw, cd, i, eu, up, t>:9 features
+P440: <b, d, w, cw, dl, cd, i, eu, up, t>:10 features
+P441: <b, d, w, cw, dl, cd, c, i, eu, up, t>:11 features
+P442: <b, d, w, c, i, eu, up, t>:8 features
+P443: <b, d, w, cw, c, i, eu, up, t>:9 features
+P444: <b, d, w, cw, dl, c, i, eu, up, t>:10 features
+P445: <b, d, w, cw, cd, c, i, eu, up, t>:10 features
+P446: <b, d, w, cw, cd, c, i, ie, eu, up, t>:11 features
+P447: <b, d, w, i, ie, eu, up, t>:8 features
+P448: <b, d, w, cw, i, ie, eu, up, t>:9 features
+P449: <b, d, w, cw, dl, i, ie, eu, up, t>:10 features
+P450: <b, d, w, cw, dl, o, i, ie, eu, up, t>:11 features
+P451: <b, d, w, cw, dl, o, cd, i, ie, eu, up, t>:12 features
+P452: <b, d, w, cd, i, ie, eu, up, t>:9 features
+P453: <b, d, w, cw, cd, i, ie, eu, up, t>:10 features
+P454: <b, d, w, cw, dl, cd, i, ie, eu, up, t>:11 features
+P455: <b, d, w, cw, dl, cd, c, i, ie, eu, up, t>:12 features
+P456: <b, d, w, c, i, ie, eu, up, t>:9 features
+P457: <b, d, w, cw, c, i, ie, eu, up, t>:10 features
+P458: <b, d, w, cw, dl, c, i, ie, eu, up, t>:11 features
+P459: <b, d, w, cw, cd, c, i, ie, us, up, t>:11 features
+P460: <b, d, w, us, up, t>:6 features
+P461: <b, d, w, cw, us, up, t>:7 features
+P462: <b, d, w, cw, dl, us, up, t>:8 features
+P463: <b, d, w, cw, dl, o, us, up, t>:9 features
+P464: <b, d, w, cw, dl, o, cd, us, up, t>:10 features
+P465: <b, d, w, cd, us, up, t>:7 features
+P466: <b, d, w, cw, cd, us, up, t>:8 features
+P467: <b, d, w, cw, dl, cd, us, up, t>:9 features
+P468: <b, d, w, cw, dl, cd, c, us, up, t>:10 features
+P469: <b, d, w, c, us, up, t>:7 features
+P470: <b, d, w, cw, c, us, up, t>:8 features
+P471: <b, d, w, cw, dl, c, us, up, t>:9 features
+P472: <b, d, w, cd, c, us, up, t>:8 features
+P473: <b, d, w, cw, cd, c, us, up, t>:9 features
+P474: <b, d, w, cd, c, i, us, up, t>:9 features
+P475: <b, d, w, i, us, up, t>:7 features
+P476: <b, d, w, cw, i, us, up, t>:8 features
+P477: <b, d, w, cw, dl, i, us, up, t>:9 features
+P478: <b, d, w, cw, dl, o, i, us, up, t>:10 features
+P479: <b, d, w, cw, dl, o, cd, i, us, up, t>:11 features
+P480: <b, d, w, cd, i, us, up, t>:8 features
+P481: <b, d, w, cw, cd, i, us, up, t>:9 features
+P482: <b, d, w, cw, dl, cd, i, us, up, t>:10 features
+P483: <b, d, w, cw, dl, cd, c, i, us, up, t>:11 features
+P484: <b, d, w, c, i, us, up, t>:8 features
+P485: <b, d, w, cw, c, i, us, up, t>:9 features
+P486: <b, d, w, cw, dl, c, i, us, up, t>:10 features
+P487: <b, d, w, cw, cd, c, i, us, up, t>:10 features
+P488: <b, d, w, c, i, ie, us, up, t>:9 features
+P489: <b, d, w, i, ie, us, up, t>:8 features
+P490: <b, d, w, cw, i, ie, us, up, t>:9 features
+P491: <b, d, w, cw, dl, i, ie, us, up, t>:10 features
+P492: <b, d, w, cw, dl, o, i, ie, us, up, t>:11 features
+P493: <b, d, w, cw, dl, o, cd, i, ie, us, up, t>:12 features
+P494: <b, d, w, cd, i, ie, us, up, t>:9 features
+P495: <b, d, w, cw, cd, i, ie, us, up, t>:10 features
+P496: <b, d, w, cw, dl, cd, i, ie, us, up, t>:11 features
+P497: <b, d, w, cw, dl, c, i, ie, us, up, t>:11 features
+P498: <b, d, w, cw, c, i, ie, us, up, t>:10 features
