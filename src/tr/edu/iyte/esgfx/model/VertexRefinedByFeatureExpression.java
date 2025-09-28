@@ -1,12 +1,12 @@
 package tr.edu.iyte.esgfx.model;
 
 import tr.edu.iyte.esg.model.Event;
-import tr.edu.iyte.esg.model.VertexSimple;
+import tr.edu.iyte.esg.model.Vertex;
 import tr.edu.iyte.esgfx.model.featureexpression.FeatureExpression;
 
-public class VertexRefinedByFeatureExpression extends VertexSimple {
+public class VertexRefinedByFeatureExpression extends Vertex {
 
-	private FeatureExpression featureExpression;
+	protected FeatureExpression featureExpression;
 
 	public VertexRefinedByFeatureExpression(int ID, Event event) {
 		super(ID, event);
@@ -20,6 +20,21 @@ public class VertexRefinedByFeatureExpression extends VertexSimple {
 
 	public FeatureExpression getFeatureExpression() {
 		return featureExpression;
+	}
+	
+	@Override
+	public String getShape() {
+		return "\", shape = ellipse";
+	}
+
+	@Override
+	public String getDotLanguageFormat() {
+		return super.toString();
+	}
+
+	@Override
+	public String getColor() {
+		return color;
 	}
 
 	@Override
@@ -47,5 +62,7 @@ public class VertexRefinedByFeatureExpression extends VertexSimple {
 		}
 
 	}
+
+
 
 }
