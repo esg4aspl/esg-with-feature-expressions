@@ -14,43 +14,43 @@ import tr.edu.iyte.esg.model.Vertex;
 public class ESGFx extends ESG {
 
 	private Map<Vertex, List<Vertex>> adjacencyMap;
-
-	public ESGFx(int ID, String name) {
-		super(ID, name);
-		adjacencyMap = new LinkedHashMap<>();
-
-	}
-
-	public ESGFx(ESG ESG) {
-		super(ESG);
-		adjacencyMap = new LinkedHashMap<>();
-		Set<Vertex> keySet = ((ESGFx) ESG).getAdjacencyMap().keySet();
-		for (Vertex key : keySet) {
-			List<Vertex> targetList = new ArrayList<Vertex>();
-			for (Vertex value : ((ESGFx) ESG).getAdjacencyMap().get(key))
-				targetList.add(value);
-			adjacencyMap.put(key, targetList);
+	
+		public ESGFx(int ID, String name) {
+			super(ID, name);
+			adjacencyMap = new LinkedHashMap<>();
+	
 		}
-	}
-
-	public Map<Vertex, List<Vertex>> getAdjacencyMap() {
-		return adjacencyMap;
-	}
-
-	public List<Vertex> getAdjacencyList(Vertex vertex) {
-
-		List<Vertex> adjacencyList = new ArrayList<Vertex>();
-		Set<Vertex> keySet = getAdjacencyMap().keySet();
-		for (Vertex key : keySet) {
-			if (key.toString().equals(vertex.toString())) {
-				adjacencyList = getAdjacencyMap().get(key);
+	
+		public ESGFx(ESG ESG) {
+			super(ESG);
+			adjacencyMap = new LinkedHashMap<>();
+			Set<Vertex> keySet = ((ESGFx) ESG).getAdjacencyMap().keySet();
+			for (Vertex key : keySet) {
+				List<Vertex> targetList = new ArrayList<Vertex>();
+				for (Vertex value : ((ESGFx) ESG).getAdjacencyMap().get(key))
+					targetList.add(value);
+				adjacencyMap.put(key, targetList);
 			}
 		}
-		return adjacencyList;
-	}
-
-	public void setID(int ID) {
-		this.ID = ID;
+	
+		public Map<Vertex, List<Vertex>> getAdjacencyMap() {
+			return adjacencyMap;
+		}
+	
+		public List<Vertex> getAdjacencyList(Vertex vertex) {
+	
+			List<Vertex> adjacencyList = new ArrayList<Vertex>();
+			Set<Vertex> keySet = getAdjacencyMap().keySet();
+			for (Vertex key : keySet) {
+				if (key.toString().equals(vertex.toString())) {
+					adjacencyList = getAdjacencyMap().get(key);
+				}
+			}
+			return adjacencyList;
+		}
+	
+		public void setID(int ID) {
+			this.ID = ID;
 	}
 
 	@Override
