@@ -129,8 +129,8 @@ public class TestSequenceRecorder extends CaseStudyUtilities {
 				ESG transformedProductESGFx = transformedESGFxGenerator.generateTransformedESGFx(coverageLength,
 						productESGFx);
 
-				ESGToDOTFileConverter.buildDOTFileFromESG(transformedProductESGFx,
-						DOTFolderPath + productName + "_" + coverageType + ".dot");
+//				ESGToDOTFileConverter.buildDOTFileFromESG(transformedProductESGFx,
+//						DOTFolderPath + productName + "_" + coverageType + ".dot");
 
 				ESG stronglyConnectedBalancedESGFx = StronglyConnectedBalancedESGFxGeneration
 						.getStronglyConnectedBalancedESGFxGeneration(transformedProductESGFx);
