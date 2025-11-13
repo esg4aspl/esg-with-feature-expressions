@@ -155,19 +155,19 @@ public class MutantGeneratorEventInserter extends MutantGenerator {
 					else
 						numberOfDetectedValidPerProductL4++;
 				}
-				if ((!d2 || !d3 || !d4) && !(mutationElementSet.contains(mutationElement))) {
-					mutationElementSet.add(mutationElement);
-					String colL2, colL3, colL4;
-
-					colL2 = d2 ? "TRUE" : "FALSE";
-					colL3 = d3 ? "TRUE" : "FALSE";
-					colL4 = d4 ? "TRUE" : "FALSE";
-
-					// for each product's mutants
-					FaultDetectionResultRecorder.writeDetailedFaultDetectionResultL234(
-							detailedFaultDetectionResults + "_EventInserter", productID, productConfiguration.toString(),
-							mutationOperator.getName(), mutationElement, mutantID, isMutantValid, colL2, colL3, colL4);
-				}
+//				if ((!d2 || !d3 || !d4) && !(mutationElementSet.contains(mutationElement))) {
+//					mutationElementSet.add(mutationElement);
+//					String colL2, colL3, colL4;
+//
+//					colL2 = d2 ? "TRUE" : "FALSE";
+//					colL3 = d3 ? "TRUE" : "FALSE";
+//					colL4 = d4 ? "TRUE" : "FALSE";
+//
+//					// for each product's mutants
+//					FaultDetectionResultRecorder.writeDetailedFaultDetectionResultL234(
+//							detailedFaultDetectionResults + "_EventInserter", productID, productConfiguration.toString(),
+//							mutationOperator.getName(), mutationElement, mutantID, isMutantValid, colL2, colL3, colL4);
+//				}
 			} // endfor
 
 			
@@ -179,33 +179,44 @@ public class MutantGeneratorEventInserter extends MutantGenerator {
 			numberOfDetectedMutantsInSPL_L3 += numberOfDetectedPerProductL3;
 			numberOfDetectedMutantsInSPL_L4 += numberOfDetectedPerProductL4;
 
-			double percentagePerProductL2 = percentageOfFaultDetection(numberOfAllMutantsCurrentProduct,
-					numberOfDetectedPerProductL2);
-			double percentagePerProductL3 = percentageOfFaultDetection(numberOfAllMutantsCurrentProduct,
-					numberOfDetectedPerProductL3);
-			double percentagePerProductL4 = percentageOfFaultDetection(numberOfAllMutantsCurrentProduct,
-					numberOfDetectedPerProductL4);
-
-			double max = 100.00;
-
-			if ((percentagePerProductL2 < max) || (percentagePerProductL3 < max) || (percentagePerProductL4 < max)) {
-				// Per-product summary with per-L counts + per-L percentages for each operator
-				FaultDetectionResultRecorder.writeFaultDetectionResultsForPerProductSPL(
-						faultDetectionResultsForPerProductInSPL, mutationOperator.getName(), productID,
-						validMutants.size(), invalidMutants.size(), numberOfDetectedValidPerProductL2,
-						numberOfDetectedInValidPerProductL2, percentagePerProductL2, numberOfDetectedValidPerProductL3,
-						numberOfDetectedInValidPerProductL3, percentagePerProductL3, numberOfDetectedValidPerProductL4,
-						numberOfDetectedInValidPerProductL4, percentagePerProductL4);
-			}
+//			double percentagePerProductL2 = percentageOfFaultDetection(numberOfAllMutantsCurrentProduct,
+//					numberOfDetectedPerProductL2);
+//			double percentagePerProductL3 = percentageOfFaultDetection(numberOfAllMutantsCurrentProduct,
+//					numberOfDetectedPerProductL3);
+//			double percentagePerProductL4 = percentageOfFaultDetection(numberOfAllMutantsCurrentProduct,
+//					numberOfDetectedPerProductL4);
+//
+//			double max = 100.00;
+//
+//			if ((percentagePerProductL2 < max) || (percentagePerProductL3 < max) || (percentagePerProductL4 < max)) {
+//				// Per-product summary with per-L counts + per-L percentages for each operator
+//				FaultDetectionResultRecorder.writeFaultDetectionResultsForPerProductSPL(
+//						faultDetectionResultsForPerProductInSPL, mutationOperator.getName(), productID,
+//						validMutants.size(), invalidMutants.size(), numberOfDetectedValidPerProductL2,
+//						numberOfDetectedInValidPerProductL2, percentagePerProductL2, numberOfDetectedValidPerProductL3,
+//						numberOfDetectedInValidPerProductL3, percentagePerProductL3, numberOfDetectedValidPerProductL4,
+//						numberOfDetectedInValidPerProductL4, percentagePerProductL4);
+//			}
 		} // endwhile
 		
 		double percentageInSPLL2 = percentageOfFaultDetection(numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L2);
 		double percentageInSPLL3 = percentageOfFaultDetection(numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L3);
 		double percentageInSPLL4 = percentageOfFaultDetection(numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L4);
 
+		double totalSecondsL2 = totalExecTimeNanosL2 / 1_000_000_000.0;
+		double totalSecondsL3 = totalExecTimeNanosL3 / 1_000_000_000.0;
+		double totalSecondsL4 = totalExecTimeNanosL4 / 1_000_000_000.0;
+		
+		
+		double killedPerSecondL2 = numberOfDetectedMutantsInSPL_L2 / totalSecondsL2;
+		double killedPerSecondL3 = numberOfDetectedMutantsInSPL_L3 / totalSecondsL3;
+		double killedPerSecondL4 = numberOfDetectedMutantsInSPL_L4 / totalSecondsL4;
+		
+		
+
 		FaultDetectionResultRecorder.writeFaultDetectionResultsForSPL(SPLSummary_FaultDetection, SPLName,
-				"Event Inserter", numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L2, percentageInSPLL2,
-				numberOfDetectedMutantsInSPL_L3, percentageInSPLL3, numberOfDetectedMutantsInSPL_L4, percentageInSPLL4);
+				"Event Inserter", numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L2, percentageInSPLL2,killedPerSecondL2,
+				numberOfDetectedMutantsInSPL_L3, percentageInSPLL3, killedPerSecondL3, numberOfDetectedMutantsInSPL_L4, percentageInSPLL4,killedPerSecondL4);
 
 	}
 }

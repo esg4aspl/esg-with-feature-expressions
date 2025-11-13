@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<TestCase>
+    <Step>
+        <EventId>e2</EventId>
+        <ReachingStep>true</ReachingStep>
+    </Step>
+    <Step>
+        <EventId>e4</EventId>
+        <ReachingStep>true</ReachingStep>
+    </Step>
+    <Step>
+        <EventId>e5</EventId>
+        <ReachingStep>true</ReachingStep>
+    </Step>
+    <Step>
+        <EventId>e3</EventId>
+        <ReachingStep>true</ReachingStep>
+    </Step>
+    <Step>
+        <EventId>e6</EventId>
+        <ReachingStep>false</ReachingStep>
+    </Step>
+    <Step>
+        <EventId>e7</EventId>
+        <ReachingStep>false</ReachingStep>
+    </Step>
+    <Step>
+        <EventId>e8</EventId>
+        <ReachingStep>false</ReachingStep>
+    </Step>
+</TestCase>

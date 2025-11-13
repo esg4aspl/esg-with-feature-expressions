@@ -18,6 +18,10 @@ import tr.edu.iyte.esgfx.testgeneration.eventtriplecoverage.TransformedESGFxGene
 import tr.edu.iyte.esgfx.testgeneration.util.StronglyConnectedBalancedESGFxGeneration;
 
 public class MutantGenerator extends CaseStudyUtilities {
+	
+	protected long totalExecTimeNanosL2 = 0;
+	protected long totalExecTimeNanosL3 = 0;
+	protected long totalExecTimeNanosL4 = 0;
 
 	protected Set<String> mutationElementSet = new LinkedHashSet<String>();
 

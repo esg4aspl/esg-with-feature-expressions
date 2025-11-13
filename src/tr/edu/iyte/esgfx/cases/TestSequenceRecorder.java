@@ -154,10 +154,10 @@ public class TestSequenceRecorder extends CaseStudyUtilities {
 					}
 				}
 				
-				TestSuiteFileWriter.writeEventSequenceSetAndCoverageAnalysisToFilePerProduct(testSuiteFilePath,
-						productConfiguration.toString(),perProduct_NumberOfVertices, perProduct_NumberOfEdges,
-						perProduct_NumberOfSequences, perProduct_NumberOfEvents, newCESsOfESG, coverageLength,
-						coverageType, coverage);
+//				TestSuiteFileWriter.writeEventSequenceSetAndCoverageAnalysisToFilePerProduct(testSuiteFilePath,
+//						productConfiguration.toString(),perProduct_NumberOfVertices, perProduct_NumberOfEdges,
+//						perProduct_NumberOfSequences, perProduct_NumberOfEvents, newCESsOfESG, coverageLength,
+//						coverageType, coverage);
 			}
 		}
 
