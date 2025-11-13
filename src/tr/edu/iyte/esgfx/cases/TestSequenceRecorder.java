@@ -88,6 +88,19 @@ public class TestSequenceRecorder extends CaseStudyUtilities {
 				productID--;
 				continue;
 			}
+			
+			/* -----------------  ŞERİT (SHARD) KAPISI  -----------------
+			 * N_SHARDS : toplam şerit sayısı (örn. 2, 4, 8)
+			 * SHARD    : bu sürecin şerit indeksi [0 .. N_SHARDS-1]
+			 * productID 1'den başladığı için (productID-1) ile mod alıyoruz.
+			 * Şart sağlanmıyorsa bu ürünü bu süreç atlar.
+			 */
+			int N = Integer.parseInt(System.getenv().getOrDefault("N_SHARDS", "1"));
+			int S = Integer.parseInt(System.getenv().getOrDefault("SHARD", "0"));
+			if (((productID - 1) % N) != S) {
+			    continue;
+			}
+			/* --------------------------------------------------------- */
 
 			String ESGFxName = productName + Integer.toString(productID);
 
@@ -100,6 +113,7 @@ public class TestSequenceRecorder extends CaseStudyUtilities {
 			totalNumberOfVertices += perProduct_NumberOfVertices;
 			totalNumberOfEdges += perProduct_NumberOfEdges;
 
+//			System.out.println(productID);
 
 
 			for (coverageLength = 2; coverageLength <= 4; coverageLength++) {
@@ -154,17 +168,26 @@ public class TestSequenceRecorder extends CaseStudyUtilities {
 					}
 				}
 				
+//				tr.edu.iyte.esg.eventsequence.EventSequenceUtilities.esgEventSequenceSetPrinter(newCESsOfESG);
+				
 //				TestSuiteFileWriter.writeEventSequenceSetAndCoverageAnalysisToFilePerProduct(testSuiteFilePath,
 //						productConfiguration.toString(),perProduct_NumberOfVertices, perProduct_NumberOfEdges,
 //						perProduct_NumberOfSequences, perProduct_NumberOfEvents, newCESsOfESG, coverageLength,
 //						coverageType, coverage);
 			}
 		}
+		
+//		System.out.println("----------------------------------------------");
+		
+		int S = Integer.parseInt(System.getenv().getOrDefault("SHARD", "0"));
+		if (S == 0) {
+
 
 		TestSuiteFileWriter.writeSPLModelTestSuiteSummary(SPLSummary_TestSuite, SPLName, productID, ESGFx_numberOfVertices,
 				ESGFx_numberOfEdges, totalNumberOfVertices, totalNumberOfEdges, totalNumberOfSequences_L2,
 				totalNumberOfEvents_L2, totalNumberOfSequences_L3, totalNumberOfEvents_L3, totalNumberOfSequences_L4,
 				totalNumberOfEvents_L4);
+		}
 
 //		System.out.println("Number of vertices: " + totalNumberOfVertices);
 //		System.out.println("Number of edges: " + totalNumberOfEdges);
