@@ -1,1 +1,14 @@
-/target/
+target/
+.classpath
+.project
+.settings/
+.idea/
+*.iml
+.vscode/
+.DS_Store
+*.log
+logs/
+dist/
+cases/
+guitar-out/
+**/*.EFG
