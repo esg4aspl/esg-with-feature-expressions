@@ -155,16 +155,19 @@ public class MutantGeneratorEdgeOmitter extends MutantGenerator {
 					else
 						numberOfDetectedValidPerProductL4++;
 				}
-				String colL2, colL3, colL4;
+				if ((!d2 || !d3 || !d4) && !(mutationElementSet.contains(mutationElement))) {
+					mutationElementSet.add(mutationElement);
+					String colL2, colL3, colL4;
 
-				colL2 = d2 ? "TRUE" : "FALSE";
-				colL3 = d3 ? "TRUE" : "FALSE";
-				colL4 = d4 ? "TRUE" : "FALSE";
+					colL2 = d2 ? "TRUE" : "FALSE";
+					colL3 = d3 ? "TRUE" : "FALSE";
+					colL4 = d4 ? "TRUE" : "FALSE";
 
-				// for each product's mutants
-				FaultDetectionResultRecorder.writeDetailedFaultDetectionResultL234(
-						detailedFaultDetectionResults + "_EdgeOmitter", productID, productConfiguration.toString(),
-						mutationOperator.getName(), mutationElement, mutantID, isMutantValid, colL2, colL3, colL4);
+					// for each product's mutants
+					FaultDetectionResultRecorder.writeDetailedFaultDetectionResultL234(
+							detailedFaultDetectionResults + "_EdgeOmitter", productID, productConfiguration.toString(),
+							mutationOperator.getName(), mutationElement, mutantID, isMutantValid, colL2, colL3, colL4);
+				}
 			} // endfor
 
 			int numberOfDetectedPerProductL2 = numberOfDetectedValidPerProductL2 + numberOfDetectedInValidPerProductL2;
@@ -182,13 +185,17 @@ public class MutantGeneratorEdgeOmitter extends MutantGenerator {
 			double percentagePerProductL4 = percentageOfFaultDetection(numberOfAllMutantsCurrentProduct,
 					numberOfDetectedPerProductL4);
 
-			// Per-product summary with per-L counts + per-L percentages for each operator
-			FaultDetectionResultRecorder.writeFaultDetectionResultsForPerProductSPL(
-					faultDetectionResultsForPerProductInSPL, mutationOperator.getName(), productID, validMutants.size(),
-					invalidMutants.size(), numberOfDetectedValidPerProductL2, numberOfDetectedInValidPerProductL2,
-					percentagePerProductL2, numberOfDetectedValidPerProductL3, numberOfDetectedInValidPerProductL3,
-					percentagePerProductL3, numberOfDetectedValidPerProductL4, numberOfDetectedInValidPerProductL4,
-					percentagePerProductL4);
+			double max = 100.00;
+
+			if ((percentagePerProductL2 < max) || (percentagePerProductL3 < max) || (percentagePerProductL4 < max)) {
+				// Per-product summary with per-L counts + per-L percentages for each operator
+				FaultDetectionResultRecorder.writeFaultDetectionResultsForPerProductSPL(
+						faultDetectionResultsForPerProductInSPL, mutationOperator.getName(), productID,
+						validMutants.size(), invalidMutants.size(), numberOfDetectedValidPerProductL2,
+						numberOfDetectedInValidPerProductL2, percentagePerProductL2, numberOfDetectedValidPerProductL3,
+						numberOfDetectedInValidPerProductL3, percentagePerProductL3, numberOfDetectedValidPerProductL4,
+						numberOfDetectedInValidPerProductL4, percentagePerProductL4);
+			}
 		} // endwhile
 
 		double percentageInSPLL2 = percentageOfFaultDetection(numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L2);
