@@ -1,0 +1,22 @@
+digraph G {
+rankdir = LR
+label = "P07stt";
+esg10_vertex0 -> esg10_vertex1[ color = null];
+esg10_vertex0 -> esg10_vertex2[ color = null];
+esg10_vertex1 -> esg10_vertex3[ color = null];
+esg10_vertex2 -> esg10_vertex4[ color = null];
+esg10_vertex3 -> esg10_vertex5[ color = null];
+esg10_vertex5 -> esg10_vertex6[ color = null];
+esg10_vertex4 -> esg10_vertex7[ color = null];
+esg10_vertex6 -> esg10_vertex8[ color = null];
+esg10_vertex8 -> esg10_vertex7[ color = null];
+esg10_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg10_vertex1 [label = "pay_2:change_6:tea_7/!f AND t", shape = ellipse, color=black]
+esg10_vertex2 [label = "pay_2:change_6:cancel_3/!f AND c", shape = ellipse, color=black]
+esg10_vertex3 [label = "change_6:tea_7:serveTea_5/!f AND t", shape = ellipse, color=black]
+esg10_vertex4 [label = "change_6:cancel_3:return_4/!f AND c", shape = ellipse, color=black]
+esg10_vertex5 [label = "tea_7:serveTea_5:open_8/t AND !f", shape = ellipse, color=black]
+esg10_vertex6 [label = "serveTea_5:open_8:take_9/t AND !f", shape = ellipse, color=black]
+esg10_vertex7 [label = "]_1/", shape = ellipse, color=black]
+esg10_vertex8 [label = "open_8:take_9:close_10/!f", shape = ellipse, color=black]
+}

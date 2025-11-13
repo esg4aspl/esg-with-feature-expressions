@@ -1,0 +1,62 @@
+digraph G {
+rankdir = LR
+label = "P0015411541s";
+esg1542_vertex0 -> esg1542_vertex1[ color = null];
+esg1542_vertex2 -> esg1542_vertex3[ color = null];
+esg1542_vertex1 -> esg1542_vertex2[ color = null];
+esg1542_vertex3 -> esg1542_vertex4[ color = null];
+esg1542_vertex6 -> esg1542_vertex7[ color = null];
+esg1542_vertex7 -> esg1542_vertex8[ color = null];
+esg1542_vertex6 -> esg1542_vertex8[ color = null];
+esg1542_vertex8 -> esg1542_vertex7[ color = null];
+esg1542_vertex8 -> esg1542_vertex9[ color = null];
+esg1542_vertex7 -> esg1542_vertex9[ color = null];
+esg1542_vertex7 -> esg1542_vertex7[ color = null];
+esg1542_vertex8 -> esg1542_vertex8[ color = null];
+esg1542_vertex3 -> esg1542_vertex6[ color = null];
+esg1542_vertex9 -> esg1542_vertex5[ color = null];
+esg1542_vertex11 -> esg1542_vertex5[ color = null];
+esg1542_vertex0 -> esg1542_vertex10[ color = null];
+esg1542_vertex1 -> esg1542_vertex12[ color = null];
+esg1542_vertex13 -> esg1542_vertex5[ color = null];
+esg1542_vertex4 -> esg1542_vertex14[ color = null];
+esg1542_vertex14 -> esg1542_vertex15[ color = null];
+esg1542_vertex15 -> esg1542_vertex5[ color = null];
+esg1542_vertex3 -> esg1542_vertex16[ color = null];
+esg1542_vertex16 -> esg1542_vertex4[ color = null];
+esg1542_vertex18 -> esg1542_vertex5[ color = null];
+esg1542_vertex17 -> esg1542_vertex18[ color = null];
+esg1542_vertex19 -> esg1542_vertex17[ color = null];
+esg1542_vertex1 -> esg1542_vertex20[ color = null];
+esg1542_vertex20 -> esg1542_vertex19[ color = null];
+esg1542_vertex20 -> esg1542_vertex4[ color = null];
+esg1542_vertex21 -> esg1542_vertex21[ color = null];
+esg1542_vertex12 -> esg1542_vertex22[ color = null];
+esg1542_vertex22 -> esg1542_vertex13[ color = null];
+esg1542_vertex10 -> esg1542_vertex21[ color = null];
+esg1542_vertex21 -> esg1542_vertex11[ color = null];
+esg1542_vertex19 -> esg1542_vertex4[ color = null];
+esg1542_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg1542_vertex1 [label = "log in_1/sas", shape = ellipse, color=black]
+esg1542_vertex2 [label = "access as a teacher_2/ta", shape = ellipse, color=black]
+esg1542_vertex3 [label = "turn editing on_3/ta", shape = ellipse, color=black]
+esg1542_vertex4 [label = "open class records_4/sas", shape = ellipse, color=black]
+esg1542_vertex6 [label = "add new class_6/anc", shape = ellipse, color=black]
+esg1542_vertex7 [label = "enter the name of the class_7/anc", shape = ellipse, color=black]
+esg1542_vertex8 [label = "enter the class detail_8/anc", shape = ellipse, color=black]
+esg1542_vertex9 [label = "submit the class_9/anc", shape = ellipse, color=black]
+esg1542_vertex5 [label = "]_5/", shape = ellipse, color=black]
+esg1542_vertex11 [label = "confirm your identity_11/sas", shape = ellipse, color=black]
+esg1542_vertex10 [label = "submit attendance_10/sas", shape = ellipse, color=black]
+esg1542_vertex12 [label = "open notification settings_12/sas", shape = ellipse, color=black]
+esg1542_vertex13 [label = "confirm notification settings_13/sas", shape = ellipse, color=black]
+esg1542_vertex14 [label = "select the existing schedule_14/vs", shape = ellipse, color=black]
+esg1542_vertex15 [label = "view schedule_15/vs", shape = ellipse, color=black]
+esg1542_vertex16 [label = "open student attendance records_16/ta", shape = ellipse, color=black]
+esg1542_vertex18 [label = "view record_18/vr", shape = ellipse, color=black]
+esg1542_vertex17 [label = "select the existing record_17/vr", shape = ellipse, color=black]
+esg1542_vertex19 [label = "open my attendance records_19/sa", shape = ellipse, color=black]
+esg1542_vertex20 [label = "access as a student_20/sa", shape = ellipse, color=black]
+esg1542_vertex21 [label = "put your finger to the fingerprint scanner_21/f", shape = ellipse, color=black]
+esg1542_vertex22 [label = "receive notifications as SMS_22/s", shape = ellipse, color=black]
+}

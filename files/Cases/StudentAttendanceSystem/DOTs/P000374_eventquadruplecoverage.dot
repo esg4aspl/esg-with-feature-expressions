@@ -1,0 +1,312 @@
+digraph G {
+rankdir = LR
+label = "P000374374stt";
+esg377_vertex0 -> esg377_vertex1[ color = null];
+esg377_vertex0 -> esg377_vertex2[ color = null];
+esg377_vertex0 -> esg377_vertex3[ color = null];
+esg377_vertex0 -> esg377_vertex4[ color = null];
+esg377_vertex5 -> esg377_vertex6[ color = null];
+esg377_vertex7 -> esg377_vertex8[ color = null];
+esg377_vertex9 -> esg377_vertex10[ color = null];
+esg377_vertex9 -> esg377_vertex11[ color = null];
+esg377_vertex12 -> esg377_vertex13[ color = null];
+esg377_vertex12 -> esg377_vertex14[ color = null];
+esg377_vertex15 -> esg377_vertex16[ color = null];
+esg377_vertex15 -> esg377_vertex17[ color = null];
+esg377_vertex18 -> esg377_vertex19[ color = null];
+esg377_vertex18 -> esg377_vertex20[ color = null];
+esg377_vertex21 -> esg377_vertex22[ color = null];
+esg377_vertex1 -> esg377_vertex5[ color = null];
+esg377_vertex1 -> esg377_vertex7[ color = null];
+esg377_vertex1 -> esg377_vertex9[ color = null];
+esg377_vertex1 -> esg377_vertex12[ color = null];
+esg377_vertex1 -> esg377_vertex15[ color = null];
+esg377_vertex1 -> esg377_vertex18[ color = null];
+esg377_vertex1 -> esg377_vertex21[ color = null];
+esg377_vertex6 -> esg377_vertex23[ color = null];
+esg377_vertex24 -> esg377_vertex25[ color = null];
+esg377_vertex26 -> esg377_vertex24[ color = null];
+esg377_vertex26 -> esg377_vertex27[ color = null];
+esg377_vertex25 -> esg377_vertex26[ color = null];
+esg377_vertex8 -> esg377_vertex26[ color = null];
+esg377_vertex28 -> esg377_vertex29[ color = null];
+esg377_vertex28 -> esg377_vertex30[ color = null];
+esg377_vertex28 -> esg377_vertex31[ color = null];
+esg377_vertex32 -> esg377_vertex27[ color = null];
+esg377_vertex33 -> esg377_vertex34[ color = null];
+esg377_vertex33 -> esg377_vertex35[ color = null];
+esg377_vertex33 -> esg377_vertex36[ color = null];
+esg377_vertex29 -> esg377_vertex37[ color = null];
+esg377_vertex29 -> esg377_vertex38[ color = null];
+esg377_vertex29 -> esg377_vertex39[ color = null];
+esg377_vertex30 -> esg377_vertex27[ color = null];
+esg377_vertex31 -> esg377_vertex40[ color = null];
+esg377_vertex31 -> esg377_vertex41[ color = null];
+esg377_vertex31 -> esg377_vertex42[ color = null];
+esg377_vertex43 -> esg377_vertex37[ color = null];
+esg377_vertex43 -> esg377_vertex38[ color = null];
+esg377_vertex43 -> esg377_vertex39[ color = null];
+esg377_vertex44 -> esg377_vertex27[ color = null];
+esg377_vertex45 -> esg377_vertex40[ color = null];
+esg377_vertex45 -> esg377_vertex41[ color = null];
+esg377_vertex45 -> esg377_vertex42[ color = null];
+esg377_vertex37 -> esg377_vertex29[ color = null];
+esg377_vertex37 -> esg377_vertex30[ color = null];
+esg377_vertex37 -> esg377_vertex31[ color = null];
+esg377_vertex38 -> esg377_vertex27[ color = null];
+esg377_vertex39 -> esg377_vertex34[ color = null];
+esg377_vertex39 -> esg377_vertex35[ color = null];
+esg377_vertex39 -> esg377_vertex36[ color = null];
+esg377_vertex34 -> esg377_vertex29[ color = null];
+esg377_vertex34 -> esg377_vertex30[ color = null];
+esg377_vertex34 -> esg377_vertex31[ color = null];
+esg377_vertex35 -> esg377_vertex27[ color = null];
+esg377_vertex36 -> esg377_vertex34[ color = null];
+esg377_vertex36 -> esg377_vertex35[ color = null];
+esg377_vertex36 -> esg377_vertex36[ color = null];
+esg377_vertex40 -> esg377_vertex37[ color = null];
+esg377_vertex40 -> esg377_vertex38[ color = null];
+esg377_vertex40 -> esg377_vertex39[ color = null];
+esg377_vertex41 -> esg377_vertex27[ color = null];
+esg377_vertex42 -> esg377_vertex40[ color = null];
+esg377_vertex42 -> esg377_vertex41[ color = null];
+esg377_vertex42 -> esg377_vertex42[ color = null];
+esg377_vertex10 -> esg377_vertex28[ color = null];
+esg377_vertex10 -> esg377_vertex32[ color = null];
+esg377_vertex10 -> esg377_vertex33[ color = null];
+esg377_vertex11 -> esg377_vertex43[ color = null];
+esg377_vertex11 -> esg377_vertex44[ color = null];
+esg377_vertex11 -> esg377_vertex45[ color = null];
+esg377_vertex46 -> esg377_vertex47[ color = null];
+esg377_vertex46 -> esg377_vertex48[ color = null];
+esg377_vertex46 -> esg377_vertex49[ color = null];
+esg377_vertex50 -> esg377_vertex51[ color = null];
+esg377_vertex50 -> esg377_vertex52[ color = null];
+esg377_vertex50 -> esg377_vertex53[ color = null];
+esg377_vertex54 -> esg377_vertex27[ color = null];
+esg377_vertex47 -> esg377_vertex46[ color = null];
+esg377_vertex47 -> esg377_vertex50[ color = null];
+esg377_vertex47 -> esg377_vertex54[ color = null];
+esg377_vertex48 -> esg377_vertex55[ color = null];
+esg377_vertex48 -> esg377_vertex56[ color = null];
+esg377_vertex48 -> esg377_vertex57[ color = null];
+esg377_vertex49 -> esg377_vertex27[ color = null];
+esg377_vertex55 -> esg377_vertex46[ color = null];
+esg377_vertex55 -> esg377_vertex50[ color = null];
+esg377_vertex55 -> esg377_vertex54[ color = null];
+esg377_vertex56 -> esg377_vertex55[ color = null];
+esg377_vertex56 -> esg377_vertex56[ color = null];
+esg377_vertex56 -> esg377_vertex57[ color = null];
+esg377_vertex57 -> esg377_vertex27[ color = null];
+esg377_vertex51 -> esg377_vertex47[ color = null];
+esg377_vertex51 -> esg377_vertex48[ color = null];
+esg377_vertex51 -> esg377_vertex49[ color = null];
+esg377_vertex52 -> esg377_vertex51[ color = null];
+esg377_vertex52 -> esg377_vertex52[ color = null];
+esg377_vertex52 -> esg377_vertex53[ color = null];
+esg377_vertex53 -> esg377_vertex27[ color = null];
+esg377_vertex58 -> esg377_vertex46[ color = null];
+esg377_vertex58 -> esg377_vertex50[ color = null];
+esg377_vertex58 -> esg377_vertex54[ color = null];
+esg377_vertex59 -> esg377_vertex55[ color = null];
+esg377_vertex59 -> esg377_vertex56[ color = null];
+esg377_vertex59 -> esg377_vertex57[ color = null];
+esg377_vertex60 -> esg377_vertex27[ color = null];
+esg377_vertex61 -> esg377_vertex47[ color = null];
+esg377_vertex61 -> esg377_vertex48[ color = null];
+esg377_vertex61 -> esg377_vertex49[ color = null];
+esg377_vertex62 -> esg377_vertex51[ color = null];
+esg377_vertex62 -> esg377_vertex52[ color = null];
+esg377_vertex62 -> esg377_vertex53[ color = null];
+esg377_vertex63 -> esg377_vertex27[ color = null];
+esg377_vertex13 -> esg377_vertex58[ color = null];
+esg377_vertex13 -> esg377_vertex59[ color = null];
+esg377_vertex13 -> esg377_vertex60[ color = null];
+esg377_vertex14 -> esg377_vertex61[ color = null];
+esg377_vertex14 -> esg377_vertex62[ color = null];
+esg377_vertex14 -> esg377_vertex63[ color = null];
+esg377_vertex64 -> esg377_vertex65[ color = null];
+esg377_vertex64 -> esg377_vertex66[ color = null];
+esg377_vertex64 -> esg377_vertex67[ color = null];
+esg377_vertex68 -> esg377_vertex27[ color = null];
+esg377_vertex69 -> esg377_vertex70[ color = null];
+esg377_vertex69 -> esg377_vertex71[ color = null];
+esg377_vertex69 -> esg377_vertex72[ color = null];
+esg377_vertex65 -> esg377_vertex73[ color = null];
+esg377_vertex65 -> esg377_vertex74[ color = null];
+esg377_vertex65 -> esg377_vertex75[ color = null];
+esg377_vertex66 -> esg377_vertex27[ color = null];
+esg377_vertex67 -> esg377_vertex76[ color = null];
+esg377_vertex67 -> esg377_vertex77[ color = null];
+esg377_vertex67 -> esg377_vertex78[ color = null];
+esg377_vertex79 -> esg377_vertex73[ color = null];
+esg377_vertex79 -> esg377_vertex74[ color = null];
+esg377_vertex79 -> esg377_vertex75[ color = null];
+esg377_vertex80 -> esg377_vertex27[ color = null];
+esg377_vertex81 -> esg377_vertex76[ color = null];
+esg377_vertex81 -> esg377_vertex77[ color = null];
+esg377_vertex81 -> esg377_vertex78[ color = null];
+esg377_vertex73 -> esg377_vertex65[ color = null];
+esg377_vertex73 -> esg377_vertex66[ color = null];
+esg377_vertex73 -> esg377_vertex67[ color = null];
+esg377_vertex74 -> esg377_vertex27[ color = null];
+esg377_vertex75 -> esg377_vertex70[ color = null];
+esg377_vertex75 -> esg377_vertex71[ color = null];
+esg377_vertex75 -> esg377_vertex72[ color = null];
+esg377_vertex70 -> esg377_vertex65[ color = null];
+esg377_vertex70 -> esg377_vertex66[ color = null];
+esg377_vertex70 -> esg377_vertex67[ color = null];
+esg377_vertex71 -> esg377_vertex27[ color = null];
+esg377_vertex72 -> esg377_vertex70[ color = null];
+esg377_vertex72 -> esg377_vertex71[ color = null];
+esg377_vertex72 -> esg377_vertex72[ color = null];
+esg377_vertex76 -> esg377_vertex73[ color = null];
+esg377_vertex76 -> esg377_vertex74[ color = null];
+esg377_vertex76 -> esg377_vertex75[ color = null];
+esg377_vertex77 -> esg377_vertex27[ color = null];
+esg377_vertex78 -> esg377_vertex76[ color = null];
+esg377_vertex78 -> esg377_vertex77[ color = null];
+esg377_vertex78 -> esg377_vertex78[ color = null];
+esg377_vertex16 -> esg377_vertex64[ color = null];
+esg377_vertex16 -> esg377_vertex68[ color = null];
+esg377_vertex16 -> esg377_vertex69[ color = null];
+esg377_vertex17 -> esg377_vertex79[ color = null];
+esg377_vertex17 -> esg377_vertex80[ color = null];
+esg377_vertex17 -> esg377_vertex81[ color = null];
+esg377_vertex82 -> esg377_vertex82[ color = null];
+esg377_vertex82 -> esg377_vertex83[ color = null];
+esg377_vertex83 -> esg377_vertex27[ color = null];
+esg377_vertex84 -> esg377_vertex84[ color = null];
+esg377_vertex84 -> esg377_vertex85[ color = null];
+esg377_vertex85 -> esg377_vertex27[ color = null];
+esg377_vertex86 -> esg377_vertex82[ color = null];
+esg377_vertex86 -> esg377_vertex83[ color = null];
+esg377_vertex87 -> esg377_vertex27[ color = null];
+esg377_vertex88 -> esg377_vertex84[ color = null];
+esg377_vertex88 -> esg377_vertex85[ color = null];
+esg377_vertex89 -> esg377_vertex27[ color = null];
+esg377_vertex19 -> esg377_vertex86[ color = null];
+esg377_vertex19 -> esg377_vertex87[ color = null];
+esg377_vertex20 -> esg377_vertex88[ color = null];
+esg377_vertex20 -> esg377_vertex89[ color = null];
+esg377_vertex90 -> esg377_vertex90[ color = null];
+esg377_vertex90 -> esg377_vertex91[ color = null];
+esg377_vertex91 -> esg377_vertex27[ color = null];
+esg377_vertex0 -> esg377_vertex92[ color = null];
+esg377_vertex0 -> esg377_vertex93[ color = null];
+esg377_vertex92 -> esg377_vertex90[ color = null];
+esg377_vertex92 -> esg377_vertex91[ color = null];
+esg377_vertex93 -> esg377_vertex27[ color = null];
+esg377_vertex2 -> esg377_vertex94[ color = null];
+esg377_vertex94 -> esg377_vertex27[ color = null];
+esg377_vertex23 -> esg377_vertex27[ color = null];
+esg377_vertex22 -> esg377_vertex95[ color = null];
+esg377_vertex95 -> esg377_vertex23[ color = null];
+esg377_vertex3 -> esg377_vertex96[ color = null];
+esg377_vertex3 -> esg377_vertex97[ color = null];
+esg377_vertex4 -> esg377_vertex98[ color = null];
+esg377_vertex96 -> esg377_vertex27[ color = null];
+esg377_vertex97 -> esg377_vertex99[ color = null];
+esg377_vertex98 -> esg377_vertex23[ color = null];
+esg377_vertex99 -> esg377_vertex23[ color = null];
+esg377_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg377_vertex1 [label = "log in_1:access as a teacher_2:turn editing on_3/sas AND ta", shape = ellipse, color=black]
+esg377_vertex2 [label = "log in_1:open notification settings_26:receive notifications as Email_28/sas AND e", shape = ellipse, color=black]
+esg377_vertex3 [label = "log in_1:access as a student_34:open my attendance records_33/sas AND sa", shape = ellipse, color=black]
+esg377_vertex4 [label = "log in_1:access as a student_34:open class records_4/sas AND sa", shape = ellipse, color=black]
+esg377_vertex5 [label = "access as a teacher_2:turn editing on_3:open class records_4/ta AND sas", shape = ellipse, color=black]
+esg377_vertex6 [label = "turn editing on_3:open class records_4:select the existing schedule_29/ta AND sas AND vs", shape = ellipse, color=black]
+esg377_vertex7 [label = "access as a teacher_2:turn editing on_3:select the deletable class_8/ta AND dc", shape = ellipse, color=black]
+esg377_vertex8 [label = "turn editing on_3:select the deletable class_8:delete class_6/ta AND dc", shape = ellipse, color=black]
+esg377_vertex9 [label = "access as a teacher_2:turn editing on_3:add new class_9/ta AND anc", shape = ellipse, color=black]
+esg377_vertex10 [label = "turn editing on_3:add new class_9:enter the name of the class_10/ta AND anc", shape = ellipse, color=black]
+esg377_vertex11 [label = "turn editing on_3:add new class_9:enter the class detail_11/ta AND anc", shape = ellipse, color=black]
+esg377_vertex12 [label = "access as a teacher_2:turn editing on_3:select the editable class_13/ta AND ucd", shape = ellipse, color=black]
+esg377_vertex13 [label = "turn editing on_3:select the editable class_13:update the name of the class_14/ta AND ucd", shape = ellipse, color=black]
+esg377_vertex14 [label = "turn editing on_3:select the editable class_13:update the class detail_15/ta AND ucd", shape = ellipse, color=black]
+esg377_vertex15 [label = "access as a teacher_2:turn editing on_3:add new schedule_16/ta AND ans", shape = ellipse, color=black]
+esg377_vertex16 [label = "turn editing on_3:add new schedule_16:enter the days of the class_17/ta AND ans", shape = ellipse, color=black]
+esg377_vertex17 [label = "turn editing on_3:add new schedule_16:enter the hours of the class_18/ta AND ans", shape = ellipse, color=black]
+esg377_vertex18 [label = "access as a teacher_2:turn editing on_3:select the editable schedule_22/ta AND es", shape = ellipse, color=black]
+esg377_vertex19 [label = "turn editing on_3:select the editable schedule_22:update the days of the class_20/ta AND es", shape = ellipse, color=black]
+esg377_vertex20 [label = "turn editing on_3:select the editable schedule_22:update the hours of the class_21/ta AND es", shape = ellipse, color=black]
+esg377_vertex21 [label = "access as a teacher_2:turn editing on_3:open student attendance records_31/ta", shape = ellipse, color=black]
+esg377_vertex22 [label = "turn editing on_3:open student attendance records_31:open class records_4/ta AND sas", shape = ellipse, color=black]
+esg377_vertex23 [label = "open class records_4:select the existing schedule_29:view schedule_30/sas AND vs", shape = ellipse, color=black]
+esg377_vertex24 [label = "delete class_6:confirm deletion_7:select the deletable class_8/dc", shape = ellipse, color=black]
+esg377_vertex25 [label = "confirm deletion_7:select the deletable class_8:delete class_6/dc", shape = ellipse, color=black]
+esg377_vertex26 [label = "select the deletable class_8:delete class_6:confirm deletion_7/dc", shape = ellipse, color=black]
+esg377_vertex27 [label = "]_5/", shape = ellipse, color=black]
+esg377_vertex28 [label = "add new class_9:enter the name of the class_10:enter the class detail_11/anc", shape = ellipse, color=black]
+esg377_vertex29 [label = "enter the name of the class_10:enter the class detail_11:enter the name of the class_10/anc", shape = ellipse, color=black]
+esg377_vertex30 [label = "enter the name of the class_10:enter the class detail_11:submit the class_12/anc", shape = ellipse, color=black]
+esg377_vertex31 [label = "enter the name of the class_10:enter the class detail_11:enter the class detail_11/anc", shape = ellipse, color=black]
+esg377_vertex32 [label = "add new class_9:enter the name of the class_10:submit the class_12/anc", shape = ellipse, color=black]
+esg377_vertex33 [label = "add new class_9:enter the name of the class_10:enter the name of the class_10/anc", shape = ellipse, color=black]
+esg377_vertex34 [label = "enter the name of the class_10:enter the name of the class_10:enter the class detail_11/anc", shape = ellipse, color=black]
+esg377_vertex35 [label = "enter the name of the class_10:enter the name of the class_10:submit the class_12/anc", shape = ellipse, color=black]
+esg377_vertex36 [label = "enter the name of the class_10:enter the name of the class_10:enter the name of the class_10/anc", shape = ellipse, color=black]
+esg377_vertex37 [label = "enter the class detail_11:enter the name of the class_10:enter the class detail_11/anc", shape = ellipse, color=black]
+esg377_vertex38 [label = "enter the class detail_11:enter the name of the class_10:submit the class_12/anc", shape = ellipse, color=black]
+esg377_vertex39 [label = "enter the class detail_11:enter the name of the class_10:enter the name of the class_10/anc", shape = ellipse, color=black]
+esg377_vertex40 [label = "enter the class detail_11:enter the class detail_11:enter the name of the class_10/anc", shape = ellipse, color=black]
+esg377_vertex41 [label = "enter the class detail_11:enter the class detail_11:submit the class_12/anc", shape = ellipse, color=black]
+esg377_vertex42 [label = "enter the class detail_11:enter the class detail_11:enter the class detail_11/anc", shape = ellipse, color=black]
+esg377_vertex43 [label = "add new class_9:enter the class detail_11:enter the name of the class_10/anc", shape = ellipse, color=black]
+esg377_vertex44 [label = "add new class_9:enter the class detail_11:submit the class_12/anc", shape = ellipse, color=black]
+esg377_vertex45 [label = "add new class_9:enter the class detail_11:enter the class detail_11/anc", shape = ellipse, color=black]
+esg377_vertex46 [label = "update the name of the class_14:update the class detail_15:update the name of the class_14/ucd", shape = ellipse, color=black]
+esg377_vertex47 [label = "update the class detail_15:update the name of the class_14:update the class detail_15/ucd", shape = ellipse, color=black]
+esg377_vertex48 [label = "update the class detail_15:update the name of the class_14:update the name of the class_14/ucd", shape = ellipse, color=black]
+esg377_vertex49 [label = "update the class detail_15:update the name of the class_14:submit the class_12/ucd AND anc", shape = ellipse, color=black]
+esg377_vertex50 [label = "update the name of the class_14:update the class detail_15:update the class detail_15/ucd", shape = ellipse, color=black]
+esg377_vertex51 [label = "update the class detail_15:update the class detail_15:update the name of the class_14/ucd", shape = ellipse, color=black]
+esg377_vertex52 [label = "update the class detail_15:update the class detail_15:update the class detail_15/ucd", shape = ellipse, color=black]
+esg377_vertex53 [label = "update the class detail_15:update the class detail_15:submit the class_12/ucd AND anc", shape = ellipse, color=black]
+esg377_vertex54 [label = "update the name of the class_14:update the class detail_15:submit the class_12/ucd AND anc", shape = ellipse, color=black]
+esg377_vertex55 [label = "update the name of the class_14:update the name of the class_14:update the class detail_15/ucd", shape = ellipse, color=black]
+esg377_vertex56 [label = "update the name of the class_14:update the name of the class_14:update the name of the class_14/ucd", shape = ellipse, color=black]
+esg377_vertex57 [label = "update the name of the class_14:update the name of the class_14:submit the class_12/ucd AND anc", shape = ellipse, color=black]
+esg377_vertex58 [label = "select the editable class_13:update the name of the class_14:update the class detail_15/ucd", shape = ellipse, color=black]
+esg377_vertex59 [label = "select the editable class_13:update the name of the class_14:update the name of the class_14/ucd", shape = ellipse, color=black]
+esg377_vertex60 [label = "select the editable class_13:update the name of the class_14:submit the class_12/ucd AND anc", shape = ellipse, color=black]
+esg377_vertex61 [label = "select the editable class_13:update the class detail_15:update the name of the class_14/ucd", shape = ellipse, color=black]
+esg377_vertex62 [label = "select the editable class_13:update the class detail_15:update the class detail_15/ucd", shape = ellipse, color=black]
+esg377_vertex63 [label = "select the editable class_13:update the class detail_15:submit the class_12/ucd AND anc", shape = ellipse, color=black]
+esg377_vertex64 [label = "add new schedule_16:enter the days of the class_17:enter the hours of the class_18/ans", shape = ellipse, color=black]
+esg377_vertex65 [label = "enter the days of the class_17:enter the hours of the class_18:enter the days of the class_17/ans", shape = ellipse, color=black]
+esg377_vertex66 [label = "enter the days of the class_17:enter the hours of the class_18:submit the class schedule_19/ans", shape = ellipse, color=black]
+esg377_vertex67 [label = "enter the days of the class_17:enter the hours of the class_18:enter the hours of the class_18/ans", shape = ellipse, color=black]
+esg377_vertex68 [label = "add new schedule_16:enter the days of the class_17:submit the class schedule_19/ans", shape = ellipse, color=black]
+esg377_vertex69 [label = "add new schedule_16:enter the days of the class_17:enter the days of the class_17/ans", shape = ellipse, color=black]
+esg377_vertex70 [label = "enter the days of the class_17:enter the days of the class_17:enter the hours of the class_18/ans", shape = ellipse, color=black]
+esg377_vertex71 [label = "enter the days of the class_17:enter the days of the class_17:submit the class schedule_19/ans", shape = ellipse, color=black]
+esg377_vertex72 [label = "enter the days of the class_17:enter the days of the class_17:enter the days of the class_17/ans", shape = ellipse, color=black]
+esg377_vertex73 [label = "enter the hours of the class_18:enter the days of the class_17:enter the hours of the class_18/ans", shape = ellipse, color=black]
+esg377_vertex74 [label = "enter the hours of the class_18:enter the days of the class_17:submit the class schedule_19/ans", shape = ellipse, color=black]
+esg377_vertex75 [label = "enter the hours of the class_18:enter the days of the class_17:enter the days of the class_17/ans", shape = ellipse, color=black]
+esg377_vertex76 [label = "enter the hours of the class_18:enter the hours of the class_18:enter the days of the class_17/ans", shape = ellipse, color=black]
+esg377_vertex77 [label = "enter the hours of the class_18:enter the hours of the class_18:submit the class schedule_19/ans", shape = ellipse, color=black]
+esg377_vertex78 [label = "enter the hours of the class_18:enter the hours of the class_18:enter the hours of the class_18/ans", shape = ellipse, color=black]
+esg377_vertex79 [label = "add new schedule_16:enter the hours of the class_18:enter the days of the class_17/ans", shape = ellipse, color=black]
+esg377_vertex80 [label = "add new schedule_16:enter the hours of the class_18:submit the class schedule_19/ans", shape = ellipse, color=black]
+esg377_vertex81 [label = "add new schedule_16:enter the hours of the class_18:enter the hours of the class_18/ans", shape = ellipse, color=black]
+esg377_vertex82 [label = "update the days of the class_20:update the days of the class_20:update the days of the class_20/es", shape = ellipse, color=black]
+esg377_vertex83 [label = "update the days of the class_20:update the days of the class_20:submit the class schedule_19/es AND ans", shape = ellipse, color=black]
+esg377_vertex84 [label = "update the hours of the class_21:update the hours of the class_21:update the hours of the class_21/es", shape = ellipse, color=black]
+esg377_vertex85 [label = "update the hours of the class_21:update the hours of the class_21:submit the class schedule_19/es AND ans", shape = ellipse, color=black]
+esg377_vertex86 [label = "select the editable schedule_22:update the days of the class_20:update the days of the class_20/es", shape = ellipse, color=black]
+esg377_vertex87 [label = "select the editable schedule_22:update the days of the class_20:submit the class schedule_19/es AND ans", shape = ellipse, color=black]
+esg377_vertex88 [label = "select the editable schedule_22:update the hours of the class_21:update the hours of the class_21/es", shape = ellipse, color=black]
+esg377_vertex89 [label = "select the editable schedule_22:update the hours of the class_21:submit the class schedule_19/es AND ans", shape = ellipse, color=black]
+esg377_vertex90 [label = "read the access card to the card reader_23:read the access card to the card reader_23:read the access card to the card reader_23/a", shape = ellipse, color=black]
+esg377_vertex91 [label = "read the access card to the card reader_23:read the access card to the card reader_23:confirm your identity_25/a AND sas", shape = ellipse, color=black]
+esg377_vertex92 [label = "submit attendance_24:read the access card to the card reader_23:read the access card to the card reader_23/sas AND a", shape = ellipse, color=black]
+esg377_vertex93 [label = "submit attendance_24:read the access card to the card reader_23:confirm your identity_25/sas AND a", shape = ellipse, color=black]
+esg377_vertex94 [label = "open notification settings_26:receive notifications as Email_28:confirm notification settings_27/sas AND e", shape = ellipse, color=black]
+esg377_vertex95 [label = "open student attendance records_31:open class records_4:select the existing schedule_29/ta AND sas AND vs", shape = ellipse, color=black]
+esg377_vertex96 [label = "access as a student_34:open my attendance records_33:monitor current attendance status_32/sa AND mas", shape = ellipse, color=black]
+esg377_vertex97 [label = "access as a student_34:open my attendance records_33:open class records_4/sa AND sas", shape = ellipse, color=black]
+esg377_vertex98 [label = "access as a student_34:open class records_4:select the existing schedule_29/sa AND sas AND vs", shape = ellipse, color=black]
+esg377_vertex99 [label = "open my attendance records_33:open class records_4:select the existing schedule_29/sa AND sas AND vs", shape = ellipse, color=black]
+}

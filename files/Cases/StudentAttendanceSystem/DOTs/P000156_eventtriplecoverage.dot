@@ -1,0 +1,73 @@
+digraph G {
+rankdir = LR
+label = "P000156156st";
+esg158_vertex0 -> esg158_vertex1[ color = null];
+esg158_vertex0 -> esg158_vertex2[ color = null];
+esg158_vertex0 -> esg158_vertex3[ color = null];
+esg158_vertex4 -> esg158_vertex5[ color = null];
+esg158_vertex4 -> esg158_vertex6[ color = null];
+esg158_vertex4 -> esg158_vertex7[ color = null];
+esg158_vertex1 -> esg158_vertex4[ color = null];
+esg158_vertex5 -> esg158_vertex8[ color = null];
+esg158_vertex9 -> esg158_vertex10[ color = null];
+esg158_vertex9 -> esg158_vertex11[ color = null];
+esg158_vertex12 -> esg158_vertex9[ color = null];
+esg158_vertex10 -> esg158_vertex12[ color = null];
+esg158_vertex6 -> esg158_vertex12[ color = null];
+esg158_vertex13 -> esg158_vertex13[ color = null];
+esg158_vertex13 -> esg158_vertex14[ color = null];
+esg158_vertex0 -> esg158_vertex15[ color = null];
+esg158_vertex15 -> esg158_vertex13[ color = null];
+esg158_vertex15 -> esg158_vertex14[ color = null];
+esg158_vertex14 -> esg158_vertex11[ color = null];
+esg158_vertex2 -> esg158_vertex16[ color = null];
+esg158_vertex16 -> esg158_vertex17[ color = null];
+esg158_vertex17 -> esg158_vertex11[ color = null];
+esg158_vertex8 -> esg158_vertex18[ color = null];
+esg158_vertex18 -> esg158_vertex11[ color = null];
+esg158_vertex7 -> esg158_vertex19[ color = null];
+esg158_vertex7 -> esg158_vertex20[ color = null];
+esg158_vertex7 -> esg158_vertex21[ color = null];
+esg158_vertex19 -> esg158_vertex8[ color = null];
+esg158_vertex20 -> esg158_vertex22[ color = null];
+esg158_vertex20 -> esg158_vertex23[ color = null];
+esg158_vertex21 -> esg158_vertex24[ color = null];
+esg158_vertex22 -> esg158_vertex25[ color = null];
+esg158_vertex24 -> esg158_vertex25[ color = null];
+esg158_vertex25 -> esg158_vertex11[ color = null];
+esg158_vertex23 -> esg158_vertex11[ color = null];
+esg158_vertex3 -> esg158_vertex26[ color = null];
+esg158_vertex3 -> esg158_vertex27[ color = null];
+esg158_vertex26 -> esg158_vertex28[ color = null];
+esg158_vertex27 -> esg158_vertex8[ color = null];
+esg158_vertex28 -> esg158_vertex8[ color = null];
+esg158_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg158_vertex1 [label = "log in_1:access as a teacher_2/sas AND ta", shape = ellipse, color=black]
+esg158_vertex2 [label = "log in_1:open notification settings_12/sas", shape = ellipse, color=black]
+esg158_vertex3 [label = "log in_1:access as a student_24/sas AND sa", shape = ellipse, color=black]
+esg158_vertex4 [label = "access as a teacher_2:turn editing on_3/ta", shape = ellipse, color=black]
+esg158_vertex5 [label = "turn editing on_3:open class records_4/ta AND sas", shape = ellipse, color=black]
+esg158_vertex6 [label = "turn editing on_3:select the deletable class_8/ta AND dc", shape = ellipse, color=black]
+esg158_vertex7 [label = "turn editing on_3:open student attendance records_17/ta", shape = ellipse, color=black]
+esg158_vertex8 [label = "open class records_4:select the existing schedule_15/sas AND vs", shape = ellipse, color=black]
+esg158_vertex9 [label = "delete class_6:confirm deletion_7/dc", shape = ellipse, color=black]
+esg158_vertex10 [label = "confirm deletion_7:select the deletable class_8/dc", shape = ellipse, color=black]
+esg158_vertex11 [label = "]_5/", shape = ellipse, color=black]
+esg158_vertex12 [label = "select the deletable class_8:delete class_6/dc", shape = ellipse, color=black]
+esg158_vertex13 [label = "read the access card to the card reader_9:read the access card to the card reader_9/a", shape = ellipse, color=black]
+esg158_vertex14 [label = "read the access card to the card reader_9:confirm your identity_11/a AND sas", shape = ellipse, color=black]
+esg158_vertex15 [label = "submit attendance_10:read the access card to the card reader_9/sas AND a", shape = ellipse, color=black]
+esg158_vertex16 [label = "open notification settings_12:receive notifications as Email_14/sas AND e", shape = ellipse, color=black]
+esg158_vertex17 [label = "receive notifications as Email_14:confirm notification settings_13/e AND sas", shape = ellipse, color=black]
+esg158_vertex18 [label = "select the existing schedule_15:view schedule_16/vs", shape = ellipse, color=black]
+esg158_vertex19 [label = "open student attendance records_17:open class records_4/ta AND sas", shape = ellipse, color=black]
+esg158_vertex20 [label = "open student attendance records_17:select a class-list attendance record_18/ta AND ur", shape = ellipse, color=black]
+esg158_vertex21 [label = "open student attendance records_17:select an editable student-record_19/ta AND ur", shape = ellipse, color=black]
+esg158_vertex22 [label = "select a class-list attendance record_18:edit attendance status_20/ur", shape = ellipse, color=black]
+esg158_vertex23 [label = "select a class-list attendance record_18:trace attendance activity of the class_22/ur AND taa", shape = ellipse, color=black]
+esg158_vertex24 [label = "select an editable student-record_19:edit attendance status_20/ur", shape = ellipse, color=black]
+esg158_vertex25 [label = "edit attendance status_20:submit attendance record update_21/ur", shape = ellipse, color=black]
+esg158_vertex26 [label = "access as a student_24:open my attendance records_23/sa", shape = ellipse, color=black]
+esg158_vertex27 [label = "access as a student_24:open class records_4/sa AND sas", shape = ellipse, color=black]
+esg158_vertex28 [label = "open my attendance records_23:open class records_4/sa AND sas", shape = ellipse, color=black]
+}

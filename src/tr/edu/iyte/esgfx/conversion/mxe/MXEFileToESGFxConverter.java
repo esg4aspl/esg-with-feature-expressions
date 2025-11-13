@@ -5,9 +5,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -158,16 +160,19 @@ public class MXEFileToESGFxConverter extends MXEFiletoESGConverter {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+		
+		addAbstractFeatureExpressionsNecessaryForProductConfiguration(featureModel.getORFeatures());
+		addAbstractFeatureExpressionsNecessaryForProductConfiguration(featureModel.getXORFeatures());
 
-		/*
-		 * System.out.println("ESGFx.getEventList().size() " +
-		 * ESGFx.getEventList().size());
-		 * 
-		 * for(String key : featureExpressionMap.keySet()) { System.out.println(key +"-"
-		 * + featureExpressionMap.get(key).getFeature().getName());
-		 * 
-		 * }
-		 */
+		
+//		  System.out.println("ESGFx.getEventList().size() " +
+//		  ESGFx.getEventList().size());
+//		  
+//		  for(String key : featureExpressionMap.keySet()) { System.out.println(key +"-"
+//		  + featureExpressionMap.get(key).getFeature().getName());
+//		  
+//		  }
+		 
 	}
 
 	private Feature searchFeature(String featureName) {
@@ -209,7 +214,7 @@ public class MXEFileToESGFxConverter extends MXEFiletoESGConverter {
 
 		return featureModel;
 	}
-
+	
 	private FeatureExpression parseFeatureExpression(String featureName) {
 
 //			System.out.println("Feature name " + featureName);
@@ -227,7 +232,7 @@ public class MXEFileToESGFxConverter extends MXEFiletoESGConverter {
 
 		if (featureExpressionMap.containsKey(featureName)) {
 //				System.out.println("1st IF");
-//			
+			
 //				for(String s : featureExpressionMap.keySet()) {
 //					System.out.println("1st IF " + s + " " + featureExpressionMap.get(s).getFeature().getName());
 //				}
@@ -283,6 +288,35 @@ public class MXEFileToESGFxConverter extends MXEFiletoESGConverter {
 		}
 
 	}
+	
+	private void addAbstractFeatureExpressionsNecessaryForProductConfiguration(Map<Feature, Set<Feature>> featureMap) {
+
+		Iterator<Feature> keySeyIterator = featureMap.keySet().iterator();
+
+		while (keySeyIterator.hasNext()) {
+			Feature keyFeature = keySeyIterator.next();
+
+			if (keyFeature.isAbstract() && keyFeature.isMandatory()) {
+				Iterator<Feature> valueSetIterator = featureMap.get(keyFeature).iterator();
+
+				while (valueSetIterator.hasNext()) {
+					Feature value = valueSetIterator.next();
+					
+//					System.out.println("FEATURE " + value.getName() + "isAbstract "+ value.isAbstract() + "isLeaf "+ featureModel.isLeaf(value));
+					
+					if (value.isAbstract() && featureModel.isLeaf(value)) {
+						if (!featureExpressionMap.containsKey(value.getName())) {
+							FeatureExpression featureExpression = new FeatureExpression(value);
+							featureExpressionMap.put(value.getName(), featureExpression);
+						}
+					}
+				}
+			}
+		}
+
+	}
+	
+
 
 	public static List<String> parseNodeList(NodeList nodeList, String... attribute) {
 

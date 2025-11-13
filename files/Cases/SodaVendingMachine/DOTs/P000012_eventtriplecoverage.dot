@@ -1,0 +1,25 @@
+digraph G {
+rankdir = LR
+label = "P00001212st";
+esg14_vertex0 -> esg14_vertex1[ color = null];
+esg14_vertex2 -> esg14_vertex3[ color = null];
+esg14_vertex2 -> esg14_vertex4[ color = null];
+esg14_vertex2 -> esg14_vertex5[ color = null];
+esg14_vertex3 -> esg14_vertex0[ color = null];
+esg14_vertex4 -> esg14_vertex6[ color = null];
+esg14_vertex6 -> esg14_vertex7[ color = null];
+esg14_vertex1 -> esg14_vertex8[ color = null];
+esg14_vertex7 -> esg14_vertex8[ color = null];
+esg14_vertex9 -> esg14_vertex8[ color = null];
+esg14_vertex5 -> esg14_vertex9[ color = null];
+esg14_vertex0 [label = "soda_2:serveSoda_3/s", shape = ellipse, color=black]
+esg14_vertex1 [label = "serveSoda_3:take_9/s AND f", shape = ellipse, color=black]
+esg14_vertex2 [label = "[_0/", shape = ellipse, color=black]
+esg14_vertex3 [label = "free_7:soda_2/f AND s", shape = ellipse, color=black]
+esg14_vertex4 [label = "free_7:tea_8/f AND t", shape = ellipse, color=black]
+esg14_vertex5 [label = "free_7:cancel_4/f AND c", shape = ellipse, color=black]
+esg14_vertex6 [label = "tea_8:serveTea_6/t", shape = ellipse, color=black]
+esg14_vertex7 [label = "serveTea_6:take_9/t AND f", shape = ellipse, color=black]
+esg14_vertex8 [label = "]_1/", shape = ellipse, color=black]
+esg14_vertex9 [label = "cancel_4:return_5/c", shape = ellipse, color=black]
+}

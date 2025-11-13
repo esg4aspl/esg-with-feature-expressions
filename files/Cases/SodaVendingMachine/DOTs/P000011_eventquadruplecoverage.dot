@@ -1,0 +1,16 @@
+digraph G {
+rankdir = LR
+label = "P00001111stt";
+esg14_vertex0 -> esg14_vertex1[ color = null];
+esg14_vertex2 -> esg14_vertex3[ color = null];
+esg14_vertex2 -> esg14_vertex4[ color = null];
+esg14_vertex3 -> esg14_vertex0[ color = null];
+esg14_vertex4 -> esg14_vertex5[ color = null];
+esg14_vertex5 -> esg14_vertex1[ color = null];
+esg14_vertex0 [label = "soda_2:serveSoda_3:take_7/s AND f", shape = ellipse, color=black]
+esg14_vertex1 [label = "]_1/", shape = ellipse, color=black]
+esg14_vertex2 [label = "[_0/", shape = ellipse, color=black]
+esg14_vertex3 [label = "free_5:soda_2:serveSoda_3/f AND s", shape = ellipse, color=black]
+esg14_vertex4 [label = "free_5:tea_6:serveTea_4/f AND t", shape = ellipse, color=black]
+esg14_vertex5 [label = "tea_6:serveTea_4:take_7/t AND f", shape = ellipse, color=black]
+}

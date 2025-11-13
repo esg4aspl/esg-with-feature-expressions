@@ -1,0 +1,23 @@
+// file: src/main/java/tr/edu/iyte/esgfx/cases/SVM/RandomWalkTestSequenceRecorderApp_SVM.java
+package tr.edu.iyte.esgfx.cases.SVM;
+
+import tr.edu.iyte.esgfx.cases.RandomWalkTestSequenceRecorder;
+
+/**
+ * App entry for SVM SPL random-walk recording.
+ */
+public class RandomWalkTestSequenceRecorderApp_SVM extends CaseStudyUtilities_SVM {
+
+    public static void main(String[] args) throws Exception {
+
+        coverageLength = 3;
+        CaseStudyUtilities_SVM.initializeFilePaths();
+
+        // Defaults: 200 tests per product, 50 steps, fixed seed.
+        RandomWalkTestSequenceRecorder rec = new RandomWalkTestSequenceRecorder();
+        rec.recordRandomWalkTestSequences();
+
+        // Or customize:
+        // new RandomWalkTestSequenceRecorder(500, 100, 1337L).recordRandomWalkTestSequences();
+    }
+}

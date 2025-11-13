@@ -1,0 +1,59 @@
+digraph G {
+rankdir = LR
+label = "P000162162st";
+esg164_vertex0 -> esg164_vertex1[ color = null];
+esg164_vertex0 -> esg164_vertex2[ color = null];
+esg164_vertex3 -> esg164_vertex4[ color = null];
+esg164_vertex4 -> esg164_vertex5[ color = null];
+esg164_vertex1 -> esg164_vertex3[ color = null];
+esg164_vertex6 -> esg164_vertex7[ color = null];
+esg164_vertex6 -> esg164_vertex8[ color = null];
+esg164_vertex7 -> esg164_vertex5[ color = null];
+esg164_vertex2 -> esg164_vertex6[ color = null];
+esg164_vertex2 -> esg164_vertex9[ color = null];
+esg164_vertex9 -> esg164_vertex5[ color = null];
+esg164_vertex8 -> esg164_vertex10[ color = null];
+esg164_vertex0 -> esg164_vertex11[ color = null];
+esg164_vertex0 -> esg164_vertex12[ color = null];
+esg164_vertex12 -> esg164_vertex5[ color = null];
+esg164_vertex0 -> esg164_vertex13[ color = null];
+esg164_vertex0 -> esg164_vertex14[ color = null];
+esg164_vertex13 -> esg164_vertex5[ color = null];
+esg164_vertex14 -> esg164_vertex15[ color = null];
+esg164_vertex15 -> esg164_vertex5[ color = null];
+esg164_vertex11 -> esg164_vertex5[ color = null];
+esg164_vertex16 -> esg164_vertex17[ color = null];
+esg164_vertex17 -> esg164_vertex18[ color = null];
+esg164_vertex0 -> esg164_vertex16[ color = null];
+esg164_vertex19 -> esg164_vertex20[ color = null];
+esg164_vertex21 -> esg164_vertex22[ color = null];
+esg164_vertex20 -> esg164_vertex5[ color = null];
+esg164_vertex0 -> esg164_vertex19[ color = null];
+esg164_vertex0 -> esg164_vertex21[ color = null];
+esg164_vertex22 -> esg164_vertex5[ color = null];
+esg164_vertex18 -> esg164_vertex5[ color = null];
+esg164_vertex10 -> esg164_vertex5[ color = null];
+esg164_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg164_vertex1 [label = "get balance_2:select deposit_3/b AND d", shape = ellipse, color=black]
+esg164_vertex2 [label = "get balance_2:select withdraw_6/b AND w", shape = ellipse, color=black]
+esg164_vertex3 [label = "select deposit_3:enter deposit amount_5/d", shape = ellipse, color=black]
+esg164_vertex4 [label = "enter deposit amount_5:put money_4/d", shape = ellipse, color=black]
+esg164_vertex5 [label = "]_1/", shape = ellipse, color=black]
+esg164_vertex6 [label = "select withdraw_6:enter withdraw amount_8/w", shape = ellipse, color=black]
+esg164_vertex7 [label = "enter withdraw amount_8:take money_7/w", shape = ellipse, color=black]
+esg164_vertex8 [label = "enter withdraw amount_8:confirm daily limit excess_10/w AND dl", shape = ellipse, color=black]
+esg164_vertex9 [label = "select withdraw_6:cancel withdraw_9/w AND cw", shape = ellipse, color=black]
+esg164_vertex10 [label = "confirm daily limit excess_10:cancel withdraw_9/dl AND cw", shape = ellipse, color=black]
+esg164_vertex11 [label = "enter daily withdraw limit_11:confirm daily withdraw limit_26/dl", shape = ellipse, color=black]
+esg164_vertex12 [label = "enter a credit amount_12:confirm credit amount_13/c", shape = ellipse, color=black]
+esg164_vertex13 [label = "request an interest rate_14:confirm interest rate_15/i", shape = ellipse, color=black]
+esg164_vertex14 [label = "request an interest rate_14:enter days left_16/i AND ie", shape = ellipse, color=black]
+esg164_vertex15 [label = "enter days left_16:get estimated interest for days left_17/ie", shape = ellipse, color=black]
+esg164_vertex16 [label = "open account_18:select currency_19/b", shape = ellipse, color=black]
+esg164_vertex17 [label = "select currency_19:TL_20/b AND tl", shape = ellipse, color=black]
+esg164_vertex18 [label = "TL_20:confirm TL account openning_27/tl", shape = ellipse, color=black]
+esg164_vertex19 [label = "update profile_21:update contact information_22/up", shape = ellipse, color=black]
+esg164_vertex20 [label = "update contact information_22:save contact information changes_24/up", shape = ellipse, color=black]
+esg164_vertex21 [label = "update profile_21:update preferences_23/up", shape = ellipse, color=black]
+esg164_vertex22 [label = "update preferences_23:save preference changes_25/up", shape = ellipse, color=black]
+}

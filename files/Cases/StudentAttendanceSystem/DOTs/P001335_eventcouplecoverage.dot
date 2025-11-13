@@ -1,0 +1,55 @@
+digraph G {
+rankdir = LR
+label = "P0013351335s";
+esg1336_vertex0 -> esg1336_vertex1[ color = null];
+esg1336_vertex2 -> esg1336_vertex3[ color = null];
+esg1336_vertex1 -> esg1336_vertex2[ color = null];
+esg1336_vertex3 -> esg1336_vertex4[ color = null];
+esg1336_vertex6 -> esg1336_vertex7[ color = null];
+esg1336_vertex8 -> esg1336_vertex6[ color = null];
+esg1336_vertex7 -> esg1336_vertex8[ color = null];
+esg1336_vertex3 -> esg1336_vertex8[ color = null];
+esg1336_vertex7 -> esg1336_vertex5[ color = null];
+esg1336_vertex10 -> esg1336_vertex5[ color = null];
+esg1336_vertex0 -> esg1336_vertex9[ color = null];
+esg1336_vertex1 -> esg1336_vertex11[ color = null];
+esg1336_vertex12 -> esg1336_vertex5[ color = null];
+esg1336_vertex4 -> esg1336_vertex13[ color = null];
+esg1336_vertex13 -> esg1336_vertex14[ color = null];
+esg1336_vertex14 -> esg1336_vertex5[ color = null];
+esg1336_vertex3 -> esg1336_vertex15[ color = null];
+esg1336_vertex15 -> esg1336_vertex4[ color = null];
+esg1336_vertex15 -> esg1336_vertex16[ color = null];
+esg1336_vertex15 -> esg1336_vertex17[ color = null];
+esg1336_vertex16 -> esg1336_vertex18[ color = null];
+esg1336_vertex17 -> esg1336_vertex18[ color = null];
+esg1336_vertex18 -> esg1336_vertex19[ color = null];
+esg1336_vertex19 -> esg1336_vertex5[ color = null];
+esg1336_vertex20 -> esg1336_vertex20[ color = null];
+esg1336_vertex11 -> esg1336_vertex21[ color = null];
+esg1336_vertex21 -> esg1336_vertex12[ color = null];
+esg1336_vertex9 -> esg1336_vertex20[ color = null];
+esg1336_vertex20 -> esg1336_vertex10[ color = null];
+esg1336_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg1336_vertex1 [label = "log in_1/sas", shape = ellipse, color=black]
+esg1336_vertex2 [label = "access as a teacher_2/ta", shape = ellipse, color=black]
+esg1336_vertex3 [label = "turn editing on_3/ta", shape = ellipse, color=black]
+esg1336_vertex4 [label = "open class records_4/sas", shape = ellipse, color=black]
+esg1336_vertex6 [label = "delete class_6/dc", shape = ellipse, color=black]
+esg1336_vertex7 [label = "confirm deletion_7/dc", shape = ellipse, color=black]
+esg1336_vertex8 [label = "select the deletable class_8/dc", shape = ellipse, color=black]
+esg1336_vertex5 [label = "]_5/", shape = ellipse, color=black]
+esg1336_vertex10 [label = "confirm your identity_10/sas", shape = ellipse, color=black]
+esg1336_vertex9 [label = "submit attendance_9/sas", shape = ellipse, color=black]
+esg1336_vertex11 [label = "open notification settings_11/sas", shape = ellipse, color=black]
+esg1336_vertex12 [label = "confirm notification settings_12/sas", shape = ellipse, color=black]
+esg1336_vertex13 [label = "select the existing schedule_13/vs", shape = ellipse, color=black]
+esg1336_vertex14 [label = "view schedule_14/vs", shape = ellipse, color=black]
+esg1336_vertex15 [label = "open student attendance records_15/ta", shape = ellipse, color=black]
+esg1336_vertex16 [label = "select a class-list attendance record_16/ur", shape = ellipse, color=black]
+esg1336_vertex17 [label = "select an editable student-record_17/ur", shape = ellipse, color=black]
+esg1336_vertex18 [label = "edit attendance status_18/ur", shape = ellipse, color=black]
+esg1336_vertex19 [label = "submit attendance record update_19/ur", shape = ellipse, color=black]
+esg1336_vertex20 [label = "put your finger to the fingerprint scanner_20/f", shape = ellipse, color=black]
+esg1336_vertex21 [label = "receive notifications as SMS_21/s", shape = ellipse, color=black]
+}

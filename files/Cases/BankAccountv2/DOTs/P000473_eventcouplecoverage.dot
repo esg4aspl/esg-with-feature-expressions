@@ -1,0 +1,70 @@
+digraph G {
+rankdir = LR
+label = "P000473473s";
+esg474_vertex0 -> esg474_vertex2[ color = null];
+esg474_vertex3 -> esg474_vertex5[ color = null];
+esg474_vertex5 -> esg474_vertex4[ color = null];
+esg474_vertex2 -> esg474_vertex3[ color = null];
+esg474_vertex6 -> esg474_vertex8[ color = null];
+esg474_vertex8 -> esg474_vertex7[ color = null];
+esg474_vertex2 -> esg474_vertex6[ color = null];
+esg474_vertex4 -> esg474_vertex1[ color = null];
+esg474_vertex7 -> esg474_vertex1[ color = null];
+esg474_vertex6 -> esg474_vertex9[ color = null];
+esg474_vertex3 -> esg474_vertex10[ color = null];
+esg474_vertex0 -> esg474_vertex11[ color = null];
+esg474_vertex11 -> esg474_vertex12[ color = null];
+esg474_vertex12 -> esg474_vertex1[ color = null];
+esg474_vertex10 -> esg474_vertex1[ color = null];
+esg474_vertex9 -> esg474_vertex1[ color = null];
+esg474_vertex13 -> esg474_vertex14[ color = null];
+esg474_vertex14 -> esg474_vertex15[ color = null];
+esg474_vertex0 -> esg474_vertex13[ color = null];
+esg474_vertex16 -> esg474_vertex17[ color = null];
+esg474_vertex16 -> esg474_vertex18[ color = null];
+esg474_vertex17 -> esg474_vertex19[ color = null];
+esg474_vertex0 -> esg474_vertex16[ color = null];
+esg474_vertex19 -> esg474_vertex1[ color = null];
+esg474_vertex20 -> esg474_vertex21[ color = null];
+esg474_vertex21 -> esg474_vertex22[ color = null];
+esg474_vertex22 -> esg474_vertex23[ color = null];
+esg474_vertex23 -> esg474_vertex24[ color = null];
+esg474_vertex24 -> esg474_vertex25[ color = null];
+esg474_vertex0 -> esg474_vertex20[ color = null];
+esg474_vertex25 -> esg474_vertex1[ color = null];
+esg474_vertex18 -> esg474_vertex26[ color = null];
+esg474_vertex26 -> esg474_vertex1[ color = null];
+esg474_vertex15 -> esg474_vertex27[ color = null];
+esg474_vertex27 -> esg474_vertex1[ color = null];
+esg474_vertex24 -> esg474_vertex28[ color = null];
+esg474_vertex28 -> esg474_vertex1[ color = null];
+esg474_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg474_vertex2 [label = "get balance_2/b", shape = ellipse, color=black]
+esg474_vertex3 [label = "select deposit_3/d", shape = ellipse, color=black]
+esg474_vertex5 [label = "enter deposit amount_5/d", shape = ellipse, color=black]
+esg474_vertex4 [label = "put money_4/d", shape = ellipse, color=black]
+esg474_vertex6 [label = "select withdraw_6/w", shape = ellipse, color=black]
+esg474_vertex8 [label = "enter withdraw amount_8/w", shape = ellipse, color=black]
+esg474_vertex7 [label = "take money_7/w", shape = ellipse, color=black]
+esg474_vertex1 [label = "]_1/", shape = ellipse, color=black]
+esg474_vertex9 [label = "cancel withdraw_9/cw", shape = ellipse, color=black]
+esg474_vertex10 [label = "cancel deposit_10/cd", shape = ellipse, color=black]
+esg474_vertex11 [label = "enter a credit amount_11/c", shape = ellipse, color=black]
+esg474_vertex12 [label = "confirm credit amount_12/c", shape = ellipse, color=black]
+esg474_vertex13 [label = "open account_13/b", shape = ellipse, color=black]
+esg474_vertex14 [label = "select currency_14/b", shape = ellipse, color=black]
+esg474_vertex15 [label = "USD_15/us", shape = ellipse, color=black]
+esg474_vertex16 [label = "update profile_16/up", shape = ellipse, color=black]
+esg474_vertex17 [label = "update contact information_17/up", shape = ellipse, color=black]
+esg474_vertex18 [label = "update preferences_18/up", shape = ellipse, color=black]
+esg474_vertex19 [label = "save contact information changes_19/up", shape = ellipse, color=black]
+esg474_vertex20 [label = "transfer money_20/t", shape = ellipse, color=black]
+esg474_vertex21 [label = "enter receiver's IBAN_21/t", shape = ellipse, color=black]
+esg474_vertex22 [label = "enter amount_22/t", shape = ellipse, color=black]
+esg474_vertex23 [label = "select transfer type_23/t", shape = ellipse, color=black]
+esg474_vertex24 [label = "view transfer details_24/t", shape = ellipse, color=black]
+esg474_vertex25 [label = "confirm transfer_25/t", shape = ellipse, color=black]
+esg474_vertex26 [label = "save preference changes_26/up", shape = ellipse, color=black]
+esg474_vertex27 [label = "confirm USD account openning_27/us", shape = ellipse, color=black]
+esg474_vertex28 [label = "cancel transfer_28/t", shape = ellipse, color=black]
+}

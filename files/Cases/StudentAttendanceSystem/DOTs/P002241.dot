@@ -1,0 +1,75 @@
+digraph G {
+rankdir = LR
+label = "P002241";
+esg2241_vertex0 -> esg2241_vertex1[ color = null];
+esg2241_vertex2 -> esg2241_vertex3[ color = null];
+esg2241_vertex1 -> esg2241_vertex2[ color = null];
+esg2241_vertex3 -> esg2241_vertex4[ color = null];
+esg2241_vertex6 -> esg2241_vertex7[ color = null];
+esg2241_vertex8 -> esg2241_vertex6[ color = null];
+esg2241_vertex7 -> esg2241_vertex8[ color = null];
+esg2241_vertex3 -> esg2241_vertex8[ color = null];
+esg2241_vertex9 -> esg2241_vertex10[ color = null];
+esg2241_vertex10 -> esg2241_vertex11[ color = null];
+esg2241_vertex9 -> esg2241_vertex11[ color = null];
+esg2241_vertex11 -> esg2241_vertex10[ color = null];
+esg2241_vertex11 -> esg2241_vertex12[ color = null];
+esg2241_vertex10 -> esg2241_vertex12[ color = null];
+esg2241_vertex10 -> esg2241_vertex10[ color = null];
+esg2241_vertex11 -> esg2241_vertex11[ color = null];
+esg2241_vertex3 -> esg2241_vertex9[ color = null];
+esg2241_vertex12 -> esg2241_vertex5[ color = null];
+esg2241_vertex7 -> esg2241_vertex5[ color = null];
+esg2241_vertex14 -> esg2241_vertex5[ color = null];
+esg2241_vertex0 -> esg2241_vertex13[ color = null];
+esg2241_vertex1 -> esg2241_vertex15[ color = null];
+esg2241_vertex16 -> esg2241_vertex5[ color = null];
+esg2241_vertex15 -> esg2241_vertex17[ color = null];
+esg2241_vertex17 -> esg2241_vertex16[ color = null];
+esg2241_vertex4 -> esg2241_vertex18[ color = null];
+esg2241_vertex4 -> esg2241_vertex19[ color = null];
+esg2241_vertex18 -> esg2241_vertex20[ color = null];
+esg2241_vertex20 -> esg2241_vertex5[ color = null];
+esg2241_vertex19 -> esg2241_vertex21[ color = null];
+esg2241_vertex21 -> esg2241_vertex5[ color = null];
+esg2241_vertex3 -> esg2241_vertex22[ color = null];
+esg2241_vertex22 -> esg2241_vertex4[ color = null];
+esg2241_vertex24 -> esg2241_vertex5[ color = null];
+esg2241_vertex23 -> esg2241_vertex24[ color = null];
+esg2241_vertex25 -> esg2241_vertex23[ color = null];
+esg2241_vertex1 -> esg2241_vertex26[ color = null];
+esg2241_vertex26 -> esg2241_vertex25[ color = null];
+esg2241_vertex26 -> esg2241_vertex4[ color = null];
+esg2241_vertex27 -> esg2241_vertex27[ color = null];
+esg2241_vertex13 -> esg2241_vertex27[ color = null];
+esg2241_vertex27 -> esg2241_vertex14[ color = null];
+esg2241_vertex25 -> esg2241_vertex4[ color = null];
+esg2241_vertex0 [label = "[", shape = ellipse, color=null]
+esg2241_vertex1 [label = "log in", shape = ellipse, color=null]
+esg2241_vertex2 [label = "access as a teacher", shape = ellipse, color=null]
+esg2241_vertex3 [label = "turn editing on", shape = ellipse, color=null]
+esg2241_vertex4 [label = "open class records", shape = ellipse, color=null]
+esg2241_vertex6 [label = "delete class", shape = ellipse, color=null]
+esg2241_vertex7 [label = "confirm deletion", shape = ellipse, color=null]
+esg2241_vertex8 [label = "select the deletable class", shape = ellipse, color=null]
+esg2241_vertex9 [label = "add new class", shape = ellipse, color=null]
+esg2241_vertex10 [label = "enter the name of the class", shape = ellipse, color=null]
+esg2241_vertex11 [label = "enter the class detail", shape = ellipse, color=null]
+esg2241_vertex12 [label = "submit the class", shape = ellipse, color=null]
+esg2241_vertex5 [label = "]", shape = ellipse, color=null]
+esg2241_vertex14 [label = "confirm your identity", shape = ellipse, color=null]
+esg2241_vertex13 [label = "submit attendance", shape = ellipse, color=null]
+esg2241_vertex15 [label = "open notification settings", shape = ellipse, color=null]
+esg2241_vertex16 [label = "confirm notification settings", shape = ellipse, color=null]
+esg2241_vertex17 [label = "receive notifications as Email", shape = ellipse, color=null]
+esg2241_vertex18 [label = "select the existing schedule", shape = ellipse, color=null]
+esg2241_vertex19 [label = "select the existing class", shape = ellipse, color=null]
+esg2241_vertex20 [label = "view schedule", shape = ellipse, color=null]
+esg2241_vertex21 [label = "view class", shape = ellipse, color=null]
+esg2241_vertex22 [label = "open student attendance records", shape = ellipse, color=null]
+esg2241_vertex24 [label = "view record", shape = ellipse, color=null]
+esg2241_vertex23 [label = "select the existing record", shape = ellipse, color=null]
+esg2241_vertex25 [label = "open my attendance records", shape = ellipse, color=null]
+esg2241_vertex26 [label = "access as a student", shape = ellipse, color=null]
+esg2241_vertex27 [label = "show the QR code to the QR code reader", shape = ellipse, color=null]
+}

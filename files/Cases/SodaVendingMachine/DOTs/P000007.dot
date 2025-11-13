@@ -1,0 +1,26 @@
+digraph G {
+rankdir = LR
+label = "P000007";
+esg7_vertex2 -> esg7_vertex3[ color = null];
+esg7_vertex0 -> esg7_vertex4[ color = null];
+esg7_vertex4 -> esg7_vertex7[ color = null];
+esg7_vertex7 -> esg7_vertex2[ color = null];
+esg7_vertex7 -> esg7_vertex5[ color = null];
+esg7_vertex5 -> esg7_vertex6[ color = null];
+esg7_vertex3 -> esg7_vertex8[ color = null];
+esg7_vertex8 -> esg7_vertex9[ color = null];
+esg7_vertex9 -> esg7_vertex10[ color = null];
+esg7_vertex10 -> esg7_vertex1[ color = null];
+esg7_vertex6 -> esg7_vertex1[ color = null];
+esg7_vertex2 [label = "soda", shape = ellipse, color=null]
+esg7_vertex3 [label = "serveSoda", shape = ellipse, color=null]
+esg7_vertex0 [label = "[", shape = ellipse, color=null]
+esg7_vertex4 [label = "pay", shape = ellipse, color=null]
+esg7_vertex7 [label = "change", shape = ellipse, color=null]
+esg7_vertex5 [label = "cancel", shape = ellipse, color=null]
+esg7_vertex6 [label = "return", shape = ellipse, color=null]
+esg7_vertex8 [label = "open", shape = ellipse, color=null]
+esg7_vertex9 [label = "take", shape = ellipse, color=null]
+esg7_vertex10 [label = "close", shape = ellipse, color=null]
+esg7_vertex1 [label = "]", shape = ellipse, color=null]
+}

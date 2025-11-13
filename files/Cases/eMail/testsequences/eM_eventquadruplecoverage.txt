@@ -1,0 +1,1000 @@
+P000001: <e, au>:2 features
+Number of vertices: 9
+Number of edges: 15
+Number of sequences: 27
+Number of events: 192
+Event Sequences: 
+17 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+3 : compose_new_email, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+11 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_receiver's_email_address, send_email
+15 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+12 : compose_new_email, enter_email_body, enter_email_subject, enter_email_body, enter_email_body, enter_email_subject, enter_email_body, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+5 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+4 : enter_autoresponse_email_body, enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+4 : compose_new_email, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+9 : compose_new_email, enter_email_body, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_body, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+eventquadruplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000002: <e, ad>:2 features
+Number of vertices: 11
+Number of edges: 17
+Number of sequences: 30
+Number of events: 214
+Event Sequences: 
+17 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+3 : compose_new_email, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+6 : compose_new_email, enter_email_subject, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+12 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_receiver's_email_address, send_email
+16 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+9 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+12 : compose_new_email, enter_email_body, enter_email_subject, enter_email_body, enter_email_body, enter_email_subject, enter_email_body, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver
+5 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_body, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+4 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+4 : compose_new_email, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+12 : compose_new_email, enter_email_body, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+9 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+eventquadruplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000003: <e, au, ad>:3 features
+Number of vertices: 13
+Number of edges: 19
+Number of sequences: 32
+Number of events: 223
+Event Sequences: 
+17 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+3 : compose_new_email, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+6 : compose_new_email, enter_email_subject, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+12 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_receiver's_email_address, send_email
+16 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+9 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+12 : compose_new_email, enter_email_body, enter_email_subject, enter_email_body, enter_email_body, enter_email_subject, enter_email_body, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+5 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+4 : enter_autoresponse_email_body, enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver
+8 : compose_new_email, enter_email_body, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_body, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+9 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+8 : compose_new_email, enter_email_body, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+eventquadruplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000004: <e, ad, en>:3 features
+Number of vertices: 13
+Number of edges: 20
+Number of sequences: 37
+Number of events: 271
+Event Sequences: 
+17 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+3 : compose_new_email, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+6 : compose_new_email, enter_email_subject, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+13 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+8 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_receiver's_email_address, send_email
+17 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+14 : compose_new_email, enter_email_body, enter_email_subject, enter_email_body, enter_email_body, enter_email_subject, enter_email_body, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver
+8 : compose_new_email, enter_email_body, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+11 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+4 : compose_new_email, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_body, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_body, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+7 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+7 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+5 : compose_new_email, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+7 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+8 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+10 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+7 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+eventquadruplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000005: <e, en>:2 features
+Number of vertices: 9
+Number of edges: 16
+Number of sequences: 29
+Number of events: 223
+Event Sequences: 
+17 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+3 : compose_new_email, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+12 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_receiver's_email_address, send_email
+17 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+9 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+12 : compose_new_email, enter_email_body, enter_email_subject, enter_email_body, enter_email_body, enter_email_subject, enter_email_body, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_body, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+4 : compose_new_email, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+9 : compose_new_email, enter_email_body, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+7 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+10 : compose_new_email, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+9 : compose_new_email, enter_email_body, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+7 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+7 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+eventquadruplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000006: <e, au, en>:3 features
+Number of vertices: 11
+Number of edges: 18
+Number of sequences: 31
+Number of events: 232
+Event Sequences: 
+17 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+3 : compose_new_email, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+11 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_receiver's_email_address, send_email
+17 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+6 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+16 : compose_new_email, enter_email_body, enter_email_subject, enter_email_body, enter_email_body, enter_email_subject, enter_email_body, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+5 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+4 : enter_autoresponse_email_body, enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+8 : compose_new_email, enter_email_body, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_body, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_subject, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+5 : compose_new_email, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+7 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+8 : compose_new_email, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+8 : compose_new_email, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+4 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+9 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+eventquadruplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000007: <e, au, ad, en>:4 features
+Number of vertices: 15
+Number of edges: 22
+Number of sequences: 39
+Number of events: 280
+Event Sequences: 
+17 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+3 : compose_new_email, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+6 : compose_new_email, enter_email_subject, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+13 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+8 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_receiver's_email_address, send_email
+17 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+14 : compose_new_email, enter_email_body, enter_email_subject, enter_email_body, enter_email_body, enter_email_subject, enter_email_body, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+4 : enter_autoresponse_email_body, enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver
+4 : compose_new_email, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+5 : compose_new_email, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+4 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+4 : compose_new_email, enter_email_body, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+7 : compose_new_email, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+9 : compose_new_email, enter_email_body, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+8 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+12 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+7 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+7 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+7 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+eventquadruplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000008: <e, ad, en, s>:4 features
+Number of vertices: 14
+Number of edges: 22
+Number of sequences: 49
+Number of events: 334
+Event Sequences: 
+17 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+3 : compose_new_email, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+4 : compose_new_email, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_subject, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+13 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+8 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_receiver's_email_address, send_email
+16 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+6 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+13 : compose_new_email, enter_email_body, enter_email_subject, enter_email_body, enter_email_body, enter_email_subject, enter_email_body, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver
+4 : compose_new_email, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_body, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+6 : compose_new_email, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+12 : compose_new_email, enter_email_body, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+11 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+6 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+7 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+7 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+7 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+7 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+7 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+eventquadruplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000009: <e, s>:2 features
+Number of vertices: 8
+Number of edges: 15
+Number of sequences: 29
+Number of events: 211
+Event Sequences: 
+17 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+3 : compose_new_email, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_subject, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+12 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_receiver's_email_address, send_email
+16 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+9 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+12 : compose_new_email, enter_email_body, enter_email_subject, enter_email_body, enter_email_body, enter_email_subject, enter_email_body, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_body, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+9 : compose_new_email, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+10 : compose_new_email, enter_email_body, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+7 : compose_new_email, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+8 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+eventquadruplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000010: <e, au, s>:3 features
+Number of vertices: 10
+Number of edges: 17
+Number of sequences: 31
+Number of events: 220
+Event Sequences: 
+17 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+3 : compose_new_email, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_subject, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+12 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_receiver's_email_address, send_email
+16 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+9 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+12 : compose_new_email, enter_email_body, enter_email_subject, enter_email_body, enter_email_body, enter_email_subject, enter_email_body, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+5 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+4 : enter_autoresponse_email_body, enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+5 : compose_new_email, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_body, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+9 : compose_new_email, enter_email_body, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+8 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_subject, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+7 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+9 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+eventquadruplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000011: <e, ad, s>:3 features
+Number of vertices: 12
+Number of edges: 19
+Number of sequences: 37
+Number of events: 259
+Event Sequences: 
+17 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+3 : compose_new_email, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+4 : compose_new_email, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_subject, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+12 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+8 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_receiver's_email_address, send_email
+17 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+14 : compose_new_email, enter_email_body, enter_email_subject, enter_email_body, enter_email_body, enter_email_subject, enter_email_body, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver
+4 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_body, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+4 : compose_new_email, enter_email_subject, enter_receiver's_email_address, send_email
+9 : compose_new_email, enter_email_body, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+6 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+8 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+8 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+6 : compose_new_email, enter_email_subject, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+9 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+9 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+eventquadruplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000012: <e, au, ad, s>:4 features
+Number of vertices: 14
+Number of edges: 21
+Number of sequences: 39
+Number of events: 268
+Event Sequences: 
+17 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+3 : compose_new_email, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+4 : compose_new_email, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_subject, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+12 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+8 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_receiver's_email_address, send_email
+17 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+14 : compose_new_email, enter_email_body, enter_email_subject, enter_email_body, enter_email_body, enter_email_subject, enter_email_body, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+4 : enter_autoresponse_email_body, enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver
+4 : compose_new_email, enter_email_body, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_body, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_subject, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+4 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+9 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+6 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+9 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+eventquadruplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000013: <e, au, ad, en, s>:5 features
+Number of vertices: 16
+Number of edges: 24
+Number of sequences: 51
+Number of events: 343
+Event Sequences: 
+17 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+3 : compose_new_email, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+4 : compose_new_email, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_subject, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+13 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+8 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_receiver's_email_address, send_email
+16 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+6 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+13 : compose_new_email, enter_email_body, enter_email_subject, enter_email_body, enter_email_body, enter_email_subject, enter_email_body, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+5 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+4 : enter_autoresponse_email_body, enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver
+5 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+9 : compose_new_email, enter_email_body, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+13 : compose_new_email, enter_email_body, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+7 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+6 : compose_new_email, enter_email_subject, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+4 : compose_new_email, enter_email_body, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+4 : compose_new_email, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+8 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+7 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+5 : compose_new_email, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+9 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+7 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+7 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+7 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+7 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+6 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+eventquadruplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000014: <e, en, s>:3 features
+Number of vertices: 10
+Number of edges: 18
+Number of sequences: 36
+Number of events: 268
+Event Sequences: 
+17 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+3 : compose_new_email, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+4 : compose_new_email, enter_receiver's_email_address, sign_mail, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+12 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+8 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_receiver's_email_address, send_email
+17 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+11 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+15 : compose_new_email, enter_email_body, enter_email_subject, enter_email_body, enter_email_body, enter_email_subject, enter_email_body, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+4 : compose_new_email, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_body, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+8 : compose_new_email, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+11 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+11 : compose_new_email, enter_email_body, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+8 : compose_new_email, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+7 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+5 : compose_new_email, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+10 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+8 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+eventquadruplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000015: <e, au, en, s>:4 features
+Number of vertices: 12
+Number of edges: 20
+Number of sequences: 38
+Number of events: 277
+Event Sequences: 
+17 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+3 : compose_new_email, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+4 : compose_new_email, enter_receiver's_email_address, sign_mail, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+12 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+8 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_receiver's_email_address, send_email
+17 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+11 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+15 : compose_new_email, enter_email_body, enter_email_subject, enter_email_body, enter_email_body, enter_email_subject, enter_email_body, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+5 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+4 : enter_autoresponse_email_body, enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+5 : compose_new_email, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_body, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+8 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+5 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+11 : compose_new_email, enter_email_body, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+7 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+7 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
+11 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+eventquadruplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000016: <e, ad, s, f>:4 features
+Number of vertices: 13
+Number of edges: 21
+Number of sequences: 38
+Number of events: 263
+Event Sequences: 
+17 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+3 : compose_new_email, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+4 : compose_new_email, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_subject, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+12 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+8 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_receiver's_email_address, send_email
+17 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+14 : compose_new_email, enter_email_body, enter_email_subject, enter_email_body, enter_email_body, enter_email_subject, enter_email_body, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+4 : open_mailbox, select_email, enter_forward_receiver's_email_address, send_email
+3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver
+4 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_subject, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_body, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+8 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+4 : compose_new_email, enter_email_body, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+6 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+10 : compose_new_email, enter_email_body, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+eventquadruplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000017: <e, f>:2 features
+Number of vertices: 8
+Number of edges: 15
+Number of sequences: 26
+Number of events: 187
+Event Sequences: 
+17 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+3 : compose_new_email, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+11 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_receiver's_email_address, send_email
+15 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+12 : compose_new_email, enter_email_body, enter_email_subject, enter_email_body, enter_email_body, enter_email_subject, enter_email_body, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+4 : open_mailbox, select_email, enter_forward_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_body, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_body, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_body, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+eventquadruplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000018: <e, au, f>:3 features
+Number of vertices: 10
+Number of edges: 17
+Number of sequences: 28
+Number of events: 196
+Event Sequences: 
+17 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+3 : compose_new_email, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+11 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_receiver's_email_address, send_email
+15 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+12 : compose_new_email, enter_email_body, enter_email_subject, enter_email_body, enter_email_body, enter_email_subject, enter_email_body, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+4 : open_mailbox, select_email, enter_forward_receiver's_email_address, send_email
+5 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+4 : enter_autoresponse_email_body, enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+4 : compose_new_email, enter_email_body, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_body, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_body, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
+eventquadruplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000019: <e, ad, f>:3 features
+Number of vertices: 12
+Number of edges: 19
+Number of sequences: 31
+Number of events: 218
+Event Sequences: 
+17 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+3 : compose_new_email, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+6 : compose_new_email, enter_email_subject, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+12 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_receiver's_email_address, send_email
+16 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+9 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+12 : compose_new_email, enter_email_body, enter_email_subject, enter_email_body, enter_email_body, enter_email_subject, enter_email_body, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+4 : open_mailbox, select_email, enter_forward_receiver's_email_address, send_email
+3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver
+4 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_body, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+4 : compose_new_email, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+9 : compose_new_email, enter_email_body, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+8 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+8 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+eventquadruplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000020: <e, au, ad, f>:4 features
+Number of vertices: 14
+Number of edges: 21
+Number of sequences: 33
+Number of events: 227
+Event Sequences: 
+17 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+3 : compose_new_email, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+6 : compose_new_email, enter_email_subject, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+11 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_receiver's_email_address, send_email
+16 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+6 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+16 : compose_new_email, enter_email_body, enter_email_subject, enter_email_body, enter_email_body, enter_email_subject, enter_email_body, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+4 : open_mailbox, select_email, enter_forward_receiver's_email_address, send_email
+5 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+4 : enter_autoresponse_email_body, enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver
+5 : compose_new_email, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_body, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_body, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+9 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+8 : compose_new_email, enter_email_body, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+eventquadruplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000021: <e, au, ad, s, f>:5 features
+Number of vertices: 15
+Number of edges: 23
+Number of sequences: 40
+Number of events: 272
+Event Sequences: 
+17 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+3 : compose_new_email, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+4 : compose_new_email, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_subject, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+12 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+8 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_receiver's_email_address, send_email
+17 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+14 : compose_new_email, enter_email_body, enter_email_subject, enter_email_body, enter_email_body, enter_email_subject, enter_email_body, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+4 : open_mailbox, select_email, enter_forward_receiver's_email_address, send_email
+5 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+4 : enter_autoresponse_email_body, enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver
+4 : compose_new_email, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_body, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+8 : compose_new_email, enter_email_body, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+11 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+6 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+8 : compose_new_email, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_subject, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
+8 : compose_new_email, enter_email_body, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+9 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+eventquadruplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000022: <e, s, f>:3 features
+Number of vertices: 9
+Number of edges: 17
+Number of sequences: 30
+Number of events: 215
+Event Sequences: 
+17 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+3 : compose_new_email, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_subject, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+11 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_receiver's_email_address, send_email
+16 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+16 : compose_new_email, enter_email_body, enter_email_subject, enter_email_body, enter_email_body, enter_email_subject, enter_email_body, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+4 : open_mailbox, select_email, enter_forward_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_body, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+10 : compose_new_email, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+8 : compose_new_email, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+7 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+9 : compose_new_email, enter_email_body, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+9 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+eventquadruplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000023: <e, au, s, f>:4 features
+Number of vertices: 11
+Number of edges: 19
+Number of sequences: 32
+Number of events: 224
+Event Sequences: 
+17 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+3 : compose_new_email, enter_receiver's_email_address, send_email
+10 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_subject, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+11 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_receiver's_email_address, send_email
+16 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_body, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+16 : compose_new_email, enter_email_body, enter_email_subject, enter_email_body, enter_email_body, enter_email_subject, enter_email_body, enter_email_subject, enter_email_subject, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+4 : open_mailbox, select_email, enter_forward_receiver's_email_address, send_email
+5 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+4 : enter_autoresponse_email_body, enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
+4 : compose_new_email, enter_email_body, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_receiver's_email_address, send_email
+7 : compose_new_email, enter_email_subject, enter_email_body, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+4 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+4 : compose_new_email, enter_email_subject, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_body, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+8 : compose_new_email, enter_email_body, enter_email_body, enter_email_subject, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, send_email
+6 : compose_new_email, enter_email_subject, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_body, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+5 : compose_new_email, enter_email_body, enter_receiver's_email_address, sign_mail, send_email
+8 : compose_new_email, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+8 : compose_new_email, enter_email_subject, enter_email_body, enter_email_subject, enter_receiver's_email_address, enter_receiver's_email_address, sign_mail, send_email
+5 : compose_new_email, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+6 : compose_new_email, enter_email_body, enter_email_subject, enter_receiver's_email_address, sign_mail, send_email
+8 : compose_new_email, enter_email_body, enter_email_subject, enter_email_subject, enter_email_subject, enter_email_subject, enter_receiver's_email_address, send_email
+eventquadruplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+

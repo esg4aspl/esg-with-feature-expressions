@@ -1,0 +1,64 @@
+digraph G {
+rankdir = LR
+label = "P000497";
+esg497_vertex0 -> esg497_vertex1[ color = null];
+esg497_vertex2 -> esg497_vertex3[ color = null];
+esg497_vertex1 -> esg497_vertex2[ color = null];
+esg497_vertex3 -> esg497_vertex4[ color = null];
+esg497_vertex6 -> esg497_vertex6[ color = null];
+esg497_vertex8 -> esg497_vertex5[ color = null];
+esg497_vertex0 -> esg497_vertex7[ color = null];
+esg497_vertex7 -> esg497_vertex6[ color = null];
+esg497_vertex6 -> esg497_vertex8[ color = null];
+esg497_vertex1 -> esg497_vertex9[ color = null];
+esg497_vertex10 -> esg497_vertex5[ color = null];
+esg497_vertex9 -> esg497_vertex11[ color = null];
+esg497_vertex11 -> esg497_vertex10[ color = null];
+esg497_vertex4 -> esg497_vertex12[ color = null];
+esg497_vertex4 -> esg497_vertex13[ color = null];
+esg497_vertex12 -> esg497_vertex14[ color = null];
+esg497_vertex14 -> esg497_vertex5[ color = null];
+esg497_vertex13 -> esg497_vertex15[ color = null];
+esg497_vertex15 -> esg497_vertex5[ color = null];
+esg497_vertex3 -> esg497_vertex16[ color = null];
+esg497_vertex16 -> esg497_vertex4[ color = null];
+esg497_vertex16 -> esg497_vertex17[ color = null];
+esg497_vertex16 -> esg497_vertex18[ color = null];
+esg497_vertex17 -> esg497_vertex19[ color = null];
+esg497_vertex18 -> esg497_vertex19[ color = null];
+esg497_vertex19 -> esg497_vertex20[ color = null];
+esg497_vertex20 -> esg497_vertex5[ color = null];
+esg497_vertex17 -> esg497_vertex21[ color = null];
+esg497_vertex21 -> esg497_vertex5[ color = null];
+esg497_vertex22 -> esg497_vertex5[ color = null];
+esg497_vertex23 -> esg497_vertex22[ color = null];
+esg497_vertex1 -> esg497_vertex24[ color = null];
+esg497_vertex24 -> esg497_vertex23[ color = null];
+esg497_vertex24 -> esg497_vertex4[ color = null];
+esg497_vertex23 -> esg497_vertex4[ color = null];
+esg497_vertex0 [label = "[", shape = ellipse, color=null]
+esg497_vertex1 [label = "log in", shape = ellipse, color=null]
+esg497_vertex2 [label = "access as a teacher", shape = ellipse, color=null]
+esg497_vertex3 [label = "turn editing on", shape = ellipse, color=null]
+esg497_vertex4 [label = "open class records", shape = ellipse, color=null]
+esg497_vertex6 [label = "read the access card to the card reader", shape = ellipse, color=null]
+esg497_vertex8 [label = "confirm your identity", shape = ellipse, color=null]
+esg497_vertex5 [label = "]", shape = ellipse, color=null]
+esg497_vertex7 [label = "submit attendance", shape = ellipse, color=null]
+esg497_vertex9 [label = "open notification settings", shape = ellipse, color=null]
+esg497_vertex10 [label = "confirm notification settings", shape = ellipse, color=null]
+esg497_vertex11 [label = "receive notifications as Email", shape = ellipse, color=null]
+esg497_vertex12 [label = "select the existing schedule", shape = ellipse, color=null]
+esg497_vertex13 [label = "select the existing class", shape = ellipse, color=null]
+esg497_vertex14 [label = "view schedule", shape = ellipse, color=null]
+esg497_vertex15 [label = "view class", shape = ellipse, color=null]
+esg497_vertex16 [label = "open student attendance records", shape = ellipse, color=null]
+esg497_vertex17 [label = "select a class-list attendance record", shape = ellipse, color=null]
+esg497_vertex18 [label = "select an editable student-record", shape = ellipse, color=null]
+esg497_vertex19 [label = "edit attendance status", shape = ellipse, color=null]
+esg497_vertex20 [label = "submit attendance record update", shape = ellipse, color=null]
+esg497_vertex21 [label = "trace attendance activity of the class", shape = ellipse, color=null]
+esg497_vertex22 [label = "monitor current attendance status", shape = ellipse, color=null]
+esg497_vertex23 [label = "open my attendance records", shape = ellipse, color=null]
+esg497_vertex24 [label = "access as a student", shape = ellipse, color=null]
+}

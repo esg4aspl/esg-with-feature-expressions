@@ -1,0 +1,54 @@
+digraph G {
+rankdir = LR
+label = "P00008585s";
+esg86_vertex0 -> esg86_vertex2[ color = null];
+esg86_vertex3 -> esg86_vertex5[ color = null];
+esg86_vertex5 -> esg86_vertex4[ color = null];
+esg86_vertex2 -> esg86_vertex3[ color = null];
+esg86_vertex6 -> esg86_vertex8[ color = null];
+esg86_vertex8 -> esg86_vertex7[ color = null];
+esg86_vertex2 -> esg86_vertex6[ color = null];
+esg86_vertex4 -> esg86_vertex1[ color = null];
+esg86_vertex7 -> esg86_vertex1[ color = null];
+esg86_vertex6 -> esg86_vertex9[ color = null];
+esg86_vertex8 -> esg86_vertex10[ color = null];
+esg86_vertex0 -> esg86_vertex11[ color = null];
+esg86_vertex10 -> esg86_vertex12[ color = null];
+esg86_vertex12 -> esg86_vertex9[ color = null];
+esg86_vertex0 -> esg86_vertex13[ color = null];
+esg86_vertex3 -> esg86_vertex14[ color = null];
+esg86_vertex14 -> esg86_vertex1[ color = null];
+esg86_vertex9 -> esg86_vertex1[ color = null];
+esg86_vertex11 -> esg86_vertex18[ color = null];
+esg86_vertex15 -> esg86_vertex16[ color = null];
+esg86_vertex16 -> esg86_vertex17[ color = null];
+esg86_vertex0 -> esg86_vertex15[ color = null];
+esg86_vertex18 -> esg86_vertex1[ color = null];
+esg86_vertex13 -> esg86_vertex19[ color = null];
+esg86_vertex19 -> esg86_vertex1[ color = null];
+esg86_vertex17 -> esg86_vertex20[ color = null];
+esg86_vertex20 -> esg86_vertex1[ color = null];
+esg86_vertex12 -> esg86_vertex8[ color = null];
+esg86_vertex10 -> esg86_vertex9[ color = null];
+esg86_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg86_vertex2 [label = "get balance_2/b", shape = ellipse, color=black]
+esg86_vertex3 [label = "select deposit_3/d", shape = ellipse, color=black]
+esg86_vertex5 [label = "enter deposit amount_5/d", shape = ellipse, color=black]
+esg86_vertex4 [label = "put money_4/d", shape = ellipse, color=black]
+esg86_vertex6 [label = "select withdraw_6/w", shape = ellipse, color=black]
+esg86_vertex8 [label = "enter withdraw amount_8/w", shape = ellipse, color=black]
+esg86_vertex7 [label = "take money_7/w", shape = ellipse, color=black]
+esg86_vertex1 [label = "]_1/", shape = ellipse, color=black]
+esg86_vertex9 [label = "cancel withdraw_9/cw", shape = ellipse, color=black]
+esg86_vertex10 [label = "confirm daily limit excess_10/dl", shape = ellipse, color=black]
+esg86_vertex11 [label = "enter daily withdraw limit_11/dl", shape = ellipse, color=black]
+esg86_vertex12 [label = "confirm overdraft limit excess_12/o", shape = ellipse, color=black]
+esg86_vertex13 [label = "enter overdraft limit_13/o", shape = ellipse, color=black]
+esg86_vertex14 [label = "cancel deposit_14/cd", shape = ellipse, color=black]
+esg86_vertex18 [label = "confirm daily withdraw limit_18/dl", shape = ellipse, color=black]
+esg86_vertex15 [label = "open account_15/b", shape = ellipse, color=black]
+esg86_vertex16 [label = "select currency_16/b", shape = ellipse, color=black]
+esg86_vertex17 [label = "USD_17/us", shape = ellipse, color=black]
+esg86_vertex19 [label = "confirm overdraft limit_19/o", shape = ellipse, color=black]
+esg86_vertex20 [label = "confirm USD account openning_20/us", shape = ellipse, color=black]
+}

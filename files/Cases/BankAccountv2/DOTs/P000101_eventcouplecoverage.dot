@@ -1,0 +1,42 @@
+digraph G {
+rankdir = LR
+label = "P000101101s";
+esg102_vertex0 -> esg102_vertex2[ color = null];
+esg102_vertex3 -> esg102_vertex5[ color = null];
+esg102_vertex5 -> esg102_vertex4[ color = null];
+esg102_vertex2 -> esg102_vertex3[ color = null];
+esg102_vertex6 -> esg102_vertex8[ color = null];
+esg102_vertex8 -> esg102_vertex7[ color = null];
+esg102_vertex2 -> esg102_vertex6[ color = null];
+esg102_vertex4 -> esg102_vertex1[ color = null];
+esg102_vertex7 -> esg102_vertex1[ color = null];
+esg102_vertex6 -> esg102_vertex9[ color = null];
+esg102_vertex3 -> esg102_vertex10[ color = null];
+esg102_vertex0 -> esg102_vertex11[ color = null];
+esg102_vertex11 -> esg102_vertex12[ color = null];
+esg102_vertex10 -> esg102_vertex1[ color = null];
+esg102_vertex9 -> esg102_vertex1[ color = null];
+esg102_vertex12 -> esg102_vertex1[ color = null];
+esg102_vertex13 -> esg102_vertex14[ color = null];
+esg102_vertex14 -> esg102_vertex15[ color = null];
+esg102_vertex0 -> esg102_vertex13[ color = null];
+esg102_vertex15 -> esg102_vertex16[ color = null];
+esg102_vertex16 -> esg102_vertex1[ color = null];
+esg102_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg102_vertex2 [label = "get balance_2/b", shape = ellipse, color=black]
+esg102_vertex3 [label = "select deposit_3/d", shape = ellipse, color=black]
+esg102_vertex5 [label = "enter deposit amount_5/d", shape = ellipse, color=black]
+esg102_vertex4 [label = "put money_4/d", shape = ellipse, color=black]
+esg102_vertex6 [label = "select withdraw_6/w", shape = ellipse, color=black]
+esg102_vertex8 [label = "enter withdraw amount_8/w", shape = ellipse, color=black]
+esg102_vertex7 [label = "take money_7/w", shape = ellipse, color=black]
+esg102_vertex1 [label = "]_1/", shape = ellipse, color=black]
+esg102_vertex9 [label = "cancel withdraw_9/cw", shape = ellipse, color=black]
+esg102_vertex10 [label = "cancel deposit_10/cd", shape = ellipse, color=black]
+esg102_vertex11 [label = "request an interest rate_11/i", shape = ellipse, color=black]
+esg102_vertex12 [label = "confirm interest rate_12/i", shape = ellipse, color=black]
+esg102_vertex13 [label = "open account_13/b", shape = ellipse, color=black]
+esg102_vertex14 [label = "select currency_14/b", shape = ellipse, color=black]
+esg102_vertex15 [label = "USD_15/us", shape = ellipse, color=black]
+esg102_vertex16 [label = "confirm USD account openning_16/us", shape = ellipse, color=black]
+}

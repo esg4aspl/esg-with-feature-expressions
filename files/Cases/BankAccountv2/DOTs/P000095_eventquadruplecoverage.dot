@@ -1,0 +1,21 @@
+digraph G {
+rankdir = LR
+label = "P00009595stt";
+esg98_vertex0 -> esg98_vertex1[ color = null];
+esg98_vertex0 -> esg98_vertex2[ color = null];
+esg98_vertex3 -> esg98_vertex4[ color = null];
+esg98_vertex1 -> esg98_vertex3[ color = null];
+esg98_vertex5 -> esg98_vertex4[ color = null];
+esg98_vertex2 -> esg98_vertex5[ color = null];
+esg98_vertex6 -> esg98_vertex7[ color = null];
+esg98_vertex7 -> esg98_vertex4[ color = null];
+esg98_vertex0 -> esg98_vertex6[ color = null];
+esg98_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg98_vertex1 [label = "get balance_2:select deposit_3:enter deposit amount_5/b AND d", shape = ellipse, color=black]
+esg98_vertex2 [label = "get balance_2:select withdraw_6:enter withdraw amount_8/b AND w", shape = ellipse, color=black]
+esg98_vertex3 [label = "select deposit_3:enter deposit amount_5:put money_4/d", shape = ellipse, color=black]
+esg98_vertex4 [label = "]_1/", shape = ellipse, color=black]
+esg98_vertex5 [label = "select withdraw_6:enter withdraw amount_8:take money_7/w", shape = ellipse, color=black]
+esg98_vertex6 [label = "open account_11:select currency_12:USD_13/b AND us", shape = ellipse, color=black]
+esg98_vertex7 [label = "select currency_12:USD_13:confirm USD account openning_14/b AND us", shape = ellipse, color=black]
+}

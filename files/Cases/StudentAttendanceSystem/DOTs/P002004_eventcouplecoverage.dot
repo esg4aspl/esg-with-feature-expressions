@@ -1,0 +1,81 @@
+digraph G {
+rankdir = LR
+label = "P0020042004s";
+esg2005_vertex0 -> esg2005_vertex1[ color = null];
+esg2005_vertex2 -> esg2005_vertex3[ color = null];
+esg2005_vertex1 -> esg2005_vertex2[ color = null];
+esg2005_vertex3 -> esg2005_vertex4[ color = null];
+esg2005_vertex6 -> esg2005_vertex7[ color = null];
+esg2005_vertex8 -> esg2005_vertex6[ color = null];
+esg2005_vertex7 -> esg2005_vertex8[ color = null];
+esg2005_vertex3 -> esg2005_vertex8[ color = null];
+esg2005_vertex9 -> esg2005_vertex10[ color = null];
+esg2005_vertex10 -> esg2005_vertex11[ color = null];
+esg2005_vertex9 -> esg2005_vertex11[ color = null];
+esg2005_vertex11 -> esg2005_vertex10[ color = null];
+esg2005_vertex11 -> esg2005_vertex12[ color = null];
+esg2005_vertex10 -> esg2005_vertex12[ color = null];
+esg2005_vertex10 -> esg2005_vertex10[ color = null];
+esg2005_vertex11 -> esg2005_vertex11[ color = null];
+esg2005_vertex3 -> esg2005_vertex9[ color = null];
+esg2005_vertex12 -> esg2005_vertex5[ color = null];
+esg2005_vertex14 -> esg2005_vertex15[ color = null];
+esg2005_vertex15 -> esg2005_vertex14[ color = null];
+esg2005_vertex14 -> esg2005_vertex14[ color = null];
+esg2005_vertex15 -> esg2005_vertex15[ color = null];
+esg2005_vertex13 -> esg2005_vertex14[ color = null];
+esg2005_vertex13 -> esg2005_vertex15[ color = null];
+esg2005_vertex3 -> esg2005_vertex13[ color = null];
+esg2005_vertex14 -> esg2005_vertex12[ color = null];
+esg2005_vertex15 -> esg2005_vertex12[ color = null];
+esg2005_vertex7 -> esg2005_vertex5[ color = null];
+esg2005_vertex17 -> esg2005_vertex5[ color = null];
+esg2005_vertex0 -> esg2005_vertex16[ color = null];
+esg2005_vertex1 -> esg2005_vertex18[ color = null];
+esg2005_vertex19 -> esg2005_vertex5[ color = null];
+esg2005_vertex18 -> esg2005_vertex20[ color = null];
+esg2005_vertex20 -> esg2005_vertex19[ color = null];
+esg2005_vertex4 -> esg2005_vertex21[ color = null];
+esg2005_vertex21 -> esg2005_vertex22[ color = null];
+esg2005_vertex22 -> esg2005_vertex5[ color = null];
+esg2005_vertex3 -> esg2005_vertex23[ color = null];
+esg2005_vertex23 -> esg2005_vertex4[ color = null];
+esg2005_vertex23 -> esg2005_vertex24[ color = null];
+esg2005_vertex23 -> esg2005_vertex25[ color = null];
+esg2005_vertex24 -> esg2005_vertex26[ color = null];
+esg2005_vertex25 -> esg2005_vertex26[ color = null];
+esg2005_vertex26 -> esg2005_vertex27[ color = null];
+esg2005_vertex27 -> esg2005_vertex5[ color = null];
+esg2005_vertex28 -> esg2005_vertex28[ color = null];
+esg2005_vertex16 -> esg2005_vertex28[ color = null];
+esg2005_vertex28 -> esg2005_vertex17[ color = null];
+esg2005_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg2005_vertex1 [label = "log in_1/sas", shape = ellipse, color=black]
+esg2005_vertex2 [label = "access as a teacher_2/ta", shape = ellipse, color=black]
+esg2005_vertex3 [label = "turn editing on_3/ta", shape = ellipse, color=black]
+esg2005_vertex4 [label = "open class records_4/sas", shape = ellipse, color=black]
+esg2005_vertex6 [label = "delete class_6/dc", shape = ellipse, color=black]
+esg2005_vertex7 [label = "confirm deletion_7/dc", shape = ellipse, color=black]
+esg2005_vertex8 [label = "select the deletable class_8/dc", shape = ellipse, color=black]
+esg2005_vertex9 [label = "add new class_9/anc", shape = ellipse, color=black]
+esg2005_vertex10 [label = "enter the name of the class_10/anc", shape = ellipse, color=black]
+esg2005_vertex11 [label = "enter the class detail_11/anc", shape = ellipse, color=black]
+esg2005_vertex12 [label = "submit the class_12/anc", shape = ellipse, color=black]
+esg2005_vertex5 [label = "]_5/", shape = ellipse, color=black]
+esg2005_vertex14 [label = "update the name of the class_14/ucd", shape = ellipse, color=black]
+esg2005_vertex15 [label = "update the class detail_15/ucd", shape = ellipse, color=black]
+esg2005_vertex13 [label = "select the editable class_13/ucd", shape = ellipse, color=black]
+esg2005_vertex17 [label = "confirm your identity_17/sas", shape = ellipse, color=black]
+esg2005_vertex16 [label = "submit attendance_16/sas", shape = ellipse, color=black]
+esg2005_vertex18 [label = "open notification settings_18/sas", shape = ellipse, color=black]
+esg2005_vertex19 [label = "confirm notification settings_19/sas", shape = ellipse, color=black]
+esg2005_vertex20 [label = "receive notifications as Email_20/e", shape = ellipse, color=black]
+esg2005_vertex21 [label = "select the existing schedule_21/vs", shape = ellipse, color=black]
+esg2005_vertex22 [label = "view schedule_22/vs", shape = ellipse, color=black]
+esg2005_vertex23 [label = "open student attendance records_23/ta", shape = ellipse, color=black]
+esg2005_vertex24 [label = "select a class-list attendance record_24/ur", shape = ellipse, color=black]
+esg2005_vertex25 [label = "select an editable student-record_25/ur", shape = ellipse, color=black]
+esg2005_vertex26 [label = "edit attendance status_26/ur", shape = ellipse, color=black]
+esg2005_vertex27 [label = "submit attendance record update_27/ur", shape = ellipse, color=black]
+esg2005_vertex28 [label = "show the QR code to the QR code reader_28/q", shape = ellipse, color=black]
+}

@@ -1,0 +1,44 @@
+digraph G {
+rankdir = LR
+label = "P000255255stt";
+esg258_vertex0 -> esg258_vertex1[ color = null];
+esg258_vertex0 -> esg258_vertex2[ color = null];
+esg258_vertex0 -> esg258_vertex3[ color = null];
+esg258_vertex0 -> esg258_vertex4[ color = null];
+esg258_vertex5 -> esg258_vertex6[ color = null];
+esg258_vertex1 -> esg258_vertex5[ color = null];
+esg258_vertex2 -> esg258_vertex6[ color = null];
+esg258_vertex7 -> esg258_vertex6[ color = null];
+esg258_vertex8 -> esg258_vertex9[ color = null];
+esg258_vertex3 -> esg258_vertex7[ color = null];
+esg258_vertex3 -> esg258_vertex8[ color = null];
+esg258_vertex4 -> esg258_vertex6[ color = null];
+esg258_vertex9 -> esg258_vertex6[ color = null];
+esg258_vertex10 -> esg258_vertex11[ color = null];
+esg258_vertex11 -> esg258_vertex6[ color = null];
+esg258_vertex0 -> esg258_vertex10[ color = null];
+esg258_vertex12 -> esg258_vertex13[ color = null];
+esg258_vertex13 -> esg258_vertex14[ color = null];
+esg258_vertex14 -> esg258_vertex15[ color = null];
+esg258_vertex14 -> esg258_vertex16[ color = null];
+esg258_vertex15 -> esg258_vertex6[ color = null];
+esg258_vertex16 -> esg258_vertex6[ color = null];
+esg258_vertex0 -> esg258_vertex12[ color = null];
+esg258_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg258_vertex1 [label = "get balance_2:select deposit_3:enter deposit amount_5/b AND d", shape = ellipse, color=black]
+esg258_vertex2 [label = "get balance_2:select deposit_3:cancel deposit_12/b AND d AND cd", shape = ellipse, color=black]
+esg258_vertex3 [label = "get balance_2:select withdraw_6:enter withdraw amount_8/b AND w", shape = ellipse, color=black]
+esg258_vertex4 [label = "get balance_2:select withdraw_6:cancel withdraw_9/b AND w AND cw", shape = ellipse, color=black]
+esg258_vertex5 [label = "select deposit_3:enter deposit amount_5:put money_4/d", shape = ellipse, color=black]
+esg258_vertex6 [label = "]_1/", shape = ellipse, color=black]
+esg258_vertex7 [label = "select withdraw_6:enter withdraw amount_8:take money_7/w", shape = ellipse, color=black]
+esg258_vertex8 [label = "select withdraw_6:enter withdraw amount_8:confirm daily limit excess_10/w AND dl", shape = ellipse, color=black]
+esg258_vertex9 [label = "enter withdraw amount_8:confirm daily limit excess_10:cancel withdraw_9/w AND dl AND cw", shape = ellipse, color=black]
+esg258_vertex10 [label = "open account_13:select currency_14:TL_15/b AND tl", shape = ellipse, color=black]
+esg258_vertex11 [label = "select currency_14:TL_15:confirm TL account openning_23/b AND tl", shape = ellipse, color=black]
+esg258_vertex12 [label = "transfer money_16:enter receiver's IBAN_17:enter amount_18/t", shape = ellipse, color=black]
+esg258_vertex13 [label = "enter receiver's IBAN_17:enter amount_18:select transfer type_19/t", shape = ellipse, color=black]
+esg258_vertex14 [label = "enter amount_18:select transfer type_19:view transfer details_20/t", shape = ellipse, color=black]
+esg258_vertex15 [label = "select transfer type_19:view transfer details_20:confirm transfer_21/t", shape = ellipse, color=black]
+esg258_vertex16 [label = "select transfer type_19:view transfer details_20:cancel transfer_24/t", shape = ellipse, color=black]
+}

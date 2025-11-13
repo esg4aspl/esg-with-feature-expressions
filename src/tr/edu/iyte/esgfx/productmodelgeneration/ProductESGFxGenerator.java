@@ -6,7 +6,6 @@ import tr.edu.iyte.esg.model.ESG;
 import tr.edu.iyte.esg.model.Edge;
 import tr.edu.iyte.esg.model.EdgeSimple;
 import tr.edu.iyte.esg.model.Vertex;
-import tr.edu.iyte.esg.model.VertexSimple;
 import tr.edu.iyte.esg.model.Event;
 import tr.edu.iyte.esg.model.EventSimple;
 
@@ -79,21 +78,21 @@ public class ProductESGFxGenerator {
 		while (vertexListIterator.hasNext()) {
 			Vertex vertex = vertexListIterator.next();
 //			System.out.println(i + " Vertex: " + vertex.toString());
-			if (!vertex.isPseudoStartVertex() && !vertex.isPseudoEndVertex()) {
-				VertexRefinedByFeatureExpression vertexRefinedByFeatureExpression = (VertexRefinedByFeatureExpression) vertex;
-				if (vertexRefinedByFeatureExpression.getFeatureExpression().evaluate()) {
-					Event newEvent = new EventSimple(productESGFx.getNextEventID(), vertex.getEvent().getName());
-					productESGFx.addEvent(newEvent);
-					FeatureExpression newFeatureExpression = vertexRefinedByFeatureExpression.getFeatureExpression();
-					Vertex newVertex = new VertexRefinedByFeatureExpression(productESGFx.getNextVertexID(), newEvent,
-							newFeatureExpression);
-					productESGFx.addVertex(newVertex);
-				}
-			} else {
+//			if (!vertex.isPseudoStartVertex() && !vertex.isPseudoEndVertex()) {
+			VertexRefinedByFeatureExpression vertexRefinedByFeatureExpression = (VertexRefinedByFeatureExpression) vertex;
+			if (vertexRefinedByFeatureExpression.getFeatureExpression().evaluate()) {
 				Event newEvent = new EventSimple(productESGFx.getNextEventID(), vertex.getEvent().getName());
-				Vertex newVertex = new VertexSimple(productESGFx.getNextVertexID(), newEvent);
+				productESGFx.addEvent(newEvent);
+				FeatureExpression newFeatureExpression = vertexRefinedByFeatureExpression.getFeatureExpression();
+				Vertex newVertex = new VertexRefinedByFeatureExpression(productESGFx.getNextVertexID(), newEvent,
+						newFeatureExpression);
 				productESGFx.addVertex(newVertex);
 			}
+//			} else {
+//				Event newEvent = new EventSimple(productESGFx.getNextEventID(), vertex.getEvent().getName());
+//				Vertex newVertex = new VertexSimple(productESGFx.getNextVertexID(), newEvent);
+//				productESGFx.addVertex(newVertex);
+//			}
 
 		}
 //		System.out.println("Product Vertex List Size: " + productESGFx.getVertexList().size());

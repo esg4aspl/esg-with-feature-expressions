@@ -1,0 +1,51 @@
+digraph G {
+rankdir = LR
+label = "P000134134s";
+esg135_vertex0 -> esg135_vertex2[ color = null];
+esg135_vertex3 -> esg135_vertex5[ color = null];
+esg135_vertex5 -> esg135_vertex4[ color = null];
+esg135_vertex2 -> esg135_vertex3[ color = null];
+esg135_vertex6 -> esg135_vertex8[ color = null];
+esg135_vertex8 -> esg135_vertex7[ color = null];
+esg135_vertex2 -> esg135_vertex6[ color = null];
+esg135_vertex4 -> esg135_vertex1[ color = null];
+esg135_vertex7 -> esg135_vertex1[ color = null];
+esg135_vertex3 -> esg135_vertex9[ color = null];
+esg135_vertex0 -> esg135_vertex10[ color = null];
+esg135_vertex10 -> esg135_vertex11[ color = null];
+esg135_vertex11 -> esg135_vertex1[ color = null];
+esg135_vertex9 -> esg135_vertex1[ color = null];
+esg135_vertex12 -> esg135_vertex13[ color = null];
+esg135_vertex13 -> esg135_vertex14[ color = null];
+esg135_vertex0 -> esg135_vertex12[ color = null];
+esg135_vertex15 -> esg135_vertex16[ color = null];
+esg135_vertex15 -> esg135_vertex17[ color = null];
+esg135_vertex16 -> esg135_vertex18[ color = null];
+esg135_vertex0 -> esg135_vertex15[ color = null];
+esg135_vertex18 -> esg135_vertex1[ color = null];
+esg135_vertex17 -> esg135_vertex19[ color = null];
+esg135_vertex19 -> esg135_vertex1[ color = null];
+esg135_vertex14 -> esg135_vertex20[ color = null];
+esg135_vertex20 -> esg135_vertex1[ color = null];
+esg135_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg135_vertex2 [label = "get balance_2/b", shape = ellipse, color=black]
+esg135_vertex3 [label = "select deposit_3/d", shape = ellipse, color=black]
+esg135_vertex5 [label = "enter deposit amount_5/d", shape = ellipse, color=black]
+esg135_vertex4 [label = "put money_4/d", shape = ellipse, color=black]
+esg135_vertex6 [label = "select withdraw_6/w", shape = ellipse, color=black]
+esg135_vertex8 [label = "enter withdraw amount_8/w", shape = ellipse, color=black]
+esg135_vertex7 [label = "take money_7/w", shape = ellipse, color=black]
+esg135_vertex1 [label = "]_1/", shape = ellipse, color=black]
+esg135_vertex9 [label = "cancel deposit_9/cd", shape = ellipse, color=black]
+esg135_vertex10 [label = "enter a credit amount_10/c", shape = ellipse, color=black]
+esg135_vertex11 [label = "confirm credit amount_11/c", shape = ellipse, color=black]
+esg135_vertex12 [label = "open account_12/b", shape = ellipse, color=black]
+esg135_vertex13 [label = "select currency_13/b", shape = ellipse, color=black]
+esg135_vertex14 [label = "TL_14/tl", shape = ellipse, color=black]
+esg135_vertex15 [label = "update profile_15/up", shape = ellipse, color=black]
+esg135_vertex16 [label = "update contact information_16/up", shape = ellipse, color=black]
+esg135_vertex17 [label = "update preferences_17/up", shape = ellipse, color=black]
+esg135_vertex18 [label = "save contact information changes_18/up", shape = ellipse, color=black]
+esg135_vertex19 [label = "save preference changes_19/up", shape = ellipse, color=black]
+esg135_vertex20 [label = "confirm TL account openning_20/tl", shape = ellipse, color=black]
+}

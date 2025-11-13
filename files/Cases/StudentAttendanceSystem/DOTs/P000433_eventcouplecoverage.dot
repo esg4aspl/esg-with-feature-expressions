@@ -1,0 +1,84 @@
+digraph G {
+rankdir = LR
+label = "P000433433s";
+esg434_vertex0 -> esg434_vertex1[ color = null];
+esg434_vertex2 -> esg434_vertex3[ color = null];
+esg434_vertex1 -> esg434_vertex2[ color = null];
+esg434_vertex3 -> esg434_vertex4[ color = null];
+esg434_vertex6 -> esg434_vertex7[ color = null];
+esg434_vertex7 -> esg434_vertex8[ color = null];
+esg434_vertex6 -> esg434_vertex8[ color = null];
+esg434_vertex8 -> esg434_vertex7[ color = null];
+esg434_vertex8 -> esg434_vertex9[ color = null];
+esg434_vertex7 -> esg434_vertex9[ color = null];
+esg434_vertex7 -> esg434_vertex7[ color = null];
+esg434_vertex8 -> esg434_vertex8[ color = null];
+esg434_vertex3 -> esg434_vertex6[ color = null];
+esg434_vertex9 -> esg434_vertex5[ color = null];
+esg434_vertex10 -> esg434_vertex11[ color = null];
+esg434_vertex11 -> esg434_vertex12[ color = null];
+esg434_vertex10 -> esg434_vertex12[ color = null];
+esg434_vertex12 -> esg434_vertex11[ color = null];
+esg434_vertex12 -> esg434_vertex13[ color = null];
+esg434_vertex11 -> esg434_vertex13[ color = null];
+esg434_vertex11 -> esg434_vertex11[ color = null];
+esg434_vertex12 -> esg434_vertex12[ color = null];
+esg434_vertex13 -> esg434_vertex5[ color = null];
+esg434_vertex3 -> esg434_vertex10[ color = null];
+esg434_vertex14 -> esg434_vertex14[ color = null];
+esg434_vertex16 -> esg434_vertex5[ color = null];
+esg434_vertex0 -> esg434_vertex15[ color = null];
+esg434_vertex15 -> esg434_vertex14[ color = null];
+esg434_vertex14 -> esg434_vertex16[ color = null];
+esg434_vertex1 -> esg434_vertex17[ color = null];
+esg434_vertex18 -> esg434_vertex5[ color = null];
+esg434_vertex17 -> esg434_vertex19[ color = null];
+esg434_vertex19 -> esg434_vertex18[ color = null];
+esg434_vertex4 -> esg434_vertex20[ color = null];
+esg434_vertex20 -> esg434_vertex21[ color = null];
+esg434_vertex21 -> esg434_vertex5[ color = null];
+esg434_vertex3 -> esg434_vertex22[ color = null];
+esg434_vertex22 -> esg434_vertex4[ color = null];
+esg434_vertex22 -> esg434_vertex23[ color = null];
+esg434_vertex22 -> esg434_vertex24[ color = null];
+esg434_vertex23 -> esg434_vertex25[ color = null];
+esg434_vertex24 -> esg434_vertex25[ color = null];
+esg434_vertex25 -> esg434_vertex26[ color = null];
+esg434_vertex26 -> esg434_vertex5[ color = null];
+esg434_vertex27 -> esg434_vertex5[ color = null];
+esg434_vertex28 -> esg434_vertex27[ color = null];
+esg434_vertex1 -> esg434_vertex29[ color = null];
+esg434_vertex29 -> esg434_vertex28[ color = null];
+esg434_vertex29 -> esg434_vertex4[ color = null];
+esg434_vertex28 -> esg434_vertex4[ color = null];
+esg434_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg434_vertex1 [label = "log in_1/sas", shape = ellipse, color=black]
+esg434_vertex2 [label = "access as a teacher_2/ta", shape = ellipse, color=black]
+esg434_vertex3 [label = "turn editing on_3/ta", shape = ellipse, color=black]
+esg434_vertex4 [label = "open class records_4/sas", shape = ellipse, color=black]
+esg434_vertex6 [label = "add new class_6/anc", shape = ellipse, color=black]
+esg434_vertex7 [label = "enter the name of the class_7/anc", shape = ellipse, color=black]
+esg434_vertex8 [label = "enter the class detail_8/anc", shape = ellipse, color=black]
+esg434_vertex9 [label = "submit the class_9/anc", shape = ellipse, color=black]
+esg434_vertex5 [label = "]_5/", shape = ellipse, color=black]
+esg434_vertex10 [label = "add new schedule_10/ans", shape = ellipse, color=black]
+esg434_vertex11 [label = "enter the days of the class_11/ans", shape = ellipse, color=black]
+esg434_vertex12 [label = "enter the hours of the class_12/ans", shape = ellipse, color=black]
+esg434_vertex13 [label = "submit the class schedule_13/ans", shape = ellipse, color=black]
+esg434_vertex14 [label = "read the access card to the card reader_14/a", shape = ellipse, color=black]
+esg434_vertex16 [label = "confirm your identity_16/sas", shape = ellipse, color=black]
+esg434_vertex15 [label = "submit attendance_15/sas", shape = ellipse, color=black]
+esg434_vertex17 [label = "open notification settings_17/sas", shape = ellipse, color=black]
+esg434_vertex18 [label = "confirm notification settings_18/sas", shape = ellipse, color=black]
+esg434_vertex19 [label = "receive notifications as Email_19/e", shape = ellipse, color=black]
+esg434_vertex20 [label = "select the existing class_20/vc", shape = ellipse, color=black]
+esg434_vertex21 [label = "view class_21/vc", shape = ellipse, color=black]
+esg434_vertex22 [label = "open student attendance records_22/ta", shape = ellipse, color=black]
+esg434_vertex23 [label = "select a class-list attendance record_23/ur", shape = ellipse, color=black]
+esg434_vertex24 [label = "select an editable student-record_24/ur", shape = ellipse, color=black]
+esg434_vertex25 [label = "edit attendance status_25/ur", shape = ellipse, color=black]
+esg434_vertex26 [label = "submit attendance record update_26/ur", shape = ellipse, color=black]
+esg434_vertex27 [label = "monitor current attendance status_27/mas", shape = ellipse, color=black]
+esg434_vertex28 [label = "open my attendance records_28/sa", shape = ellipse, color=black]
+esg434_vertex29 [label = "access as a student_29/sa", shape = ellipse, color=black]
+}

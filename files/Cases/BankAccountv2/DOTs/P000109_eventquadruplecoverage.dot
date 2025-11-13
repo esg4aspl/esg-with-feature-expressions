@@ -1,0 +1,24 @@
+digraph G {
+rankdir = LR
+label = "P000109109stt";
+esg112_vertex0 -> esg112_vertex1[ color = null];
+esg112_vertex0 -> esg112_vertex2[ color = null];
+esg112_vertex3 -> esg112_vertex4[ color = null];
+esg112_vertex1 -> esg112_vertex3[ color = null];
+esg112_vertex5 -> esg112_vertex4[ color = null];
+esg112_vertex2 -> esg112_vertex5[ color = null];
+esg112_vertex0 -> esg112_vertex6[ color = null];
+esg112_vertex6 -> esg112_vertex4[ color = null];
+esg112_vertex7 -> esg112_vertex8[ color = null];
+esg112_vertex8 -> esg112_vertex4[ color = null];
+esg112_vertex0 -> esg112_vertex7[ color = null];
+esg112_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg112_vertex1 [label = "get balance_2:select deposit_3:enter deposit amount_5/b AND d", shape = ellipse, color=black]
+esg112_vertex2 [label = "get balance_2:select withdraw_6:enter withdraw amount_8/b AND w", shape = ellipse, color=black]
+esg112_vertex3 [label = "select deposit_3:enter deposit amount_5:put money_4/d", shape = ellipse, color=black]
+esg112_vertex4 [label = "]_1/", shape = ellipse, color=black]
+esg112_vertex5 [label = "select withdraw_6:enter withdraw amount_8:take money_7/w", shape = ellipse, color=black]
+esg112_vertex6 [label = "request an interest rate_9:enter days left_11:get estimated interest for days left_12/i AND ie", shape = ellipse, color=black]
+esg112_vertex7 [label = "open account_13:select currency_14:USD_15/b AND us", shape = ellipse, color=black]
+esg112_vertex8 [label = "select currency_14:USD_15:confirm USD account openning_16/b AND us", shape = ellipse, color=black]
+}

@@ -1,0 +1,57 @@
+digraph G {
+rankdir = LR
+label = "P000172172s";
+esg173_vertex0 -> esg173_vertex2[ color = null];
+esg173_vertex3 -> esg173_vertex5[ color = null];
+esg173_vertex5 -> esg173_vertex4[ color = null];
+esg173_vertex2 -> esg173_vertex3[ color = null];
+esg173_vertex6 -> esg173_vertex8[ color = null];
+esg173_vertex8 -> esg173_vertex7[ color = null];
+esg173_vertex2 -> esg173_vertex6[ color = null];
+esg173_vertex4 -> esg173_vertex1[ color = null];
+esg173_vertex7 -> esg173_vertex1[ color = null];
+esg173_vertex6 -> esg173_vertex9[ color = null];
+esg173_vertex8 -> esg173_vertex10[ color = null];
+esg173_vertex0 -> esg173_vertex11[ color = null];
+esg173_vertex3 -> esg173_vertex12[ color = null];
+esg173_vertex12 -> esg173_vertex1[ color = null];
+esg173_vertex9 -> esg173_vertex1[ color = null];
+esg173_vertex11 -> esg173_vertex21[ color = null];
+esg173_vertex13 -> esg173_vertex14[ color = null];
+esg173_vertex14 -> esg173_vertex15[ color = null];
+esg173_vertex0 -> esg173_vertex13[ color = null];
+esg173_vertex16 -> esg173_vertex17[ color = null];
+esg173_vertex16 -> esg173_vertex18[ color = null];
+esg173_vertex17 -> esg173_vertex19[ color = null];
+esg173_vertex0 -> esg173_vertex16[ color = null];
+esg173_vertex19 -> esg173_vertex1[ color = null];
+esg173_vertex18 -> esg173_vertex20[ color = null];
+esg173_vertex20 -> esg173_vertex1[ color = null];
+esg173_vertex21 -> esg173_vertex1[ color = null];
+esg173_vertex15 -> esg173_vertex22[ color = null];
+esg173_vertex22 -> esg173_vertex1[ color = null];
+esg173_vertex10 -> esg173_vertex9[ color = null];
+esg173_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg173_vertex2 [label = "get balance_2/b", shape = ellipse, color=black]
+esg173_vertex3 [label = "select deposit_3/d", shape = ellipse, color=black]
+esg173_vertex5 [label = "enter deposit amount_5/d", shape = ellipse, color=black]
+esg173_vertex4 [label = "put money_4/d", shape = ellipse, color=black]
+esg173_vertex6 [label = "select withdraw_6/w", shape = ellipse, color=black]
+esg173_vertex8 [label = "enter withdraw amount_8/w", shape = ellipse, color=black]
+esg173_vertex7 [label = "take money_7/w", shape = ellipse, color=black]
+esg173_vertex1 [label = "]_1/", shape = ellipse, color=black]
+esg173_vertex9 [label = "cancel withdraw_9/cw", shape = ellipse, color=black]
+esg173_vertex10 [label = "confirm daily limit excess_10/dl", shape = ellipse, color=black]
+esg173_vertex11 [label = "enter daily withdraw limit_11/dl", shape = ellipse, color=black]
+esg173_vertex12 [label = "cancel deposit_12/cd", shape = ellipse, color=black]
+esg173_vertex21 [label = "confirm daily withdraw limit_21/dl", shape = ellipse, color=black]
+esg173_vertex13 [label = "open account_13/b", shape = ellipse, color=black]
+esg173_vertex14 [label = "select currency_14/b", shape = ellipse, color=black]
+esg173_vertex15 [label = "EUR_15/eu", shape = ellipse, color=black]
+esg173_vertex16 [label = "update profile_16/up", shape = ellipse, color=black]
+esg173_vertex17 [label = "update contact information_17/up", shape = ellipse, color=black]
+esg173_vertex18 [label = "update preferences_18/up", shape = ellipse, color=black]
+esg173_vertex19 [label = "save contact information changes_19/up", shape = ellipse, color=black]
+esg173_vertex20 [label = "save preference changes_20/up", shape = ellipse, color=black]
+esg173_vertex22 [label = "confirm EUR account openning_22/eu", shape = ellipse, color=black]
+}

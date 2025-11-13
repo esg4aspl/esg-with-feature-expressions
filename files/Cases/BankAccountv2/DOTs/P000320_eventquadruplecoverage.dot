@@ -1,0 +1,36 @@
+digraph G {
+rankdir = LR
+label = "P000320320stt";
+esg323_vertex0 -> esg323_vertex1[ color = null];
+esg323_vertex0 -> esg323_vertex2[ color = null];
+esg323_vertex3 -> esg323_vertex4[ color = null];
+esg323_vertex1 -> esg323_vertex3[ color = null];
+esg323_vertex5 -> esg323_vertex4[ color = null];
+esg323_vertex2 -> esg323_vertex5[ color = null];
+esg323_vertex0 -> esg323_vertex6[ color = null];
+esg323_vertex6 -> esg323_vertex4[ color = null];
+esg323_vertex7 -> esg323_vertex8[ color = null];
+esg323_vertex8 -> esg323_vertex4[ color = null];
+esg323_vertex0 -> esg323_vertex7[ color = null];
+esg323_vertex9 -> esg323_vertex10[ color = null];
+esg323_vertex10 -> esg323_vertex11[ color = null];
+esg323_vertex11 -> esg323_vertex12[ color = null];
+esg323_vertex11 -> esg323_vertex13[ color = null];
+esg323_vertex12 -> esg323_vertex4[ color = null];
+esg323_vertex13 -> esg323_vertex4[ color = null];
+esg323_vertex0 -> esg323_vertex9[ color = null];
+esg323_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg323_vertex1 [label = "get balance_2:select deposit_3:enter deposit amount_5/b AND d", shape = ellipse, color=black]
+esg323_vertex2 [label = "get balance_2:select withdraw_6:enter withdraw amount_8/b AND w", shape = ellipse, color=black]
+esg323_vertex3 [label = "select deposit_3:enter deposit amount_5:put money_4/d", shape = ellipse, color=black]
+esg323_vertex4 [label = "]_1/", shape = ellipse, color=black]
+esg323_vertex5 [label = "select withdraw_6:enter withdraw amount_8:take money_7/w", shape = ellipse, color=black]
+esg323_vertex6 [label = "request an interest rate_9:enter days left_11:get estimated interest for days left_12/i AND ie", shape = ellipse, color=black]
+esg323_vertex7 [label = "open account_13:select currency_14:EUR_15/b AND eu", shape = ellipse, color=black]
+esg323_vertex8 [label = "select currency_14:EUR_15:confirm EUR account openning_22/b AND eu", shape = ellipse, color=black]
+esg323_vertex9 [label = "transfer money_16:enter receiver's IBAN_17:enter amount_18/t", shape = ellipse, color=black]
+esg323_vertex10 [label = "enter receiver's IBAN_17:enter amount_18:select transfer type_19/t", shape = ellipse, color=black]
+esg323_vertex11 [label = "enter amount_18:select transfer type_19:view transfer details_20/t", shape = ellipse, color=black]
+esg323_vertex12 [label = "select transfer type_19:view transfer details_20:confirm transfer_21/t", shape = ellipse, color=black]
+esg323_vertex13 [label = "select transfer type_19:view transfer details_20:cancel transfer_23/t", shape = ellipse, color=black]
+}

@@ -49,6 +49,7 @@ public class SATSolverGenerationFromFeatureModel {
 		Iterator<Feature> featureIterator = clonedFeatureSet.iterator();
 
 		Set<Feature> optionalConcreteFeatures = new LinkedHashSet<>();
+//		Set<Feature> mandatoryAbstractFeatures = new LinkedHashSet<>();
 
 		while (featureIterator.hasNext()) {
 			Feature feature = featureIterator.next();
@@ -120,6 +121,7 @@ public class SATSolverGenerationFromFeatureModel {
 			List<FeatureExpression> featureExpressionList, Set<Feature> optionalConcreteFeatures)
 			throws ContradictionException {
 
+//		System.out.println("addMandatoryORFeatureClauses " + feature.getName());
 		Set<Feature> childORFeatures = featureModel.getChildORFeatures(feature);
 
 		if (childORFeatures.size() > 0) {
@@ -163,7 +165,7 @@ public class SATSolverGenerationFromFeatureModel {
 
 				Feature childFeature = childXORFeaturesIterator.next();
 //				System.out.println("childFeature " + childFeature.getName());
-
+				
 				sb.append(childFeature.getName() + " ");
 				vecInt.push(getIDByFeatureName(childFeature.getName(), featureExpressionList));
 
@@ -192,7 +194,7 @@ public class SATSolverGenerationFromFeatureModel {
 			solver.addClause(vecInt);
 		}
 	}
-
+	
 	private void addOptionalORFeatureClauses(ISolver solver, FeatureModel featureModel, Feature feature,
 			List<FeatureExpression> featureExpressionList, Set<Feature> optionalConcreteFeatures)
 			throws ContradictionException {
@@ -285,7 +287,7 @@ public class SATSolverGenerationFromFeatureModel {
 			}
 
 		}
-//		System.out.println("Feature " + featureName + " NOT found in featureExpressionList");
+		System.out.println("Feature " + featureName + " NOT found in featureExpressionList");
 		return 0;
 	}
 
@@ -557,7 +559,7 @@ public class SATSolverGenerationFromFeatureModel {
 					sb.append(rhsConjunctionFeature.getName());
 					vecInt.push(getIDByFeatureName(rhsConjunctionFeature.getName(), featureExpressionList));
 
-//					printVecInt(vecInt, sb.toString());
+					//				printVecInt(vecInt, sb.toString());
 					solver.addClause(vecInt);
 				}
 			}

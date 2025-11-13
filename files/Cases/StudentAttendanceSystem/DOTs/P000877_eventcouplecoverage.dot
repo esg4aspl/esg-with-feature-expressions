@@ -1,0 +1,86 @@
+digraph G {
+rankdir = LR
+label = "P000877877s";
+esg878_vertex0 -> esg878_vertex1[ color = null];
+esg878_vertex2 -> esg878_vertex3[ color = null];
+esg878_vertex1 -> esg878_vertex2[ color = null];
+esg878_vertex3 -> esg878_vertex4[ color = null];
+esg878_vertex6 -> esg878_vertex7[ color = null];
+esg878_vertex8 -> esg878_vertex6[ color = null];
+esg878_vertex7 -> esg878_vertex8[ color = null];
+esg878_vertex3 -> esg878_vertex8[ color = null];
+esg878_vertex9 -> esg878_vertex10[ color = null];
+esg878_vertex10 -> esg878_vertex11[ color = null];
+esg878_vertex9 -> esg878_vertex11[ color = null];
+esg878_vertex11 -> esg878_vertex10[ color = null];
+esg878_vertex11 -> esg878_vertex12[ color = null];
+esg878_vertex10 -> esg878_vertex12[ color = null];
+esg878_vertex10 -> esg878_vertex10[ color = null];
+esg878_vertex11 -> esg878_vertex11[ color = null];
+esg878_vertex3 -> esg878_vertex9[ color = null];
+esg878_vertex12 -> esg878_vertex5[ color = null];
+esg878_vertex14 -> esg878_vertex15[ color = null];
+esg878_vertex15 -> esg878_vertex14[ color = null];
+esg878_vertex14 -> esg878_vertex14[ color = null];
+esg878_vertex15 -> esg878_vertex15[ color = null];
+esg878_vertex13 -> esg878_vertex14[ color = null];
+esg878_vertex13 -> esg878_vertex15[ color = null];
+esg878_vertex3 -> esg878_vertex13[ color = null];
+esg878_vertex14 -> esg878_vertex12[ color = null];
+esg878_vertex15 -> esg878_vertex12[ color = null];
+esg878_vertex7 -> esg878_vertex5[ color = null];
+esg878_vertex17 -> esg878_vertex5[ color = null];
+esg878_vertex0 -> esg878_vertex16[ color = null];
+esg878_vertex1 -> esg878_vertex18[ color = null];
+esg878_vertex19 -> esg878_vertex5[ color = null];
+esg878_vertex4 -> esg878_vertex20[ color = null];
+esg878_vertex20 -> esg878_vertex21[ color = null];
+esg878_vertex21 -> esg878_vertex5[ color = null];
+esg878_vertex3 -> esg878_vertex22[ color = null];
+esg878_vertex22 -> esg878_vertex4[ color = null];
+esg878_vertex24 -> esg878_vertex5[ color = null];
+esg878_vertex23 -> esg878_vertex24[ color = null];
+esg878_vertex25 -> esg878_vertex23[ color = null];
+esg878_vertex1 -> esg878_vertex26[ color = null];
+esg878_vertex26 -> esg878_vertex25[ color = null];
+esg878_vertex26 -> esg878_vertex4[ color = null];
+esg878_vertex27 -> esg878_vertex27[ color = null];
+esg878_vertex27 -> esg878_vertex28[ color = null];
+esg878_vertex16 -> esg878_vertex28[ color = null];
+esg878_vertex16 -> esg878_vertex27[ color = null];
+esg878_vertex28 -> esg878_vertex17[ color = null];
+esg878_vertex27 -> esg878_vertex17[ color = null];
+esg878_vertex18 -> esg878_vertex29[ color = null];
+esg878_vertex29 -> esg878_vertex19[ color = null];
+esg878_vertex25 -> esg878_vertex4[ color = null];
+esg878_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg878_vertex1 [label = "log in_1/sas", shape = ellipse, color=black]
+esg878_vertex2 [label = "access as a teacher_2/ta", shape = ellipse, color=black]
+esg878_vertex3 [label = "turn editing on_3/ta", shape = ellipse, color=black]
+esg878_vertex4 [label = "open class records_4/sas", shape = ellipse, color=black]
+esg878_vertex6 [label = "delete class_6/dc", shape = ellipse, color=black]
+esg878_vertex7 [label = "confirm deletion_7/dc", shape = ellipse, color=black]
+esg878_vertex8 [label = "select the deletable class_8/dc", shape = ellipse, color=black]
+esg878_vertex9 [label = "add new class_9/anc", shape = ellipse, color=black]
+esg878_vertex10 [label = "enter the name of the class_10/anc", shape = ellipse, color=black]
+esg878_vertex11 [label = "enter the class detail_11/anc", shape = ellipse, color=black]
+esg878_vertex12 [label = "submit the class_12/anc", shape = ellipse, color=black]
+esg878_vertex5 [label = "]_5/", shape = ellipse, color=black]
+esg878_vertex14 [label = "update the name of the class_14/ucd", shape = ellipse, color=black]
+esg878_vertex15 [label = "update the class detail_15/ucd", shape = ellipse, color=black]
+esg878_vertex13 [label = "select the editable class_13/ucd", shape = ellipse, color=black]
+esg878_vertex17 [label = "confirm your identity_17/sas", shape = ellipse, color=black]
+esg878_vertex16 [label = "submit attendance_16/sas", shape = ellipse, color=black]
+esg878_vertex18 [label = "open notification settings_18/sas", shape = ellipse, color=black]
+esg878_vertex19 [label = "confirm notification settings_19/sas", shape = ellipse, color=black]
+esg878_vertex20 [label = "select the existing schedule_20/vs", shape = ellipse, color=black]
+esg878_vertex21 [label = "view schedule_21/vs", shape = ellipse, color=black]
+esg878_vertex22 [label = "open student attendance records_22/ta", shape = ellipse, color=black]
+esg878_vertex24 [label = "view record_24/vr", shape = ellipse, color=black]
+esg878_vertex23 [label = "select the existing record_23/vr", shape = ellipse, color=black]
+esg878_vertex25 [label = "open my attendance records_25/sa", shape = ellipse, color=black]
+esg878_vertex26 [label = "access as a student_26/sa", shape = ellipse, color=black]
+esg878_vertex27 [label = "show the barcode to the barcodereader_27/b", shape = ellipse, color=black]
+esg878_vertex28 [label = "enter barcode manually_28/b", shape = ellipse, color=black]
+esg878_vertex29 [label = "receive notifications as SMS_29/s", shape = ellipse, color=black]
+}

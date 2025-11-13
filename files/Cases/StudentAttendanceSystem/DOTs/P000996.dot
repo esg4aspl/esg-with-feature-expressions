@@ -1,0 +1,87 @@
+digraph G {
+rankdir = LR
+label = "P000996";
+esg996_vertex0 -> esg996_vertex1[ color = null];
+esg996_vertex2 -> esg996_vertex3[ color = null];
+esg996_vertex1 -> esg996_vertex2[ color = null];
+esg996_vertex3 -> esg996_vertex4[ color = null];
+esg996_vertex6 -> esg996_vertex7[ color = null];
+esg996_vertex8 -> esg996_vertex6[ color = null];
+esg996_vertex7 -> esg996_vertex8[ color = null];
+esg996_vertex3 -> esg996_vertex8[ color = null];
+esg996_vertex7 -> esg996_vertex5[ color = null];
+esg996_vertex9 -> esg996_vertex10[ color = null];
+esg996_vertex10 -> esg996_vertex11[ color = null];
+esg996_vertex9 -> esg996_vertex11[ color = null];
+esg996_vertex11 -> esg996_vertex10[ color = null];
+esg996_vertex11 -> esg996_vertex12[ color = null];
+esg996_vertex10 -> esg996_vertex12[ color = null];
+esg996_vertex10 -> esg996_vertex10[ color = null];
+esg996_vertex11 -> esg996_vertex11[ color = null];
+esg996_vertex12 -> esg996_vertex5[ color = null];
+esg996_vertex3 -> esg996_vertex9[ color = null];
+esg996_vertex14 -> esg996_vertex5[ color = null];
+esg996_vertex0 -> esg996_vertex13[ color = null];
+esg996_vertex1 -> esg996_vertex15[ color = null];
+esg996_vertex16 -> esg996_vertex5[ color = null];
+esg996_vertex4 -> esg996_vertex17[ color = null];
+esg996_vertex17 -> esg996_vertex18[ color = null];
+esg996_vertex18 -> esg996_vertex5[ color = null];
+esg996_vertex3 -> esg996_vertex19[ color = null];
+esg996_vertex19 -> esg996_vertex4[ color = null];
+esg996_vertex19 -> esg996_vertex20[ color = null];
+esg996_vertex19 -> esg996_vertex21[ color = null];
+esg996_vertex20 -> esg996_vertex22[ color = null];
+esg996_vertex21 -> esg996_vertex22[ color = null];
+esg996_vertex22 -> esg996_vertex23[ color = null];
+esg996_vertex23 -> esg996_vertex5[ color = null];
+esg996_vertex20 -> esg996_vertex24[ color = null];
+esg996_vertex24 -> esg996_vertex5[ color = null];
+esg996_vertex26 -> esg996_vertex5[ color = null];
+esg996_vertex25 -> esg996_vertex26[ color = null];
+esg996_vertex27 -> esg996_vertex25[ color = null];
+esg996_vertex1 -> esg996_vertex28[ color = null];
+esg996_vertex28 -> esg996_vertex27[ color = null];
+esg996_vertex28 -> esg996_vertex4[ color = null];
+esg996_vertex29 -> esg996_vertex29[ color = null];
+esg996_vertex29 -> esg996_vertex30[ color = null];
+esg996_vertex13 -> esg996_vertex30[ color = null];
+esg996_vertex13 -> esg996_vertex29[ color = null];
+esg996_vertex30 -> esg996_vertex14[ color = null];
+esg996_vertex29 -> esg996_vertex14[ color = null];
+esg996_vertex15 -> esg996_vertex31[ color = null];
+esg996_vertex31 -> esg996_vertex16[ color = null];
+esg996_vertex27 -> esg996_vertex4[ color = null];
+esg996_vertex0 [label = "[", shape = ellipse, color=null]
+esg996_vertex1 [label = "log in", shape = ellipse, color=null]
+esg996_vertex2 [label = "access as a teacher", shape = ellipse, color=null]
+esg996_vertex3 [label = "turn editing on", shape = ellipse, color=null]
+esg996_vertex4 [label = "open class records", shape = ellipse, color=null]
+esg996_vertex6 [label = "delete class", shape = ellipse, color=null]
+esg996_vertex7 [label = "confirm deletion", shape = ellipse, color=null]
+esg996_vertex8 [label = "select the deletable class", shape = ellipse, color=null]
+esg996_vertex5 [label = "]", shape = ellipse, color=null]
+esg996_vertex9 [label = "add new schedule", shape = ellipse, color=null]
+esg996_vertex10 [label = "enter the days of the class", shape = ellipse, color=null]
+esg996_vertex11 [label = "enter the hours of the class", shape = ellipse, color=null]
+esg996_vertex12 [label = "submit the class schedule", shape = ellipse, color=null]
+esg996_vertex14 [label = "confirm your identity", shape = ellipse, color=null]
+esg996_vertex13 [label = "submit attendance", shape = ellipse, color=null]
+esg996_vertex15 [label = "open notification settings", shape = ellipse, color=null]
+esg996_vertex16 [label = "confirm notification settings", shape = ellipse, color=null]
+esg996_vertex17 [label = "select the existing class", shape = ellipse, color=null]
+esg996_vertex18 [label = "view class", shape = ellipse, color=null]
+esg996_vertex19 [label = "open student attendance records", shape = ellipse, color=null]
+esg996_vertex20 [label = "select a class-list attendance record", shape = ellipse, color=null]
+esg996_vertex21 [label = "select an editable student-record", shape = ellipse, color=null]
+esg996_vertex22 [label = "edit attendance status", shape = ellipse, color=null]
+esg996_vertex23 [label = "submit attendance record update", shape = ellipse, color=null]
+esg996_vertex24 [label = "trace attendance activity of the class", shape = ellipse, color=null]
+esg996_vertex26 [label = "view record", shape = ellipse, color=null]
+esg996_vertex25 [label = "select the existing record", shape = ellipse, color=null]
+esg996_vertex27 [label = "open my attendance records", shape = ellipse, color=null]
+esg996_vertex28 [label = "access as a student", shape = ellipse, color=null]
+esg996_vertex29 [label = "show the barcode to the barcodereader", shape = ellipse, color=null]
+esg996_vertex30 [label = "enter barcode manually", shape = ellipse, color=null]
+esg996_vertex31 [label = "receive notifications as SMS", shape = ellipse, color=null]
+}

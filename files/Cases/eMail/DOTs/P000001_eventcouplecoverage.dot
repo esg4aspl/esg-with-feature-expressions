@@ -1,0 +1,37 @@
+digraph G {
+rankdir = LR
+label = "P0000011s";
+esg2_vertex1 -> esg2_vertex2[ color = null];
+esg2_vertex2 -> esg2_vertex3[ color = null];
+esg2_vertex6 -> esg2_vertex7[ color = null];
+esg2_vertex0 -> esg2_vertex1[ color = null];
+esg2_vertex1 -> esg2_vertex4[ color = null];
+esg2_vertex1 -> esg2_vertex1[ color = null];
+esg2_vertex0 -> esg2_vertex2[ color = null];
+esg2_vertex2 -> esg2_vertex1[ color = null];
+esg2_vertex0 -> esg2_vertex3[ color = null];
+esg2_vertex3 -> esg2_vertex1[ color = null];
+esg2_vertex2 -> esg2_vertex2[ color = null];
+esg2_vertex3 -> esg2_vertex3[ color = null];
+esg2_vertex4 -> esg2_vertex5[ color = null];
+esg2_vertex7 -> esg2_vertex5[ color = null];
+esg2_vertex8 -> esg2_vertex0[ color = null];
+esg2_vertex8 -> esg2_vertex6[ color = null];
+esg2_vertex3 -> esg2_vertex2[ color = null];
+esg2_vertex9 -> esg2_vertex10[ color = null];
+esg2_vertex10 -> esg2_vertex9[ color = null];
+esg2_vertex8 -> esg2_vertex9[ color = null];
+esg2_vertex8 -> esg2_vertex10[ color = null];
+esg2_vertex9 -> esg2_vertex5[ color = null];
+esg2_vertex1 [label = "enter receiver's email address_1/e", shape = ellipse, color=black]
+esg2_vertex2 [label = "enter email subject_2/e", shape = ellipse, color=black]
+esg2_vertex3 [label = "enter email body_3/e", shape = ellipse, color=black]
+esg2_vertex6 [label = "open mailbox_6/e", shape = ellipse, color=black]
+esg2_vertex7 [label = "select email_7/e", shape = ellipse, color=black]
+esg2_vertex0 [label = "compose new email_0/e", shape = ellipse, color=black]
+esg2_vertex4 [label = "send email_4/e", shape = ellipse, color=black]
+esg2_vertex5 [label = "]_5/", shape = ellipse, color=black]
+esg2_vertex8 [label = "[_8/", shape = ellipse, color=black]
+esg2_vertex9 [label = "enter email autoresponse date interval_9/au", shape = ellipse, color=black]
+esg2_vertex10 [label = "enter autoresponse email body_10/au", shape = ellipse, color=black]
+}

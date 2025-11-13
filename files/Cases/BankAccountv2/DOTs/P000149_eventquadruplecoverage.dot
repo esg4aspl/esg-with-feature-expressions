@@ -1,0 +1,33 @@
+digraph G {
+rankdir = LR
+label = "P000149149stt";
+esg152_vertex0 -> esg152_vertex1[ color = null];
+esg152_vertex0 -> esg152_vertex2[ color = null];
+esg152_vertex0 -> esg152_vertex3[ color = null];
+esg152_vertex0 -> esg152_vertex4[ color = null];
+esg152_vertex5 -> esg152_vertex6[ color = null];
+esg152_vertex1 -> esg152_vertex5[ color = null];
+esg152_vertex2 -> esg152_vertex6[ color = null];
+esg152_vertex7 -> esg152_vertex6[ color = null];
+esg152_vertex3 -> esg152_vertex7[ color = null];
+esg152_vertex4 -> esg152_vertex6[ color = null];
+esg152_vertex8 -> esg152_vertex9[ color = null];
+esg152_vertex9 -> esg152_vertex6[ color = null];
+esg152_vertex0 -> esg152_vertex8[ color = null];
+esg152_vertex10 -> esg152_vertex6[ color = null];
+esg152_vertex11 -> esg152_vertex6[ color = null];
+esg152_vertex0 -> esg152_vertex10[ color = null];
+esg152_vertex0 -> esg152_vertex11[ color = null];
+esg152_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg152_vertex1 [label = "get balance_2:select deposit_3:enter deposit amount_5/b AND d", shape = ellipse, color=black]
+esg152_vertex2 [label = "get balance_2:select deposit_3:cancel deposit_10/b AND d AND cd", shape = ellipse, color=black]
+esg152_vertex3 [label = "get balance_2:select withdraw_6:enter withdraw amount_8/b AND w", shape = ellipse, color=black]
+esg152_vertex4 [label = "get balance_2:select withdraw_6:cancel withdraw_9/b AND w AND cw", shape = ellipse, color=black]
+esg152_vertex5 [label = "select deposit_3:enter deposit amount_5:put money_4/d", shape = ellipse, color=black]
+esg152_vertex6 [label = "]_1/", shape = ellipse, color=black]
+esg152_vertex7 [label = "select withdraw_6:enter withdraw amount_8:take money_7/w", shape = ellipse, color=black]
+esg152_vertex8 [label = "open account_15:select currency_16:TL_17/b AND tl", shape = ellipse, color=black]
+esg152_vertex9 [label = "select currency_16:TL_17:confirm TL account openning_23/b AND tl", shape = ellipse, color=black]
+esg152_vertex10 [label = "update profile_18:update contact information_19:save contact information changes_21/up", shape = ellipse, color=black]
+esg152_vertex11 [label = "update profile_18:update preferences_20:save preference changes_22/up", shape = ellipse, color=black]
+}

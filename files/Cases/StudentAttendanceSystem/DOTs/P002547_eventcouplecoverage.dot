@@ -1,0 +1,48 @@
+digraph G {
+rankdir = LR
+label = "P0025472547s";
+esg2548_vertex0 -> esg2548_vertex1[ color = null];
+esg2548_vertex5 -> esg2548_vertex3[ color = null];
+esg2548_vertex0 -> esg2548_vertex4[ color = null];
+esg2548_vertex1 -> esg2548_vertex6[ color = null];
+esg2548_vertex7 -> esg2548_vertex3[ color = null];
+esg2548_vertex6 -> esg2548_vertex8[ color = null];
+esg2548_vertex8 -> esg2548_vertex7[ color = null];
+esg2548_vertex2 -> esg2548_vertex9[ color = null];
+esg2548_vertex2 -> esg2548_vertex10[ color = null];
+esg2548_vertex9 -> esg2548_vertex11[ color = null];
+esg2548_vertex11 -> esg2548_vertex3[ color = null];
+esg2548_vertex10 -> esg2548_vertex12[ color = null];
+esg2548_vertex12 -> esg2548_vertex3[ color = null];
+esg2548_vertex14 -> esg2548_vertex3[ color = null];
+esg2548_vertex13 -> esg2548_vertex14[ color = null];
+esg2548_vertex15 -> esg2548_vertex3[ color = null];
+esg2548_vertex16 -> esg2548_vertex13[ color = null];
+esg2548_vertex16 -> esg2548_vertex15[ color = null];
+esg2548_vertex1 -> esg2548_vertex17[ color = null];
+esg2548_vertex17 -> esg2548_vertex16[ color = null];
+esg2548_vertex17 -> esg2548_vertex2[ color = null];
+esg2548_vertex18 -> esg2548_vertex18[ color = null];
+esg2548_vertex4 -> esg2548_vertex18[ color = null];
+esg2548_vertex18 -> esg2548_vertex5[ color = null];
+esg2548_vertex16 -> esg2548_vertex2[ color = null];
+esg2548_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg2548_vertex1 [label = "log in_1/sas", shape = ellipse, color=black]
+esg2548_vertex5 [label = "confirm your identity_5/sas", shape = ellipse, color=black]
+esg2548_vertex3 [label = "]_3/", shape = ellipse, color=black]
+esg2548_vertex4 [label = "submit attendance_4/sas", shape = ellipse, color=black]
+esg2548_vertex6 [label = "open notification settings_6/sas", shape = ellipse, color=black]
+esg2548_vertex7 [label = "confirm notification settings_7/sas", shape = ellipse, color=black]
+esg2548_vertex8 [label = "receive notifications as Email_8/e", shape = ellipse, color=black]
+esg2548_vertex2 [label = "open class records_2/sas", shape = ellipse, color=black]
+esg2548_vertex9 [label = "select the existing schedule_9/vs", shape = ellipse, color=black]
+esg2548_vertex10 [label = "select the existing class_10/vc", shape = ellipse, color=black]
+esg2548_vertex11 [label = "view schedule_11/vs", shape = ellipse, color=black]
+esg2548_vertex12 [label = "view class_12/vc", shape = ellipse, color=black]
+esg2548_vertex14 [label = "view record_14/vr", shape = ellipse, color=black]
+esg2548_vertex13 [label = "select the existing record_13/vr", shape = ellipse, color=black]
+esg2548_vertex15 [label = "monitor current attendance status_15/mas", shape = ellipse, color=black]
+esg2548_vertex16 [label = "open my attendance records_16/sa", shape = ellipse, color=black]
+esg2548_vertex17 [label = "access as a student_17/sa", shape = ellipse, color=black]
+esg2548_vertex18 [label = "show the QR code to the QR code reader_18/q", shape = ellipse, color=black]
+}

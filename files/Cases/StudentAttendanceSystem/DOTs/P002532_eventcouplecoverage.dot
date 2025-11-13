@@ -1,0 +1,65 @@
+digraph G {
+rankdir = LR
+label = "P0025322532s";
+esg2533_vertex0 -> esg2533_vertex1[ color = null];
+esg2533_vertex2 -> esg2533_vertex3[ color = null];
+esg2533_vertex1 -> esg2533_vertex2[ color = null];
+esg2533_vertex3 -> esg2533_vertex4[ color = null];
+esg2533_vertex6 -> esg2533_vertex7[ color = null];
+esg2533_vertex7 -> esg2533_vertex8[ color = null];
+esg2533_vertex6 -> esg2533_vertex8[ color = null];
+esg2533_vertex8 -> esg2533_vertex7[ color = null];
+esg2533_vertex8 -> esg2533_vertex9[ color = null];
+esg2533_vertex7 -> esg2533_vertex9[ color = null];
+esg2533_vertex7 -> esg2533_vertex7[ color = null];
+esg2533_vertex8 -> esg2533_vertex8[ color = null];
+esg2533_vertex9 -> esg2533_vertex5[ color = null];
+esg2533_vertex3 -> esg2533_vertex6[ color = null];
+esg2533_vertex11 -> esg2533_vertex5[ color = null];
+esg2533_vertex0 -> esg2533_vertex10[ color = null];
+esg2533_vertex1 -> esg2533_vertex12[ color = null];
+esg2533_vertex13 -> esg2533_vertex5[ color = null];
+esg2533_vertex12 -> esg2533_vertex14[ color = null];
+esg2533_vertex14 -> esg2533_vertex13[ color = null];
+esg2533_vertex4 -> esg2533_vertex15[ color = null];
+esg2533_vertex15 -> esg2533_vertex16[ color = null];
+esg2533_vertex16 -> esg2533_vertex5[ color = null];
+esg2533_vertex3 -> esg2533_vertex17[ color = null];
+esg2533_vertex17 -> esg2533_vertex4[ color = null];
+esg2533_vertex19 -> esg2533_vertex5[ color = null];
+esg2533_vertex18 -> esg2533_vertex19[ color = null];
+esg2533_vertex20 -> esg2533_vertex5[ color = null];
+esg2533_vertex21 -> esg2533_vertex18[ color = null];
+esg2533_vertex21 -> esg2533_vertex20[ color = null];
+esg2533_vertex1 -> esg2533_vertex22[ color = null];
+esg2533_vertex22 -> esg2533_vertex21[ color = null];
+esg2533_vertex22 -> esg2533_vertex4[ color = null];
+esg2533_vertex23 -> esg2533_vertex23[ color = null];
+esg2533_vertex10 -> esg2533_vertex23[ color = null];
+esg2533_vertex23 -> esg2533_vertex11[ color = null];
+esg2533_vertex21 -> esg2533_vertex4[ color = null];
+esg2533_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg2533_vertex1 [label = "log in_1/sas", shape = ellipse, color=black]
+esg2533_vertex2 [label = "access as a teacher_2/ta", shape = ellipse, color=black]
+esg2533_vertex3 [label = "turn editing on_3/ta", shape = ellipse, color=black]
+esg2533_vertex4 [label = "open class records_4/sas", shape = ellipse, color=black]
+esg2533_vertex6 [label = "add new schedule_6/ans", shape = ellipse, color=black]
+esg2533_vertex7 [label = "enter the days of the class_7/ans", shape = ellipse, color=black]
+esg2533_vertex8 [label = "enter the hours of the class_8/ans", shape = ellipse, color=black]
+esg2533_vertex9 [label = "submit the class schedule_9/ans", shape = ellipse, color=black]
+esg2533_vertex5 [label = "]_5/", shape = ellipse, color=black]
+esg2533_vertex11 [label = "confirm your identity_11/sas", shape = ellipse, color=black]
+esg2533_vertex10 [label = "submit attendance_10/sas", shape = ellipse, color=black]
+esg2533_vertex12 [label = "open notification settings_12/sas", shape = ellipse, color=black]
+esg2533_vertex13 [label = "confirm notification settings_13/sas", shape = ellipse, color=black]
+esg2533_vertex14 [label = "receive notifications as Email_14/e", shape = ellipse, color=black]
+esg2533_vertex15 [label = "select the existing class_15/vc", shape = ellipse, color=black]
+esg2533_vertex16 [label = "view class_16/vc", shape = ellipse, color=black]
+esg2533_vertex17 [label = "open student attendance records_17/ta", shape = ellipse, color=black]
+esg2533_vertex19 [label = "view record_19/vr", shape = ellipse, color=black]
+esg2533_vertex18 [label = "select the existing record_18/vr", shape = ellipse, color=black]
+esg2533_vertex20 [label = "monitor current attendance status_20/mas", shape = ellipse, color=black]
+esg2533_vertex21 [label = "open my attendance records_21/sa", shape = ellipse, color=black]
+esg2533_vertex22 [label = "access as a student_22/sa", shape = ellipse, color=black]
+esg2533_vertex23 [label = "show the QR code to the QR code reader_23/q", shape = ellipse, color=black]
+}

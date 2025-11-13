@@ -1,0 +1,74 @@
+digraph G {
+rankdir = LR
+label = "P000841";
+esg841_vertex0 -> esg841_vertex1[ color = null];
+esg841_vertex2 -> esg841_vertex3[ color = null];
+esg841_vertex1 -> esg841_vertex2[ color = null];
+esg841_vertex3 -> esg841_vertex4[ color = null];
+esg841_vertex6 -> esg841_vertex7[ color = null];
+esg841_vertex7 -> esg841_vertex8[ color = null];
+esg841_vertex6 -> esg841_vertex8[ color = null];
+esg841_vertex8 -> esg841_vertex7[ color = null];
+esg841_vertex8 -> esg841_vertex9[ color = null];
+esg841_vertex7 -> esg841_vertex9[ color = null];
+esg841_vertex7 -> esg841_vertex7[ color = null];
+esg841_vertex8 -> esg841_vertex8[ color = null];
+esg841_vertex9 -> esg841_vertex5[ color = null];
+esg841_vertex3 -> esg841_vertex6[ color = null];
+esg841_vertex11 -> esg841_vertex5[ color = null];
+esg841_vertex0 -> esg841_vertex10[ color = null];
+esg841_vertex1 -> esg841_vertex12[ color = null];
+esg841_vertex13 -> esg841_vertex5[ color = null];
+esg841_vertex4 -> esg841_vertex14[ color = null];
+esg841_vertex14 -> esg841_vertex15[ color = null];
+esg841_vertex15 -> esg841_vertex5[ color = null];
+esg841_vertex3 -> esg841_vertex16[ color = null];
+esg841_vertex16 -> esg841_vertex4[ color = null];
+esg841_vertex16 -> esg841_vertex17[ color = null];
+esg841_vertex16 -> esg841_vertex18[ color = null];
+esg841_vertex17 -> esg841_vertex19[ color = null];
+esg841_vertex18 -> esg841_vertex19[ color = null];
+esg841_vertex19 -> esg841_vertex20[ color = null];
+esg841_vertex20 -> esg841_vertex5[ color = null];
+esg841_vertex17 -> esg841_vertex21[ color = null];
+esg841_vertex21 -> esg841_vertex5[ color = null];
+esg841_vertex1 -> esg841_vertex23[ color = null];
+esg841_vertex23 -> esg841_vertex22[ color = null];
+esg841_vertex23 -> esg841_vertex4[ color = null];
+esg841_vertex24 -> esg841_vertex24[ color = null];
+esg841_vertex24 -> esg841_vertex25[ color = null];
+esg841_vertex10 -> esg841_vertex25[ color = null];
+esg841_vertex10 -> esg841_vertex24[ color = null];
+esg841_vertex25 -> esg841_vertex11[ color = null];
+esg841_vertex24 -> esg841_vertex11[ color = null];
+esg841_vertex12 -> esg841_vertex26[ color = null];
+esg841_vertex26 -> esg841_vertex13[ color = null];
+esg841_vertex22 -> esg841_vertex4[ color = null];
+esg841_vertex0 [label = "[", shape = ellipse, color=null]
+esg841_vertex1 [label = "log in", shape = ellipse, color=null]
+esg841_vertex2 [label = "access as a teacher", shape = ellipse, color=null]
+esg841_vertex3 [label = "turn editing on", shape = ellipse, color=null]
+esg841_vertex4 [label = "open class records", shape = ellipse, color=null]
+esg841_vertex6 [label = "add new schedule", shape = ellipse, color=null]
+esg841_vertex7 [label = "enter the days of the class", shape = ellipse, color=null]
+esg841_vertex8 [label = "enter the hours of the class", shape = ellipse, color=null]
+esg841_vertex9 [label = "submit the class schedule", shape = ellipse, color=null]
+esg841_vertex5 [label = "]", shape = ellipse, color=null]
+esg841_vertex11 [label = "confirm your identity", shape = ellipse, color=null]
+esg841_vertex10 [label = "submit attendance", shape = ellipse, color=null]
+esg841_vertex12 [label = "open notification settings", shape = ellipse, color=null]
+esg841_vertex13 [label = "confirm notification settings", shape = ellipse, color=null]
+esg841_vertex14 [label = "select the existing class", shape = ellipse, color=null]
+esg841_vertex15 [label = "view class", shape = ellipse, color=null]
+esg841_vertex16 [label = "open student attendance records", shape = ellipse, color=null]
+esg841_vertex17 [label = "select a class-list attendance record", shape = ellipse, color=null]
+esg841_vertex18 [label = "select an editable student-record", shape = ellipse, color=null]
+esg841_vertex19 [label = "edit attendance status", shape = ellipse, color=null]
+esg841_vertex20 [label = "submit attendance record update", shape = ellipse, color=null]
+esg841_vertex21 [label = "trace attendance activity of the class", shape = ellipse, color=null]
+esg841_vertex23 [label = "access as a student", shape = ellipse, color=null]
+esg841_vertex22 [label = "open my attendance records", shape = ellipse, color=null]
+esg841_vertex24 [label = "show the barcode to the barcodereader", shape = ellipse, color=null]
+esg841_vertex25 [label = "enter barcode manually", shape = ellipse, color=null]
+esg841_vertex26 [label = "receive notifications as SMS", shape = ellipse, color=null]
+}

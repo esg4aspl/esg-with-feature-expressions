@@ -1,0 +1,43 @@
+digraph G {
+rankdir = LR
+label = "P00001919s";
+esg20_vertex1 -> esg20_vertex2[ color = null];
+esg20_vertex2 -> esg20_vertex3[ color = null];
+esg20_vertex6 -> esg20_vertex7[ color = null];
+esg20_vertex0 -> esg20_vertex1[ color = null];
+esg20_vertex1 -> esg20_vertex4[ color = null];
+esg20_vertex1 -> esg20_vertex1[ color = null];
+esg20_vertex0 -> esg20_vertex2[ color = null];
+esg20_vertex2 -> esg20_vertex1[ color = null];
+esg20_vertex0 -> esg20_vertex3[ color = null];
+esg20_vertex3 -> esg20_vertex1[ color = null];
+esg20_vertex2 -> esg20_vertex2[ color = null];
+esg20_vertex3 -> esg20_vertex3[ color = null];
+esg20_vertex4 -> esg20_vertex5[ color = null];
+esg20_vertex7 -> esg20_vertex5[ color = null];
+esg20_vertex8 -> esg20_vertex0[ color = null];
+esg20_vertex8 -> esg20_vertex6[ color = null];
+esg20_vertex3 -> esg20_vertex2[ color = null];
+esg20_vertex9 -> esg20_vertex10[ color = null];
+esg20_vertex11 -> esg20_vertex9[ color = null];
+esg20_vertex8 -> esg20_vertex11[ color = null];
+esg20_vertex10 -> esg20_vertex5[ color = null];
+esg20_vertex12 -> esg20_vertex4[ color = null];
+esg20_vertex1 -> esg20_vertex12[ color = null];
+esg20_vertex7 -> esg20_vertex13[ color = null];
+esg20_vertex13 -> esg20_vertex4[ color = null];
+esg20_vertex1 [label = "enter receiver's email address_1/e", shape = ellipse, color=black]
+esg20_vertex2 [label = "enter email subject_2/e", shape = ellipse, color=black]
+esg20_vertex3 [label = "enter email body_3/e", shape = ellipse, color=black]
+esg20_vertex6 [label = "open mailbox_6/e", shape = ellipse, color=black]
+esg20_vertex7 [label = "select email_7/e", shape = ellipse, color=black]
+esg20_vertex0 [label = "compose new email_0/e", shape = ellipse, color=black]
+esg20_vertex4 [label = "send email_4/e", shape = ellipse, color=black]
+esg20_vertex5 [label = "]_5/", shape = ellipse, color=black]
+esg20_vertex8 [label = "[_8/", shape = ellipse, color=black]
+esg20_vertex9 [label = "enter the receiver's email address_9/ad", shape = ellipse, color=black]
+esg20_vertex10 [label = "enter alias email addresses of receiver_10/ad", shape = ellipse, color=black]
+esg20_vertex11 [label = "create an addressbook for a receiver_11/ad", shape = ellipse, color=black]
+esg20_vertex12 [label = "get alias email addresses of receiver_12/ad", shape = ellipse, color=black]
+esg20_vertex13 [label = "enter forward receiver's email address_13/f", shape = ellipse, color=black]
+}

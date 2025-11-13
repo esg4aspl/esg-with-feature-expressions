@@ -1,0 +1,30 @@
+digraph G {
+rankdir = LR
+label = "P000127127stt";
+esg130_vertex0 -> esg130_vertex1[ color = null];
+esg130_vertex0 -> esg130_vertex2[ color = null];
+esg130_vertex0 -> esg130_vertex3[ color = null];
+esg130_vertex4 -> esg130_vertex5[ color = null];
+esg130_vertex1 -> esg130_vertex4[ color = null];
+esg130_vertex2 -> esg130_vertex5[ color = null];
+esg130_vertex6 -> esg130_vertex5[ color = null];
+esg130_vertex3 -> esg130_vertex6[ color = null];
+esg130_vertex7 -> esg130_vertex8[ color = null];
+esg130_vertex8 -> esg130_vertex5[ color = null];
+esg130_vertex0 -> esg130_vertex7[ color = null];
+esg130_vertex9 -> esg130_vertex5[ color = null];
+esg130_vertex10 -> esg130_vertex5[ color = null];
+esg130_vertex0 -> esg130_vertex9[ color = null];
+esg130_vertex0 -> esg130_vertex10[ color = null];
+esg130_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg130_vertex1 [label = "get balance_2:select deposit_3:enter deposit amount_5/b AND d", shape = ellipse, color=black]
+esg130_vertex2 [label = "get balance_2:select deposit_3:cancel deposit_9/b AND d AND cd", shape = ellipse, color=black]
+esg130_vertex3 [label = "get balance_2:select withdraw_6:enter withdraw amount_8/b AND w", shape = ellipse, color=black]
+esg130_vertex4 [label = "select deposit_3:enter deposit amount_5:put money_4/d", shape = ellipse, color=black]
+esg130_vertex5 [label = "]_1/", shape = ellipse, color=black]
+esg130_vertex6 [label = "select withdraw_6:enter withdraw amount_8:take money_7/w", shape = ellipse, color=black]
+esg130_vertex7 [label = "open account_10:select currency_11:TL_12/b AND tl", shape = ellipse, color=black]
+esg130_vertex8 [label = "select currency_11:TL_12:confirm TL account openning_18/b AND tl", shape = ellipse, color=black]
+esg130_vertex9 [label = "update profile_13:update contact information_14:save contact information changes_16/up", shape = ellipse, color=black]
+esg130_vertex10 [label = "update profile_13:update preferences_15:save preference changes_17/up", shape = ellipse, color=black]
+}

@@ -1,0 +1,78 @@
+digraph G {
+rankdir = LR
+label = "P001034";
+esg1034_vertex0 -> esg1034_vertex1[ color = null];
+esg1034_vertex2 -> esg1034_vertex3[ color = null];
+esg1034_vertex1 -> esg1034_vertex2[ color = null];
+esg1034_vertex3 -> esg1034_vertex4[ color = null];
+esg1034_vertex6 -> esg1034_vertex7[ color = null];
+esg1034_vertex7 -> esg1034_vertex8[ color = null];
+esg1034_vertex6 -> esg1034_vertex8[ color = null];
+esg1034_vertex8 -> esg1034_vertex7[ color = null];
+esg1034_vertex8 -> esg1034_vertex9[ color = null];
+esg1034_vertex7 -> esg1034_vertex9[ color = null];
+esg1034_vertex7 -> esg1034_vertex7[ color = null];
+esg1034_vertex8 -> esg1034_vertex8[ color = null];
+esg1034_vertex3 -> esg1034_vertex6[ color = null];
+esg1034_vertex9 -> esg1034_vertex5[ color = null];
+esg1034_vertex10 -> esg1034_vertex11[ color = null];
+esg1034_vertex11 -> esg1034_vertex12[ color = null];
+esg1034_vertex10 -> esg1034_vertex12[ color = null];
+esg1034_vertex12 -> esg1034_vertex11[ color = null];
+esg1034_vertex12 -> esg1034_vertex13[ color = null];
+esg1034_vertex11 -> esg1034_vertex13[ color = null];
+esg1034_vertex11 -> esg1034_vertex11[ color = null];
+esg1034_vertex12 -> esg1034_vertex12[ color = null];
+esg1034_vertex13 -> esg1034_vertex5[ color = null];
+esg1034_vertex3 -> esg1034_vertex10[ color = null];
+esg1034_vertex15 -> esg1034_vertex5[ color = null];
+esg1034_vertex0 -> esg1034_vertex14[ color = null];
+esg1034_vertex1 -> esg1034_vertex16[ color = null];
+esg1034_vertex17 -> esg1034_vertex5[ color = null];
+esg1034_vertex4 -> esg1034_vertex18[ color = null];
+esg1034_vertex18 -> esg1034_vertex19[ color = null];
+esg1034_vertex19 -> esg1034_vertex5[ color = null];
+esg1034_vertex3 -> esg1034_vertex20[ color = null];
+esg1034_vertex20 -> esg1034_vertex4[ color = null];
+esg1034_vertex21 -> esg1034_vertex5[ color = null];
+esg1034_vertex22 -> esg1034_vertex21[ color = null];
+esg1034_vertex1 -> esg1034_vertex23[ color = null];
+esg1034_vertex23 -> esg1034_vertex22[ color = null];
+esg1034_vertex23 -> esg1034_vertex4[ color = null];
+esg1034_vertex24 -> esg1034_vertex24[ color = null];
+esg1034_vertex24 -> esg1034_vertex25[ color = null];
+esg1034_vertex14 -> esg1034_vertex25[ color = null];
+esg1034_vertex14 -> esg1034_vertex24[ color = null];
+esg1034_vertex25 -> esg1034_vertex15[ color = null];
+esg1034_vertex24 -> esg1034_vertex15[ color = null];
+esg1034_vertex16 -> esg1034_vertex26[ color = null];
+esg1034_vertex26 -> esg1034_vertex17[ color = null];
+esg1034_vertex22 -> esg1034_vertex4[ color = null];
+esg1034_vertex0 [label = "[", shape = ellipse, color=null]
+esg1034_vertex1 [label = "log in", shape = ellipse, color=null]
+esg1034_vertex2 [label = "access as a teacher", shape = ellipse, color=null]
+esg1034_vertex3 [label = "turn editing on", shape = ellipse, color=null]
+esg1034_vertex4 [label = "open class records", shape = ellipse, color=null]
+esg1034_vertex6 [label = "add new class", shape = ellipse, color=null]
+esg1034_vertex7 [label = "enter the name of the class", shape = ellipse, color=null]
+esg1034_vertex8 [label = "enter the class detail", shape = ellipse, color=null]
+esg1034_vertex9 [label = "submit the class", shape = ellipse, color=null]
+esg1034_vertex5 [label = "]", shape = ellipse, color=null]
+esg1034_vertex10 [label = "add new schedule", shape = ellipse, color=null]
+esg1034_vertex11 [label = "enter the days of the class", shape = ellipse, color=null]
+esg1034_vertex12 [label = "enter the hours of the class", shape = ellipse, color=null]
+esg1034_vertex13 [label = "submit the class schedule", shape = ellipse, color=null]
+esg1034_vertex15 [label = "confirm your identity", shape = ellipse, color=null]
+esg1034_vertex14 [label = "submit attendance", shape = ellipse, color=null]
+esg1034_vertex16 [label = "open notification settings", shape = ellipse, color=null]
+esg1034_vertex17 [label = "confirm notification settings", shape = ellipse, color=null]
+esg1034_vertex18 [label = "select the existing schedule", shape = ellipse, color=null]
+esg1034_vertex19 [label = "view schedule", shape = ellipse, color=null]
+esg1034_vertex20 [label = "open student attendance records", shape = ellipse, color=null]
+esg1034_vertex21 [label = "monitor current attendance status", shape = ellipse, color=null]
+esg1034_vertex22 [label = "open my attendance records", shape = ellipse, color=null]
+esg1034_vertex23 [label = "access as a student", shape = ellipse, color=null]
+esg1034_vertex24 [label = "show the barcode to the barcodereader", shape = ellipse, color=null]
+esg1034_vertex25 [label = "enter barcode manually", shape = ellipse, color=null]
+esg1034_vertex26 [label = "receive notifications as SMS", shape = ellipse, color=null]
+}

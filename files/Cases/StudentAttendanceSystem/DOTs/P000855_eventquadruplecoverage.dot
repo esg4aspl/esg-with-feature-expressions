@@ -1,0 +1,94 @@
+digraph G {
+rankdir = LR
+label = "P000855855stt";
+esg858_vertex0 -> esg858_vertex1[ color = null];
+esg858_vertex0 -> esg858_vertex2[ color = null];
+esg858_vertex0 -> esg858_vertex3[ color = null];
+esg858_vertex0 -> esg858_vertex4[ color = null];
+esg858_vertex5 -> esg858_vertex6[ color = null];
+esg858_vertex5 -> esg858_vertex7[ color = null];
+esg858_vertex8 -> esg858_vertex9[ color = null];
+esg858_vertex8 -> esg858_vertex10[ color = null];
+esg858_vertex8 -> esg858_vertex11[ color = null];
+esg858_vertex1 -> esg858_vertex5[ color = null];
+esg858_vertex1 -> esg858_vertex8[ color = null];
+esg858_vertex6 -> esg858_vertex12[ color = null];
+esg858_vertex7 -> esg858_vertex13[ color = null];
+esg858_vertex0 -> esg858_vertex14[ color = null];
+esg858_vertex0 -> esg858_vertex15[ color = null];
+esg858_vertex0 -> esg858_vertex16[ color = null];
+esg858_vertex0 -> esg858_vertex17[ color = null];
+esg858_vertex2 -> esg858_vertex18[ color = null];
+esg858_vertex12 -> esg858_vertex19[ color = null];
+esg858_vertex13 -> esg858_vertex19[ color = null];
+esg858_vertex9 -> esg858_vertex20[ color = null];
+esg858_vertex9 -> esg858_vertex21[ color = null];
+esg858_vertex10 -> esg858_vertex22[ color = null];
+esg858_vertex10 -> esg858_vertex23[ color = null];
+esg858_vertex11 -> esg858_vertex24[ color = null];
+esg858_vertex20 -> esg858_vertex12[ color = null];
+esg858_vertex21 -> esg858_vertex13[ color = null];
+esg858_vertex22 -> esg858_vertex25[ color = null];
+esg858_vertex23 -> esg858_vertex19[ color = null];
+esg858_vertex24 -> esg858_vertex26[ color = null];
+esg858_vertex25 -> esg858_vertex19[ color = null];
+esg858_vertex26 -> esg858_vertex19[ color = null];
+esg858_vertex3 -> esg858_vertex27[ color = null];
+esg858_vertex4 -> esg858_vertex28[ color = null];
+esg858_vertex4 -> esg858_vertex29[ color = null];
+esg858_vertex27 -> esg858_vertex30[ color = null];
+esg858_vertex27 -> esg858_vertex31[ color = null];
+esg858_vertex28 -> esg858_vertex12[ color = null];
+esg858_vertex29 -> esg858_vertex13[ color = null];
+esg858_vertex32 -> esg858_vertex32[ color = null];
+esg858_vertex32 -> esg858_vertex33[ color = null];
+esg858_vertex32 -> esg858_vertex34[ color = null];
+esg858_vertex33 -> esg858_vertex35[ color = null];
+esg858_vertex34 -> esg858_vertex19[ color = null];
+esg858_vertex35 -> esg858_vertex19[ color = null];
+esg858_vertex14 -> esg858_vertex19[ color = null];
+esg858_vertex15 -> esg858_vertex32[ color = null];
+esg858_vertex15 -> esg858_vertex33[ color = null];
+esg858_vertex15 -> esg858_vertex34[ color = null];
+esg858_vertex16 -> esg858_vertex35[ color = null];
+esg858_vertex17 -> esg858_vertex19[ color = null];
+esg858_vertex18 -> esg858_vertex19[ color = null];
+esg858_vertex30 -> esg858_vertex12[ color = null];
+esg858_vertex31 -> esg858_vertex13[ color = null];
+esg858_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg858_vertex1 [label = "log in_1:access as a teacher_2:turn editing on_3/sas AND ta", shape = ellipse, color=black]
+esg858_vertex2 [label = "log in_1:open notification settings_8:receive notifications as SMS_24/sas AND s", shape = ellipse, color=black]
+esg858_vertex3 [label = "log in_1:access as a student_21:open my attendance records_20/sas AND sa", shape = ellipse, color=black]
+esg858_vertex4 [label = "log in_1:access as a student_21:open class records_4/sas AND sa", shape = ellipse, color=black]
+esg858_vertex5 [label = "access as a teacher_2:turn editing on_3:open class records_4/ta AND sas", shape = ellipse, color=black]
+esg858_vertex6 [label = "turn editing on_3:open class records_4:select the existing schedule_10/ta AND sas AND vs", shape = ellipse, color=black]
+esg858_vertex7 [label = "turn editing on_3:open class records_4:select the existing class_11/ta AND sas AND vc", shape = ellipse, color=black]
+esg858_vertex8 [label = "access as a teacher_2:turn editing on_3:open student attendance records_14/ta", shape = ellipse, color=black]
+esg858_vertex9 [label = "turn editing on_3:open student attendance records_14:open class records_4/ta AND sas", shape = ellipse, color=black]
+esg858_vertex10 [label = "turn editing on_3:open student attendance records_14:select a class-list attendance record_15/ta AND ur", shape = ellipse, color=black]
+esg858_vertex11 [label = "turn editing on_3:open student attendance records_14:select an editable student-record_16/ta AND ur", shape = ellipse, color=black]
+esg858_vertex12 [label = "open class records_4:select the existing schedule_10:view schedule_12/sas AND vs", shape = ellipse, color=black]
+esg858_vertex13 [label = "open class records_4:select the existing class_11:view class_13/sas AND vc", shape = ellipse, color=black]
+esg858_vertex14 [label = "submit attendance_6:enter barcode manually_23:confirm your identity_7/sas AND b", shape = ellipse, color=black]
+esg858_vertex15 [label = "submit attendance_6:show the barcode to the barcodereader_22:show the barcode to the barcodereader_22/sas AND b", shape = ellipse, color=black]
+esg858_vertex16 [label = "submit attendance_6:show the barcode to the barcodereader_22:enter barcode manually_23/sas AND b", shape = ellipse, color=black]
+esg858_vertex17 [label = "submit attendance_6:show the barcode to the barcodereader_22:confirm your identity_7/sas AND b", shape = ellipse, color=black]
+esg858_vertex18 [label = "open notification settings_8:receive notifications as SMS_24:confirm notification settings_9/sas AND s", shape = ellipse, color=black]
+esg858_vertex19 [label = "]_5/", shape = ellipse, color=black]
+esg858_vertex20 [label = "open student attendance records_14:open class records_4:select the existing schedule_10/ta AND sas AND vs", shape = ellipse, color=black]
+esg858_vertex21 [label = "open student attendance records_14:open class records_4:select the existing class_11/ta AND sas AND vc", shape = ellipse, color=black]
+esg858_vertex22 [label = "open student attendance records_14:select a class-list attendance record_15:edit attendance status_17/ta AND ur", shape = ellipse, color=black]
+esg858_vertex23 [label = "open student attendance records_14:select a class-list attendance record_15:trace attendance activity of the class_19/ta AND ur AND taa", shape = ellipse, color=black]
+esg858_vertex24 [label = "open student attendance records_14:select an editable student-record_16:edit attendance status_17/ta AND ur", shape = ellipse, color=black]
+esg858_vertex25 [label = "select a class-list attendance record_15:edit attendance status_17:submit attendance record update_18/ur", shape = ellipse, color=black]
+esg858_vertex26 [label = "select an editable student-record_16:edit attendance status_17:submit attendance record update_18/ur", shape = ellipse, color=black]
+esg858_vertex27 [label = "access as a student_21:open my attendance records_20:open class records_4/sa AND sas", shape = ellipse, color=black]
+esg858_vertex28 [label = "access as a student_21:open class records_4:select the existing schedule_10/sa AND sas AND vs", shape = ellipse, color=black]
+esg858_vertex29 [label = "access as a student_21:open class records_4:select the existing class_11/sa AND sas AND vc", shape = ellipse, color=black]
+esg858_vertex30 [label = "open my attendance records_20:open class records_4:select the existing schedule_10/sa AND sas AND vs", shape = ellipse, color=black]
+esg858_vertex31 [label = "open my attendance records_20:open class records_4:select the existing class_11/sa AND sas AND vc", shape = ellipse, color=black]
+esg858_vertex32 [label = "show the barcode to the barcodereader_22:show the barcode to the barcodereader_22:show the barcode to the barcodereader_22/b", shape = ellipse, color=black]
+esg858_vertex33 [label = "show the barcode to the barcodereader_22:show the barcode to the barcodereader_22:enter barcode manually_23/b", shape = ellipse, color=black]
+esg858_vertex34 [label = "show the barcode to the barcodereader_22:show the barcode to the barcodereader_22:confirm your identity_7/b AND sas", shape = ellipse, color=black]
+esg858_vertex35 [label = "show the barcode to the barcodereader_22:enter barcode manually_23:confirm your identity_7/b AND sas", shape = ellipse, color=black]
+}

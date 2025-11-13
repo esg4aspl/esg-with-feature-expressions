@@ -1,0 +1,73 @@
+digraph G {
+rankdir = LR
+label = "P000549549stt";
+esg552_vertex0 -> esg552_vertex1[ color = null];
+esg552_vertex0 -> esg552_vertex2[ color = null];
+esg552_vertex0 -> esg552_vertex3[ color = null];
+esg552_vertex0 -> esg552_vertex4[ color = null];
+esg552_vertex5 -> esg552_vertex6[ color = null];
+esg552_vertex5 -> esg552_vertex7[ color = null];
+esg552_vertex8 -> esg552_vertex9[ color = null];
+esg552_vertex1 -> esg552_vertex5[ color = null];
+esg552_vertex1 -> esg552_vertex8[ color = null];
+esg552_vertex6 -> esg552_vertex10[ color = null];
+esg552_vertex7 -> esg552_vertex11[ color = null];
+esg552_vertex12 -> esg552_vertex12[ color = null];
+esg552_vertex12 -> esg552_vertex13[ color = null];
+esg552_vertex13 -> esg552_vertex14[ color = null];
+esg552_vertex0 -> esg552_vertex15[ color = null];
+esg552_vertex0 -> esg552_vertex16[ color = null];
+esg552_vertex15 -> esg552_vertex12[ color = null];
+esg552_vertex15 -> esg552_vertex13[ color = null];
+esg552_vertex16 -> esg552_vertex14[ color = null];
+esg552_vertex2 -> esg552_vertex17[ color = null];
+esg552_vertex17 -> esg552_vertex14[ color = null];
+esg552_vertex10 -> esg552_vertex14[ color = null];
+esg552_vertex11 -> esg552_vertex14[ color = null];
+esg552_vertex9 -> esg552_vertex18[ color = null];
+esg552_vertex9 -> esg552_vertex19[ color = null];
+esg552_vertex18 -> esg552_vertex10[ color = null];
+esg552_vertex19 -> esg552_vertex11[ color = null];
+esg552_vertex20 -> esg552_vertex14[ color = null];
+esg552_vertex3 -> esg552_vertex21[ color = null];
+esg552_vertex3 -> esg552_vertex22[ color = null];
+esg552_vertex3 -> esg552_vertex23[ color = null];
+esg552_vertex4 -> esg552_vertex24[ color = null];
+esg552_vertex4 -> esg552_vertex25[ color = null];
+esg552_vertex21 -> esg552_vertex20[ color = null];
+esg552_vertex22 -> esg552_vertex14[ color = null];
+esg552_vertex23 -> esg552_vertex26[ color = null];
+esg552_vertex23 -> esg552_vertex27[ color = null];
+esg552_vertex24 -> esg552_vertex10[ color = null];
+esg552_vertex25 -> esg552_vertex11[ color = null];
+esg552_vertex26 -> esg552_vertex10[ color = null];
+esg552_vertex27 -> esg552_vertex11[ color = null];
+esg552_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg552_vertex1 [label = "log in_1:access as a teacher_2:turn editing on_3/sas AND ta", shape = ellipse, color=black]
+esg552_vertex2 [label = "log in_1:open notification settings_9:receive notifications as Email_11/sas AND e", shape = ellipse, color=black]
+esg552_vertex3 [label = "log in_1:access as a student_21:open my attendance records_20/sas AND sa", shape = ellipse, color=black]
+esg552_vertex4 [label = "log in_1:access as a student_21:open class records_4/sas AND sa", shape = ellipse, color=black]
+esg552_vertex5 [label = "access as a teacher_2:turn editing on_3:open class records_4/ta AND sas", shape = ellipse, color=black]
+esg552_vertex6 [label = "turn editing on_3:open class records_4:select the existing schedule_12/ta AND sas AND vs", shape = ellipse, color=black]
+esg552_vertex7 [label = "turn editing on_3:open class records_4:select the existing class_13/ta AND sas AND vc", shape = ellipse, color=black]
+esg552_vertex8 [label = "access as a teacher_2:turn editing on_3:open student attendance records_16/ta", shape = ellipse, color=black]
+esg552_vertex9 [label = "turn editing on_3:open student attendance records_16:open class records_4/ta AND sas", shape = ellipse, color=black]
+esg552_vertex10 [label = "open class records_4:select the existing schedule_12:view schedule_14/sas AND vs", shape = ellipse, color=black]
+esg552_vertex11 [label = "open class records_4:select the existing class_13:view class_15/sas AND vc", shape = ellipse, color=black]
+esg552_vertex12 [label = "read the access card to the card reader_6:read the access card to the card reader_6:read the access card to the card reader_6/a", shape = ellipse, color=black]
+esg552_vertex13 [label = "read the access card to the card reader_6:read the access card to the card reader_6:confirm your identity_8/a AND sas", shape = ellipse, color=black]
+esg552_vertex14 [label = "]_5/", shape = ellipse, color=black]
+esg552_vertex15 [label = "submit attendance_7:read the access card to the card reader_6:read the access card to the card reader_6/sas AND a", shape = ellipse, color=black]
+esg552_vertex16 [label = "submit attendance_7:read the access card to the card reader_6:confirm your identity_8/sas AND a", shape = ellipse, color=black]
+esg552_vertex17 [label = "open notification settings_9:receive notifications as Email_11:confirm notification settings_10/sas AND e", shape = ellipse, color=black]
+esg552_vertex18 [label = "open student attendance records_16:open class records_4:select the existing schedule_12/ta AND sas AND vs", shape = ellipse, color=black]
+esg552_vertex19 [label = "open student attendance records_16:open class records_4:select the existing class_13/ta AND sas AND vc", shape = ellipse, color=black]
+esg552_vertex20 [label = "open my attendance records_20:select the existing record_17:view record_18/sa AND vr", shape = ellipse, color=black]
+esg552_vertex21 [label = "access as a student_21:open my attendance records_20:select the existing record_17/sa AND vr", shape = ellipse, color=black]
+esg552_vertex22 [label = "access as a student_21:open my attendance records_20:monitor current attendance status_19/sa AND mas", shape = ellipse, color=black]
+esg552_vertex23 [label = "access as a student_21:open my attendance records_20:open class records_4/sa AND sas", shape = ellipse, color=black]
+esg552_vertex24 [label = "access as a student_21:open class records_4:select the existing schedule_12/sa AND sas AND vs", shape = ellipse, color=black]
+esg552_vertex25 [label = "access as a student_21:open class records_4:select the existing class_13/sa AND sas AND vc", shape = ellipse, color=black]
+esg552_vertex26 [label = "open my attendance records_20:open class records_4:select the existing schedule_12/sa AND sas AND vs", shape = ellipse, color=black]
+esg552_vertex27 [label = "open my attendance records_20:open class records_4:select the existing class_13/sa AND sas AND vc", shape = ellipse, color=black]
+}

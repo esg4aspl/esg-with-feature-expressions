@@ -1,0 +1,42 @@
+digraph G {
+rankdir = LR
+label = "P000428428stt";
+esg431_vertex0 -> esg431_vertex1[ color = null];
+esg431_vertex0 -> esg431_vertex2[ color = null];
+esg431_vertex0 -> esg431_vertex3[ color = null];
+esg431_vertex4 -> esg431_vertex5[ color = null];
+esg431_vertex1 -> esg431_vertex4[ color = null];
+esg431_vertex6 -> esg431_vertex5[ color = null];
+esg431_vertex2 -> esg431_vertex6[ color = null];
+esg431_vertex3 -> esg431_vertex5[ color = null];
+esg431_vertex7 -> esg431_vertex8[ color = null];
+esg431_vertex8 -> esg431_vertex5[ color = null];
+esg431_vertex0 -> esg431_vertex7[ color = null];
+esg431_vertex9 -> esg431_vertex5[ color = null];
+esg431_vertex10 -> esg431_vertex5[ color = null];
+esg431_vertex0 -> esg431_vertex9[ color = null];
+esg431_vertex0 -> esg431_vertex10[ color = null];
+esg431_vertex11 -> esg431_vertex12[ color = null];
+esg431_vertex12 -> esg431_vertex13[ color = null];
+esg431_vertex13 -> esg431_vertex14[ color = null];
+esg431_vertex13 -> esg431_vertex15[ color = null];
+esg431_vertex14 -> esg431_vertex5[ color = null];
+esg431_vertex15 -> esg431_vertex5[ color = null];
+esg431_vertex0 -> esg431_vertex11[ color = null];
+esg431_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg431_vertex1 [label = "get balance_2:select deposit_3:enter deposit amount_5/b AND d", shape = ellipse, color=black]
+esg431_vertex2 [label = "get balance_2:select withdraw_6:enter withdraw amount_8/b AND w", shape = ellipse, color=black]
+esg431_vertex3 [label = "get balance_2:select withdraw_6:cancel withdraw_9/b AND w AND cw", shape = ellipse, color=black]
+esg431_vertex4 [label = "select deposit_3:enter deposit amount_5:put money_4/d", shape = ellipse, color=black]
+esg431_vertex5 [label = "]_1/", shape = ellipse, color=black]
+esg431_vertex6 [label = "select withdraw_6:enter withdraw amount_8:take money_7/w", shape = ellipse, color=black]
+esg431_vertex7 [label = "open account_12:select currency_13:EUR_14/b AND eu", shape = ellipse, color=black]
+esg431_vertex8 [label = "select currency_13:EUR_14:confirm EUR account openning_26/b AND eu", shape = ellipse, color=black]
+esg431_vertex9 [label = "update profile_15:update contact information_16:save contact information changes_18/up", shape = ellipse, color=black]
+esg431_vertex10 [label = "update profile_15:update preferences_17:save preference changes_25/up", shape = ellipse, color=black]
+esg431_vertex11 [label = "transfer money_19:enter receiver's IBAN_20:enter amount_21/t", shape = ellipse, color=black]
+esg431_vertex12 [label = "enter receiver's IBAN_20:enter amount_21:select transfer type_22/t", shape = ellipse, color=black]
+esg431_vertex13 [label = "enter amount_21:select transfer type_22:view transfer details_23/t", shape = ellipse, color=black]
+esg431_vertex14 [label = "select transfer type_22:view transfer details_23:confirm transfer_24/t", shape = ellipse, color=black]
+esg431_vertex15 [label = "select transfer type_22:view transfer details_23:cancel transfer_27/t", shape = ellipse, color=black]
+}

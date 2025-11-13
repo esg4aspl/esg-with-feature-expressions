@@ -1,0 +1,67 @@
+digraph G {
+rankdir = LR
+label = "P000145145s";
+esg146_vertex0 -> esg146_vertex2[ color = null];
+esg146_vertex3 -> esg146_vertex5[ color = null];
+esg146_vertex5 -> esg146_vertex4[ color = null];
+esg146_vertex2 -> esg146_vertex3[ color = null];
+esg146_vertex6 -> esg146_vertex8[ color = null];
+esg146_vertex8 -> esg146_vertex7[ color = null];
+esg146_vertex2 -> esg146_vertex6[ color = null];
+esg146_vertex4 -> esg146_vertex1[ color = null];
+esg146_vertex7 -> esg146_vertex1[ color = null];
+esg146_vertex6 -> esg146_vertex9[ color = null];
+esg146_vertex8 -> esg146_vertex10[ color = null];
+esg146_vertex0 -> esg146_vertex11[ color = null];
+esg146_vertex3 -> esg146_vertex12[ color = null];
+esg146_vertex0 -> esg146_vertex13[ color = null];
+esg146_vertex13 -> esg146_vertex14[ color = null];
+esg146_vertex14 -> esg146_vertex1[ color = null];
+esg146_vertex0 -> esg146_vertex15[ color = null];
+esg146_vertex15 -> esg146_vertex16[ color = null];
+esg146_vertex12 -> esg146_vertex1[ color = null];
+esg146_vertex9 -> esg146_vertex1[ color = null];
+esg146_vertex11 -> esg146_vertex25[ color = null];
+esg146_vertex16 -> esg146_vertex1[ color = null];
+esg146_vertex17 -> esg146_vertex18[ color = null];
+esg146_vertex18 -> esg146_vertex19[ color = null];
+esg146_vertex0 -> esg146_vertex17[ color = null];
+esg146_vertex20 -> esg146_vertex21[ color = null];
+esg146_vertex20 -> esg146_vertex22[ color = null];
+esg146_vertex21 -> esg146_vertex23[ color = null];
+esg146_vertex0 -> esg146_vertex20[ color = null];
+esg146_vertex23 -> esg146_vertex1[ color = null];
+esg146_vertex22 -> esg146_vertex24[ color = null];
+esg146_vertex24 -> esg146_vertex1[ color = null];
+esg146_vertex25 -> esg146_vertex1[ color = null];
+esg146_vertex19 -> esg146_vertex26[ color = null];
+esg146_vertex26 -> esg146_vertex1[ color = null];
+esg146_vertex10 -> esg146_vertex9[ color = null];
+esg146_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg146_vertex2 [label = "get balance_2/b", shape = ellipse, color=black]
+esg146_vertex3 [label = "select deposit_3/d", shape = ellipse, color=black]
+esg146_vertex5 [label = "enter deposit amount_5/d", shape = ellipse, color=black]
+esg146_vertex4 [label = "put money_4/d", shape = ellipse, color=black]
+esg146_vertex6 [label = "select withdraw_6/w", shape = ellipse, color=black]
+esg146_vertex8 [label = "enter withdraw amount_8/w", shape = ellipse, color=black]
+esg146_vertex7 [label = "take money_7/w", shape = ellipse, color=black]
+esg146_vertex1 [label = "]_1/", shape = ellipse, color=black]
+esg146_vertex9 [label = "cancel withdraw_9/cw", shape = ellipse, color=black]
+esg146_vertex10 [label = "confirm daily limit excess_10/dl", shape = ellipse, color=black]
+esg146_vertex11 [label = "enter daily withdraw limit_11/dl", shape = ellipse, color=black]
+esg146_vertex12 [label = "cancel deposit_12/cd", shape = ellipse, color=black]
+esg146_vertex13 [label = "enter a credit amount_13/c", shape = ellipse, color=black]
+esg146_vertex14 [label = "confirm credit amount_14/c", shape = ellipse, color=black]
+esg146_vertex15 [label = "request an interest rate_15/i", shape = ellipse, color=black]
+esg146_vertex16 [label = "confirm interest rate_16/i", shape = ellipse, color=black]
+esg146_vertex25 [label = "confirm daily withdraw limit_25/dl", shape = ellipse, color=black]
+esg146_vertex17 [label = "open account_17/b", shape = ellipse, color=black]
+esg146_vertex18 [label = "select currency_18/b", shape = ellipse, color=black]
+esg146_vertex19 [label = "TL_19/tl", shape = ellipse, color=black]
+esg146_vertex20 [label = "update profile_20/up", shape = ellipse, color=black]
+esg146_vertex21 [label = "update contact information_21/up", shape = ellipse, color=black]
+esg146_vertex22 [label = "update preferences_22/up", shape = ellipse, color=black]
+esg146_vertex23 [label = "save contact information changes_23/up", shape = ellipse, color=black]
+esg146_vertex24 [label = "save preference changes_24/up", shape = ellipse, color=black]
+esg146_vertex26 [label = "confirm TL account openning_26/tl", shape = ellipse, color=black]
+}

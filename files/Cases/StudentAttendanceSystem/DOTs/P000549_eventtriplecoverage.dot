@@ -1,0 +1,64 @@
+digraph G {
+rankdir = LR
+label = "P000549549st";
+esg551_vertex0 -> esg551_vertex1[ color = null];
+esg551_vertex0 -> esg551_vertex2[ color = null];
+esg551_vertex0 -> esg551_vertex3[ color = null];
+esg551_vertex4 -> esg551_vertex5[ color = null];
+esg551_vertex4 -> esg551_vertex6[ color = null];
+esg551_vertex1 -> esg551_vertex4[ color = null];
+esg551_vertex5 -> esg551_vertex7[ color = null];
+esg551_vertex5 -> esg551_vertex8[ color = null];
+esg551_vertex9 -> esg551_vertex9[ color = null];
+esg551_vertex9 -> esg551_vertex10[ color = null];
+esg551_vertex0 -> esg551_vertex11[ color = null];
+esg551_vertex11 -> esg551_vertex9[ color = null];
+esg551_vertex11 -> esg551_vertex10[ color = null];
+esg551_vertex10 -> esg551_vertex12[ color = null];
+esg551_vertex2 -> esg551_vertex13[ color = null];
+esg551_vertex13 -> esg551_vertex14[ color = null];
+esg551_vertex14 -> esg551_vertex12[ color = null];
+esg551_vertex7 -> esg551_vertex15[ color = null];
+esg551_vertex8 -> esg551_vertex16[ color = null];
+esg551_vertex15 -> esg551_vertex12[ color = null];
+esg551_vertex16 -> esg551_vertex12[ color = null];
+esg551_vertex6 -> esg551_vertex17[ color = null];
+esg551_vertex17 -> esg551_vertex7[ color = null];
+esg551_vertex17 -> esg551_vertex8[ color = null];
+esg551_vertex18 -> esg551_vertex12[ color = null];
+esg551_vertex19 -> esg551_vertex18[ color = null];
+esg551_vertex20 -> esg551_vertex12[ color = null];
+esg551_vertex3 -> esg551_vertex21[ color = null];
+esg551_vertex3 -> esg551_vertex22[ color = null];
+esg551_vertex21 -> esg551_vertex19[ color = null];
+esg551_vertex21 -> esg551_vertex20[ color = null];
+esg551_vertex21 -> esg551_vertex23[ color = null];
+esg551_vertex22 -> esg551_vertex7[ color = null];
+esg551_vertex22 -> esg551_vertex8[ color = null];
+esg551_vertex23 -> esg551_vertex7[ color = null];
+esg551_vertex23 -> esg551_vertex8[ color = null];
+esg551_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg551_vertex1 [label = "log in_1:access as a teacher_2/sas AND ta", shape = ellipse, color=black]
+esg551_vertex2 [label = "log in_1:open notification settings_9/sas", shape = ellipse, color=black]
+esg551_vertex3 [label = "log in_1:access as a student_21/sas AND sa", shape = ellipse, color=black]
+esg551_vertex4 [label = "access as a teacher_2:turn editing on_3/ta", shape = ellipse, color=black]
+esg551_vertex5 [label = "turn editing on_3:open class records_4/ta AND sas", shape = ellipse, color=black]
+esg551_vertex6 [label = "turn editing on_3:open student attendance records_16/ta", shape = ellipse, color=black]
+esg551_vertex7 [label = "open class records_4:select the existing schedule_12/sas AND vs", shape = ellipse, color=black]
+esg551_vertex8 [label = "open class records_4:select the existing class_13/sas AND vc", shape = ellipse, color=black]
+esg551_vertex9 [label = "read the access card to the card reader_6:read the access card to the card reader_6/a", shape = ellipse, color=black]
+esg551_vertex10 [label = "read the access card to the card reader_6:confirm your identity_8/a AND sas", shape = ellipse, color=black]
+esg551_vertex11 [label = "submit attendance_7:read the access card to the card reader_6/sas AND a", shape = ellipse, color=black]
+esg551_vertex12 [label = "]_5/", shape = ellipse, color=black]
+esg551_vertex13 [label = "open notification settings_9:receive notifications as Email_11/sas AND e", shape = ellipse, color=black]
+esg551_vertex14 [label = "receive notifications as Email_11:confirm notification settings_10/e AND sas", shape = ellipse, color=black]
+esg551_vertex15 [label = "select the existing schedule_12:view schedule_14/vs", shape = ellipse, color=black]
+esg551_vertex16 [label = "select the existing class_13:view class_15/vc", shape = ellipse, color=black]
+esg551_vertex17 [label = "open student attendance records_16:open class records_4/ta AND sas", shape = ellipse, color=black]
+esg551_vertex18 [label = "select the existing record_17:view record_18/vr", shape = ellipse, color=black]
+esg551_vertex19 [label = "open my attendance records_20:select the existing record_17/sa AND vr", shape = ellipse, color=black]
+esg551_vertex20 [label = "open my attendance records_20:monitor current attendance status_19/sa AND mas", shape = ellipse, color=black]
+esg551_vertex21 [label = "access as a student_21:open my attendance records_20/sa", shape = ellipse, color=black]
+esg551_vertex22 [label = "access as a student_21:open class records_4/sa AND sas", shape = ellipse, color=black]
+esg551_vertex23 [label = "open my attendance records_20:open class records_4/sa AND sas", shape = ellipse, color=black]
+}

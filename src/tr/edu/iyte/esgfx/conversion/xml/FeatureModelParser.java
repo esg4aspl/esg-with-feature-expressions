@@ -61,6 +61,9 @@ public class FeatureModelParser extends DefaultHandler {
 		String name;
 
 		switch (qName.toLowerCase()) {
+	    case "graphics":
+	        //Ignore graphics
+	        break;
 		case "and":
 			isAndEnded = false;
 			isAbstract = Boolean.parseBoolean(attributes.getValue("abstract"));
@@ -68,6 +71,10 @@ public class FeatureModelParser extends DefaultHandler {
 			isMandatory = Boolean.parseBoolean(attributes.getValue("mandatory"));
 
 			name = attributes.getValue("name");
+		    if (name == null || name.trim().isEmpty()) {
+		        System.err.println("Warning: " + qName + " element without name attribute, skipping...");
+		        break;
+		    }
 			currentFeature = new Feature(name, isAbstract, isMandatory);
 			parentFeature = currentFeature;
 
@@ -92,9 +99,19 @@ public class FeatureModelParser extends DefaultHandler {
 			isAbstract = Boolean.parseBoolean(attributes.getValue("abstract"));
 			isMandatory = Boolean.parseBoolean(attributes.getValue("mandatory"));
 			name = attributes.getValue("name");
+			
+		    if (name == null || name.trim().isEmpty()) {
+		        System.err.println("Warning: " + qName + " element without name attribute, skipping...");
+		        break;
+		    }
+			
 			currentFeature = new Feature(name, isAbstract, isMandatory);
+			
 			currentFeature.setParent(parentFeature);
 			featureModel.addFeature(currentFeature);
+			
+//			System.out.println(currentFeature.getName() + " isAbstract:" + currentFeature.isAbstract() + " isMandatory:"
+//			+ currentFeature.isMandatory() + " parent Feature:" + parentFeature.getName());
 
 			if (isAbstract) {
 				featureModel.addANDFeature(parentFeature, currentFeature);
@@ -131,6 +148,12 @@ public class FeatureModelParser extends DefaultHandler {
 //			System.out.println("name: " + name);
 //			System.out.println("parentFeature: " + parentFeature.getName());
 			currentFeature = new Feature(name, isAbstract, isMandatory);
+			
+		    if (name == null || name.trim().isEmpty()) {
+		        System.err.println("Warning: " + qName + " element without name attribute, skipping...");
+		        break;
+		    }
+			
 			currentFeature.setParent(parentFeature);
 			featureModel.addFeature(currentFeature);
 
@@ -157,9 +180,16 @@ public class FeatureModelParser extends DefaultHandler {
 			break;
 
 		case "feature":
-			isAbstract = false;
+//			isAbstract = false;
+			isAbstract = Boolean.parseBoolean(attributes.getValue("abstract"));
 			isMandatory = Boolean.parseBoolean(attributes.getValue("mandatory"));
 			name = attributes.getValue("name");
+			
+		    if (name == null || name.trim().isEmpty()) {
+		        System.err.println("Warning: " + qName + " element without name attribute, skipping...");
+		        break;
+		    }
+			
 			currentFeature = new Feature(name, isAbstract, isMandatory);
 			currentFeature.setParent(parentFeature);
 			featureModel.addFeature(currentFeature);
@@ -231,6 +261,9 @@ public class FeatureModelParser extends DefaultHandler {
 //		System.out.println("End Element:" + qName);
 
 		switch (qName.toLowerCase()) {
+	    case "graphics":
+	        // Ignore graphics
+	        break;
 		case "and":
 			parentFeature = featureModel.getRoot();
 			isAndEnded = true;

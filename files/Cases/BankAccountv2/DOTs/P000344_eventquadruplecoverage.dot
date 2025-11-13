@@ -1,0 +1,41 @@
+digraph G {
+rankdir = LR
+label = "P000344344stt";
+esg347_vertex0 -> esg347_vertex1[ color = null];
+esg347_vertex0 -> esg347_vertex2[ color = null];
+esg347_vertex0 -> esg347_vertex3[ color = null];
+esg347_vertex4 -> esg347_vertex5[ color = null];
+esg347_vertex1 -> esg347_vertex4[ color = null];
+esg347_vertex6 -> esg347_vertex5[ color = null];
+esg347_vertex7 -> esg347_vertex8[ color = null];
+esg347_vertex2 -> esg347_vertex6[ color = null];
+esg347_vertex2 -> esg347_vertex7[ color = null];
+esg347_vertex3 -> esg347_vertex5[ color = null];
+esg347_vertex8 -> esg347_vertex5[ color = null];
+esg347_vertex9 -> esg347_vertex10[ color = null];
+esg347_vertex10 -> esg347_vertex5[ color = null];
+esg347_vertex0 -> esg347_vertex9[ color = null];
+esg347_vertex11 -> esg347_vertex12[ color = null];
+esg347_vertex12 -> esg347_vertex13[ color = null];
+esg347_vertex13 -> esg347_vertex14[ color = null];
+esg347_vertex13 -> esg347_vertex15[ color = null];
+esg347_vertex14 -> esg347_vertex5[ color = null];
+esg347_vertex15 -> esg347_vertex5[ color = null];
+esg347_vertex0 -> esg347_vertex11[ color = null];
+esg347_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg347_vertex1 [label = "get balance_2:select deposit_3:enter deposit amount_5/b AND d", shape = ellipse, color=black]
+esg347_vertex2 [label = "get balance_2:select withdraw_6:enter withdraw amount_8/b AND w", shape = ellipse, color=black]
+esg347_vertex3 [label = "get balance_2:select withdraw_6:cancel withdraw_9/b AND w AND cw", shape = ellipse, color=black]
+esg347_vertex4 [label = "select deposit_3:enter deposit amount_5:put money_4/d", shape = ellipse, color=black]
+esg347_vertex5 [label = "]_1/", shape = ellipse, color=black]
+esg347_vertex6 [label = "select withdraw_6:enter withdraw amount_8:take money_7/w", shape = ellipse, color=black]
+esg347_vertex7 [label = "select withdraw_6:enter withdraw amount_8:confirm daily limit excess_10/w AND dl", shape = ellipse, color=black]
+esg347_vertex8 [label = "enter withdraw amount_8:confirm daily limit excess_10:cancel withdraw_9/w AND dl AND cw", shape = ellipse, color=black]
+esg347_vertex9 [label = "open account_14:select currency_15:USD_16/b AND us", shape = ellipse, color=black]
+esg347_vertex10 [label = "select currency_15:USD_16:confirm USD account openning_24/b AND us", shape = ellipse, color=black]
+esg347_vertex11 [label = "transfer money_17:enter receiver's IBAN_18:enter amount_19/t", shape = ellipse, color=black]
+esg347_vertex12 [label = "enter receiver's IBAN_18:enter amount_19:select transfer type_20/t", shape = ellipse, color=black]
+esg347_vertex13 [label = "enter amount_19:select transfer type_20:view transfer details_21/t", shape = ellipse, color=black]
+esg347_vertex14 [label = "select transfer type_20:view transfer details_21:confirm transfer_22/t", shape = ellipse, color=black]
+esg347_vertex15 [label = "select transfer type_20:view transfer details_21:cancel transfer_25/t", shape = ellipse, color=black]
+}

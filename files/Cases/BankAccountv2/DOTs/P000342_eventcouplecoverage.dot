@@ -1,0 +1,52 @@
+digraph G {
+rankdir = LR
+label = "P000342342s";
+esg343_vertex0 -> esg343_vertex2[ color = null];
+esg343_vertex3 -> esg343_vertex5[ color = null];
+esg343_vertex5 -> esg343_vertex4[ color = null];
+esg343_vertex2 -> esg343_vertex3[ color = null];
+esg343_vertex6 -> esg343_vertex8[ color = null];
+esg343_vertex8 -> esg343_vertex7[ color = null];
+esg343_vertex2 -> esg343_vertex6[ color = null];
+esg343_vertex4 -> esg343_vertex1[ color = null];
+esg343_vertex7 -> esg343_vertex1[ color = null];
+esg343_vertex0 -> esg343_vertex9[ color = null];
+esg343_vertex9 -> esg343_vertex10[ color = null];
+esg343_vertex10 -> esg343_vertex1[ color = null];
+esg343_vertex11 -> esg343_vertex12[ color = null];
+esg343_vertex12 -> esg343_vertex13[ color = null];
+esg343_vertex0 -> esg343_vertex11[ color = null];
+esg343_vertex14 -> esg343_vertex15[ color = null];
+esg343_vertex15 -> esg343_vertex16[ color = null];
+esg343_vertex16 -> esg343_vertex17[ color = null];
+esg343_vertex17 -> esg343_vertex18[ color = null];
+esg343_vertex18 -> esg343_vertex19[ color = null];
+esg343_vertex0 -> esg343_vertex14[ color = null];
+esg343_vertex19 -> esg343_vertex1[ color = null];
+esg343_vertex13 -> esg343_vertex20[ color = null];
+esg343_vertex20 -> esg343_vertex1[ color = null];
+esg343_vertex18 -> esg343_vertex21[ color = null];
+esg343_vertex21 -> esg343_vertex1[ color = null];
+esg343_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg343_vertex2 [label = "get balance_2/b", shape = ellipse, color=black]
+esg343_vertex3 [label = "select deposit_3/d", shape = ellipse, color=black]
+esg343_vertex5 [label = "enter deposit amount_5/d", shape = ellipse, color=black]
+esg343_vertex4 [label = "put money_4/d", shape = ellipse, color=black]
+esg343_vertex6 [label = "select withdraw_6/w", shape = ellipse, color=black]
+esg343_vertex8 [label = "enter withdraw amount_8/w", shape = ellipse, color=black]
+esg343_vertex7 [label = "take money_7/w", shape = ellipse, color=black]
+esg343_vertex1 [label = "]_1/", shape = ellipse, color=black]
+esg343_vertex9 [label = "enter a credit amount_9/c", shape = ellipse, color=black]
+esg343_vertex10 [label = "confirm credit amount_10/c", shape = ellipse, color=black]
+esg343_vertex11 [label = "open account_11/b", shape = ellipse, color=black]
+esg343_vertex12 [label = "select currency_12/b", shape = ellipse, color=black]
+esg343_vertex13 [label = "USD_13/us", shape = ellipse, color=black]
+esg343_vertex14 [label = "transfer money_14/t", shape = ellipse, color=black]
+esg343_vertex15 [label = "enter receiver's IBAN_15/t", shape = ellipse, color=black]
+esg343_vertex16 [label = "enter amount_16/t", shape = ellipse, color=black]
+esg343_vertex17 [label = "select transfer type_17/t", shape = ellipse, color=black]
+esg343_vertex18 [label = "view transfer details_18/t", shape = ellipse, color=black]
+esg343_vertex19 [label = "confirm transfer_19/t", shape = ellipse, color=black]
+esg343_vertex20 [label = "confirm USD account openning_20/us", shape = ellipse, color=black]
+esg343_vertex21 [label = "cancel transfer_21/t", shape = ellipse, color=black]
+}

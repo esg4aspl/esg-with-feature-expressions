@@ -43,7 +43,7 @@ public class Conjunction extends FeatureExpression {
 		
 		Iterator<FeatureExpression> operandsIterator = operands.iterator();
 		int count = 1;
-//		System.out.println(operands.size());
+//		System.out.println("Number of operands " + operands.size());
 		
 		while(count < operands.size() ) {
 			FeatureExpression featureExpression = operandsIterator.next();

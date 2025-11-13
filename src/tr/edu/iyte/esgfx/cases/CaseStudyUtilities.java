@@ -2,6 +2,7 @@ package tr.edu.iyte.esgfx.cases;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,37 +16,104 @@ import tr.edu.iyte.esgfx.productconfigurationgeneration.ProductConfigurationVali
 
 public class CaseStudyUtilities {
 
+	protected static String caseStudyFolderPath;
 	protected static String featureModelFilePath;
 	protected static String ESGFxFilePath;
 
 	protected static String detailedFaultDetectionResults;
-	protected static String faultDetectionResultsForSPL;
+	protected static String faultDetectionResultsForPerProductInSPL;
 
 	protected static String testsequencesFolderPath;
 	protected static String timemeasurementFolderPath;
 
-	protected static String testSuiteFilePath_edgeCoverage;
+	protected static String testSuiteFilePath;
 	protected static String SPLName;
 	
 	protected static String featureESGSetFolderPath_FeatureInsertion;
 	protected static String featureESGSetFolderPath_FeatureOmission;
 	
 	protected static String productConfigurationFilePath;
-
+	protected static String coverageType;
+	protected static int coverageLength;
+	
+	protected static String EFGFolderPath;
+	
+	protected static String DOTFolderPath;
+	
+	protected static String SPLSummary_TestSuite;
+	protected static String SPLSummary_FaultDetection;
+	
+	protected static String mutantEventName;
+	protected static String mutantFeatureName;
+	
+	protected static Set<ESG> featureESGSet;
+	
+	protected static String mutationOperatorName;
+	
+	
 	protected FeatureModel featureModel;
 	protected ESG ESGFx;
 	protected Map<String, FeatureExpression> featureExpressionMapFromFeatureModel;
+	
+	public static void setCoverageType() {
+		
+		if(coverageLength == 0) {
+			coverageType = "randomwalk";
+		}else if(coverageLength == 1) {
+			coverageType = "eventcoverage";
+		}else if(coverageLength == 2) {
+			coverageType = "eventcouplecoverage";
+		}else if(coverageLength == 3) {
+			coverageType = "eventtriplecoverage";
+		}else if(coverageLength == 4) {
+			coverageType =  "eventquadruplecoverage";
+		}else {
+			coverageType =  "undetermined";
+		}
+		
+		setSPLRelatedPaths();
+	}
+	
+	private static void setSPLRelatedPaths() {
+		featureESGSet = new LinkedHashSet<>();
+		ESGFxFilePath = caseStudyFolderPath + SPLName + "_ESGFx.mxe";
+
+		featureModelFilePath = caseStudyFolderPath + "configs/model.xml";
+
+		testsequencesFolderPath = caseStudyFolderPath + "testsequences/";
+		
+		detailedFaultDetectionResults = testsequencesFolderPath + "faultdetection/" + SPLName + "_detailedFaultDetectionResults";
+		faultDetectionResultsForPerProductInSPL = testsequencesFolderPath + "faultdetection/" + SPLName + "_faultDetectionResultsForSPL.csv";
+		
+		timemeasurementFolderPath = caseStudyFolderPath + "timemeasurement/";
+	
+		testSuiteFilePath = testsequencesFolderPath + SPLName + "_" + coverageType + ".txt";
+
+
+		productConfigurationFilePath = caseStudyFolderPath + "productConfigurations_" + SPLName + ".txt";
+		
+		featureESGSetFolderPath_FeatureOmission = caseStudyFolderPath + "featureESGModels";
+		featureESGSetFolderPath_FeatureInsertion = "files/Cases/SodaVendingMachinev2/featureESGModels";
+		
+		EFGFolderPath = caseStudyFolderPath + "EFGs";
+		DOTFolderPath = caseStudyFolderPath + "DOTs/";
+		
+		SPLSummary_TestSuite =  "files/Cases/" + "SPLTestSuiteSummary.csv";
+		SPLSummary_FaultDetection = "files/Cases/" + "SPLFaultDetectionSummary.csv";
+//		mutationOperatorName = "";
+	}
 
 	protected Map<String, FeatureExpression> generateFeatureExpressionMapFromFeatureModel(String featureModelFilePath,
 			String ESGFxFilePath) throws Exception {
 		MXEFileToESGFxConverter MXEFileToESGFxConverter = new MXEFileToESGFxConverter();
 
+		
 		featureModel = MXEFileToESGFxConverter.parseFeatureModel(featureModelFilePath);
+		
 		ESGFx = MXEFileToESGFxConverter.parseMXEFileForESGFxCreation(ESGFxFilePath);
-
-
+		
 		featureExpressionMapFromFeatureModel = MXEFileToESGFxConverter.getFeatureExpressionMap();
-
+		
 		return featureExpressionMapFromFeatureModel;
 	}
 

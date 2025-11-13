@@ -1,0 +1,36 @@
+digraph G {
+rankdir = LR
+label = "P000163163stt";
+esg166_vertex0 -> esg166_vertex1[ color = null];
+esg166_vertex0 -> esg166_vertex2[ color = null];
+esg166_vertex0 -> esg166_vertex3[ color = null];
+esg166_vertex0 -> esg166_vertex4[ color = null];
+esg166_vertex5 -> esg166_vertex6[ color = null];
+esg166_vertex1 -> esg166_vertex5[ color = null];
+esg166_vertex2 -> esg166_vertex6[ color = null];
+esg166_vertex7 -> esg166_vertex6[ color = null];
+esg166_vertex3 -> esg166_vertex7[ color = null];
+esg166_vertex4 -> esg166_vertex6[ color = null];
+esg166_vertex0 -> esg166_vertex8[ color = null];
+esg166_vertex8 -> esg166_vertex6[ color = null];
+esg166_vertex9 -> esg166_vertex10[ color = null];
+esg166_vertex10 -> esg166_vertex6[ color = null];
+esg166_vertex0 -> esg166_vertex9[ color = null];
+esg166_vertex11 -> esg166_vertex6[ color = null];
+esg166_vertex12 -> esg166_vertex6[ color = null];
+esg166_vertex0 -> esg166_vertex11[ color = null];
+esg166_vertex0 -> esg166_vertex12[ color = null];
+esg166_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg166_vertex1 [label = "get balance_2:select deposit_3:enter deposit amount_5/b AND d", shape = ellipse, color=black]
+esg166_vertex2 [label = "get balance_2:select deposit_3:cancel deposit_10/b AND d AND cd", shape = ellipse, color=black]
+esg166_vertex3 [label = "get balance_2:select withdraw_6:enter withdraw amount_8/b AND w", shape = ellipse, color=black]
+esg166_vertex4 [label = "get balance_2:select withdraw_6:cancel withdraw_9/b AND w AND cw", shape = ellipse, color=black]
+esg166_vertex5 [label = "select deposit_3:enter deposit amount_5:put money_4/d", shape = ellipse, color=black]
+esg166_vertex6 [label = "]_1/", shape = ellipse, color=black]
+esg166_vertex7 [label = "select withdraw_6:enter withdraw amount_8:take money_7/w", shape = ellipse, color=black]
+esg166_vertex8 [label = "request an interest rate_13:enter days left_15:get estimated interest for days left_16/i AND ie", shape = ellipse, color=black]
+esg166_vertex9 [label = "open account_17:select currency_18:TL_19/b AND tl", shape = ellipse, color=black]
+esg166_vertex10 [label = "select currency_18:TL_19:confirm TL account openning_25/b AND tl", shape = ellipse, color=black]
+esg166_vertex11 [label = "update profile_20:update contact information_21:save contact information changes_23/up", shape = ellipse, color=black]
+esg166_vertex12 [label = "update profile_20:update preferences_22:save preference changes_24/up", shape = ellipse, color=black]
+}

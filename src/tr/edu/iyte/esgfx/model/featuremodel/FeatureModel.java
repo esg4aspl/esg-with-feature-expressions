@@ -70,6 +70,26 @@ public class FeatureModel {
 	public Map<Feature, Set<Feature>> getXORFeatures() {
 		return xorFeatures;
 	}
+	
+	public boolean isLeaf(Feature feature) {
+				
+		if(featureSet.contains(feature)) {
+			
+//			System.out.println(feature.getName());
+			
+			boolean isAND = isANDFeature(feature);
+//			System.out.println("isAND " + isAND);
+			boolean isOR = isORFeature(feature);
+//			System.out.println("isOR " + isOR);
+			boolean isXOR = isXORFeature(feature);
+//			System.out.println("isXOR " + isXOR);
+			
+			return !isAND && !isAND && !isXOR;
+			
+		}else
+//			System.out.println(feature.getName());
+			return false;
+	}
 
 	public void addXORFeature(Feature parent, Feature child) {
 		if (xorFeatures.containsKey(parent)) {
@@ -233,10 +253,10 @@ public class FeatureModel {
 
 	public Connector findConnectorByFeatureName(String str) {
 
-		System.out.println("Searching for" + str);
+//		System.out.println("Searching for" + str);
 
 		for (Connector connector : connConstraints) {
-			System.out.println("CONN " + connector.searchKey());
+//			System.out.println("CONN " + connector.searchKey());
 			if (connector.searchKey().equals(str)) {
 				return connector;
 			}
@@ -306,16 +326,16 @@ public class FeatureModel {
 				Iterator<Feature> connFeatureIterator = connFeature.iterator();
 				while (connFeatureIterator.hasNext()) {
 					Feature next = connFeatureIterator.next();
-					System.out.println("NEXT " + next.getName());
-					System.out.println("FEATURE " + feature.getName());
+//					System.out.println("NEXT " + next.getName());
+//					System.out.println("FEATURE " + feature.getName());
 					if (next.equals(feature)) {
-						System.out.println("CONN " + feature.getName());
+//						System.out.println("CONN " + feature.getName());
 						connFeatureIterator.remove();
 					}
 				}
 
 				if (connFeature.size() < 3) {
-					System.out.println("HERE ");
+//					System.out.println("HERE ");
 					connConstraintsIterator.remove();
 				}
 			}

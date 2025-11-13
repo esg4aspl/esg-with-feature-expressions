@@ -1,0 +1,42 @@
+digraph G {
+rankdir = LR
+label = "P00004343s";
+esg44_vertex0 -> esg44_vertex2[ color = null];
+esg44_vertex3 -> esg44_vertex5[ color = null];
+esg44_vertex5 -> esg44_vertex4[ color = null];
+esg44_vertex2 -> esg44_vertex3[ color = null];
+esg44_vertex6 -> esg44_vertex8[ color = null];
+esg44_vertex8 -> esg44_vertex7[ color = null];
+esg44_vertex2 -> esg44_vertex6[ color = null];
+esg44_vertex4 -> esg44_vertex1[ color = null];
+esg44_vertex7 -> esg44_vertex1[ color = null];
+esg44_vertex6 -> esg44_vertex9[ color = null];
+esg44_vertex8 -> esg44_vertex10[ color = null];
+esg44_vertex0 -> esg44_vertex11[ color = null];
+esg44_vertex9 -> esg44_vertex1[ color = null];
+esg44_vertex11 -> esg44_vertex15[ color = null];
+esg44_vertex12 -> esg44_vertex13[ color = null];
+esg44_vertex13 -> esg44_vertex14[ color = null];
+esg44_vertex0 -> esg44_vertex12[ color = null];
+esg44_vertex15 -> esg44_vertex1[ color = null];
+esg44_vertex14 -> esg44_vertex16[ color = null];
+esg44_vertex16 -> esg44_vertex1[ color = null];
+esg44_vertex10 -> esg44_vertex9[ color = null];
+esg44_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg44_vertex2 [label = "get balance_2/b", shape = ellipse, color=black]
+esg44_vertex3 [label = "select deposit_3/d", shape = ellipse, color=black]
+esg44_vertex5 [label = "enter deposit amount_5/d", shape = ellipse, color=black]
+esg44_vertex4 [label = "put money_4/d", shape = ellipse, color=black]
+esg44_vertex6 [label = "select withdraw_6/w", shape = ellipse, color=black]
+esg44_vertex8 [label = "enter withdraw amount_8/w", shape = ellipse, color=black]
+esg44_vertex7 [label = "take money_7/w", shape = ellipse, color=black]
+esg44_vertex1 [label = "]_1/", shape = ellipse, color=black]
+esg44_vertex9 [label = "cancel withdraw_9/cw", shape = ellipse, color=black]
+esg44_vertex10 [label = "confirm daily limit excess_10/dl", shape = ellipse, color=black]
+esg44_vertex11 [label = "enter daily withdraw limit_11/dl", shape = ellipse, color=black]
+esg44_vertex15 [label = "confirm daily withdraw limit_15/dl", shape = ellipse, color=black]
+esg44_vertex12 [label = "open account_12/b", shape = ellipse, color=black]
+esg44_vertex13 [label = "select currency_13/b", shape = ellipse, color=black]
+esg44_vertex14 [label = "EUR_14/eu", shape = ellipse, color=black]
+esg44_vertex16 [label = "confirm EUR account openning_16/eu", shape = ellipse, color=black]
+}

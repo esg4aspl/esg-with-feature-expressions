@@ -1,0 +1,70 @@
+digraph G {
+rankdir = LR
+label = "P0017651765s";
+esg1766_vertex0 -> esg1766_vertex1[ color = null];
+esg1766_vertex2 -> esg1766_vertex3[ color = null];
+esg1766_vertex1 -> esg1766_vertex2[ color = null];
+esg1766_vertex3 -> esg1766_vertex4[ color = null];
+esg1766_vertex6 -> esg1766_vertex7[ color = null];
+esg1766_vertex7 -> esg1766_vertex8[ color = null];
+esg1766_vertex6 -> esg1766_vertex8[ color = null];
+esg1766_vertex8 -> esg1766_vertex7[ color = null];
+esg1766_vertex8 -> esg1766_vertex9[ color = null];
+esg1766_vertex7 -> esg1766_vertex9[ color = null];
+esg1766_vertex7 -> esg1766_vertex7[ color = null];
+esg1766_vertex8 -> esg1766_vertex8[ color = null];
+esg1766_vertex9 -> esg1766_vertex5[ color = null];
+esg1766_vertex3 -> esg1766_vertex6[ color = null];
+esg1766_vertex11 -> esg1766_vertex5[ color = null];
+esg1766_vertex0 -> esg1766_vertex10[ color = null];
+esg1766_vertex1 -> esg1766_vertex12[ color = null];
+esg1766_vertex13 -> esg1766_vertex5[ color = null];
+esg1766_vertex4 -> esg1766_vertex14[ color = null];
+esg1766_vertex14 -> esg1766_vertex15[ color = null];
+esg1766_vertex15 -> esg1766_vertex5[ color = null];
+esg1766_vertex3 -> esg1766_vertex16[ color = null];
+esg1766_vertex16 -> esg1766_vertex4[ color = null];
+esg1766_vertex16 -> esg1766_vertex17[ color = null];
+esg1766_vertex16 -> esg1766_vertex18[ color = null];
+esg1766_vertex17 -> esg1766_vertex19[ color = null];
+esg1766_vertex18 -> esg1766_vertex19[ color = null];
+esg1766_vertex19 -> esg1766_vertex20[ color = null];
+esg1766_vertex20 -> esg1766_vertex5[ color = null];
+esg1766_vertex21 -> esg1766_vertex5[ color = null];
+esg1766_vertex22 -> esg1766_vertex21[ color = null];
+esg1766_vertex1 -> esg1766_vertex23[ color = null];
+esg1766_vertex23 -> esg1766_vertex22[ color = null];
+esg1766_vertex23 -> esg1766_vertex4[ color = null];
+esg1766_vertex24 -> esg1766_vertex24[ color = null];
+esg1766_vertex12 -> esg1766_vertex25[ color = null];
+esg1766_vertex25 -> esg1766_vertex13[ color = null];
+esg1766_vertex10 -> esg1766_vertex24[ color = null];
+esg1766_vertex24 -> esg1766_vertex11[ color = null];
+esg1766_vertex22 -> esg1766_vertex4[ color = null];
+esg1766_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg1766_vertex1 [label = "log in_1/sas", shape = ellipse, color=black]
+esg1766_vertex2 [label = "access as a teacher_2/ta", shape = ellipse, color=black]
+esg1766_vertex3 [label = "turn editing on_3/ta", shape = ellipse, color=black]
+esg1766_vertex4 [label = "open class records_4/sas", shape = ellipse, color=black]
+esg1766_vertex6 [label = "add new schedule_6/ans", shape = ellipse, color=black]
+esg1766_vertex7 [label = "enter the days of the class_7/ans", shape = ellipse, color=black]
+esg1766_vertex8 [label = "enter the hours of the class_8/ans", shape = ellipse, color=black]
+esg1766_vertex9 [label = "submit the class schedule_9/ans", shape = ellipse, color=black]
+esg1766_vertex5 [label = "]_5/", shape = ellipse, color=black]
+esg1766_vertex11 [label = "confirm your identity_11/sas", shape = ellipse, color=black]
+esg1766_vertex10 [label = "submit attendance_10/sas", shape = ellipse, color=black]
+esg1766_vertex12 [label = "open notification settings_12/sas", shape = ellipse, color=black]
+esg1766_vertex13 [label = "confirm notification settings_13/sas", shape = ellipse, color=black]
+esg1766_vertex14 [label = "select the existing class_14/vc", shape = ellipse, color=black]
+esg1766_vertex15 [label = "view class_15/vc", shape = ellipse, color=black]
+esg1766_vertex16 [label = "open student attendance records_16/ta", shape = ellipse, color=black]
+esg1766_vertex17 [label = "select a class-list attendance record_17/ur", shape = ellipse, color=black]
+esg1766_vertex18 [label = "select an editable student-record_18/ur", shape = ellipse, color=black]
+esg1766_vertex19 [label = "edit attendance status_19/ur", shape = ellipse, color=black]
+esg1766_vertex20 [label = "submit attendance record update_20/ur", shape = ellipse, color=black]
+esg1766_vertex21 [label = "monitor current attendance status_21/mas", shape = ellipse, color=black]
+esg1766_vertex22 [label = "open my attendance records_22/sa", shape = ellipse, color=black]
+esg1766_vertex23 [label = "access as a student_23/sa", shape = ellipse, color=black]
+esg1766_vertex24 [label = "put your finger to the fingerprint scanner_24/f", shape = ellipse, color=black]
+esg1766_vertex25 [label = "receive notifications as SMS_25/s", shape = ellipse, color=black]
+}

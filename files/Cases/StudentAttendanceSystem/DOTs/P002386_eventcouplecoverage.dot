@@ -1,0 +1,84 @@
+digraph G {
+rankdir = LR
+label = "P0023862386s";
+esg2387_vertex0 -> esg2387_vertex1[ color = null];
+esg2387_vertex2 -> esg2387_vertex3[ color = null];
+esg2387_vertex1 -> esg2387_vertex2[ color = null];
+esg2387_vertex3 -> esg2387_vertex4[ color = null];
+esg2387_vertex6 -> esg2387_vertex7[ color = null];
+esg2387_vertex7 -> esg2387_vertex8[ color = null];
+esg2387_vertex6 -> esg2387_vertex8[ color = null];
+esg2387_vertex8 -> esg2387_vertex7[ color = null];
+esg2387_vertex8 -> esg2387_vertex9[ color = null];
+esg2387_vertex7 -> esg2387_vertex9[ color = null];
+esg2387_vertex7 -> esg2387_vertex7[ color = null];
+esg2387_vertex8 -> esg2387_vertex8[ color = null];
+esg2387_vertex3 -> esg2387_vertex6[ color = null];
+esg2387_vertex9 -> esg2387_vertex5[ color = null];
+esg2387_vertex10 -> esg2387_vertex11[ color = null];
+esg2387_vertex11 -> esg2387_vertex12[ color = null];
+esg2387_vertex10 -> esg2387_vertex12[ color = null];
+esg2387_vertex12 -> esg2387_vertex11[ color = null];
+esg2387_vertex12 -> esg2387_vertex13[ color = null];
+esg2387_vertex11 -> esg2387_vertex13[ color = null];
+esg2387_vertex11 -> esg2387_vertex11[ color = null];
+esg2387_vertex12 -> esg2387_vertex12[ color = null];
+esg2387_vertex13 -> esg2387_vertex5[ color = null];
+esg2387_vertex3 -> esg2387_vertex10[ color = null];
+esg2387_vertex14 -> esg2387_vertex14[ color = null];
+esg2387_vertex15 -> esg2387_vertex15[ color = null];
+esg2387_vertex15 -> esg2387_vertex13[ color = null];
+esg2387_vertex14 -> esg2387_vertex13[ color = null];
+esg2387_vertex16 -> esg2387_vertex14[ color = null];
+esg2387_vertex16 -> esg2387_vertex15[ color = null];
+esg2387_vertex3 -> esg2387_vertex16[ color = null];
+esg2387_vertex18 -> esg2387_vertex5[ color = null];
+esg2387_vertex0 -> esg2387_vertex17[ color = null];
+esg2387_vertex1 -> esg2387_vertex19[ color = null];
+esg2387_vertex20 -> esg2387_vertex5[ color = null];
+esg2387_vertex19 -> esg2387_vertex21[ color = null];
+esg2387_vertex21 -> esg2387_vertex20[ color = null];
+esg2387_vertex4 -> esg2387_vertex22[ color = null];
+esg2387_vertex22 -> esg2387_vertex23[ color = null];
+esg2387_vertex23 -> esg2387_vertex5[ color = null];
+esg2387_vertex3 -> esg2387_vertex24[ color = null];
+esg2387_vertex24 -> esg2387_vertex4[ color = null];
+esg2387_vertex25 -> esg2387_vertex5[ color = null];
+esg2387_vertex26 -> esg2387_vertex25[ color = null];
+esg2387_vertex1 -> esg2387_vertex27[ color = null];
+esg2387_vertex27 -> esg2387_vertex26[ color = null];
+esg2387_vertex27 -> esg2387_vertex4[ color = null];
+esg2387_vertex28 -> esg2387_vertex28[ color = null];
+esg2387_vertex17 -> esg2387_vertex28[ color = null];
+esg2387_vertex28 -> esg2387_vertex18[ color = null];
+esg2387_vertex26 -> esg2387_vertex4[ color = null];
+esg2387_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg2387_vertex1 [label = "log in_1/sas", shape = ellipse, color=black]
+esg2387_vertex2 [label = "access as a teacher_2/ta", shape = ellipse, color=black]
+esg2387_vertex3 [label = "turn editing on_3/ta", shape = ellipse, color=black]
+esg2387_vertex4 [label = "open class records_4/sas", shape = ellipse, color=black]
+esg2387_vertex6 [label = "add new class_6/anc", shape = ellipse, color=black]
+esg2387_vertex7 [label = "enter the name of the class_7/anc", shape = ellipse, color=black]
+esg2387_vertex8 [label = "enter the class detail_8/anc", shape = ellipse, color=black]
+esg2387_vertex9 [label = "submit the class_9/anc", shape = ellipse, color=black]
+esg2387_vertex5 [label = "]_5/", shape = ellipse, color=black]
+esg2387_vertex10 [label = "add new schedule_10/ans", shape = ellipse, color=black]
+esg2387_vertex11 [label = "enter the days of the class_11/ans", shape = ellipse, color=black]
+esg2387_vertex12 [label = "enter the hours of the class_12/ans", shape = ellipse, color=black]
+esg2387_vertex13 [label = "submit the class schedule_13/ans", shape = ellipse, color=black]
+esg2387_vertex14 [label = "update the days of the class_14/es", shape = ellipse, color=black]
+esg2387_vertex15 [label = "update the hours of the class_15/es", shape = ellipse, color=black]
+esg2387_vertex16 [label = "select the editable schedule_16/es", shape = ellipse, color=black]
+esg2387_vertex18 [label = "confirm your identity_18/sas", shape = ellipse, color=black]
+esg2387_vertex17 [label = "submit attendance_17/sas", shape = ellipse, color=black]
+esg2387_vertex19 [label = "open notification settings_19/sas", shape = ellipse, color=black]
+esg2387_vertex20 [label = "confirm notification settings_20/sas", shape = ellipse, color=black]
+esg2387_vertex21 [label = "receive notifications as Email_21/e", shape = ellipse, color=black]
+esg2387_vertex22 [label = "select the existing class_22/vc", shape = ellipse, color=black]
+esg2387_vertex23 [label = "view class_23/vc", shape = ellipse, color=black]
+esg2387_vertex24 [label = "open student attendance records_24/ta", shape = ellipse, color=black]
+esg2387_vertex25 [label = "monitor current attendance status_25/mas", shape = ellipse, color=black]
+esg2387_vertex26 [label = "open my attendance records_26/sa", shape = ellipse, color=black]
+esg2387_vertex27 [label = "access as a student_27/sa", shape = ellipse, color=black]
+esg2387_vertex28 [label = "show the QR code to the QR code reader_28/q", shape = ellipse, color=black]
+}

@@ -1,0 +1,53 @@
+digraph G {
+rankdir = LR
+label = "P000254254s";
+esg255_vertex0 -> esg255_vertex2[ color = null];
+esg255_vertex3 -> esg255_vertex5[ color = null];
+esg255_vertex5 -> esg255_vertex4[ color = null];
+esg255_vertex2 -> esg255_vertex3[ color = null];
+esg255_vertex6 -> esg255_vertex8[ color = null];
+esg255_vertex8 -> esg255_vertex7[ color = null];
+esg255_vertex2 -> esg255_vertex6[ color = null];
+esg255_vertex4 -> esg255_vertex1[ color = null];
+esg255_vertex7 -> esg255_vertex1[ color = null];
+esg255_vertex6 -> esg255_vertex9[ color = null];
+esg255_vertex3 -> esg255_vertex10[ color = null];
+esg255_vertex10 -> esg255_vertex1[ color = null];
+esg255_vertex9 -> esg255_vertex1[ color = null];
+esg255_vertex11 -> esg255_vertex12[ color = null];
+esg255_vertex12 -> esg255_vertex13[ color = null];
+esg255_vertex0 -> esg255_vertex11[ color = null];
+esg255_vertex14 -> esg255_vertex15[ color = null];
+esg255_vertex15 -> esg255_vertex16[ color = null];
+esg255_vertex16 -> esg255_vertex17[ color = null];
+esg255_vertex17 -> esg255_vertex18[ color = null];
+esg255_vertex18 -> esg255_vertex19[ color = null];
+esg255_vertex0 -> esg255_vertex14[ color = null];
+esg255_vertex19 -> esg255_vertex1[ color = null];
+esg255_vertex13 -> esg255_vertex20[ color = null];
+esg255_vertex20 -> esg255_vertex1[ color = null];
+esg255_vertex18 -> esg255_vertex21[ color = null];
+esg255_vertex21 -> esg255_vertex1[ color = null];
+esg255_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg255_vertex2 [label = "get balance_2/b", shape = ellipse, color=black]
+esg255_vertex3 [label = "select deposit_3/d", shape = ellipse, color=black]
+esg255_vertex5 [label = "enter deposit amount_5/d", shape = ellipse, color=black]
+esg255_vertex4 [label = "put money_4/d", shape = ellipse, color=black]
+esg255_vertex6 [label = "select withdraw_6/w", shape = ellipse, color=black]
+esg255_vertex8 [label = "enter withdraw amount_8/w", shape = ellipse, color=black]
+esg255_vertex7 [label = "take money_7/w", shape = ellipse, color=black]
+esg255_vertex1 [label = "]_1/", shape = ellipse, color=black]
+esg255_vertex9 [label = "cancel withdraw_9/cw", shape = ellipse, color=black]
+esg255_vertex10 [label = "cancel deposit_10/cd", shape = ellipse, color=black]
+esg255_vertex11 [label = "open account_11/b", shape = ellipse, color=black]
+esg255_vertex12 [label = "select currency_12/b", shape = ellipse, color=black]
+esg255_vertex13 [label = "TL_13/tl", shape = ellipse, color=black]
+esg255_vertex14 [label = "transfer money_14/t", shape = ellipse, color=black]
+esg255_vertex15 [label = "enter receiver's IBAN_15/t", shape = ellipse, color=black]
+esg255_vertex16 [label = "enter amount_16/t", shape = ellipse, color=black]
+esg255_vertex17 [label = "select transfer type_17/t", shape = ellipse, color=black]
+esg255_vertex18 [label = "view transfer details_18/t", shape = ellipse, color=black]
+esg255_vertex19 [label = "confirm transfer_19/t", shape = ellipse, color=black]
+esg255_vertex20 [label = "confirm TL account openning_20/tl", shape = ellipse, color=black]
+esg255_vertex21 [label = "cancel transfer_21/t", shape = ellipse, color=black]
+}

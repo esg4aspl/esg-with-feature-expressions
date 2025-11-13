@@ -1,0 +1,64 @@
+digraph G {
+rankdir = LR
+label = "P00007373s";
+esg74_vertex0 -> esg74_vertex2[ color = null];
+esg74_vertex3 -> esg74_vertex5[ color = null];
+esg74_vertex5 -> esg74_vertex4[ color = null];
+esg74_vertex2 -> esg74_vertex3[ color = null];
+esg74_vertex6 -> esg74_vertex8[ color = null];
+esg74_vertex8 -> esg74_vertex7[ color = null];
+esg74_vertex2 -> esg74_vertex6[ color = null];
+esg74_vertex4 -> esg74_vertex1[ color = null];
+esg74_vertex7 -> esg74_vertex1[ color = null];
+esg74_vertex6 -> esg74_vertex9[ color = null];
+esg74_vertex8 -> esg74_vertex10[ color = null];
+esg74_vertex0 -> esg74_vertex11[ color = null];
+esg74_vertex10 -> esg74_vertex12[ color = null];
+esg74_vertex12 -> esg74_vertex9[ color = null];
+esg74_vertex0 -> esg74_vertex13[ color = null];
+esg74_vertex3 -> esg74_vertex14[ color = null];
+esg74_vertex0 -> esg74_vertex15[ color = null];
+esg74_vertex15 -> esg74_vertex16[ color = null];
+esg74_vertex15 -> esg74_vertex17[ color = null];
+esg74_vertex17 -> esg74_vertex18[ color = null];
+esg74_vertex18 -> esg74_vertex1[ color = null];
+esg74_vertex14 -> esg74_vertex1[ color = null];
+esg74_vertex9 -> esg74_vertex1[ color = null];
+esg74_vertex11 -> esg74_vertex22[ color = null];
+esg74_vertex16 -> esg74_vertex1[ color = null];
+esg74_vertex19 -> esg74_vertex20[ color = null];
+esg74_vertex20 -> esg74_vertex21[ color = null];
+esg74_vertex0 -> esg74_vertex19[ color = null];
+esg74_vertex22 -> esg74_vertex1[ color = null];
+esg74_vertex13 -> esg74_vertex23[ color = null];
+esg74_vertex23 -> esg74_vertex1[ color = null];
+esg74_vertex21 -> esg74_vertex24[ color = null];
+esg74_vertex24 -> esg74_vertex1[ color = null];
+esg74_vertex12 -> esg74_vertex8[ color = null];
+esg74_vertex10 -> esg74_vertex9[ color = null];
+esg74_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg74_vertex2 [label = "get balance_2/b", shape = ellipse, color=black]
+esg74_vertex3 [label = "select deposit_3/d", shape = ellipse, color=black]
+esg74_vertex5 [label = "enter deposit amount_5/d", shape = ellipse, color=black]
+esg74_vertex4 [label = "put money_4/d", shape = ellipse, color=black]
+esg74_vertex6 [label = "select withdraw_6/w", shape = ellipse, color=black]
+esg74_vertex8 [label = "enter withdraw amount_8/w", shape = ellipse, color=black]
+esg74_vertex7 [label = "take money_7/w", shape = ellipse, color=black]
+esg74_vertex1 [label = "]_1/", shape = ellipse, color=black]
+esg74_vertex9 [label = "cancel withdraw_9/cw", shape = ellipse, color=black]
+esg74_vertex10 [label = "confirm daily limit excess_10/dl", shape = ellipse, color=black]
+esg74_vertex11 [label = "enter daily withdraw limit_11/dl", shape = ellipse, color=black]
+esg74_vertex12 [label = "confirm overdraft limit excess_12/o", shape = ellipse, color=black]
+esg74_vertex13 [label = "enter overdraft limit_13/o", shape = ellipse, color=black]
+esg74_vertex14 [label = "cancel deposit_14/cd", shape = ellipse, color=black]
+esg74_vertex15 [label = "request an interest rate_15/i", shape = ellipse, color=black]
+esg74_vertex16 [label = "confirm interest rate_16/i", shape = ellipse, color=black]
+esg74_vertex17 [label = "enter days left_17/ie", shape = ellipse, color=black]
+esg74_vertex18 [label = "get estimated interest for days left_18/ie", shape = ellipse, color=black]
+esg74_vertex22 [label = "confirm daily withdraw limit_22/dl", shape = ellipse, color=black]
+esg74_vertex19 [label = "open account_19/b", shape = ellipse, color=black]
+esg74_vertex20 [label = "select currency_20/b", shape = ellipse, color=black]
+esg74_vertex21 [label = "EUR_21/eu", shape = ellipse, color=black]
+esg74_vertex23 [label = "confirm overdraft limit_23/o", shape = ellipse, color=black]
+esg74_vertex24 [label = "confirm EUR account openning_24/eu", shape = ellipse, color=black]
+}

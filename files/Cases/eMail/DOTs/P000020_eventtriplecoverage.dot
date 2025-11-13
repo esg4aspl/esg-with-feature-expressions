@@ -1,0 +1,83 @@
+digraph G {
+rankdir = LR
+label = "P00002020st";
+esg22_vertex0 -> esg22_vertex1[ color = null];
+esg22_vertex0 -> esg22_vertex2[ color = null];
+esg22_vertex0 -> esg22_vertex3[ color = null];
+esg22_vertex1 -> esg22_vertex4[ color = null];
+esg22_vertex1 -> esg22_vertex5[ color = null];
+esg22_vertex1 -> esg22_vertex6[ color = null];
+esg22_vertex7 -> esg22_vertex8[ color = null];
+esg22_vertex7 -> esg22_vertex9[ color = null];
+esg22_vertex10 -> esg22_vertex0[ color = null];
+esg22_vertex10 -> esg22_vertex11[ color = null];
+esg22_vertex10 -> esg22_vertex12[ color = null];
+esg22_vertex10 -> esg22_vertex13[ color = null];
+esg22_vertex11 -> esg22_vertex8[ color = null];
+esg22_vertex12 -> esg22_vertex0[ color = null];
+esg22_vertex12 -> esg22_vertex11[ color = null];
+esg22_vertex12 -> esg22_vertex12[ color = null];
+esg22_vertex12 -> esg22_vertex13[ color = null];
+esg22_vertex14 -> esg22_vertex1[ color = null];
+esg22_vertex14 -> esg22_vertex2[ color = null];
+esg22_vertex14 -> esg22_vertex3[ color = null];
+esg22_vertex2 -> esg22_vertex0[ color = null];
+esg22_vertex2 -> esg22_vertex11[ color = null];
+esg22_vertex2 -> esg22_vertex12[ color = null];
+esg22_vertex2 -> esg22_vertex13[ color = null];
+esg22_vertex15 -> esg22_vertex4[ color = null];
+esg22_vertex15 -> esg22_vertex5[ color = null];
+esg22_vertex15 -> esg22_vertex6[ color = null];
+esg22_vertex4 -> esg22_vertex0[ color = null];
+esg22_vertex4 -> esg22_vertex11[ color = null];
+esg22_vertex4 -> esg22_vertex12[ color = null];
+esg22_vertex4 -> esg22_vertex13[ color = null];
+esg22_vertex3 -> esg22_vertex1[ color = null];
+esg22_vertex3 -> esg22_vertex2[ color = null];
+esg22_vertex3 -> esg22_vertex3[ color = null];
+esg22_vertex5 -> esg22_vertex4[ color = null];
+esg22_vertex5 -> esg22_vertex5[ color = null];
+esg22_vertex5 -> esg22_vertex6[ color = null];
+esg22_vertex16 -> esg22_vertex10[ color = null];
+esg22_vertex16 -> esg22_vertex14[ color = null];
+esg22_vertex16 -> esg22_vertex15[ color = null];
+esg22_vertex16 -> esg22_vertex7[ color = null];
+esg22_vertex6 -> esg22_vertex1[ color = null];
+esg22_vertex6 -> esg22_vertex2[ color = null];
+esg22_vertex6 -> esg22_vertex3[ color = null];
+esg22_vertex17 -> esg22_vertex18[ color = null];
+esg22_vertex18 -> esg22_vertex17[ color = null];
+esg22_vertex18 -> esg22_vertex8[ color = null];
+esg22_vertex16 -> esg22_vertex17[ color = null];
+esg22_vertex16 -> esg22_vertex18[ color = null];
+esg22_vertex19 -> esg22_vertex8[ color = null];
+esg22_vertex20 -> esg22_vertex19[ color = null];
+esg22_vertex16 -> esg22_vertex20[ color = null];
+esg22_vertex21 -> esg22_vertex8[ color = null];
+esg22_vertex13 -> esg22_vertex21[ color = null];
+esg22_vertex9 -> esg22_vertex22[ color = null];
+esg22_vertex22 -> esg22_vertex8[ color = null];
+esg22_vertex0 [label = "enter receiver's email address_1:enter email subject_2/e", shape = ellipse, color=black]
+esg22_vertex1 [label = "enter email subject_2:enter email body_3/e", shape = ellipse, color=black]
+esg22_vertex2 [label = "enter email subject_2:enter receiver's email address_1/e", shape = ellipse, color=black]
+esg22_vertex3 [label = "enter email subject_2:enter email subject_2/e", shape = ellipse, color=black]
+esg22_vertex4 [label = "enter email body_3:enter receiver's email address_1/e", shape = ellipse, color=black]
+esg22_vertex5 [label = "enter email body_3:enter email body_3/e", shape = ellipse, color=black]
+esg22_vertex6 [label = "enter email body_3:enter email subject_2/e", shape = ellipse, color=black]
+esg22_vertex7 [label = "open mailbox_6:select email_7/e", shape = ellipse, color=black]
+esg22_vertex8 [label = "]_5/", shape = ellipse, color=black]
+esg22_vertex9 [label = "select email_7:enter forward receiver's email address_15/e AND f", shape = ellipse, color=black]
+esg22_vertex10 [label = "compose new email_0:enter receiver's email address_1/e", shape = ellipse, color=black]
+esg22_vertex11 [label = "enter receiver's email address_1:send email_4/e", shape = ellipse, color=black]
+esg22_vertex12 [label = "enter receiver's email address_1:enter receiver's email address_1/e", shape = ellipse, color=black]
+esg22_vertex13 [label = "enter receiver's email address_1:get alias email addresses of receiver_14/e AND ad", shape = ellipse, color=black]
+esg22_vertex14 [label = "compose new email_0:enter email subject_2/e", shape = ellipse, color=black]
+esg22_vertex15 [label = "compose new email_0:enter email body_3/e", shape = ellipse, color=black]
+esg22_vertex16 [label = "[_8/", shape = ellipse, color=black]
+esg22_vertex17 [label = "enter email autoresponse date interval_9:enter autoresponse email body_10/au", shape = ellipse, color=black]
+esg22_vertex18 [label = "enter autoresponse email body_10:enter email autoresponse date interval_9/au", shape = ellipse, color=black]
+esg22_vertex19 [label = "enter the receiver's email address_11:enter alias email addresses of receiver_12/ad", shape = ellipse, color=black]
+esg22_vertex20 [label = "create an addressbook for a receiver_13:enter the receiver's email address_11/ad", shape = ellipse, color=black]
+esg22_vertex21 [label = "get alias email addresses of receiver_14:send email_4/ad AND e", shape = ellipse, color=black]
+esg22_vertex22 [label = "enter forward receiver's email address_15:send email_4/f AND e", shape = ellipse, color=black]
+}

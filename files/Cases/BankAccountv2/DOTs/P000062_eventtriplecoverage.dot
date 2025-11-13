@@ -1,0 +1,44 @@
+digraph G {
+rankdir = LR
+label = "P00006262st";
+esg64_vertex0 -> esg64_vertex1[ color = null];
+esg64_vertex0 -> esg64_vertex2[ color = null];
+esg64_vertex3 -> esg64_vertex4[ color = null];
+esg64_vertex4 -> esg64_vertex5[ color = null];
+esg64_vertex1 -> esg64_vertex3[ color = null];
+esg64_vertex1 -> esg64_vertex6[ color = null];
+esg64_vertex7 -> esg64_vertex8[ color = null];
+esg64_vertex7 -> esg64_vertex9[ color = null];
+esg64_vertex8 -> esg64_vertex5[ color = null];
+esg64_vertex2 -> esg64_vertex7[ color = null];
+esg64_vertex2 -> esg64_vertex10[ color = null];
+esg64_vertex10 -> esg64_vertex5[ color = null];
+esg64_vertex9 -> esg64_vertex11[ color = null];
+esg64_vertex0 -> esg64_vertex12[ color = null];
+esg64_vertex6 -> esg64_vertex5[ color = null];
+esg64_vertex0 -> esg64_vertex13[ color = null];
+esg64_vertex13 -> esg64_vertex5[ color = null];
+esg64_vertex12 -> esg64_vertex5[ color = null];
+esg64_vertex14 -> esg64_vertex15[ color = null];
+esg64_vertex15 -> esg64_vertex16[ color = null];
+esg64_vertex0 -> esg64_vertex14[ color = null];
+esg64_vertex16 -> esg64_vertex5[ color = null];
+esg64_vertex11 -> esg64_vertex5[ color = null];
+esg64_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg64_vertex1 [label = "get balance_2:select deposit_3/b AND d", shape = ellipse, color=black]
+esg64_vertex2 [label = "get balance_2:select withdraw_6/b AND w", shape = ellipse, color=black]
+esg64_vertex3 [label = "select deposit_3:enter deposit amount_5/d", shape = ellipse, color=black]
+esg64_vertex4 [label = "enter deposit amount_5:put money_4/d", shape = ellipse, color=black]
+esg64_vertex5 [label = "]_1/", shape = ellipse, color=black]
+esg64_vertex6 [label = "select deposit_3:cancel deposit_12/d AND cd", shape = ellipse, color=black]
+esg64_vertex7 [label = "select withdraw_6:enter withdraw amount_8/w", shape = ellipse, color=black]
+esg64_vertex8 [label = "enter withdraw amount_8:take money_7/w", shape = ellipse, color=black]
+esg64_vertex9 [label = "enter withdraw amount_8:confirm daily limit excess_10/w AND dl", shape = ellipse, color=black]
+esg64_vertex10 [label = "select withdraw_6:cancel withdraw_9/w AND cw", shape = ellipse, color=black]
+esg64_vertex11 [label = "confirm daily limit excess_10:cancel withdraw_9/dl AND cw", shape = ellipse, color=black]
+esg64_vertex12 [label = "enter daily withdraw limit_11:confirm daily withdraw limit_18/dl", shape = ellipse, color=black]
+esg64_vertex13 [label = "request an interest rate_13:confirm interest rate_14/i", shape = ellipse, color=black]
+esg64_vertex14 [label = "open account_15:select currency_16/b", shape = ellipse, color=black]
+esg64_vertex15 [label = "select currency_16:EUR_17/b AND eu", shape = ellipse, color=black]
+esg64_vertex16 [label = "EUR_17:confirm EUR account openning_19/eu", shape = ellipse, color=black]
+}

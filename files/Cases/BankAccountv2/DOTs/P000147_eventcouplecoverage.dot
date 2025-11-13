@@ -1,0 +1,56 @@
+digraph G {
+rankdir = LR
+label = "P000147147s";
+esg148_vertex0 -> esg148_vertex2[ color = null];
+esg148_vertex3 -> esg148_vertex5[ color = null];
+esg148_vertex5 -> esg148_vertex4[ color = null];
+esg148_vertex2 -> esg148_vertex3[ color = null];
+esg148_vertex6 -> esg148_vertex8[ color = null];
+esg148_vertex8 -> esg148_vertex7[ color = null];
+esg148_vertex2 -> esg148_vertex6[ color = null];
+esg148_vertex4 -> esg148_vertex1[ color = null];
+esg148_vertex7 -> esg148_vertex1[ color = null];
+esg148_vertex6 -> esg148_vertex9[ color = null];
+esg148_vertex0 -> esg148_vertex10[ color = null];
+esg148_vertex10 -> esg148_vertex11[ color = null];
+esg148_vertex11 -> esg148_vertex1[ color = null];
+esg148_vertex0 -> esg148_vertex12[ color = null];
+esg148_vertex12 -> esg148_vertex13[ color = null];
+esg148_vertex9 -> esg148_vertex1[ color = null];
+esg148_vertex13 -> esg148_vertex1[ color = null];
+esg148_vertex14 -> esg148_vertex15[ color = null];
+esg148_vertex15 -> esg148_vertex16[ color = null];
+esg148_vertex0 -> esg148_vertex14[ color = null];
+esg148_vertex17 -> esg148_vertex18[ color = null];
+esg148_vertex17 -> esg148_vertex19[ color = null];
+esg148_vertex18 -> esg148_vertex20[ color = null];
+esg148_vertex0 -> esg148_vertex17[ color = null];
+esg148_vertex20 -> esg148_vertex1[ color = null];
+esg148_vertex19 -> esg148_vertex21[ color = null];
+esg148_vertex21 -> esg148_vertex1[ color = null];
+esg148_vertex16 -> esg148_vertex22[ color = null];
+esg148_vertex22 -> esg148_vertex1[ color = null];
+esg148_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg148_vertex2 [label = "get balance_2/b", shape = ellipse, color=black]
+esg148_vertex3 [label = "select deposit_3/d", shape = ellipse, color=black]
+esg148_vertex5 [label = "enter deposit amount_5/d", shape = ellipse, color=black]
+esg148_vertex4 [label = "put money_4/d", shape = ellipse, color=black]
+esg148_vertex6 [label = "select withdraw_6/w", shape = ellipse, color=black]
+esg148_vertex8 [label = "enter withdraw amount_8/w", shape = ellipse, color=black]
+esg148_vertex7 [label = "take money_7/w", shape = ellipse, color=black]
+esg148_vertex1 [label = "]_1/", shape = ellipse, color=black]
+esg148_vertex9 [label = "cancel withdraw_9/cw", shape = ellipse, color=black]
+esg148_vertex10 [label = "enter a credit amount_10/c", shape = ellipse, color=black]
+esg148_vertex11 [label = "confirm credit amount_11/c", shape = ellipse, color=black]
+esg148_vertex12 [label = "request an interest rate_12/i", shape = ellipse, color=black]
+esg148_vertex13 [label = "confirm interest rate_13/i", shape = ellipse, color=black]
+esg148_vertex14 [label = "open account_14/b", shape = ellipse, color=black]
+esg148_vertex15 [label = "select currency_15/b", shape = ellipse, color=black]
+esg148_vertex16 [label = "TL_16/tl", shape = ellipse, color=black]
+esg148_vertex17 [label = "update profile_17/up", shape = ellipse, color=black]
+esg148_vertex18 [label = "update contact information_18/up", shape = ellipse, color=black]
+esg148_vertex19 [label = "update preferences_19/up", shape = ellipse, color=black]
+esg148_vertex20 [label = "save contact information changes_20/up", shape = ellipse, color=black]
+esg148_vertex21 [label = "save preference changes_21/up", shape = ellipse, color=black]
+esg148_vertex22 [label = "confirm TL account openning_22/tl", shape = ellipse, color=black]
+}

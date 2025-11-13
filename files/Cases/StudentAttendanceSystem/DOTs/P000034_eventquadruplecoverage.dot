@@ -1,0 +1,61 @@
+digraph G {
+rankdir = LR
+label = "P00003434stt";
+esg37_vertex0 -> esg37_vertex1[ color = null];
+esg37_vertex0 -> esg37_vertex2[ color = null];
+esg37_vertex3 -> esg37_vertex4[ color = null];
+esg37_vertex3 -> esg37_vertex5[ color = null];
+esg37_vertex6 -> esg37_vertex7[ color = null];
+esg37_vertex6 -> esg37_vertex8[ color = null];
+esg37_vertex6 -> esg37_vertex9[ color = null];
+esg37_vertex1 -> esg37_vertex3[ color = null];
+esg37_vertex1 -> esg37_vertex6[ color = null];
+esg37_vertex4 -> esg37_vertex10[ color = null];
+esg37_vertex5 -> esg37_vertex11[ color = null];
+esg37_vertex12 -> esg37_vertex12[ color = null];
+esg37_vertex12 -> esg37_vertex13[ color = null];
+esg37_vertex13 -> esg37_vertex14[ color = null];
+esg37_vertex0 -> esg37_vertex15[ color = null];
+esg37_vertex0 -> esg37_vertex16[ color = null];
+esg37_vertex15 -> esg37_vertex12[ color = null];
+esg37_vertex15 -> esg37_vertex13[ color = null];
+esg37_vertex16 -> esg37_vertex14[ color = null];
+esg37_vertex2 -> esg37_vertex17[ color = null];
+esg37_vertex17 -> esg37_vertex14[ color = null];
+esg37_vertex10 -> esg37_vertex14[ color = null];
+esg37_vertex11 -> esg37_vertex14[ color = null];
+esg37_vertex7 -> esg37_vertex18[ color = null];
+esg37_vertex7 -> esg37_vertex19[ color = null];
+esg37_vertex8 -> esg37_vertex20[ color = null];
+esg37_vertex9 -> esg37_vertex21[ color = null];
+esg37_vertex18 -> esg37_vertex10[ color = null];
+esg37_vertex19 -> esg37_vertex11[ color = null];
+esg37_vertex20 -> esg37_vertex22[ color = null];
+esg37_vertex21 -> esg37_vertex23[ color = null];
+esg37_vertex22 -> esg37_vertex14[ color = null];
+esg37_vertex23 -> esg37_vertex14[ color = null];
+esg37_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg37_vertex1 [label = "log in_1:access as a teacher_2:turn editing on_3/sas AND ta", shape = ellipse, color=black]
+esg37_vertex2 [label = "log in_1:open notification settings_9:receive notifications as Email_11/sas AND e", shape = ellipse, color=black]
+esg37_vertex3 [label = "access as a teacher_2:turn editing on_3:open class records_4/ta AND sas", shape = ellipse, color=black]
+esg37_vertex4 [label = "turn editing on_3:open class records_4:select the existing schedule_12/ta AND sas AND vs", shape = ellipse, color=black]
+esg37_vertex5 [label = "turn editing on_3:open class records_4:select the existing class_13/ta AND sas AND vc", shape = ellipse, color=black]
+esg37_vertex6 [label = "access as a teacher_2:turn editing on_3:open student attendance records_16/ta", shape = ellipse, color=black]
+esg37_vertex7 [label = "turn editing on_3:open student attendance records_16:open class records_4/ta AND sas", shape = ellipse, color=black]
+esg37_vertex8 [label = "turn editing on_3:open student attendance records_16:select a class-list attendance record_17/ta AND ur", shape = ellipse, color=black]
+esg37_vertex9 [label = "turn editing on_3:open student attendance records_16:select an editable student-record_18/ta AND ur", shape = ellipse, color=black]
+esg37_vertex10 [label = "open class records_4:select the existing schedule_12:view schedule_14/sas AND vs", shape = ellipse, color=black]
+esg37_vertex11 [label = "open class records_4:select the existing class_13:view class_15/sas AND vc", shape = ellipse, color=black]
+esg37_vertex12 [label = "read the access card to the card reader_6:read the access card to the card reader_6:read the access card to the card reader_6/a", shape = ellipse, color=black]
+esg37_vertex13 [label = "read the access card to the card reader_6:read the access card to the card reader_6:confirm your identity_8/a AND sas", shape = ellipse, color=black]
+esg37_vertex14 [label = "]_5/", shape = ellipse, color=black]
+esg37_vertex15 [label = "submit attendance_7:read the access card to the card reader_6:read the access card to the card reader_6/sas AND a", shape = ellipse, color=black]
+esg37_vertex16 [label = "submit attendance_7:read the access card to the card reader_6:confirm your identity_8/sas AND a", shape = ellipse, color=black]
+esg37_vertex17 [label = "open notification settings_9:receive notifications as Email_11:confirm notification settings_10/sas AND e", shape = ellipse, color=black]
+esg37_vertex18 [label = "open student attendance records_16:open class records_4:select the existing schedule_12/ta AND sas AND vs", shape = ellipse, color=black]
+esg37_vertex19 [label = "open student attendance records_16:open class records_4:select the existing class_13/ta AND sas AND vc", shape = ellipse, color=black]
+esg37_vertex20 [label = "open student attendance records_16:select a class-list attendance record_17:edit attendance status_19/ta AND ur", shape = ellipse, color=black]
+esg37_vertex21 [label = "open student attendance records_16:select an editable student-record_18:edit attendance status_19/ta AND ur", shape = ellipse, color=black]
+esg37_vertex22 [label = "select a class-list attendance record_17:edit attendance status_19:submit attendance record update_20/ur", shape = ellipse, color=black]
+esg37_vertex23 [label = "select an editable student-record_18:edit attendance status_19:submit attendance record update_20/ur", shape = ellipse, color=black]
+}

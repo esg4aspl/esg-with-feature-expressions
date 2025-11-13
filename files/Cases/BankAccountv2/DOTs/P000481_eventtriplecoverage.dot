@@ -1,0 +1,60 @@
+digraph G {
+rankdir = LR
+label = "P000481481st";
+esg483_vertex0 -> esg483_vertex1[ color = null];
+esg483_vertex0 -> esg483_vertex2[ color = null];
+esg483_vertex3 -> esg483_vertex4[ color = null];
+esg483_vertex4 -> esg483_vertex5[ color = null];
+esg483_vertex1 -> esg483_vertex3[ color = null];
+esg483_vertex1 -> esg483_vertex6[ color = null];
+esg483_vertex7 -> esg483_vertex8[ color = null];
+esg483_vertex8 -> esg483_vertex5[ color = null];
+esg483_vertex2 -> esg483_vertex7[ color = null];
+esg483_vertex2 -> esg483_vertex9[ color = null];
+esg483_vertex9 -> esg483_vertex5[ color = null];
+esg483_vertex6 -> esg483_vertex5[ color = null];
+esg483_vertex0 -> esg483_vertex10[ color = null];
+esg483_vertex10 -> esg483_vertex5[ color = null];
+esg483_vertex11 -> esg483_vertex12[ color = null];
+esg483_vertex12 -> esg483_vertex13[ color = null];
+esg483_vertex0 -> esg483_vertex11[ color = null];
+esg483_vertex14 -> esg483_vertex15[ color = null];
+esg483_vertex16 -> esg483_vertex17[ color = null];
+esg483_vertex15 -> esg483_vertex5[ color = null];
+esg483_vertex0 -> esg483_vertex14[ color = null];
+esg483_vertex0 -> esg483_vertex16[ color = null];
+esg483_vertex18 -> esg483_vertex19[ color = null];
+esg483_vertex19 -> esg483_vertex20[ color = null];
+esg483_vertex20 -> esg483_vertex21[ color = null];
+esg483_vertex21 -> esg483_vertex22[ color = null];
+esg483_vertex21 -> esg483_vertex23[ color = null];
+esg483_vertex22 -> esg483_vertex5[ color = null];
+esg483_vertex0 -> esg483_vertex18[ color = null];
+esg483_vertex17 -> esg483_vertex5[ color = null];
+esg483_vertex13 -> esg483_vertex5[ color = null];
+esg483_vertex23 -> esg483_vertex5[ color = null];
+esg483_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg483_vertex1 [label = "get balance_2:select deposit_3/b AND d", shape = ellipse, color=black]
+esg483_vertex2 [label = "get balance_2:select withdraw_6/b AND w", shape = ellipse, color=black]
+esg483_vertex3 [label = "select deposit_3:enter deposit amount_5/d", shape = ellipse, color=black]
+esg483_vertex4 [label = "enter deposit amount_5:put money_4/d", shape = ellipse, color=black]
+esg483_vertex5 [label = "]_1/", shape = ellipse, color=black]
+esg483_vertex6 [label = "select deposit_3:cancel deposit_10/d AND cd", shape = ellipse, color=black]
+esg483_vertex7 [label = "select withdraw_6:enter withdraw amount_8/w", shape = ellipse, color=black]
+esg483_vertex8 [label = "enter withdraw amount_8:take money_7/w", shape = ellipse, color=black]
+esg483_vertex9 [label = "select withdraw_6:cancel withdraw_9/w AND cw", shape = ellipse, color=black]
+esg483_vertex10 [label = "request an interest rate_11:confirm interest rate_12/i", shape = ellipse, color=black]
+esg483_vertex11 [label = "open account_13:select currency_14/b", shape = ellipse, color=black]
+esg483_vertex12 [label = "select currency_14:USD_15/b AND us", shape = ellipse, color=black]
+esg483_vertex13 [label = "USD_15:confirm USD account openning_27/us", shape = ellipse, color=black]
+esg483_vertex14 [label = "update profile_16:update contact information_17/up", shape = ellipse, color=black]
+esg483_vertex15 [label = "update contact information_17:save contact information changes_19/up", shape = ellipse, color=black]
+esg483_vertex16 [label = "update profile_16:update preferences_18/up", shape = ellipse, color=black]
+esg483_vertex17 [label = "update preferences_18:save preference changes_26/up", shape = ellipse, color=black]
+esg483_vertex18 [label = "transfer money_20:enter receiver's IBAN_21/t", shape = ellipse, color=black]
+esg483_vertex19 [label = "enter receiver's IBAN_21:enter amount_22/t", shape = ellipse, color=black]
+esg483_vertex20 [label = "enter amount_22:select transfer type_23/t", shape = ellipse, color=black]
+esg483_vertex21 [label = "select transfer type_23:view transfer details_24/t", shape = ellipse, color=black]
+esg483_vertex22 [label = "view transfer details_24:confirm transfer_25/t", shape = ellipse, color=black]
+esg483_vertex23 [label = "view transfer details_24:cancel transfer_28/t", shape = ellipse, color=black]
+}

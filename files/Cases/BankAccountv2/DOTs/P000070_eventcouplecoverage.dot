@@ -1,0 +1,44 @@
+digraph G {
+rankdir = LR
+label = "P00007070s";
+esg71_vertex0 -> esg71_vertex2[ color = null];
+esg71_vertex3 -> esg71_vertex5[ color = null];
+esg71_vertex5 -> esg71_vertex4[ color = null];
+esg71_vertex2 -> esg71_vertex3[ color = null];
+esg71_vertex6 -> esg71_vertex8[ color = null];
+esg71_vertex8 -> esg71_vertex7[ color = null];
+esg71_vertex2 -> esg71_vertex6[ color = null];
+esg71_vertex4 -> esg71_vertex1[ color = null];
+esg71_vertex7 -> esg71_vertex1[ color = null];
+esg71_vertex6 -> esg71_vertex9[ color = null];
+esg71_vertex0 -> esg71_vertex10[ color = null];
+esg71_vertex10 -> esg71_vertex11[ color = null];
+esg71_vertex10 -> esg71_vertex12[ color = null];
+esg71_vertex12 -> esg71_vertex13[ color = null];
+esg71_vertex13 -> esg71_vertex1[ color = null];
+esg71_vertex9 -> esg71_vertex1[ color = null];
+esg71_vertex11 -> esg71_vertex1[ color = null];
+esg71_vertex14 -> esg71_vertex15[ color = null];
+esg71_vertex15 -> esg71_vertex16[ color = null];
+esg71_vertex0 -> esg71_vertex14[ color = null];
+esg71_vertex16 -> esg71_vertex17[ color = null];
+esg71_vertex17 -> esg71_vertex1[ color = null];
+esg71_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg71_vertex2 [label = "get balance_2/b", shape = ellipse, color=black]
+esg71_vertex3 [label = "select deposit_3/d", shape = ellipse, color=black]
+esg71_vertex5 [label = "enter deposit amount_5/d", shape = ellipse, color=black]
+esg71_vertex4 [label = "put money_4/d", shape = ellipse, color=black]
+esg71_vertex6 [label = "select withdraw_6/w", shape = ellipse, color=black]
+esg71_vertex8 [label = "enter withdraw amount_8/w", shape = ellipse, color=black]
+esg71_vertex7 [label = "take money_7/w", shape = ellipse, color=black]
+esg71_vertex1 [label = "]_1/", shape = ellipse, color=black]
+esg71_vertex9 [label = "cancel withdraw_9/cw", shape = ellipse, color=black]
+esg71_vertex10 [label = "request an interest rate_10/i", shape = ellipse, color=black]
+esg71_vertex11 [label = "confirm interest rate_11/i", shape = ellipse, color=black]
+esg71_vertex12 [label = "enter days left_12/ie", shape = ellipse, color=black]
+esg71_vertex13 [label = "get estimated interest for days left_13/ie", shape = ellipse, color=black]
+esg71_vertex14 [label = "open account_14/b", shape = ellipse, color=black]
+esg71_vertex15 [label = "select currency_15/b", shape = ellipse, color=black]
+esg71_vertex16 [label = "EUR_16/eu", shape = ellipse, color=black]
+esg71_vertex17 [label = "confirm EUR account openning_17/eu", shape = ellipse, color=black]
+}

@@ -1,0 +1,67 @@
+digraph G {
+rankdir = LR
+label = "P000247247s";
+esg248_vertex0 -> esg248_vertex1[ color = null];
+esg248_vertex2 -> esg248_vertex3[ color = null];
+esg248_vertex1 -> esg248_vertex2[ color = null];
+esg248_vertex3 -> esg248_vertex4[ color = null];
+esg248_vertex6 -> esg248_vertex7[ color = null];
+esg248_vertex7 -> esg248_vertex8[ color = null];
+esg248_vertex6 -> esg248_vertex8[ color = null];
+esg248_vertex8 -> esg248_vertex7[ color = null];
+esg248_vertex8 -> esg248_vertex9[ color = null];
+esg248_vertex7 -> esg248_vertex9[ color = null];
+esg248_vertex7 -> esg248_vertex7[ color = null];
+esg248_vertex8 -> esg248_vertex8[ color = null];
+esg248_vertex9 -> esg248_vertex5[ color = null];
+esg248_vertex3 -> esg248_vertex6[ color = null];
+esg248_vertex10 -> esg248_vertex10[ color = null];
+esg248_vertex12 -> esg248_vertex5[ color = null];
+esg248_vertex0 -> esg248_vertex11[ color = null];
+esg248_vertex11 -> esg248_vertex10[ color = null];
+esg248_vertex10 -> esg248_vertex12[ color = null];
+esg248_vertex1 -> esg248_vertex13[ color = null];
+esg248_vertex14 -> esg248_vertex5[ color = null];
+esg248_vertex13 -> esg248_vertex15[ color = null];
+esg248_vertex15 -> esg248_vertex14[ color = null];
+esg248_vertex4 -> esg248_vertex16[ color = null];
+esg248_vertex4 -> esg248_vertex17[ color = null];
+esg248_vertex16 -> esg248_vertex18[ color = null];
+esg248_vertex18 -> esg248_vertex5[ color = null];
+esg248_vertex17 -> esg248_vertex19[ color = null];
+esg248_vertex19 -> esg248_vertex5[ color = null];
+esg248_vertex3 -> esg248_vertex20[ color = null];
+esg248_vertex20 -> esg248_vertex4[ color = null];
+esg248_vertex22 -> esg248_vertex5[ color = null];
+esg248_vertex21 -> esg248_vertex22[ color = null];
+esg248_vertex23 -> esg248_vertex21[ color = null];
+esg248_vertex1 -> esg248_vertex24[ color = null];
+esg248_vertex24 -> esg248_vertex23[ color = null];
+esg248_vertex24 -> esg248_vertex4[ color = null];
+esg248_vertex23 -> esg248_vertex4[ color = null];
+esg248_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg248_vertex1 [label = "log in_1/sas", shape = ellipse, color=black]
+esg248_vertex2 [label = "access as a teacher_2/ta", shape = ellipse, color=black]
+esg248_vertex3 [label = "turn editing on_3/ta", shape = ellipse, color=black]
+esg248_vertex4 [label = "open class records_4/sas", shape = ellipse, color=black]
+esg248_vertex6 [label = "add new schedule_6/ans", shape = ellipse, color=black]
+esg248_vertex7 [label = "enter the days of the class_7/ans", shape = ellipse, color=black]
+esg248_vertex8 [label = "enter the hours of the class_8/ans", shape = ellipse, color=black]
+esg248_vertex9 [label = "submit the class schedule_9/ans", shape = ellipse, color=black]
+esg248_vertex5 [label = "]_5/", shape = ellipse, color=black]
+esg248_vertex10 [label = "read the access card to the card reader_10/a", shape = ellipse, color=black]
+esg248_vertex12 [label = "confirm your identity_12/sas", shape = ellipse, color=black]
+esg248_vertex11 [label = "submit attendance_11/sas", shape = ellipse, color=black]
+esg248_vertex13 [label = "open notification settings_13/sas", shape = ellipse, color=black]
+esg248_vertex14 [label = "confirm notification settings_14/sas", shape = ellipse, color=black]
+esg248_vertex15 [label = "receive notifications as Email_15/e", shape = ellipse, color=black]
+esg248_vertex16 [label = "select the existing schedule_16/vs", shape = ellipse, color=black]
+esg248_vertex17 [label = "select the existing class_17/vc", shape = ellipse, color=black]
+esg248_vertex18 [label = "view schedule_18/vs", shape = ellipse, color=black]
+esg248_vertex19 [label = "view class_19/vc", shape = ellipse, color=black]
+esg248_vertex20 [label = "open student attendance records_20/ta", shape = ellipse, color=black]
+esg248_vertex22 [label = "view record_22/vr", shape = ellipse, color=black]
+esg248_vertex21 [label = "select the existing record_21/vr", shape = ellipse, color=black]
+esg248_vertex23 [label = "open my attendance records_23/sa", shape = ellipse, color=black]
+esg248_vertex24 [label = "access as a student_24/sa", shape = ellipse, color=black]
+}

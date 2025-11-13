@@ -1,0 +1,64 @@
+digraph G {
+rankdir = LR
+label = "P000148148s";
+esg149_vertex0 -> esg149_vertex2[ color = null];
+esg149_vertex3 -> esg149_vertex5[ color = null];
+esg149_vertex5 -> esg149_vertex4[ color = null];
+esg149_vertex2 -> esg149_vertex3[ color = null];
+esg149_vertex6 -> esg149_vertex8[ color = null];
+esg149_vertex8 -> esg149_vertex7[ color = null];
+esg149_vertex2 -> esg149_vertex6[ color = null];
+esg149_vertex4 -> esg149_vertex1[ color = null];
+esg149_vertex7 -> esg149_vertex1[ color = null];
+esg149_vertex6 -> esg149_vertex9[ color = null];
+esg149_vertex8 -> esg149_vertex10[ color = null];
+esg149_vertex0 -> esg149_vertex11[ color = null];
+esg149_vertex0 -> esg149_vertex12[ color = null];
+esg149_vertex12 -> esg149_vertex13[ color = null];
+esg149_vertex13 -> esg149_vertex1[ color = null];
+esg149_vertex0 -> esg149_vertex14[ color = null];
+esg149_vertex14 -> esg149_vertex15[ color = null];
+esg149_vertex9 -> esg149_vertex1[ color = null];
+esg149_vertex11 -> esg149_vertex24[ color = null];
+esg149_vertex15 -> esg149_vertex1[ color = null];
+esg149_vertex16 -> esg149_vertex17[ color = null];
+esg149_vertex17 -> esg149_vertex18[ color = null];
+esg149_vertex0 -> esg149_vertex16[ color = null];
+esg149_vertex19 -> esg149_vertex20[ color = null];
+esg149_vertex19 -> esg149_vertex21[ color = null];
+esg149_vertex20 -> esg149_vertex22[ color = null];
+esg149_vertex0 -> esg149_vertex19[ color = null];
+esg149_vertex22 -> esg149_vertex1[ color = null];
+esg149_vertex21 -> esg149_vertex23[ color = null];
+esg149_vertex23 -> esg149_vertex1[ color = null];
+esg149_vertex24 -> esg149_vertex1[ color = null];
+esg149_vertex18 -> esg149_vertex25[ color = null];
+esg149_vertex25 -> esg149_vertex1[ color = null];
+esg149_vertex10 -> esg149_vertex9[ color = null];
+esg149_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg149_vertex2 [label = "get balance_2/b", shape = ellipse, color=black]
+esg149_vertex3 [label = "select deposit_3/d", shape = ellipse, color=black]
+esg149_vertex5 [label = "enter deposit amount_5/d", shape = ellipse, color=black]
+esg149_vertex4 [label = "put money_4/d", shape = ellipse, color=black]
+esg149_vertex6 [label = "select withdraw_6/w", shape = ellipse, color=black]
+esg149_vertex8 [label = "enter withdraw amount_8/w", shape = ellipse, color=black]
+esg149_vertex7 [label = "take money_7/w", shape = ellipse, color=black]
+esg149_vertex1 [label = "]_1/", shape = ellipse, color=black]
+esg149_vertex9 [label = "cancel withdraw_9/cw", shape = ellipse, color=black]
+esg149_vertex10 [label = "confirm daily limit excess_10/dl", shape = ellipse, color=black]
+esg149_vertex11 [label = "enter daily withdraw limit_11/dl", shape = ellipse, color=black]
+esg149_vertex12 [label = "enter a credit amount_12/c", shape = ellipse, color=black]
+esg149_vertex13 [label = "confirm credit amount_13/c", shape = ellipse, color=black]
+esg149_vertex14 [label = "request an interest rate_14/i", shape = ellipse, color=black]
+esg149_vertex15 [label = "confirm interest rate_15/i", shape = ellipse, color=black]
+esg149_vertex24 [label = "confirm daily withdraw limit_24/dl", shape = ellipse, color=black]
+esg149_vertex16 [label = "open account_16/b", shape = ellipse, color=black]
+esg149_vertex17 [label = "select currency_17/b", shape = ellipse, color=black]
+esg149_vertex18 [label = "TL_18/tl", shape = ellipse, color=black]
+esg149_vertex19 [label = "update profile_19/up", shape = ellipse, color=black]
+esg149_vertex20 [label = "update contact information_20/up", shape = ellipse, color=black]
+esg149_vertex21 [label = "update preferences_21/up", shape = ellipse, color=black]
+esg149_vertex22 [label = "save contact information changes_22/up", shape = ellipse, color=black]
+esg149_vertex23 [label = "save preference changes_23/up", shape = ellipse, color=black]
+esg149_vertex25 [label = "confirm TL account openning_25/tl", shape = ellipse, color=black]
+}

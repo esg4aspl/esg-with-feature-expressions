@@ -1,0 +1,62 @@
+digraph G {
+rankdir = LR
+label = "P000224224s";
+esg225_vertex0 -> esg225_vertex1[ color = null];
+esg225_vertex2 -> esg225_vertex3[ color = null];
+esg225_vertex1 -> esg225_vertex2[ color = null];
+esg225_vertex3 -> esg225_vertex4[ color = null];
+esg225_vertex6 -> esg225_vertex7[ color = null];
+esg225_vertex7 -> esg225_vertex8[ color = null];
+esg225_vertex6 -> esg225_vertex8[ color = null];
+esg225_vertex8 -> esg225_vertex7[ color = null];
+esg225_vertex8 -> esg225_vertex9[ color = null];
+esg225_vertex7 -> esg225_vertex9[ color = null];
+esg225_vertex7 -> esg225_vertex7[ color = null];
+esg225_vertex8 -> esg225_vertex8[ color = null];
+esg225_vertex9 -> esg225_vertex5[ color = null];
+esg225_vertex3 -> esg225_vertex6[ color = null];
+esg225_vertex10 -> esg225_vertex10[ color = null];
+esg225_vertex12 -> esg225_vertex5[ color = null];
+esg225_vertex0 -> esg225_vertex11[ color = null];
+esg225_vertex11 -> esg225_vertex10[ color = null];
+esg225_vertex10 -> esg225_vertex12[ color = null];
+esg225_vertex1 -> esg225_vertex13[ color = null];
+esg225_vertex14 -> esg225_vertex5[ color = null];
+esg225_vertex13 -> esg225_vertex15[ color = null];
+esg225_vertex15 -> esg225_vertex14[ color = null];
+esg225_vertex4 -> esg225_vertex16[ color = null];
+esg225_vertex16 -> esg225_vertex17[ color = null];
+esg225_vertex17 -> esg225_vertex5[ color = null];
+esg225_vertex3 -> esg225_vertex18[ color = null];
+esg225_vertex18 -> esg225_vertex4[ color = null];
+esg225_vertex20 -> esg225_vertex5[ color = null];
+esg225_vertex19 -> esg225_vertex20[ color = null];
+esg225_vertex21 -> esg225_vertex19[ color = null];
+esg225_vertex1 -> esg225_vertex22[ color = null];
+esg225_vertex22 -> esg225_vertex21[ color = null];
+esg225_vertex22 -> esg225_vertex4[ color = null];
+esg225_vertex21 -> esg225_vertex4[ color = null];
+esg225_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg225_vertex1 [label = "log in_1/sas", shape = ellipse, color=black]
+esg225_vertex2 [label = "access as a teacher_2/ta", shape = ellipse, color=black]
+esg225_vertex3 [label = "turn editing on_3/ta", shape = ellipse, color=black]
+esg225_vertex4 [label = "open class records_4/sas", shape = ellipse, color=black]
+esg225_vertex6 [label = "add new schedule_6/ans", shape = ellipse, color=black]
+esg225_vertex7 [label = "enter the days of the class_7/ans", shape = ellipse, color=black]
+esg225_vertex8 [label = "enter the hours of the class_8/ans", shape = ellipse, color=black]
+esg225_vertex9 [label = "submit the class schedule_9/ans", shape = ellipse, color=black]
+esg225_vertex5 [label = "]_5/", shape = ellipse, color=black]
+esg225_vertex10 [label = "read the access card to the card reader_10/a", shape = ellipse, color=black]
+esg225_vertex12 [label = "confirm your identity_12/sas", shape = ellipse, color=black]
+esg225_vertex11 [label = "submit attendance_11/sas", shape = ellipse, color=black]
+esg225_vertex13 [label = "open notification settings_13/sas", shape = ellipse, color=black]
+esg225_vertex14 [label = "confirm notification settings_14/sas", shape = ellipse, color=black]
+esg225_vertex15 [label = "receive notifications as Email_15/e", shape = ellipse, color=black]
+esg225_vertex16 [label = "select the existing class_16/vc", shape = ellipse, color=black]
+esg225_vertex17 [label = "view class_17/vc", shape = ellipse, color=black]
+esg225_vertex18 [label = "open student attendance records_18/ta", shape = ellipse, color=black]
+esg225_vertex20 [label = "view record_20/vr", shape = ellipse, color=black]
+esg225_vertex19 [label = "select the existing record_19/vr", shape = ellipse, color=black]
+esg225_vertex21 [label = "open my attendance records_21/sa", shape = ellipse, color=black]
+esg225_vertex22 [label = "access as a student_22/sa", shape = ellipse, color=black]
+}

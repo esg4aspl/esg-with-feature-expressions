@@ -1,0 +1,84 @@
+digraph G {
+rankdir = LR
+label = "P000436436s";
+esg437_vertex0 -> esg437_vertex2[ color = null];
+esg437_vertex3 -> esg437_vertex5[ color = null];
+esg437_vertex5 -> esg437_vertex4[ color = null];
+esg437_vertex2 -> esg437_vertex3[ color = null];
+esg437_vertex6 -> esg437_vertex8[ color = null];
+esg437_vertex8 -> esg437_vertex7[ color = null];
+esg437_vertex2 -> esg437_vertex6[ color = null];
+esg437_vertex4 -> esg437_vertex1[ color = null];
+esg437_vertex7 -> esg437_vertex1[ color = null];
+esg437_vertex6 -> esg437_vertex9[ color = null];
+esg437_vertex8 -> esg437_vertex10[ color = null];
+esg437_vertex0 -> esg437_vertex11[ color = null];
+esg437_vertex10 -> esg437_vertex12[ color = null];
+esg437_vertex12 -> esg437_vertex9[ color = null];
+esg437_vertex0 -> esg437_vertex13[ color = null];
+esg437_vertex0 -> esg437_vertex14[ color = null];
+esg437_vertex14 -> esg437_vertex15[ color = null];
+esg437_vertex9 -> esg437_vertex1[ color = null];
+esg437_vertex11 -> esg437_vertex30[ color = null];
+esg437_vertex15 -> esg437_vertex1[ color = null];
+esg437_vertex16 -> esg437_vertex17[ color = null];
+esg437_vertex17 -> esg437_vertex18[ color = null];
+esg437_vertex0 -> esg437_vertex16[ color = null];
+esg437_vertex19 -> esg437_vertex20[ color = null];
+esg437_vertex19 -> esg437_vertex21[ color = null];
+esg437_vertex20 -> esg437_vertex22[ color = null];
+esg437_vertex0 -> esg437_vertex19[ color = null];
+esg437_vertex22 -> esg437_vertex1[ color = null];
+esg437_vertex23 -> esg437_vertex24[ color = null];
+esg437_vertex24 -> esg437_vertex25[ color = null];
+esg437_vertex25 -> esg437_vertex26[ color = null];
+esg437_vertex26 -> esg437_vertex27[ color = null];
+esg437_vertex27 -> esg437_vertex28[ color = null];
+esg437_vertex0 -> esg437_vertex23[ color = null];
+esg437_vertex28 -> esg437_vertex1[ color = null];
+esg437_vertex21 -> esg437_vertex29[ color = null];
+esg437_vertex29 -> esg437_vertex1[ color = null];
+esg437_vertex30 -> esg437_vertex1[ color = null];
+esg437_vertex13 -> esg437_vertex31[ color = null];
+esg437_vertex31 -> esg437_vertex1[ color = null];
+esg437_vertex18 -> esg437_vertex32[ color = null];
+esg437_vertex32 -> esg437_vertex1[ color = null];
+esg437_vertex12 -> esg437_vertex8[ color = null];
+esg437_vertex27 -> esg437_vertex33[ color = null];
+esg437_vertex33 -> esg437_vertex1[ color = null];
+esg437_vertex10 -> esg437_vertex9[ color = null];
+esg437_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg437_vertex2 [label = "get balance_2/b", shape = ellipse, color=black]
+esg437_vertex3 [label = "select deposit_3/d", shape = ellipse, color=black]
+esg437_vertex5 [label = "enter deposit amount_5/d", shape = ellipse, color=black]
+esg437_vertex4 [label = "put money_4/d", shape = ellipse, color=black]
+esg437_vertex6 [label = "select withdraw_6/w", shape = ellipse, color=black]
+esg437_vertex8 [label = "enter withdraw amount_8/w", shape = ellipse, color=black]
+esg437_vertex7 [label = "take money_7/w", shape = ellipse, color=black]
+esg437_vertex1 [label = "]_1/", shape = ellipse, color=black]
+esg437_vertex9 [label = "cancel withdraw_9/cw", shape = ellipse, color=black]
+esg437_vertex10 [label = "confirm daily limit excess_10/dl", shape = ellipse, color=black]
+esg437_vertex11 [label = "enter daily withdraw limit_11/dl", shape = ellipse, color=black]
+esg437_vertex12 [label = "confirm overdraft limit excess_12/o", shape = ellipse, color=black]
+esg437_vertex13 [label = "enter overdraft limit_13/o", shape = ellipse, color=black]
+esg437_vertex14 [label = "request an interest rate_14/i", shape = ellipse, color=black]
+esg437_vertex15 [label = "confirm interest rate_15/i", shape = ellipse, color=black]
+esg437_vertex30 [label = "confirm daily withdraw limit_30/dl", shape = ellipse, color=black]
+esg437_vertex16 [label = "open account_16/b", shape = ellipse, color=black]
+esg437_vertex17 [label = "select currency_17/b", shape = ellipse, color=black]
+esg437_vertex18 [label = "EUR_18/eu", shape = ellipse, color=black]
+esg437_vertex19 [label = "update profile_19/up", shape = ellipse, color=black]
+esg437_vertex20 [label = "update contact information_20/up", shape = ellipse, color=black]
+esg437_vertex21 [label = "update preferences_21/up", shape = ellipse, color=black]
+esg437_vertex22 [label = "save contact information changes_22/up", shape = ellipse, color=black]
+esg437_vertex23 [label = "transfer money_23/t", shape = ellipse, color=black]
+esg437_vertex24 [label = "enter receiver's IBAN_24/t", shape = ellipse, color=black]
+esg437_vertex25 [label = "enter amount_25/t", shape = ellipse, color=black]
+esg437_vertex26 [label = "select transfer type_26/t", shape = ellipse, color=black]
+esg437_vertex27 [label = "view transfer details_27/t", shape = ellipse, color=black]
+esg437_vertex28 [label = "confirm transfer_28/t", shape = ellipse, color=black]
+esg437_vertex29 [label = "save preference changes_29/up", shape = ellipse, color=black]
+esg437_vertex31 [label = "confirm overdraft limit_31/o", shape = ellipse, color=black]
+esg437_vertex32 [label = "confirm EUR account openning_32/eu", shape = ellipse, color=black]
+esg437_vertex33 [label = "cancel transfer_33/t", shape = ellipse, color=black]
+}

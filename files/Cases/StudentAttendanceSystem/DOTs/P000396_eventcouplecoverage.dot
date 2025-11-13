@@ -1,0 +1,73 @@
+digraph G {
+rankdir = LR
+label = "P000396396s";
+esg397_vertex0 -> esg397_vertex1[ color = null];
+esg397_vertex2 -> esg397_vertex3[ color = null];
+esg397_vertex1 -> esg397_vertex2[ color = null];
+esg397_vertex3 -> esg397_vertex4[ color = null];
+esg397_vertex6 -> esg397_vertex7[ color = null];
+esg397_vertex8 -> esg397_vertex6[ color = null];
+esg397_vertex7 -> esg397_vertex8[ color = null];
+esg397_vertex3 -> esg397_vertex8[ color = null];
+esg397_vertex9 -> esg397_vertex10[ color = null];
+esg397_vertex10 -> esg397_vertex11[ color = null];
+esg397_vertex9 -> esg397_vertex11[ color = null];
+esg397_vertex11 -> esg397_vertex10[ color = null];
+esg397_vertex11 -> esg397_vertex12[ color = null];
+esg397_vertex10 -> esg397_vertex12[ color = null];
+esg397_vertex10 -> esg397_vertex10[ color = null];
+esg397_vertex11 -> esg397_vertex11[ color = null];
+esg397_vertex3 -> esg397_vertex9[ color = null];
+esg397_vertex12 -> esg397_vertex5[ color = null];
+esg397_vertex7 -> esg397_vertex5[ color = null];
+esg397_vertex13 -> esg397_vertex13[ color = null];
+esg397_vertex15 -> esg397_vertex5[ color = null];
+esg397_vertex0 -> esg397_vertex14[ color = null];
+esg397_vertex14 -> esg397_vertex13[ color = null];
+esg397_vertex13 -> esg397_vertex15[ color = null];
+esg397_vertex1 -> esg397_vertex16[ color = null];
+esg397_vertex17 -> esg397_vertex5[ color = null];
+esg397_vertex16 -> esg397_vertex18[ color = null];
+esg397_vertex18 -> esg397_vertex17[ color = null];
+esg397_vertex4 -> esg397_vertex19[ color = null];
+esg397_vertex4 -> esg397_vertex20[ color = null];
+esg397_vertex19 -> esg397_vertex21[ color = null];
+esg397_vertex21 -> esg397_vertex5[ color = null];
+esg397_vertex20 -> esg397_vertex22[ color = null];
+esg397_vertex22 -> esg397_vertex5[ color = null];
+esg397_vertex3 -> esg397_vertex23[ color = null];
+esg397_vertex23 -> esg397_vertex4[ color = null];
+esg397_vertex24 -> esg397_vertex5[ color = null];
+esg397_vertex25 -> esg397_vertex24[ color = null];
+esg397_vertex1 -> esg397_vertex26[ color = null];
+esg397_vertex26 -> esg397_vertex25[ color = null];
+esg397_vertex26 -> esg397_vertex4[ color = null];
+esg397_vertex25 -> esg397_vertex4[ color = null];
+esg397_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg397_vertex1 [label = "log in_1/sas", shape = ellipse, color=black]
+esg397_vertex2 [label = "access as a teacher_2/ta", shape = ellipse, color=black]
+esg397_vertex3 [label = "turn editing on_3/ta", shape = ellipse, color=black]
+esg397_vertex4 [label = "open class records_4/sas", shape = ellipse, color=black]
+esg397_vertex6 [label = "delete class_6/dc", shape = ellipse, color=black]
+esg397_vertex7 [label = "confirm deletion_7/dc", shape = ellipse, color=black]
+esg397_vertex8 [label = "select the deletable class_8/dc", shape = ellipse, color=black]
+esg397_vertex9 [label = "add new class_9/anc", shape = ellipse, color=black]
+esg397_vertex10 [label = "enter the name of the class_10/anc", shape = ellipse, color=black]
+esg397_vertex11 [label = "enter the class detail_11/anc", shape = ellipse, color=black]
+esg397_vertex12 [label = "submit the class_12/anc", shape = ellipse, color=black]
+esg397_vertex5 [label = "]_5/", shape = ellipse, color=black]
+esg397_vertex13 [label = "read the access card to the card reader_13/a", shape = ellipse, color=black]
+esg397_vertex15 [label = "confirm your identity_15/sas", shape = ellipse, color=black]
+esg397_vertex14 [label = "submit attendance_14/sas", shape = ellipse, color=black]
+esg397_vertex16 [label = "open notification settings_16/sas", shape = ellipse, color=black]
+esg397_vertex17 [label = "confirm notification settings_17/sas", shape = ellipse, color=black]
+esg397_vertex18 [label = "receive notifications as Email_18/e", shape = ellipse, color=black]
+esg397_vertex19 [label = "select the existing schedule_19/vs", shape = ellipse, color=black]
+esg397_vertex20 [label = "select the existing class_20/vc", shape = ellipse, color=black]
+esg397_vertex21 [label = "view schedule_21/vs", shape = ellipse, color=black]
+esg397_vertex22 [label = "view class_22/vc", shape = ellipse, color=black]
+esg397_vertex23 [label = "open student attendance records_23/ta", shape = ellipse, color=black]
+esg397_vertex24 [label = "monitor current attendance status_24/mas", shape = ellipse, color=black]
+esg397_vertex25 [label = "open my attendance records_25/sa", shape = ellipse, color=black]
+esg397_vertex26 [label = "access as a student_26/sa", shape = ellipse, color=black]
+}

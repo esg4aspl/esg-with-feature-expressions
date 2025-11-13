@@ -280,15 +280,15 @@ public class ProductConfigurationValidator {
 
 					if (!feature.equals(feature2)) {
 						featureSelected = featureSelected && !featureSelected2;
-						System.out.println("Feature " + feature.getName() + " " + featureSelected);
-						System.out.println("Feature2 " + feature2.getName() + " " + featureSelected2);
-						System.out.println("Current featureSelected " + featureSelected);
+//						System.out.println("Feature " + feature.getName() + " " + featureSelected);
+//						System.out.println("Feature2 " + feature2.getName() + " " + featureSelected2);
+//						System.out.println("Current featureSelected " + featureSelected);
 					}
 				}
 				onlyOneOrNoneOptionalXORFeatureIsSelected = onlyOneOrNoneOptionalXORFeatureIsSelected
 						&& featureSelected;
 			} else {
-				System.out.println("ELSE");
+//				System.out.println("ELSE");
 				while (xorFeatureSetIterator2.hasNext()) {
 					Feature feature2 = xorFeatureSetIterator2.next();
 					FeatureExpression featureExpression2 = featureExpressionMapFromFeatureModel.get(feature2.getName());
@@ -296,9 +296,9 @@ public class ProductConfigurationValidator {
 
 					if (!feature.equals(feature2)) {
 						featureSelected = !featureSelected && !featureSelected2;
-						System.out.println("Feature " + feature.getName() + " " + featureSelected);
-						System.out.println("Feature2 " + feature2.getName() + " " + featureSelected2);
-						System.out.println("Current featureSelected " + featureSelected);
+//						System.out.println("Feature " + feature.getName() + " " + featureSelected);
+//						System.out.println("Feature2 " + feature2.getName() + " " + featureSelected2);
+//						System.out.println("Current featureSelected " + featureSelected);
 					}
 				}
 				onlyOneOrNoneOptionalXORFeatureIsSelected = onlyOneOrNoneOptionalXORFeatureIsSelected

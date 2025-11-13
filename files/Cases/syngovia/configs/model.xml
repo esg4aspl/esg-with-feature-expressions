@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<featureModel>
+	<properties>
+		<graphics key="autolayoutconstraints" value="false"/>
+		<graphics key="legendautolayout" value="true"/>
+		<graphics key="showconstraints" value="true"/>
+		<graphics key="showshortnames" value="false"/>
+		<graphics key="layout" value="horizontal"/>
+		<graphics key="showcollapsedconstraints" value="true"/>
+		<graphics key="legendhidden" value="false"/>
+		<graphics key="layoutalgorithm" value="1"/>
+	</properties>
+	<struct>
+		<and abstract="true" mandatory="true" name="syngo.via_VB40">
+			<or abstract="true" mandatory="true" name="Login">
+				<graphics key="collapsed" value="false"/>
+				<feature name="sso"/>
+				<feature name="cli"/>
+			</or>
+			<feature mandatory="true" name="wlb"/>
+			<feature mandatory="true" name="inl"/>
+			<feature mandatory="true" name="sa"/>
+			<feature mandatory="true" name="swl"/>
+			<feature mandatory="true" name="tob"/>
+			<feature mandatory="true" name="rel"/>
+			<feature mandatory="true" name="mfa"/>
+			<feature mandatory="true" name="srl"/>
+			<feature mandatory="true" name="pb">
+				<graphics key="collapsed" value="false"/>
+			</feature>
+			<and abstract="true" mandatory="true" name="CornerMenus">
+				<graphics key="collapsed" value="true"/>
+				<feature mandatory="true" name="tl"/>
+				<feature mandatory="true" name="tr"/>
+				<feature mandatory="true" name="bl"/>
+				<feature mandatory="true" name="br"/>
+			</and>
+			<feature mandatory="true" name="as"/>
+			<feature mandatory="true" name="clop"/>
+			<feature mandatory="true" name="ab"/>
+			<feature mandatory="true" name="ser"/>
+			<feature mandatory="true" name="layg"/>
+			<feature mandatory="true" name="sp">
+				<graphics key="collapsed" value="false"/>
+			</feature>
+			<feature mandatory="true" name="iar">
+				<graphics key="collapsed" value="false"/>
+			</feature>
+			<feature mandatory="true" name="pat"/>
+			<alt mandatory="true" name="wfl">
+				<graphics key="collapsed" value="false"/>
+				<feature name="MMR"/>
+				<feature name="CTR">
+					<graphics key="collapsed" value="false"/>
+				</feature>
+				<feature name="MRR">
+					<graphics key="collapsed" value="false"/>
+				</feature>
+				<feature name="MIR">
+					<graphics key="collapsed" value="false"/>
+				</feature>
+				<feature name="MGR">
+					<graphics key="collapsed" value="false"/>
+				</feature>
+				<feature name="PETR"/>
+				<feature name="SPECTR"/>
+				<feature name="CRR"/>
+				<feature name="RFXAR"/>
+				<feature name="USR"/>
+			</alt>
+			<feature mandatory="true" name="vi">
+				<graphics key="collapsed" value="false"/>
+			</feature>
+			<and abstract="true" mandatory="true" name="MM_ReadingWorkflow">
+				<feature name="fip"/>
+				<feature name="vip"/>
+				<feature name="ftp"/>
+				<feature name="tog"/>
+			</and>
+			<and abstract="true" mandatory="true" name="AdvancedWorkflows">
+				<feature name="wst"/>
+				<feature name="fnav"/>
+				<feature name="layt"/>
+			</and>
+			<or abstract="true" name="AdvanceEvaluationTools">
+				<graphics key="collapsed" value="false"/>
+				<feature name="dv"/>
+				<feature name="hi"/>
+				<feature name="ct"/>
+				<feature name="mrca"/>
+				<feature name="mrco"/>
+				<feature name="le"/>
+			</or>
+			<or abstract="true" mandatory="true" name="Modality">
+				<graphics key="collapsed" value="true"/>
+				<feature abstract="true" name="CT"/>
+				<feature abstract="true" name="MR"/>
+				<feature abstract="true" name="MI"/>
+				<feature abstract="true" name="MG"/>
+				<feature abstract="true" name="PET"/>
+				<feature abstract="true" name="SPECT"/>
+				<feature abstract="true" name="CR"/>
+				<feature abstract="true" name="RFXA"/>
+				<feature abstract="true" name="US"/>
+			</or>
+		</and>
+	</struct>
+	<constraints>
+		<rule>
+			<eq>
+				<conj>
+					<var>fip</var>
+					<conj>
+						<var>vip</var>
+						<conj>
+							<var>ftp</var>
+							<var>tog</var>
+						</conj>
+					</conj>
+				</conj>
+				<var>MMR</var>
+			</eq>
+		</rule>
+		<rule>
+			<eq>
+				<var>fip</var>
+				<var>vip</var>
+			</eq>
+		</rule>
+		<rule>
+			<eq>
+				<var>fip</var>
+				<var>ftp</var>
+			</eq>
+		</rule>
+		<rule>
+			<eq>
+				<var>fip</var>
+				<var>tog</var>
+			</eq>
+		</rule>
+		<rule>
+			<eq>
+				<conj>
+					<var>fnav</var>
+					<conj>
+						<var>wst</var>
+						<var>layt</var>
+					</conj>
+				</conj>
+				<disj>
+					<var>CRR</var>
+					<disj>
+						<var>CTR</var>
+						<disj>
+							<var>MGR</var>
+							<disj>
+								<var>MIR</var>
+								<disj>
+									<var>MRR</var>
+									<disj>
+										<var>PETR</var>
+										<disj>
+											<var>RFXAR</var>
+											<disj>
+												<var>SPECTR</var>
+												<var>USR</var>
+											</disj>
+										</disj>
+									</disj>
+								</disj>
+							</disj>
+						</disj>
+					</disj>
+				</disj>
+			</eq>
+		</rule>
+		<rule>
+			<eq>
+				<var>wst</var>
+				<var>fnav</var>
+			</eq>
+		</rule>
+		<rule>
+			<eq>
+				<var>wst</var>
+				<var>layt</var>
+			</eq>
+		</rule>
+		<rule>
+			<imp>
+				<disj>
+					<var>dv</var>
+					<disj>
+						<var>hi</var>
+						<disj>
+							<var>ct</var>
+							<disj>
+								<var>mrca</var>
+								<disj>
+									<var>mrco</var>
+									<var>le</var>
+								</disj>
+							</disj>
+						</disj>
+					</disj>
+				</disj>
+				<var>MMR</var>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>dv</var>
+				<disj>
+					<var>CT</var>
+					<var>MR</var>
+				</disj>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>hi</var>
+				<var>CT</var>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>ct</var>
+				<var>CT</var>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>mrca</var>
+				<var>MR</var>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>mrco</var>
+				<var>MR</var>
+			</imp>
+		</rule>
+		<rule>
+			<imp>
+				<var>le</var>
+				<var>CT</var>
+			</imp>
+		</rule>
+	</constraints>
+</featureModel>

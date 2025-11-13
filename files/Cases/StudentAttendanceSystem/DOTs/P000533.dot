@@ -1,0 +1,65 @@
+digraph G {
+rankdir = LR
+label = "P000533";
+esg533_vertex0 -> esg533_vertex1[ color = null];
+esg533_vertex2 -> esg533_vertex3[ color = null];
+esg533_vertex1 -> esg533_vertex2[ color = null];
+esg533_vertex3 -> esg533_vertex4[ color = null];
+esg533_vertex6 -> esg533_vertex7[ color = null];
+esg533_vertex7 -> esg533_vertex8[ color = null];
+esg533_vertex6 -> esg533_vertex8[ color = null];
+esg533_vertex8 -> esg533_vertex7[ color = null];
+esg533_vertex8 -> esg533_vertex9[ color = null];
+esg533_vertex7 -> esg533_vertex9[ color = null];
+esg533_vertex7 -> esg533_vertex7[ color = null];
+esg533_vertex8 -> esg533_vertex8[ color = null];
+esg533_vertex9 -> esg533_vertex5[ color = null];
+esg533_vertex3 -> esg533_vertex6[ color = null];
+esg533_vertex10 -> esg533_vertex10[ color = null];
+esg533_vertex12 -> esg533_vertex5[ color = null];
+esg533_vertex0 -> esg533_vertex11[ color = null];
+esg533_vertex11 -> esg533_vertex10[ color = null];
+esg533_vertex10 -> esg533_vertex12[ color = null];
+esg533_vertex1 -> esg533_vertex13[ color = null];
+esg533_vertex14 -> esg533_vertex5[ color = null];
+esg533_vertex13 -> esg533_vertex15[ color = null];
+esg533_vertex15 -> esg533_vertex14[ color = null];
+esg533_vertex4 -> esg533_vertex16[ color = null];
+esg533_vertex16 -> esg533_vertex17[ color = null];
+esg533_vertex17 -> esg533_vertex5[ color = null];
+esg533_vertex3 -> esg533_vertex18[ color = null];
+esg533_vertex18 -> esg533_vertex4[ color = null];
+esg533_vertex20 -> esg533_vertex5[ color = null];
+esg533_vertex19 -> esg533_vertex20[ color = null];
+esg533_vertex21 -> esg533_vertex5[ color = null];
+esg533_vertex22 -> esg533_vertex19[ color = null];
+esg533_vertex22 -> esg533_vertex21[ color = null];
+esg533_vertex1 -> esg533_vertex23[ color = null];
+esg533_vertex23 -> esg533_vertex22[ color = null];
+esg533_vertex23 -> esg533_vertex4[ color = null];
+esg533_vertex22 -> esg533_vertex4[ color = null];
+esg533_vertex0 [label = "[", shape = ellipse, color=null]
+esg533_vertex1 [label = "log in", shape = ellipse, color=null]
+esg533_vertex2 [label = "access as a teacher", shape = ellipse, color=null]
+esg533_vertex3 [label = "turn editing on", shape = ellipse, color=null]
+esg533_vertex4 [label = "open class records", shape = ellipse, color=null]
+esg533_vertex6 [label = "add new schedule", shape = ellipse, color=null]
+esg533_vertex7 [label = "enter the days of the class", shape = ellipse, color=null]
+esg533_vertex8 [label = "enter the hours of the class", shape = ellipse, color=null]
+esg533_vertex9 [label = "submit the class schedule", shape = ellipse, color=null]
+esg533_vertex5 [label = "]", shape = ellipse, color=null]
+esg533_vertex10 [label = "read the access card to the card reader", shape = ellipse, color=null]
+esg533_vertex12 [label = "confirm your identity", shape = ellipse, color=null]
+esg533_vertex11 [label = "submit attendance", shape = ellipse, color=null]
+esg533_vertex13 [label = "open notification settings", shape = ellipse, color=null]
+esg533_vertex14 [label = "confirm notification settings", shape = ellipse, color=null]
+esg533_vertex15 [label = "receive notifications as Email", shape = ellipse, color=null]
+esg533_vertex16 [label = "select the existing class", shape = ellipse, color=null]
+esg533_vertex17 [label = "view class", shape = ellipse, color=null]
+esg533_vertex18 [label = "open student attendance records", shape = ellipse, color=null]
+esg533_vertex20 [label = "view record", shape = ellipse, color=null]
+esg533_vertex19 [label = "select the existing record", shape = ellipse, color=null]
+esg533_vertex21 [label = "monitor current attendance status", shape = ellipse, color=null]
+esg533_vertex22 [label = "open my attendance records", shape = ellipse, color=null]
+esg533_vertex23 [label = "access as a student", shape = ellipse, color=null]
+}

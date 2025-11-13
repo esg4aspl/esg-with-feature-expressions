@@ -1,0 +1,67 @@
+digraph G {
+rankdir = LR
+label = "P0015771577s";
+esg1578_vertex0 -> esg1578_vertex1[ color = null];
+esg1578_vertex2 -> esg1578_vertex3[ color = null];
+esg1578_vertex1 -> esg1578_vertex2[ color = null];
+esg1578_vertex3 -> esg1578_vertex4[ color = null];
+esg1578_vertex6 -> esg1578_vertex7[ color = null];
+esg1578_vertex7 -> esg1578_vertex8[ color = null];
+esg1578_vertex6 -> esg1578_vertex8[ color = null];
+esg1578_vertex8 -> esg1578_vertex7[ color = null];
+esg1578_vertex8 -> esg1578_vertex9[ color = null];
+esg1578_vertex7 -> esg1578_vertex9[ color = null];
+esg1578_vertex7 -> esg1578_vertex7[ color = null];
+esg1578_vertex8 -> esg1578_vertex8[ color = null];
+esg1578_vertex3 -> esg1578_vertex6[ color = null];
+esg1578_vertex9 -> esg1578_vertex5[ color = null];
+esg1578_vertex11 -> esg1578_vertex5[ color = null];
+esg1578_vertex0 -> esg1578_vertex10[ color = null];
+esg1578_vertex1 -> esg1578_vertex12[ color = null];
+esg1578_vertex13 -> esg1578_vertex5[ color = null];
+esg1578_vertex4 -> esg1578_vertex14[ color = null];
+esg1578_vertex4 -> esg1578_vertex15[ color = null];
+esg1578_vertex14 -> esg1578_vertex16[ color = null];
+esg1578_vertex16 -> esg1578_vertex5[ color = null];
+esg1578_vertex15 -> esg1578_vertex17[ color = null];
+esg1578_vertex17 -> esg1578_vertex5[ color = null];
+esg1578_vertex3 -> esg1578_vertex18[ color = null];
+esg1578_vertex18 -> esg1578_vertex4[ color = null];
+esg1578_vertex20 -> esg1578_vertex5[ color = null];
+esg1578_vertex19 -> esg1578_vertex20[ color = null];
+esg1578_vertex21 -> esg1578_vertex19[ color = null];
+esg1578_vertex1 -> esg1578_vertex22[ color = null];
+esg1578_vertex22 -> esg1578_vertex21[ color = null];
+esg1578_vertex22 -> esg1578_vertex4[ color = null];
+esg1578_vertex23 -> esg1578_vertex23[ color = null];
+esg1578_vertex12 -> esg1578_vertex24[ color = null];
+esg1578_vertex24 -> esg1578_vertex13[ color = null];
+esg1578_vertex10 -> esg1578_vertex23[ color = null];
+esg1578_vertex23 -> esg1578_vertex11[ color = null];
+esg1578_vertex21 -> esg1578_vertex4[ color = null];
+esg1578_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg1578_vertex1 [label = "log in_1/sas", shape = ellipse, color=black]
+esg1578_vertex2 [label = "access as a teacher_2/ta", shape = ellipse, color=black]
+esg1578_vertex3 [label = "turn editing on_3/ta", shape = ellipse, color=black]
+esg1578_vertex4 [label = "open class records_4/sas", shape = ellipse, color=black]
+esg1578_vertex6 [label = "add new class_6/anc", shape = ellipse, color=black]
+esg1578_vertex7 [label = "enter the name of the class_7/anc", shape = ellipse, color=black]
+esg1578_vertex8 [label = "enter the class detail_8/anc", shape = ellipse, color=black]
+esg1578_vertex9 [label = "submit the class_9/anc", shape = ellipse, color=black]
+esg1578_vertex5 [label = "]_5/", shape = ellipse, color=black]
+esg1578_vertex11 [label = "confirm your identity_11/sas", shape = ellipse, color=black]
+esg1578_vertex10 [label = "submit attendance_10/sas", shape = ellipse, color=black]
+esg1578_vertex12 [label = "open notification settings_12/sas", shape = ellipse, color=black]
+esg1578_vertex13 [label = "confirm notification settings_13/sas", shape = ellipse, color=black]
+esg1578_vertex14 [label = "select the existing schedule_14/vs", shape = ellipse, color=black]
+esg1578_vertex15 [label = "select the existing class_15/vc", shape = ellipse, color=black]
+esg1578_vertex16 [label = "view schedule_16/vs", shape = ellipse, color=black]
+esg1578_vertex17 [label = "view class_17/vc", shape = ellipse, color=black]
+esg1578_vertex18 [label = "open student attendance records_18/ta", shape = ellipse, color=black]
+esg1578_vertex20 [label = "view record_20/vr", shape = ellipse, color=black]
+esg1578_vertex19 [label = "select the existing record_19/vr", shape = ellipse, color=black]
+esg1578_vertex21 [label = "open my attendance records_21/sa", shape = ellipse, color=black]
+esg1578_vertex22 [label = "access as a student_22/sa", shape = ellipse, color=black]
+esg1578_vertex23 [label = "put your finger to the fingerprint scanner_23/f", shape = ellipse, color=black]
+esg1578_vertex24 [label = "receive notifications as SMS_24/s", shape = ellipse, color=black]
+}

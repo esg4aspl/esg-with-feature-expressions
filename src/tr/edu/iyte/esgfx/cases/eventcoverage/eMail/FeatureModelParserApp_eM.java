@@ -1,6 +1,6 @@
 package tr.edu.iyte.esgfx.cases.eventcoverage.eMail;
 
-import tr.edu.iyte.esgfx.cases.edgecoverage.eMail.CaseStudyUtilities_eM;
+import tr.edu.iyte.esgfx.cases.eMail.CaseStudyUtilities_eM;
 import tr.edu.iyte.esgfx.conversion.mxe.MXEFileToESGFxConverter;
 import tr.edu.iyte.esgfx.model.featuremodel.FeatureModel;
 

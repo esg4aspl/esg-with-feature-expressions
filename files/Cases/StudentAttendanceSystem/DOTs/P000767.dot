@@ -1,0 +1,91 @@
+digraph G {
+rankdir = LR
+label = "P000767";
+esg767_vertex0 -> esg767_vertex1[ color = null];
+esg767_vertex2 -> esg767_vertex3[ color = null];
+esg767_vertex1 -> esg767_vertex2[ color = null];
+esg767_vertex3 -> esg767_vertex4[ color = null];
+esg767_vertex6 -> esg767_vertex7[ color = null];
+esg767_vertex8 -> esg767_vertex6[ color = null];
+esg767_vertex7 -> esg767_vertex8[ color = null];
+esg767_vertex3 -> esg767_vertex8[ color = null];
+esg767_vertex7 -> esg767_vertex5[ color = null];
+esg767_vertex9 -> esg767_vertex10[ color = null];
+esg767_vertex10 -> esg767_vertex11[ color = null];
+esg767_vertex9 -> esg767_vertex11[ color = null];
+esg767_vertex11 -> esg767_vertex10[ color = null];
+esg767_vertex11 -> esg767_vertex12[ color = null];
+esg767_vertex10 -> esg767_vertex12[ color = null];
+esg767_vertex10 -> esg767_vertex10[ color = null];
+esg767_vertex11 -> esg767_vertex11[ color = null];
+esg767_vertex12 -> esg767_vertex5[ color = null];
+esg767_vertex3 -> esg767_vertex9[ color = null];
+esg767_vertex13 -> esg767_vertex13[ color = null];
+esg767_vertex14 -> esg767_vertex14[ color = null];
+esg767_vertex14 -> esg767_vertex12[ color = null];
+esg767_vertex13 -> esg767_vertex12[ color = null];
+esg767_vertex15 -> esg767_vertex13[ color = null];
+esg767_vertex15 -> esg767_vertex14[ color = null];
+esg767_vertex3 -> esg767_vertex15[ color = null];
+esg767_vertex17 -> esg767_vertex5[ color = null];
+esg767_vertex0 -> esg767_vertex16[ color = null];
+esg767_vertex1 -> esg767_vertex18[ color = null];
+esg767_vertex19 -> esg767_vertex5[ color = null];
+esg767_vertex4 -> esg767_vertex20[ color = null];
+esg767_vertex4 -> esg767_vertex21[ color = null];
+esg767_vertex20 -> esg767_vertex22[ color = null];
+esg767_vertex22 -> esg767_vertex5[ color = null];
+esg767_vertex21 -> esg767_vertex23[ color = null];
+esg767_vertex23 -> esg767_vertex5[ color = null];
+esg767_vertex3 -> esg767_vertex24[ color = null];
+esg767_vertex24 -> esg767_vertex4[ color = null];
+esg767_vertex24 -> esg767_vertex25[ color = null];
+esg767_vertex24 -> esg767_vertex26[ color = null];
+esg767_vertex25 -> esg767_vertex27[ color = null];
+esg767_vertex26 -> esg767_vertex27[ color = null];
+esg767_vertex27 -> esg767_vertex28[ color = null];
+esg767_vertex28 -> esg767_vertex5[ color = null];
+esg767_vertex25 -> esg767_vertex29[ color = null];
+esg767_vertex29 -> esg767_vertex5[ color = null];
+esg767_vertex30 -> esg767_vertex30[ color = null];
+esg767_vertex30 -> esg767_vertex31[ color = null];
+esg767_vertex16 -> esg767_vertex31[ color = null];
+esg767_vertex16 -> esg767_vertex30[ color = null];
+esg767_vertex31 -> esg767_vertex17[ color = null];
+esg767_vertex30 -> esg767_vertex17[ color = null];
+esg767_vertex18 -> esg767_vertex32[ color = null];
+esg767_vertex32 -> esg767_vertex19[ color = null];
+esg767_vertex0 [label = "[", shape = ellipse, color=null]
+esg767_vertex1 [label = "log in", shape = ellipse, color=null]
+esg767_vertex2 [label = "access as a teacher", shape = ellipse, color=null]
+esg767_vertex3 [label = "turn editing on", shape = ellipse, color=null]
+esg767_vertex4 [label = "open class records", shape = ellipse, color=null]
+esg767_vertex6 [label = "delete class", shape = ellipse, color=null]
+esg767_vertex7 [label = "confirm deletion", shape = ellipse, color=null]
+esg767_vertex8 [label = "select the deletable class", shape = ellipse, color=null]
+esg767_vertex5 [label = "]", shape = ellipse, color=null]
+esg767_vertex9 [label = "add new schedule", shape = ellipse, color=null]
+esg767_vertex10 [label = "enter the days of the class", shape = ellipse, color=null]
+esg767_vertex11 [label = "enter the hours of the class", shape = ellipse, color=null]
+esg767_vertex12 [label = "submit the class schedule", shape = ellipse, color=null]
+esg767_vertex13 [label = "update the days of the class", shape = ellipse, color=null]
+esg767_vertex14 [label = "update the hours of the class", shape = ellipse, color=null]
+esg767_vertex15 [label = "select the editable schedule", shape = ellipse, color=null]
+esg767_vertex17 [label = "confirm your identity", shape = ellipse, color=null]
+esg767_vertex16 [label = "submit attendance", shape = ellipse, color=null]
+esg767_vertex18 [label = "open notification settings", shape = ellipse, color=null]
+esg767_vertex19 [label = "confirm notification settings", shape = ellipse, color=null]
+esg767_vertex20 [label = "select the existing schedule", shape = ellipse, color=null]
+esg767_vertex21 [label = "select the existing class", shape = ellipse, color=null]
+esg767_vertex22 [label = "view schedule", shape = ellipse, color=null]
+esg767_vertex23 [label = "view class", shape = ellipse, color=null]
+esg767_vertex24 [label = "open student attendance records", shape = ellipse, color=null]
+esg767_vertex25 [label = "select a class-list attendance record", shape = ellipse, color=null]
+esg767_vertex26 [label = "select an editable student-record", shape = ellipse, color=null]
+esg767_vertex27 [label = "edit attendance status", shape = ellipse, color=null]
+esg767_vertex28 [label = "submit attendance record update", shape = ellipse, color=null]
+esg767_vertex29 [label = "trace attendance activity of the class", shape = ellipse, color=null]
+esg767_vertex30 [label = "show the barcode to the barcodereader", shape = ellipse, color=null]
+esg767_vertex31 [label = "enter barcode manually", shape = ellipse, color=null]
+esg767_vertex32 [label = "receive notifications as SMS", shape = ellipse, color=null]
+}

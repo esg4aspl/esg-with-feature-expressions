@@ -1,0 +1,53 @@
+digraph G {
+rankdir = LR
+label = "P000548548stt";
+esg551_vertex0 -> esg551_vertex1[ color = null];
+esg551_vertex0 -> esg551_vertex2[ color = null];
+esg551_vertex0 -> esg551_vertex3[ color = null];
+esg551_vertex4 -> esg551_vertex4[ color = null];
+esg551_vertex4 -> esg551_vertex5[ color = null];
+esg551_vertex5 -> esg551_vertex6[ color = null];
+esg551_vertex0 -> esg551_vertex7[ color = null];
+esg551_vertex0 -> esg551_vertex8[ color = null];
+esg551_vertex7 -> esg551_vertex4[ color = null];
+esg551_vertex7 -> esg551_vertex5[ color = null];
+esg551_vertex8 -> esg551_vertex6[ color = null];
+esg551_vertex1 -> esg551_vertex9[ color = null];
+esg551_vertex9 -> esg551_vertex6[ color = null];
+esg551_vertex10 -> esg551_vertex6[ color = null];
+esg551_vertex11 -> esg551_vertex6[ color = null];
+esg551_vertex12 -> esg551_vertex6[ color = null];
+esg551_vertex2 -> esg551_vertex13[ color = null];
+esg551_vertex2 -> esg551_vertex14[ color = null];
+esg551_vertex2 -> esg551_vertex15[ color = null];
+esg551_vertex3 -> esg551_vertex16[ color = null];
+esg551_vertex3 -> esg551_vertex17[ color = null];
+esg551_vertex13 -> esg551_vertex12[ color = null];
+esg551_vertex14 -> esg551_vertex6[ color = null];
+esg551_vertex15 -> esg551_vertex18[ color = null];
+esg551_vertex15 -> esg551_vertex19[ color = null];
+esg551_vertex16 -> esg551_vertex10[ color = null];
+esg551_vertex17 -> esg551_vertex11[ color = null];
+esg551_vertex18 -> esg551_vertex10[ color = null];
+esg551_vertex19 -> esg551_vertex11[ color = null];
+esg551_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg551_vertex1 [label = "log in_1:open notification settings_7:receive notifications as Email_9/sas AND e", shape = ellipse, color=black]
+esg551_vertex2 [label = "log in_1:access as a student_18:open my attendance records_17/sas AND sa", shape = ellipse, color=black]
+esg551_vertex3 [label = "log in_1:access as a student_18:open class records_2/sas AND sa", shape = ellipse, color=black]
+esg551_vertex4 [label = "read the access card to the card reader_4:read the access card to the card reader_4:read the access card to the card reader_4/a", shape = ellipse, color=black]
+esg551_vertex5 [label = "read the access card to the card reader_4:read the access card to the card reader_4:confirm your identity_6/a AND sas", shape = ellipse, color=black]
+esg551_vertex6 [label = "]_3/", shape = ellipse, color=black]
+esg551_vertex7 [label = "submit attendance_5:read the access card to the card reader_4:read the access card to the card reader_4/sas AND a", shape = ellipse, color=black]
+esg551_vertex8 [label = "submit attendance_5:read the access card to the card reader_4:confirm your identity_6/sas AND a", shape = ellipse, color=black]
+esg551_vertex9 [label = "open notification settings_7:receive notifications as Email_9:confirm notification settings_8/sas AND e", shape = ellipse, color=black]
+esg551_vertex10 [label = "open class records_2:select the existing schedule_10:view schedule_12/sas AND vs", shape = ellipse, color=black]
+esg551_vertex11 [label = "open class records_2:select the existing class_11:view class_13/sas AND vc", shape = ellipse, color=black]
+esg551_vertex12 [label = "open my attendance records_17:select the existing record_14:view record_15/sa AND vr", shape = ellipse, color=black]
+esg551_vertex13 [label = "access as a student_18:open my attendance records_17:select the existing record_14/sa AND vr", shape = ellipse, color=black]
+esg551_vertex14 [label = "access as a student_18:open my attendance records_17:monitor current attendance status_16/sa AND mas", shape = ellipse, color=black]
+esg551_vertex15 [label = "access as a student_18:open my attendance records_17:open class records_2/sa AND sas", shape = ellipse, color=black]
+esg551_vertex16 [label = "access as a student_18:open class records_2:select the existing schedule_10/sa AND sas AND vs", shape = ellipse, color=black]
+esg551_vertex17 [label = "access as a student_18:open class records_2:select the existing class_11/sa AND sas AND vc", shape = ellipse, color=black]
+esg551_vertex18 [label = "open my attendance records_17:open class records_2:select the existing schedule_10/sa AND sas AND vs", shape = ellipse, color=black]
+esg551_vertex19 [label = "open my attendance records_17:open class records_2:select the existing class_11/sa AND sas AND vc", shape = ellipse, color=black]
+}

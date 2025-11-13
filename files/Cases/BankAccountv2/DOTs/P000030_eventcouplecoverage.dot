@@ -1,0 +1,52 @@
+digraph G {
+rankdir = LR
+label = "P00003030s";
+esg31_vertex0 -> esg31_vertex2[ color = null];
+esg31_vertex3 -> esg31_vertex5[ color = null];
+esg31_vertex5 -> esg31_vertex4[ color = null];
+esg31_vertex2 -> esg31_vertex3[ color = null];
+esg31_vertex6 -> esg31_vertex8[ color = null];
+esg31_vertex8 -> esg31_vertex7[ color = null];
+esg31_vertex2 -> esg31_vertex6[ color = null];
+esg31_vertex4 -> esg31_vertex1[ color = null];
+esg31_vertex7 -> esg31_vertex1[ color = null];
+esg31_vertex6 -> esg31_vertex9[ color = null];
+esg31_vertex8 -> esg31_vertex10[ color = null];
+esg31_vertex0 -> esg31_vertex11[ color = null];
+esg31_vertex0 -> esg31_vertex12[ color = null];
+esg31_vertex12 -> esg31_vertex13[ color = null];
+esg31_vertex12 -> esg31_vertex14[ color = null];
+esg31_vertex14 -> esg31_vertex15[ color = null];
+esg31_vertex15 -> esg31_vertex1[ color = null];
+esg31_vertex9 -> esg31_vertex1[ color = null];
+esg31_vertex11 -> esg31_vertex19[ color = null];
+esg31_vertex13 -> esg31_vertex1[ color = null];
+esg31_vertex16 -> esg31_vertex17[ color = null];
+esg31_vertex17 -> esg31_vertex18[ color = null];
+esg31_vertex0 -> esg31_vertex16[ color = null];
+esg31_vertex19 -> esg31_vertex1[ color = null];
+esg31_vertex18 -> esg31_vertex20[ color = null];
+esg31_vertex20 -> esg31_vertex1[ color = null];
+esg31_vertex10 -> esg31_vertex9[ color = null];
+esg31_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg31_vertex2 [label = "get balance_2/b", shape = ellipse, color=black]
+esg31_vertex3 [label = "select deposit_3/d", shape = ellipse, color=black]
+esg31_vertex5 [label = "enter deposit amount_5/d", shape = ellipse, color=black]
+esg31_vertex4 [label = "put money_4/d", shape = ellipse, color=black]
+esg31_vertex6 [label = "select withdraw_6/w", shape = ellipse, color=black]
+esg31_vertex8 [label = "enter withdraw amount_8/w", shape = ellipse, color=black]
+esg31_vertex7 [label = "take money_7/w", shape = ellipse, color=black]
+esg31_vertex1 [label = "]_1/", shape = ellipse, color=black]
+esg31_vertex9 [label = "cancel withdraw_9/cw", shape = ellipse, color=black]
+esg31_vertex10 [label = "confirm daily limit excess_10/dl", shape = ellipse, color=black]
+esg31_vertex11 [label = "enter daily withdraw limit_11/dl", shape = ellipse, color=black]
+esg31_vertex12 [label = "request an interest rate_12/i", shape = ellipse, color=black]
+esg31_vertex13 [label = "confirm interest rate_13/i", shape = ellipse, color=black]
+esg31_vertex14 [label = "enter days left_14/ie", shape = ellipse, color=black]
+esg31_vertex15 [label = "get estimated interest for days left_15/ie", shape = ellipse, color=black]
+esg31_vertex19 [label = "confirm daily withdraw limit_19/dl", shape = ellipse, color=black]
+esg31_vertex16 [label = "open account_16/b", shape = ellipse, color=black]
+esg31_vertex17 [label = "select currency_17/b", shape = ellipse, color=black]
+esg31_vertex18 [label = "TL_18/tl", shape = ellipse, color=black]
+esg31_vertex20 [label = "confirm TL account openning_20/tl", shape = ellipse, color=black]
+}

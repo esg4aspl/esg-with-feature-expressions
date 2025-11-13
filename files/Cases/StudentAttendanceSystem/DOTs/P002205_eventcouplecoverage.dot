@@ -1,0 +1,56 @@
+digraph G {
+rankdir = LR
+label = "P0022052205s";
+esg2206_vertex0 -> esg2206_vertex1[ color = null];
+esg2206_vertex2 -> esg2206_vertex3[ color = null];
+esg2206_vertex1 -> esg2206_vertex2[ color = null];
+esg2206_vertex3 -> esg2206_vertex4[ color = null];
+esg2206_vertex6 -> esg2206_vertex7[ color = null];
+esg2206_vertex8 -> esg2206_vertex6[ color = null];
+esg2206_vertex7 -> esg2206_vertex8[ color = null];
+esg2206_vertex3 -> esg2206_vertex8[ color = null];
+esg2206_vertex7 -> esg2206_vertex5[ color = null];
+esg2206_vertex10 -> esg2206_vertex5[ color = null];
+esg2206_vertex0 -> esg2206_vertex9[ color = null];
+esg2206_vertex1 -> esg2206_vertex11[ color = null];
+esg2206_vertex12 -> esg2206_vertex5[ color = null];
+esg2206_vertex11 -> esg2206_vertex13[ color = null];
+esg2206_vertex13 -> esg2206_vertex12[ color = null];
+esg2206_vertex4 -> esg2206_vertex14[ color = null];
+esg2206_vertex14 -> esg2206_vertex15[ color = null];
+esg2206_vertex15 -> esg2206_vertex5[ color = null];
+esg2206_vertex3 -> esg2206_vertex16[ color = null];
+esg2206_vertex16 -> esg2206_vertex4[ color = null];
+esg2206_vertex18 -> esg2206_vertex5[ color = null];
+esg2206_vertex17 -> esg2206_vertex18[ color = null];
+esg2206_vertex19 -> esg2206_vertex17[ color = null];
+esg2206_vertex1 -> esg2206_vertex20[ color = null];
+esg2206_vertex20 -> esg2206_vertex19[ color = null];
+esg2206_vertex20 -> esg2206_vertex4[ color = null];
+esg2206_vertex21 -> esg2206_vertex21[ color = null];
+esg2206_vertex9 -> esg2206_vertex21[ color = null];
+esg2206_vertex21 -> esg2206_vertex10[ color = null];
+esg2206_vertex19 -> esg2206_vertex4[ color = null];
+esg2206_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg2206_vertex1 [label = "log in_1/sas", shape = ellipse, color=black]
+esg2206_vertex2 [label = "access as a teacher_2/ta", shape = ellipse, color=black]
+esg2206_vertex3 [label = "turn editing on_3/ta", shape = ellipse, color=black]
+esg2206_vertex4 [label = "open class records_4/sas", shape = ellipse, color=black]
+esg2206_vertex6 [label = "delete class_6/dc", shape = ellipse, color=black]
+esg2206_vertex7 [label = "confirm deletion_7/dc", shape = ellipse, color=black]
+esg2206_vertex8 [label = "select the deletable class_8/dc", shape = ellipse, color=black]
+esg2206_vertex5 [label = "]_5/", shape = ellipse, color=black]
+esg2206_vertex10 [label = "confirm your identity_10/sas", shape = ellipse, color=black]
+esg2206_vertex9 [label = "submit attendance_9/sas", shape = ellipse, color=black]
+esg2206_vertex11 [label = "open notification settings_11/sas", shape = ellipse, color=black]
+esg2206_vertex12 [label = "confirm notification settings_12/sas", shape = ellipse, color=black]
+esg2206_vertex13 [label = "receive notifications as Email_13/e", shape = ellipse, color=black]
+esg2206_vertex14 [label = "select the existing schedule_14/vs", shape = ellipse, color=black]
+esg2206_vertex15 [label = "view schedule_15/vs", shape = ellipse, color=black]
+esg2206_vertex16 [label = "open student attendance records_16/ta", shape = ellipse, color=black]
+esg2206_vertex18 [label = "view record_18/vr", shape = ellipse, color=black]
+esg2206_vertex17 [label = "select the existing record_17/vr", shape = ellipse, color=black]
+esg2206_vertex19 [label = "open my attendance records_19/sa", shape = ellipse, color=black]
+esg2206_vertex20 [label = "access as a student_20/sa", shape = ellipse, color=black]
+esg2206_vertex21 [label = "show the QR code to the QR code reader_21/q", shape = ellipse, color=black]
+}

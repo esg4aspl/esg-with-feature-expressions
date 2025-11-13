@@ -12,6 +12,7 @@ import org.sat4j.minisat.SolverFactory;
 import org.sat4j.specs.ISolver;
 
 import tr.edu.iyte.esgfx.cases.CaseStudyUtilities;
+import tr.edu.iyte.esgfx.cases.ProductIDUtil;
 import tr.edu.iyte.esgfx.cases.resultrecordingutilities.ProductConfigurationFileWriter;
 import tr.edu.iyte.esgfx.model.featureexpression.FeatureExpression;
 import tr.edu.iyte.esgfx.model.featuremodel.FeatureModel;
@@ -35,6 +36,8 @@ public class AutomaticProductConfigurationGenerator extends CaseStudyUtilities {
 		System.out.println("Number of edges: " + ESGFx.getEdgeList().size());
 		System.out.println("Number of real edges: " + ESGFx.getRealEdgeList().size());
 		System.out.println("-----------------------------");
+		
+		
 
 		SATSolverGenerationFromFeatureModel satSolverGenerationFromFeatureModel = new SATSolverGenerationFromFeatureModel();
 		ISolver solver = SolverFactory.newDefault();
@@ -46,7 +49,7 @@ public class AutomaticProductConfigurationGenerator extends CaseStudyUtilities {
 			productID++;
 
 			// Generate product name
-			String productName = "P" + (productID < 10 ? "0" : "") + productID;
+			String productName = ProductIDUtil.format(productID);
 
 			// Process solution and write directly to the output file
 			String productConfiguration = processSolution(solver.model(), featureExpressionList, productName);

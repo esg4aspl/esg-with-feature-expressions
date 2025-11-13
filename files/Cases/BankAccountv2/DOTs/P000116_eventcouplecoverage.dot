@@ -1,0 +1,55 @@
+digraph G {
+rankdir = LR
+label = "P000116116s";
+esg117_vertex0 -> esg117_vertex2[ color = null];
+esg117_vertex3 -> esg117_vertex5[ color = null];
+esg117_vertex5 -> esg117_vertex4[ color = null];
+esg117_vertex2 -> esg117_vertex3[ color = null];
+esg117_vertex6 -> esg117_vertex8[ color = null];
+esg117_vertex8 -> esg117_vertex7[ color = null];
+esg117_vertex2 -> esg117_vertex6[ color = null];
+esg117_vertex4 -> esg117_vertex1[ color = null];
+esg117_vertex7 -> esg117_vertex1[ color = null];
+esg117_vertex6 -> esg117_vertex9[ color = null];
+esg117_vertex8 -> esg117_vertex10[ color = null];
+esg117_vertex0 -> esg117_vertex11[ color = null];
+esg117_vertex3 -> esg117_vertex12[ color = null];
+esg117_vertex0 -> esg117_vertex13[ color = null];
+esg117_vertex13 -> esg117_vertex14[ color = null];
+esg117_vertex13 -> esg117_vertex15[ color = null];
+esg117_vertex15 -> esg117_vertex16[ color = null];
+esg117_vertex16 -> esg117_vertex1[ color = null];
+esg117_vertex12 -> esg117_vertex1[ color = null];
+esg117_vertex9 -> esg117_vertex1[ color = null];
+esg117_vertex11 -> esg117_vertex20[ color = null];
+esg117_vertex14 -> esg117_vertex1[ color = null];
+esg117_vertex17 -> esg117_vertex18[ color = null];
+esg117_vertex18 -> esg117_vertex19[ color = null];
+esg117_vertex0 -> esg117_vertex17[ color = null];
+esg117_vertex20 -> esg117_vertex1[ color = null];
+esg117_vertex19 -> esg117_vertex21[ color = null];
+esg117_vertex21 -> esg117_vertex1[ color = null];
+esg117_vertex10 -> esg117_vertex9[ color = null];
+esg117_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg117_vertex2 [label = "get balance_2/b", shape = ellipse, color=black]
+esg117_vertex3 [label = "select deposit_3/d", shape = ellipse, color=black]
+esg117_vertex5 [label = "enter deposit amount_5/d", shape = ellipse, color=black]
+esg117_vertex4 [label = "put money_4/d", shape = ellipse, color=black]
+esg117_vertex6 [label = "select withdraw_6/w", shape = ellipse, color=black]
+esg117_vertex8 [label = "enter withdraw amount_8/w", shape = ellipse, color=black]
+esg117_vertex7 [label = "take money_7/w", shape = ellipse, color=black]
+esg117_vertex1 [label = "]_1/", shape = ellipse, color=black]
+esg117_vertex9 [label = "cancel withdraw_9/cw", shape = ellipse, color=black]
+esg117_vertex10 [label = "confirm daily limit excess_10/dl", shape = ellipse, color=black]
+esg117_vertex11 [label = "enter daily withdraw limit_11/dl", shape = ellipse, color=black]
+esg117_vertex12 [label = "cancel deposit_12/cd", shape = ellipse, color=black]
+esg117_vertex13 [label = "request an interest rate_13/i", shape = ellipse, color=black]
+esg117_vertex14 [label = "confirm interest rate_14/i", shape = ellipse, color=black]
+esg117_vertex15 [label = "enter days left_15/ie", shape = ellipse, color=black]
+esg117_vertex16 [label = "get estimated interest for days left_16/ie", shape = ellipse, color=black]
+esg117_vertex20 [label = "confirm daily withdraw limit_20/dl", shape = ellipse, color=black]
+esg117_vertex17 [label = "open account_17/b", shape = ellipse, color=black]
+esg117_vertex18 [label = "select currency_18/b", shape = ellipse, color=black]
+esg117_vertex19 [label = "USD_19/us", shape = ellipse, color=black]
+esg117_vertex21 [label = "confirm USD account openning_21/us", shape = ellipse, color=black]
+}

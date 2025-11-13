@@ -1,0 +1,21 @@
+digraph G {
+rankdir = LR
+label = "P01";
+esg1_vertex0 -> esg1_vertex2[ color = null];
+esg1_vertex2 -> esg1_vertex4[ color = null];
+esg1_vertex4 -> esg1_vertex5[ color = null];
+esg1_vertex5 -> esg1_vertex3[ color = null];
+esg1_vertex3 -> esg1_vertex6[ color = null];
+esg1_vertex6 -> esg1_vertex7[ color = null];
+esg1_vertex7 -> esg1_vertex8[ color = null];
+esg1_vertex8 -> esg1_vertex1[ color = null];
+esg1_vertex0 [label = "[", shape = ellipse, color=null]
+esg1_vertex2 [label = "pay", shape = ellipse, color=null]
+esg1_vertex4 [label = "change", shape = ellipse, color=null]
+esg1_vertex5 [label = "tea", shape = ellipse, color=null]
+esg1_vertex3 [label = "serveTea", shape = ellipse, color=null]
+esg1_vertex6 [label = "open", shape = ellipse, color=null]
+esg1_vertex7 [label = "take", shape = ellipse, color=null]
+esg1_vertex8 [label = "close", shape = ellipse, color=null]
+esg1_vertex1 [label = "]", shape = ellipse, color=null]
+}

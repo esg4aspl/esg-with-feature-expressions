@@ -1,0 +1,73 @@
+digraph G {
+rankdir = LR
+label = "P000701701stt";
+esg704_vertex0 -> esg704_vertex1[ color = null];
+esg704_vertex0 -> esg704_vertex2[ color = null];
+esg704_vertex3 -> esg704_vertex4[ color = null];
+esg704_vertex3 -> esg704_vertex5[ color = null];
+esg704_vertex6 -> esg704_vertex7[ color = null];
+esg704_vertex6 -> esg704_vertex8[ color = null];
+esg704_vertex6 -> esg704_vertex9[ color = null];
+esg704_vertex1 -> esg704_vertex3[ color = null];
+esg704_vertex1 -> esg704_vertex6[ color = null];
+esg704_vertex4 -> esg704_vertex10[ color = null];
+esg704_vertex5 -> esg704_vertex11[ color = null];
+esg704_vertex0 -> esg704_vertex12[ color = null];
+esg704_vertex0 -> esg704_vertex13[ color = null];
+esg704_vertex0 -> esg704_vertex14[ color = null];
+esg704_vertex0 -> esg704_vertex15[ color = null];
+esg704_vertex2 -> esg704_vertex16[ color = null];
+esg704_vertex10 -> esg704_vertex17[ color = null];
+esg704_vertex11 -> esg704_vertex17[ color = null];
+esg704_vertex7 -> esg704_vertex18[ color = null];
+esg704_vertex7 -> esg704_vertex19[ color = null];
+esg704_vertex8 -> esg704_vertex20[ color = null];
+esg704_vertex9 -> esg704_vertex21[ color = null];
+esg704_vertex18 -> esg704_vertex10[ color = null];
+esg704_vertex19 -> esg704_vertex11[ color = null];
+esg704_vertex20 -> esg704_vertex22[ color = null];
+esg704_vertex21 -> esg704_vertex23[ color = null];
+esg704_vertex22 -> esg704_vertex17[ color = null];
+esg704_vertex23 -> esg704_vertex17[ color = null];
+esg704_vertex24 -> esg704_vertex24[ color = null];
+esg704_vertex24 -> esg704_vertex25[ color = null];
+esg704_vertex24 -> esg704_vertex26[ color = null];
+esg704_vertex25 -> esg704_vertex27[ color = null];
+esg704_vertex26 -> esg704_vertex17[ color = null];
+esg704_vertex27 -> esg704_vertex17[ color = null];
+esg704_vertex12 -> esg704_vertex17[ color = null];
+esg704_vertex13 -> esg704_vertex24[ color = null];
+esg704_vertex13 -> esg704_vertex25[ color = null];
+esg704_vertex13 -> esg704_vertex26[ color = null];
+esg704_vertex14 -> esg704_vertex27[ color = null];
+esg704_vertex15 -> esg704_vertex17[ color = null];
+esg704_vertex16 -> esg704_vertex17[ color = null];
+esg704_vertex0 [label = "[_0/", shape = ellipse, color=black]
+esg704_vertex1 [label = "log in_1:access as a teacher_2:turn editing on_3/sas AND ta", shape = ellipse, color=black]
+esg704_vertex2 [label = "log in_1:open notification settings_8:receive notifications as SMS_21/sas AND s", shape = ellipse, color=black]
+esg704_vertex3 [label = "access as a teacher_2:turn editing on_3:open class records_4/ta AND sas", shape = ellipse, color=black]
+esg704_vertex4 [label = "turn editing on_3:open class records_4:select the existing schedule_10/ta AND sas AND vs", shape = ellipse, color=black]
+esg704_vertex5 [label = "turn editing on_3:open class records_4:select the existing class_11/ta AND sas AND vc", shape = ellipse, color=black]
+esg704_vertex6 [label = "access as a teacher_2:turn editing on_3:open student attendance records_14/ta", shape = ellipse, color=black]
+esg704_vertex7 [label = "turn editing on_3:open student attendance records_14:open class records_4/ta AND sas", shape = ellipse, color=black]
+esg704_vertex8 [label = "turn editing on_3:open student attendance records_14:select a class-list attendance record_15/ta AND ur", shape = ellipse, color=black]
+esg704_vertex9 [label = "turn editing on_3:open student attendance records_14:select an editable student-record_16/ta AND ur", shape = ellipse, color=black]
+esg704_vertex10 [label = "open class records_4:select the existing schedule_10:view schedule_12/sas AND vs", shape = ellipse, color=black]
+esg704_vertex11 [label = "open class records_4:select the existing class_11:view class_13/sas AND vc", shape = ellipse, color=black]
+esg704_vertex12 [label = "submit attendance_6:enter barcode manually_20:confirm your identity_7/sas AND b", shape = ellipse, color=black]
+esg704_vertex13 [label = "submit attendance_6:show the barcode to the barcodereader_19:show the barcode to the barcodereader_19/sas AND b", shape = ellipse, color=black]
+esg704_vertex14 [label = "submit attendance_6:show the barcode to the barcodereader_19:enter barcode manually_20/sas AND b", shape = ellipse, color=black]
+esg704_vertex15 [label = "submit attendance_6:show the barcode to the barcodereader_19:confirm your identity_7/sas AND b", shape = ellipse, color=black]
+esg704_vertex16 [label = "open notification settings_8:receive notifications as SMS_21:confirm notification settings_9/sas AND s", shape = ellipse, color=black]
+esg704_vertex17 [label = "]_5/", shape = ellipse, color=black]
+esg704_vertex18 [label = "open student attendance records_14:open class records_4:select the existing schedule_10/ta AND sas AND vs", shape = ellipse, color=black]
+esg704_vertex19 [label = "open student attendance records_14:open class records_4:select the existing class_11/ta AND sas AND vc", shape = ellipse, color=black]
+esg704_vertex20 [label = "open student attendance records_14:select a class-list attendance record_15:edit attendance status_17/ta AND ur", shape = ellipse, color=black]
+esg704_vertex21 [label = "open student attendance records_14:select an editable student-record_16:edit attendance status_17/ta AND ur", shape = ellipse, color=black]
+esg704_vertex22 [label = "select a class-list attendance record_15:edit attendance status_17:submit attendance record update_18/ur", shape = ellipse, color=black]
+esg704_vertex23 [label = "select an editable student-record_16:edit attendance status_17:submit attendance record update_18/ur", shape = ellipse, color=black]
+esg704_vertex24 [label = "show the barcode to the barcodereader_19:show the barcode to the barcodereader_19:show the barcode to the barcodereader_19/b", shape = ellipse, color=black]
+esg704_vertex25 [label = "show the barcode to the barcodereader_19:show the barcode to the barcodereader_19:enter barcode manually_20/b", shape = ellipse, color=black]
+esg704_vertex26 [label = "show the barcode to the barcodereader_19:show the barcode to the barcodereader_19:confirm your identity_7/b AND sas", shape = ellipse, color=black]
+esg704_vertex27 [label = "show the barcode to the barcodereader_19:enter barcode manually_20:confirm your identity_7/b AND sas", shape = ellipse, color=black]
+}
