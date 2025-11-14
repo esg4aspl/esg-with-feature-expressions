@@ -38,6 +38,22 @@ public class TestSequenceRecorder extends CaseStudyUtilities {
 
 		satSolverGenerationFromFeatureModel.addSATClauses(solver, featureModel, featureExpressionMapFromFeatureModel,
 				featureExpressionList);
+		
+		/* -----------------  SAT TABANLI ŞERİT KISITI (opsiyonel)  -----------------
+		 * N_SHARDS_SAT > 0 ise, SHARD değerinin bitlerini ilk k değişkene unit clause
+		 * olarak kilitleyerek solver uzayını şeritlere böl.
+		 */
+		int N_SAT = Integer.parseInt(System.getenv().getOrDefault("N_SHARDS_SAT", "0"));
+		if (N_SAT > 0) {
+			int S_SAT = Integer.parseInt(System.getenv().getOrDefault("SHARD", "0"));
+			int kbits = (int) Math.ceil(Math.log(N_SAT) / Math.log(2));
+			for (int b = 0; b < kbits && b < featureExpressionList.size(); b++) {
+				boolean bit = ((S_SAT >> b) & 1) == 1;
+				int var = b + 1; // 1-based SAT var index
+				solver.addClause(new VecInt(new int[]{ bit ? var : -var }));
+			}
+		}
+		/* ------------------------------------------------------------------------ */
 
 		int ESGFx_numberOfVertices = ESGFx.getRealVertexList().size();
 		int ESGFx_numberOfEdges = ESGFx.getRealEdgeList().size();
