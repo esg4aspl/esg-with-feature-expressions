@@ -68,6 +68,7 @@ public class TestSequenceRecorder extends CaseStudyUtilities {
 		int totalNumberOfVertices = 0;
 		int totalNumberOfEdges = 0;
 
+		int handledProducts = 0;
 		int productID = 0;
 		while (solver.isSatisfiable()) {
 			productID++;
@@ -117,6 +118,8 @@ public class TestSequenceRecorder extends CaseStudyUtilities {
 			    continue;
 			}
 			/* --------------------------------------------------------- */
+
+			handledProducts++;
 
 			String ESGFxName = productName + Integer.toString(productID);
 
@@ -196,13 +199,25 @@ public class TestSequenceRecorder extends CaseStudyUtilities {
 //		System.out.println("----------------------------------------------");
 		
 		int S = Integer.parseInt(System.getenv().getOrDefault("SHARD", "0"));
-		if (S == 0) {
+		int N = Integer.parseInt(System.getenv().getOrDefault("N_SHARDS", "1"));
+		int N_SAT2 = Integer.parseInt(System.getenv().getOrDefault("N_SHARDS_SAT", "0"));
+		boolean multiShard = (N > 1) || (N_SAT2 > 0);
 
+		if (!multiShard && S == 0) {
 
 		TestSuiteFileWriter.writeSPLModelTestSuiteSummary(SPLSummary_TestSuite, SPLName, productID, ESGFx_numberOfVertices,
 				ESGFx_numberOfEdges, totalNumberOfVertices, totalNumberOfEdges, totalNumberOfSequences_L2,
 				totalNumberOfEvents_L2, totalNumberOfSequences_L3, totalNumberOfEvents_L3, totalNumberOfSequences_L4,
 				totalNumberOfEvents_L4);
+
+		} else {
+
+		String shardRaw = SPLSummary_TestSuite + String.format(".shard%02d.raw.csv", S);
+		TestSuiteFileWriter.writeSPLModelTestSuiteSummary(shardRaw, SPLName, handledProducts, ESGFx_numberOfVertices,
+				ESGFx_numberOfEdges, totalNumberOfVertices, totalNumberOfEdges, totalNumberOfSequences_L2,
+				totalNumberOfEvents_L2, totalNumberOfSequences_L3, totalNumberOfEvents_L3, totalNumberOfSequences_L4,
+				totalNumberOfEvents_L4);
+
 		}
 
 //		System.out.println("Number of vertices: " + totalNumberOfVertices);
