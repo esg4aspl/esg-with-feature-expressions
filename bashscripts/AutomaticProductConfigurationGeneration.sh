@@ -32,7 +32,8 @@ rm -f "${LOG_DIR}/run_proconfiggen_s*.log"
 for i in $(seq 0 $((N-1))); do
   LOG="${LOG_DIR}/run_proconfiggen_s$(printf "%02d" $i).log"
   N_SHARDS=$N SHARD=$i \
-  nohup java $JAVA_OPTS -cp "target/classes:$CP" "$MAIN" > "$LOG" 2>&1 &
+  JAVA_PATH="/root/.sdkman/candidates/java/current/bin/java"
+  nohup $JAVA_PATH $JAVA_OPTS -cp "target/classes:$CP" "$MAIN" > "$LOG" 2>&1 &
   echo "✅ Shard $i started -> $LOG"
   if [[ "$OSTYPE" == "darwin"* ]]; then sleep 1; else sleep 0.2; fi
 done
