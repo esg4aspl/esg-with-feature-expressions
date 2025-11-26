@@ -12,3 +12,4 @@ dist/
 cases/
 guitar-out/
 **/*.EFG
+target/
