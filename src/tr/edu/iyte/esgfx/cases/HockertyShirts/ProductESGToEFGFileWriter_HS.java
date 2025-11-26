@@ -7,7 +7,7 @@ public class ProductESGToEFGFileWriter_HS extends CaseStudyUtilities_HS {
 
 	public static void main(String[] args) throws Exception {
 
-		coverageLength = 2;
+
 		CaseStudyUtilities_HS.initializeFilePaths();
 
 		ProductESGToEFGFileWriter productESGToEFGFileWriter = new ProductESGToEFGFileWriter();

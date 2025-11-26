@@ -6,7 +6,7 @@ public class ProductESGToEFGFileWriter_Svia extends CaseStudyUtilities_Svia {
 
 	public static void main(String[] args) throws Exception {
 
-		coverageLength = 2;
+		
 
 		CaseStudyUtilities_Svia.initializeFilePaths();
 

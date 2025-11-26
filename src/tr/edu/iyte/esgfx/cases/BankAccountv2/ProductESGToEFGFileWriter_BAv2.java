@@ -6,8 +6,7 @@ public class ProductESGToEFGFileWriter_BAv2 extends CaseStudyUtilities_BAv2 {
 
 	public static void main(String[] args) throws Exception {
 
-		coverageLength = 2;
-
+		
 		CaseStudyUtilities_BAv2.initializeFilePaths();
 
 		ProductESGToEFGFileWriter productESGToEFGFileWriter = new ProductESGToEFGFileWriter();

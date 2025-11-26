@@ -10,7 +10,7 @@ public class FeatureModelParserApp_HS extends CaseStudyUtilities_HS {
 		MXEFileToESGFxConverter MXEFileToESGFxConverter = new MXEFileToESGFxConverter();
 		FeatureModel featureModel = new FeatureModel();
 		try {
-			featureModel = MXEFileToESGFxConverter.parseFeatureModel(featureModelFilePath);
+			featureModel = MXEFileToESGFxConverter.parseFeatureModel(CaseStudyUtilities_HS.featureModelFilePath);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

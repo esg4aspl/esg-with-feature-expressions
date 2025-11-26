@@ -8,7 +8,7 @@ public class MutationTesting_FeatureOmitter_BAv2 extends CaseStudyUtilities_BAv2
 	public static void main(String[] args) throws Exception {
 		
 		CaseStudyUtilities_BAv2.initializeFilePaths();
-		featureESGSet = FeatureESGSetGenerator.createFeatureESGSet(featureESGSetFolderPath_FeatureOmission);
+		CaseStudyUtilities_BAv2.featureESGSet = FeatureESGSetGenerator.createFeatureESGSet(CaseStudyUtilities_BAv2.featureESGSetFolderPath_FeatureOmission);
 		
 		MutantGeneratorFeatureOmitter mutantGeneratorFeatureOmitter = new MutantGeneratorFeatureOmitter();
 		mutantGeneratorFeatureOmitter.generateMutants();

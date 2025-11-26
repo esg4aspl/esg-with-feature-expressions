@@ -6,7 +6,6 @@ public class ProductESGToEFGFileWriter_SVM extends CaseStudyUtilities_SVM {
 
 	public static void main(String[] args) throws Exception {
 
-		coverageLength = 2;
 
 		CaseStudyUtilities_SVM.initializeFilePaths();
 

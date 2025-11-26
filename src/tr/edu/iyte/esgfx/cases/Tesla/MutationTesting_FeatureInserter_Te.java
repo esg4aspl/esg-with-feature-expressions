@@ -8,7 +8,7 @@ public class MutationTesting_FeatureInserter_Te extends CaseStudyUtilities_Te {
 	public static void main(String[] args) throws Exception {
 		CaseStudyUtilities_Te.initializeFilePaths();
 		
-		featureESGSet = FeatureESGSetGenerator.createFeatureESGSet(featureESGSetFolderPath_FeatureInsertion);
+		CaseStudyUtilities_Te.featureESGSet = FeatureESGSetGenerator.createFeatureESGSet(CaseStudyUtilities_Te.featureESGSetFolderPath_FeatureInsertion);
 
 		MutantGeneratorFeaturenserter mutantGeneratorFeaturenserter = new MutantGeneratorFeaturenserter();
 		mutantGeneratorFeaturenserter.generateMutants();

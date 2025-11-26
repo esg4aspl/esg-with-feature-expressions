@@ -10,7 +10,7 @@ public class RandomWalkTestSequenceRecorderApp_SAS extends CaseStudyUtilities_SA
 
     public static void main(String[] args) throws Exception {
         // coverageLength kept for a uniform signature (RW does not use it)
-        coverageLength = 0;
+
         CaseStudyUtilities_SAS.initializeFilePaths();
 
         // Defaults: 200 tests per product, 50 steps, fixed seed.

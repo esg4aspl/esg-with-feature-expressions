@@ -6,7 +6,7 @@ public class TotalTimeMeasurementApp_L0_SVM extends CaseStudyUtilities_SVM {
 
     public static void main(String[] args) throws Exception {
 
-        coverageLength = 0;
+    	CaseStudyUtilities_SVM.coverageLength = 0;
         CaseStudyUtilities_SVM.initializeFilePaths();
 
         /*

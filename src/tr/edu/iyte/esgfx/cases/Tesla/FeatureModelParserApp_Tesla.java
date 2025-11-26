@@ -13,7 +13,7 @@ public class FeatureModelParserApp_Tesla extends CaseStudyUtilities_Te {
 		MXEFileToESGFxConverter MXEFileToESGFxConverter = new MXEFileToESGFxConverter();
 		FeatureModel featureModel = new FeatureModel();
 		try {
-			featureModel = MXEFileToESGFxConverter.parseFeatureModel(featureModelFilePath);
+			featureModel = MXEFileToESGFxConverter.parseFeatureModel(CaseStudyUtilities_Te.featureModelFilePath);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
