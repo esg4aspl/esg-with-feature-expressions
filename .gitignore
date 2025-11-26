@@ -13,3 +13,4 @@ cases/
 guitar-out/
 **/*.EFG
 target/
+.DS_Store
