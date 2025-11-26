@@ -1,10 +1,6 @@
 package tr.edu.iyte.esgfx.cases.HockertyShirts;
 
-import java.util.Map;
-import java.util.Set;
-
 import tr.edu.iyte.esgfx.conversion.mxe.MXEFileToESGFxConverter;
-import tr.edu.iyte.esgfx.model.featuremodel.Feature;
 import tr.edu.iyte.esgfx.model.featuremodel.FeatureModel;
 
 public class FeatureModelParserApp_HS extends CaseStudyUtilities_HS {

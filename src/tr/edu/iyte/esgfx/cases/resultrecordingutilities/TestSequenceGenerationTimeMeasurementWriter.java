@@ -9,10 +9,6 @@ import java.text.DecimalFormat;
 import java.util.Locale;
 
 import java.text.DecimalFormatSymbols;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.File;
-import java.io.IOException;
 
 public class TestSequenceGenerationTimeMeasurementWriter {
 
@@ -47,42 +43,108 @@ public class TestSequenceGenerationTimeMeasurementWriter {
 
 	}
 
-	public static void writeTotalTimeMeasurementForSPL(double time, String folderName, String SPLName,
-				String coverageType) {
-			
-	        // DecimalFormatSymbols kullanarak ondalık ayırıcıyı virgül olarak ayarla
-	        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.ROOT);
-	        symbols.setDecimalSeparator(','); 
-	        
-	        DecimalFormat df = new DecimalFormat("#.##", symbols); // Format pattern'ı da ekleyelim
+	public static void writeTotalTimeMeasurementForSPL(double time, int processedProductCount, String folderName,
+			String SPLName, String coverageType) {
 
-			String timeMeasurementFile = folderName + SPLName + "_" + coverageType + ".csv";
+		// Set decimal separator to comma
+		DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.ROOT);
+		symbols.setDecimalSeparator(',');
 
-			BufferedWriter writer = null;
-			try {
-				File file = new File(timeMeasurementFile);
-				writer = new BufferedWriter(new FileWriter(file, true));
-				if (file.length() > 0) {
-					
-					writer.append(df.format(time) + "\n");
-				} else {
-					writer.write(SPLName + " " + coverageType + "\n");
-					writer.append(df.format(time) + "\n");
+		DecimalFormat df = new DecimalFormat("#.##", symbols);
 
+//        String timeMeasurementFile = folderName + SPLName + "_" + coverageType + ".csv";
+
+		BufferedWriter writer = null;
+		try {
+			File file = new File(folderName);
+
+			// Ensure parent directory exists (Safety check)
+			if (file.getParentFile() != null) {
+				file.getParentFile().mkdirs();
+			}
+
+			writer = new BufferedWriter(new FileWriter(file, true));
+
+			if (file.length() > 0) {
+				// Append data: Time;Count
+				writer.append(
+						SPLName + ";" + coverageType + ";" + df.format(time) + ";" + processedProductCount + "\n");
+			} else {
+				// Write Header first
+				writer.write("SPL Name;Coverage Type;Time(ms);Processed Products\n");
+				// Write Data: Name;Type;Time;Count
+				writer.write(SPLName + ";" + coverageType + ";" + df.format(time) + ";" + processedProductCount + "\n");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (writer != null) {
+				try {
+					writer.close();
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
-
-			try {
-				writer.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
 		}
+	}
 
+	public static void writeDetailedTimeMeasurement(double timeElapsedTotalMs, double satTimeMs, double prodGenTimeMs,
+			double testGenTimeMs, int processedProductCount, String folderName, String SPLName, String coverageType) {
+
+		// Set decimal separator to comma
+		DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.ROOT);
+		symbols.setDecimalSeparator(',');
+
+		DecimalFormat df = new DecimalFormat("#.##", symbols);
+
+//        String timeMeasurementFile = folderName + SPLName + "_" + coverageType + ".csv";
+
+		BufferedWriter writer = null;
+		try {
+			File file = new File(folderName);
+
+			// Ensure parent directory exists (Safety check)
+			if (file.getParentFile() != null) {
+				file.getParentFile().mkdirs();
+			}
+
+			writer = new BufferedWriter(new FileWriter(file, true));
+
+			if (file.length() > 0) {
+				// Append data: Time;Count
+				writer.append(SPLName + ";" + coverageType + ";" + df.format(timeElapsedTotalMs) + ";"
+						+ df.format(satTimeMs) + ";" + df.format(prodGenTimeMs) + ";" + df.format(testGenTimeMs) + ";"
+						+ processedProductCount + "\n");
+			} else {
+				// Write Header first
+				writer.write(
+						"SPL Name;"
+						+ "Coverage Type;"
+						+ "Total Time(ms);"
+						+ "SAT Time(ms);"
+						+ "ProductESGGeneration Time(ms);"
+						+ "Test Generation Time(ms);"
+						+ "Processed Products\n");
+				// Write Data: Name;Type;Time;Count
+				writer.write(SPLName + ";" 
+						+ coverageType + ";" 
+						+ df.format(timeElapsedTotalMs) + ";"
+						+ df.format(satTimeMs) + ";" 
+						+ df.format(prodGenTimeMs) + ";" 
+						+ df.format(testGenTimeMs) + ";"
+						+ processedProductCount + "\n");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (writer != null) {
+				try {
+					writer.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 
 }

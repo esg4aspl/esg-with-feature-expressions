@@ -50,6 +50,12 @@ public class ESGToEFGFileWriter {
      */
     public static void writeESGToEFGFile(ESG esg, String productID, String outputDirectory) throws IOException {
         String filename = productID + ".EFG";
+        
+        File directory = new File(outputDirectory);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+        
         String filepath = outputDirectory + File.separator + filename;
 
         File file = new File(filepath);

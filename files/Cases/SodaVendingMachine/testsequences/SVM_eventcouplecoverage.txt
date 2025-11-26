@@ -8,38 +8,6 @@ Event Sequences:
 eventcouplecoverage 100.0%
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-P000002: <f, t>:2 features
-Number of vertices: 4
-Number of edges: 3
-Number of sequences: 1
-Number of events: 4
-Event Sequences: 
-4 : free, tea, serveTea, take
-eventcouplecoverage 100.0%
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-P000003: <c, t>:2 features
-Number of vertices: 9
-Number of edges: 8
-Number of sequences: 2
-Number of events: 11
-Event Sequences: 
-7 : pay, change, tea, serveTea, open, take, close
-4 : pay, change, cancel, return
-eventcouplecoverage 100.0%
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-P000004: <f, c, t>:3 features
-Number of vertices: 6
-Number of edges: 5
-Number of sequences: 2
-Number of events: 7
-Event Sequences: 
-4 : free, tea, serveTea, take
-3 : free, cancel, return
-eventcouplecoverage 100.0%
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
 P000005: <s>:1 features
 Number of vertices: 7
 Number of edges: 6
@@ -47,38 +15,6 @@ Number of sequences: 1
 Number of events: 7
 Event Sequences: 
 7 : pay, change, soda, serveSoda, open, take, close
-eventcouplecoverage 100.0%
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-P000006: <s, f>:2 features
-Number of vertices: 4
-Number of edges: 3
-Number of sequences: 1
-Number of events: 4
-Event Sequences: 
-4 : free, soda, serveSoda, take
-eventcouplecoverage 100.0%
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-P000007: <s, c>:2 features
-Number of vertices: 9
-Number of edges: 8
-Number of sequences: 2
-Number of events: 11
-Event Sequences: 
-7 : pay, change, soda, serveSoda, open, take, close
-4 : pay, change, cancel, return
-eventcouplecoverage 100.0%
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-P000008: <s, f, c>:3 features
-Number of vertices: 6
-Number of edges: 5
-Number of sequences: 2
-Number of events: 7
-Event Sequences: 
-4 : free, soda, serveSoda, take
-3 : free, cancel, return
 eventcouplecoverage 100.0%
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -94,6 +30,26 @@ Event Sequences:
 eventcouplecoverage 100.0%
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+P000002: <f, t>:2 features
+Number of vertices: 4
+Number of edges: 3
+Number of sequences: 1
+Number of events: 4
+Event Sequences: 
+4 : free, tea, serveTea, take
+eventcouplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000006: <s, f>:2 features
+Number of vertices: 4
+Number of edges: 3
+Number of sequences: 1
+Number of events: 4
+Event Sequences: 
+4 : free, soda, serveSoda, take
+eventcouplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 P000010: <s, t>:2 features
 Number of vertices: 9
 Number of edges: 9
@@ -105,6 +61,28 @@ Event Sequences:
 eventcouplecoverage 100.0%
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+P000003: <c, t>:2 features
+Number of vertices: 9
+Number of edges: 8
+Number of sequences: 2
+Number of events: 11
+Event Sequences: 
+7 : pay, change, tea, serveTea, open, take, close
+4 : pay, change, cancel, return
+eventcouplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000007: <s, c>:2 features
+Number of vertices: 9
+Number of edges: 8
+Number of sequences: 2
+Number of events: 11
+Event Sequences: 
+7 : pay, change, soda, serveSoda, open, take, close
+4 : pay, change, cancel, return
+eventcouplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 P000011: <s, f, t>:3 features
 Number of vertices: 6
 Number of edges: 6
@@ -113,6 +91,158 @@ Number of events: 8
 Event Sequences: 
 4 : free, soda, serveSoda, take
 4 : free, tea, serveTea, take
+eventcouplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000004: <f, c, t>:3 features
+Number of vertices: 6
+Number of edges: 5
+Number of sequences: 2
+Number of events: 7
+Event Sequences: 
+4 : free, tea, serveTea, take
+3 : free, cancel, return
+eventcouplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000008: <s, f, c>:3 features
+Number of vertices: 6
+Number of edges: 5
+Number of sequences: 2
+Number of events: 7
+Event Sequences: 
+4 : free, soda, serveSoda, take
+3 : free, cancel, return
+eventcouplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000012: <s, f, c, t>:4 features
+Number of vertices: 8
+Number of edges: 8
+Number of sequences: 3
+Number of events: 11
+Event Sequences: 
+4 : free, soda, serveSoda, take
+4 : free, tea, serveTea, take
+3 : free, cancel, return
+eventcouplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000001: <t>:1 features
+Number of vertices: 7
+Number of edges: 6
+Number of sequences: 1
+Number of events: 7
+Event Sequences: 
+7 : pay, change, tea, serveTea, open, take, close
+eventcouplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000005: <s>:1 features
+Number of vertices: 7
+Number of edges: 6
+Number of sequences: 1
+Number of events: 7
+Event Sequences: 
+7 : pay, change, soda, serveSoda, open, take, close
+eventcouplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000009: <s, c, t>:3 features
+Number of vertices: 11
+Number of edges: 11
+Number of sequences: 3
+Number of events: 18
+Event Sequences: 
+7 : pay, change, soda, serveSoda, open, take, close
+7 : pay, change, tea, serveTea, open, take, close
+4 : pay, change, cancel, return
+eventcouplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000002: <f, t>:2 features
+Number of vertices: 4
+Number of edges: 3
+Number of sequences: 1
+Number of events: 4
+Event Sequences: 
+4 : free, tea, serveTea, take
+eventcouplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000006: <s, f>:2 features
+Number of vertices: 4
+Number of edges: 3
+Number of sequences: 1
+Number of events: 4
+Event Sequences: 
+4 : free, soda, serveSoda, take
+eventcouplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000010: <s, t>:2 features
+Number of vertices: 9
+Number of edges: 9
+Number of sequences: 2
+Number of events: 14
+Event Sequences: 
+7 : pay, change, soda, serveSoda, open, take, close
+7 : pay, change, tea, serveTea, open, take, close
+eventcouplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000003: <c, t>:2 features
+Number of vertices: 9
+Number of edges: 8
+Number of sequences: 2
+Number of events: 11
+Event Sequences: 
+7 : pay, change, tea, serveTea, open, take, close
+4 : pay, change, cancel, return
+eventcouplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000007: <s, c>:2 features
+Number of vertices: 9
+Number of edges: 8
+Number of sequences: 2
+Number of events: 11
+Event Sequences: 
+7 : pay, change, soda, serveSoda, open, take, close
+4 : pay, change, cancel, return
+eventcouplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000011: <s, f, t>:3 features
+Number of vertices: 6
+Number of edges: 6
+Number of sequences: 2
+Number of events: 8
+Event Sequences: 
+4 : free, soda, serveSoda, take
+4 : free, tea, serveTea, take
+eventcouplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000004: <f, c, t>:3 features
+Number of vertices: 6
+Number of edges: 5
+Number of sequences: 2
+Number of events: 7
+Event Sequences: 
+4 : free, tea, serveTea, take
+3 : free, cancel, return
+eventcouplecoverage 100.0%
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+P000008: <s, f, c>:3 features
+Number of vertices: 6
+Number of edges: 5
+Number of sequences: 2
+Number of events: 7
+Event Sequences: 
+4 : free, soda, serveSoda, take
+3 : free, cancel, return
 eventcouplecoverage 100.0%
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

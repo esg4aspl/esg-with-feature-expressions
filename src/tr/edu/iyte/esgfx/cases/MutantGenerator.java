@@ -8,42 +8,77 @@ import java.util.LinkedHashSet;
 import tr.edu.iyte.esg.eventsequence.EventSequence;
 import tr.edu.iyte.esg.model.ESG;
 import tr.edu.iyte.esg.model.Vertex;
-
+import tr.edu.iyte.esgfx.model.ESGFx;
 import tr.edu.iyte.esgfx.model.sequenceesgfx.EventSequenceUtilities;
 import tr.edu.iyte.esgfx.mutationtesting.faultdetection.FaultDetector;
 
 import tr.edu.iyte.esgfx.testgeneration.EulerCycleToTestSequenceGenerator;
 import tr.edu.iyte.esgfx.testgeneration.edgecoverage.EulerCycleGeneratorForEdgeCoverage;
+import tr.edu.iyte.esgfx.testgeneration.eventcoverage.EulerCycleGeneratorForEventCoverage;
 import tr.edu.iyte.esgfx.testgeneration.eventtriplecoverage.TransformedESGFxGenerator;
+import tr.edu.iyte.esgfx.testgeneration.randomwalktesting.RandomWalkTestGenerator;
 import tr.edu.iyte.esgfx.testgeneration.util.StronglyConnectedBalancedESGFxGeneration;
 
 public class MutantGenerator extends CaseStudyUtilities {
-	
+
+	protected long totalExecTimeNanosL0 = 0;
+	protected long totalExecTimeNanosL1 = 0;
 	protected long totalExecTimeNanosL2 = 0;
 	protected long totalExecTimeNanosL3 = 0;
 	protected long totalExecTimeNanosL4 = 0;
+	
+	
+	protected final int MEASURE_COUNT = 10;
+
+	protected final int WARMUP_COUNT = 1;
 
 	protected Set<String> mutationElementSet = new LinkedHashSet<String>();
 
 	protected FaultDetector generateFaultDetector(ESG productESGFx, int covarage) {
 
 		Set<EventSequence> tests = buildTests(productESGFx, covarage);
-		Set<EventSequence> newTests = EventSequenceUtilities.removeRepetitionsFromEventSequenceSet(covarage, tests);
-		FaultDetector detector = new FaultDetector(newTests);
 
-		return detector;
+		if (covarage == 0 || covarage == 1) {
+			FaultDetector detector = new FaultDetector(tests);
+			return detector;
+		} else {
+			Set<EventSequence> newTests = EventSequenceUtilities.removeRepetitionsFromEventSequenceSet(covarage, tests);
+			FaultDetector detector = new FaultDetector(newTests);
+			return detector;
+		}
 
 	}
 
 	private Set<EventSequence> buildTests(ESG productESGFx, int L) {
-		TransformedESGFxGenerator t = new TransformedESGFxGenerator();
-		ESG transformed = t.generateTransformedESGFx(L, productESGFx);
-		ESG scb = StronglyConnectedBalancedESGFxGeneration.getStronglyConnectedBalancedESGFxGeneration(transformed);
-		EulerCycleGeneratorForEdgeCoverage ec = new EulerCycleGeneratorForEdgeCoverage();
-		ec.generateEulerCycle(scb);
-		List<Vertex> cycle = ec.getEulerCycle();
-		EulerCycleToTestSequenceGenerator ts = new EulerCycleToTestSequenceGenerator();
-		return ts.CESgenerator(cycle);
+
+		if (L == 0) {
+			int safetyLimit = (int) (5 * Math.pow((productESGFx.getVertexList().size()),3));
+			
+			RandomWalkTestGenerator rw = new RandomWalkTestGenerator((ESGFx) productESGFx, 0.85);
+			Set<EventSequence> tests = rw.generateWalkUntilEdgeCoverage(100, safetyLimit);
+			return tests;
+		} else if (L == 1) {
+			ESG ESGFx = StronglyConnectedBalancedESGFxGeneration
+					.getStronglyConnectedBalancedESGFxGeneration(productESGFx);
+//			System.out.println(ESGFx);
+
+			EulerCycleGeneratorForEventCoverage eulerCycleGeneratorForEventCoverage = new EulerCycleGeneratorForEventCoverage(
+					featureExpressionMapFromFeatureModel);
+			eulerCycleGeneratorForEventCoverage.generateEulerCycle(ESGFx);
+			List<Vertex> eulerCycle = eulerCycleGeneratorForEventCoverage.getEulerCycle();
+
+			EulerCycleToTestSequenceGenerator eulerCycleToTestSequenceGenerator = new EulerCycleToTestSequenceGenerator();
+			return eulerCycleToTestSequenceGenerator.CESgenerator(eulerCycle);
+		} else {
+			TransformedESGFxGenerator t = new TransformedESGFxGenerator();
+			ESG transformed = t.generateTransformedESGFx(L, productESGFx);
+			ESG scb = StronglyConnectedBalancedESGFxGeneration.getStronglyConnectedBalancedESGFxGeneration(transformed);
+			EulerCycleGeneratorForEdgeCoverage ec = new EulerCycleGeneratorForEdgeCoverage();
+			ec.generateEulerCycle(scb);
+			List<Vertex> cycle = ec.getEulerCycle();
+			EulerCycleToTestSequenceGenerator ts = new EulerCycleToTestSequenceGenerator();
+			return ts.CESgenerator(cycle);
+		}
 	}
 
 	public static double percentageOfFaultDetection(int numberOfMutants, int numberOfDetectedMutants) {

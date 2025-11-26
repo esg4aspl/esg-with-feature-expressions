@@ -1,7 +1,8 @@
-// file: src/main/java/tr/edu/iyte/esgfx/cases/RandomWalkTestSequenceRecorder.java
 package tr.edu.iyte.esgfx.cases;
 
 import java.util.List;
+
+
 import java.util.Set;
 
 import org.sat4j.core.VecInt;
@@ -10,6 +11,7 @@ import org.sat4j.specs.ISolver;
 
 import tr.edu.iyte.esg.eventsequence.EventSequence;
 import tr.edu.iyte.esg.model.ESG;
+import tr.edu.iyte.esg.testgeneration.TestSuite;
 import tr.edu.iyte.esgfx.model.ESGFx;
 import tr.edu.iyte.esgfx.model.featureexpression.FeatureExpression;
 import tr.edu.iyte.esgfx.productconfigurationgeneration.SATSolverGenerationFromFeatureModel;
@@ -19,18 +21,7 @@ import tr.edu.iyte.esgfx.testgeneration.edgecoverage.EdgeCoverageAnalyser;
 import tr.edu.iyte.esgfx.testgeneration.eventtriplecoverage.TransformedESGFxGenerator;
 import tr.edu.iyte.esgfx.testgeneration.randomwalktesting.RandomWalkTestGenerator;
 
-/**
- * RandomWalkTestSequenceRecorder
- *
- * For each valid product configuration:
- * 1) Builds product ESG-Fx.
- * 2) Runs a random-walk generator to obtain Set<EventSequence>.
- * 3) Computes edge coverage on the product ESG.
- * 4) Appends sequences and coverage to the suite file.
- *
- * Uses TestSuiteFileWriter overload WITHOUT coverageLength
- * to write raw random-walk sequences.
- */
+
 public class RandomWalkTestSequenceRecorder extends CaseStudyUtilities {
 
 
@@ -86,33 +77,49 @@ public class RandomWalkTestSequenceRecorder extends CaseStudyUtilities {
             // Generate product ESG-Fx
             String ESGFxName = productName + productID;
             ProductESGFxGenerator productGen = new ProductESGFxGenerator();
-            ESG productESG = productGen.generateProductESGFx(productID, ESGFxName, ESGFx);
+            ESG productESGFx = productGen.generateProductESGFx(productID, ESGFxName, ESGFx);
+            
+            int numberOfVertices = productESGFx.getRealVertexList().size();
+            int numberOfEdges = productESGFx.getRealEdgeList().size();
+            
+
 
             System.out.println("Product ESG-Fx");
-            System.out.println(productESG.toString());
+            System.out.println(productESGFx.toString());
             
-			TransformedESGFxGenerator transformedESGFxGenerator = new TransformedESGFxGenerator();
-
-			ESG transformedProductESGFx = transformedESGFxGenerator.generateTransformedESGFx(coverageLength, productESG);
+//			TransformedESGFxGenerator transformedESGFxGenerator = new TransformedESGFxGenerator();
+//
+//			ESG transformedProductESGFx = transformedESGFxGenerator.generateTransformedESGFx(coverageLength, productESG);
 //			System.out.println((coverageLength -2) + " TRANSFORMED Product ESG-Fx");
 //			System.out.println(transformedProductESGFx);
 
             // Random-walk generation on product ESG-Fx
-            RandomWalkTestGenerator rw = new RandomWalkTestGenerator(transformedProductESGFx);
-            rw.generateTestSequences();
+            int safetyLimit = (int) (5 * Math.pow((productESGFx.getVertexList().size()),3));
+            RandomWalkTestGenerator rw = new RandomWalkTestGenerator((ESGFx)productESGFx,0.85);
             
-            Set<EventSequence> tests = rw.getTestSequences();
+            Set<EventSequence> tests = rw.generateWalkUntilEdgeCoverage(100,safetyLimit);
+            
+            int numberOfEvents = 0;
+            for (EventSequence t : tests) {
+                numberOfEvents += t.length();
+            }
+            
 
             // Edge coverage on the product ESG
             EdgeCoverageAnalyser analyser = new EdgeCoverageAnalyser();
-            double coverage = analyser.analyseEdgeCoverage(productESG, tests, featureExpressionMapFromFeatureModel);
+            double coverage = analyser.analyseEdgeCoverage(productESGFx, tests, featureExpressionMapFromFeatureModel);
 
+            
             // Persist sequences and coverage. Use the writer overload WITHOUT coverageLength.
-            TestSuiteFileWriter.writeEventSequenceSetAndCoverageAnalysisToFile(
+            TestSuiteFileWriter.writeEventSequenceSetAndCoverageAnalysisToFilePerProduct(
                     testSuiteFilePath,
                     productConfiguration.toString(),
-                    numberOfFeatures,
+                    numberOfVertices,
+                    numberOfEdges,
+                    tests.size(),
+                    numberOfEvents,
                     tests,
+                    0,
                     "Random-walk coverage is",
                     coverage
             );

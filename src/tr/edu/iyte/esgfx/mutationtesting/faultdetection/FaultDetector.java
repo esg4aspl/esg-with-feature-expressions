@@ -1,6 +1,8 @@
 package tr.edu.iyte.esgfx.mutationtesting.faultdetection;
 
 import java.util.Set;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -115,13 +117,13 @@ public class FaultDetector {
 			}
 		}
 		
-		//System.out.println("Visited Vertices: " + visitedEventsOnMutant.toString());
-		//System.out.println("Inserted Vertices: " + insertedEventSet.toString());
-		//System.out.println("Omitted Vertices: " + omittedEventSet.toString());
-		
-		//System.out.println("Visited Edges: " + visitedEdgesOnMutant.toString());
-		//System.out.println("Inserted Edges: " + insertedEdgeSet.toString());
-		//System.out.println("Omitted Edges: " + omittedEdgeSet.toString());
+//		System.out.println("Visited Vertices: " + visitedEventsOnMutant.toString());
+//		System.out.println("Inserted Vertices: " + insertedEventSet.toString());
+//		System.out.println("Omitted Vertices: " + omittedEventSet.toString());
+//		
+//		System.out.println("Visited Edges: " + visitedEdgesOnMutant.toString());
+//		System.out.println("Inserted Edges: " + insertedEdgeSet.toString());
+//		System.out.println("Omitted Edges: " + omittedEdgeSet.toString());
 
 		boolean isEdgeInserted = isEdgeInserted();
 		boolean isEventInserted = false;
@@ -348,8 +350,15 @@ public class FaultDetector {
 
 		while (queue.size() != 0) {
 			source = queue.poll();
+			
+			
+//			List<Vertex> adjacencyList = ((ESGFx) mutantESGFx).getAdjacencyList(source);
+//			System.out.println(source.toString());
+			List<Vertex> adjacencyListFromEventSequences = getAdjacentVerticesOfVertex(CESsOfESG, source);
+//			System.out.println("adjacencyListFromEventSequences " + adjacencyListFromEventSequences.toString());
 			List<Vertex> adjacencyList = ((ESGFx) mutantESGFx).getAdjacencyList(source);
-			//System.out.println(source.toString() + " adjacencyList " + adjacencyList.toString());
+			adjacencyList.retainAll(adjacencyListFromEventSequences);
+//			System.out.println(source.toString() + " adjacencyList " + adjacencyList.toString());
 
 			for (Vertex adjacent : adjacencyList) {
 				if (!adjacent.isPseudoEndVertex()) {
@@ -380,5 +389,29 @@ public class FaultDetector {
 			}
 
 		}
+	}
+	
+	public  List<Vertex> getAdjacentVerticesOfVertex(Set<EventSequence> CESsOfESG, Vertex vertex) {
+
+		List<Vertex> adjacencyList = new LinkedList<Vertex>();
+		Iterator<EventSequence> CESsOfESGIterator = CESsOfESG.iterator();
+
+		while (CESsOfESGIterator.hasNext()) {
+			EventSequence eventSequence = CESsOfESGIterator.next();
+			List<Vertex> eventSequenceAL = new ArrayList<Vertex>(eventSequence.getEventSequence());
+
+			int index = eventSequenceAL.indexOf(vertex);
+//			System.out.println(vertex.toString() + " " + index);
+
+			if (index > -1 && index < (eventSequenceAL.size() - 1)) {
+				Vertex adjacent = eventSequenceAL.get(index + 1);
+				adjacencyList.add(adjacent);
+
+			}
+		}
+
+		
+		return adjacencyList;
+
 	}
 }

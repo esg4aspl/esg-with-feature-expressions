@@ -100,15 +100,16 @@ public class FaultDetectionResultRecorder {
 						+ "Detected Invalid Mutants L=4;" + "Fault Detection Percentange L=4");
 			}
 			pw.println(mutationOperator + ";" + productId + ";" + numValidMutants + ";" + numInvalidMutants + ";"
-					+ detValidL2 + ";" + detInvalidL2 + ";" + formatDouble_2(perL2) + ";" + detValidL3 + ";"
-					+ detInvalidL3 + ";" + formatDouble_2(perL3) + ";" + detValidL4 + ";" + detInvalidL4 + ";"
-					+ formatDouble_2(perL4) + ";");
+					+ detValidL2 + ";" + detInvalidL2 + ";" + formatDouble_2(perL2) + ";" 
+					+ detValidL3 + ";" + detInvalidL3 + ";" + formatDouble_2(perL3) + ";" 
+					+ detValidL4 + ";" + detInvalidL4 + ";" + formatDouble_2(perL4));
 		}
 	}
 
 	// Per-SPL summary with per-L counts + per-L percentages for each operator
 	public static void writeFaultDetectionResultsForSPL(String filePath, String SPLName, String mutationOperator,
-			int numMutants, int detMutL2, double perL2, double killedPerSecondL2, int detMutL3, double perL3,
+			int numMutants, int detMutL0, double perL0, double killedPerSecondL0, int detMutL1, double perL1, double killedPerSecondL1,
+			int detMutL2, double perL2, double killedPerSecondL2, int detMutL3, double perL3,
 			double killedPerSecondL3, int detMutL4, double perL4, double killedPerSecondL4) throws IOException {
 
 		Path path = Path.of(filePath);
@@ -119,15 +120,33 @@ public class FaultDetectionResultRecorder {
 
 		try (PrintWriter pw = new PrintWriter(new FileWriter(filePath, true))) {
 			if (empty) {
-				pw.println("SPL;" + "Operator;" + "Number of Mutants;" + "Number of Detected  Mutants L=2; "
-						+ "Fault Detection Percentange L=2;" + "Detected Mutants Per Second L=2;"
-						+ "Number of Detected  Mutants L=3; " + "Fault Detection Percentange L=3;"
-						+ "Detected Mutants Per Second L=3;" + "Number of Detected  Mutants L=4; "
-						+ "Fault Detection Percentange L=4;" + "Detected Mutants Per Second L=4");
+				pw.println("SPL;" + "Operator;" + "Number of Mutants;"
+			
+							+ "Number of Detected  Mutants RandomWalk; "
+							+ "Fault Detection Percentange RandomWalk;" 
+							+ "Detected Mutants Per Second RandomWalk;"
+							
+							+ "Number of Detected  Mutants L=1; "
+							+ "Fault Detection Percentange L=1;" 
+							+ "Detected Mutants Per Second L=1;"
+							
+							+ "Number of Detected  Mutants L=2; "
+							+ "Fault Detection Percentange L=2;" 
+							+ "Detected Mutants Per Second L=2;"
+							
+							+ "Number of Detected  Mutants L=3; " 
+							+ "Fault Detection Percentange L=3;"
+							+ "Detected Mutants Per Second L=3;" 
+							
+							+ "Number of Detected  Mutants L=4; "
+							+ "Fault Detection Percentange L=4;" 
+							+ "Detected Mutants Per Second L=4");
 			}
 			pw.println(SPLName + ";" + mutationOperator + ";" + numMutants + ";" 
-					+ detMutL2 + ";" + formatDouble_2(perL2) + ";" + formatDouble_2(killedPerSecondL2)
-					+ detMutL3 + ";" + formatDouble_2(perL3) + ";" + formatDouble_2(killedPerSecondL3)
+					+ detMutL0 + ";" + formatDouble_2(perL0) + ";" + formatDouble_2(killedPerSecondL0) + ";"
+					+ detMutL1 + ";" + formatDouble_2(perL1) + ";" + formatDouble_2(killedPerSecondL1) + ";"
+					+ detMutL2 + ";" + formatDouble_2(perL2) + ";" + formatDouble_2(killedPerSecondL2) + ";"
+					+ detMutL3 + ";" + formatDouble_2(perL3) + ";" + formatDouble_2(killedPerSecondL3) + ";"
 					+ detMutL4 + ";" + formatDouble_2(perL4)+ ";" +  formatDouble_2(killedPerSecondL4));
 		}
 	}

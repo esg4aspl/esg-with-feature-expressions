@@ -1,30 +1,20 @@
 package tr.edu.iyte.esgfx.cases;
 
 import java.util.List;
-import java.util.Set;
-import java.util.Map.Entry;
 
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.SolverFactory;
 import org.sat4j.specs.ISolver;
 import org.sat4j.tools.ModelIterator;
 
-import tr.edu.iyte.esg.eventsequence.EventSequence;
 import tr.edu.iyte.esg.model.ESG;
-import tr.edu.iyte.esg.model.Vertex;
+
 import tr.edu.iyte.esg.model.validation.ESGValidator;
-import tr.edu.iyte.esgfx.model.ESGFx;
+
 import tr.edu.iyte.esgfx.model.featureexpression.FeatureExpression;
-import tr.edu.iyte.esgfx.mutationtesting.faultdetection.FaultDetector;
-import tr.edu.iyte.esgfx.mutationtesting.mutationoperators.MutationOperator;
-import tr.edu.iyte.esgfx.mutationtesting.mutationoperators.EdgeInserter;
-import tr.edu.iyte.esgfx.mutationtesting.resultutils.FaultDetectionResultRecorder;
+
 import tr.edu.iyte.esgfx.productconfigurationgeneration.SATSolverGenerationFromFeatureModel;
 import tr.edu.iyte.esgfx.productmodelgeneration.ProductESGFxGenerator;
-import tr.edu.iyte.esgfx.testgeneration.EulerCycleToTestSequenceGenerator;
-import tr.edu.iyte.esgfx.testgeneration.edgecoverage.EulerCycleGeneratorForEdgeCoverage;
-import tr.edu.iyte.esgfx.testgeneration.eventtriplecoverage.TransformedESGFxGenerator;
-import tr.edu.iyte.esgfx.testgeneration.util.StronglyConnectedBalancedESGFxGeneration;
 
 public class AutomaticProductConfigurationValidator extends CaseStudyUtilities {
 
@@ -80,27 +70,26 @@ public class AutomaticProductConfigurationValidator extends CaseStudyUtilities {
 
 			boolean isProductConfigurationValid = isProductConfigurationValid(featureModel,
 					featureExpressionMapFromFeatureModel);
-			
+
 			if (isProductConfigurationValid) {
 
-				//String ESGFxName = productName + Integer.toString(productID);
+				// String ESGFxName = productName + Integer.toString(productID);
 
 				ProductESGFxGenerator productESGFxGenerator = new ProductESGFxGenerator();
 				ESG productESGFx = productESGFxGenerator.generateProductESGFx(productID, productName, ESGFx);
 
 				ESGValidator esgValidator = new ESGValidator();
-				
-				if(!esgValidator.isValid(productESGFx)) {
+
+				if (!esgValidator.isValid(productESGFx)) {
 					System.out.println(productConfiguration + " is invalid");
 //					productESGFx.getRealEdgeList().forEach(System.out::println);
 					esgValidator.validate(productESGFx);
 					numberOfInvalidProducts++;
 				}
-				
+
 			} else {
 				productID--;
-				
-			
+
 			}
 		}
 		System.out.println("numberOfInvalidProducts " + numberOfInvalidProducts);

@@ -53,8 +53,11 @@ public class TestSuiteFileWriter {
 
 	public static void writeSPLModelTestSuiteSummary(String filePath, String SPLName, int numberOfProducts,
 			int ESGFx_numberOfVertices, int ESGFx_numberOfEdges, int totalNumberOfVertices, int totalNumberOfEdges,
-			int totalNumberOfSequences_L2, int totalNumberOfEvents_L2, int totalNumberOfSequences_L3,
-			int totalNumberOfEvents_L3, int totalNumberOfSequences_L4, int totalNumberOfEvents_L4) throws IOException {
+			int totalNumberOfSequences_L0, int totalNumberOfEvents_L0, double avgCoverageL0,
+			int totalNumberOfSequences_L1, int totalNumberOfEvents_L1, double avgCoverageL1,
+			int totalNumberOfSequences_L2, int totalNumberOfEvents_L2, double avgCoverageL2,
+			int totalNumberOfSequences_L3, int totalNumberOfEvents_L3, double avgCoverageL3,
+			int totalNumberOfSequences_L4, int totalNumberOfEvents_L4, double avgCoverageL4) throws IOException {
 
 		Path path = Path.of(filePath);
 		ensureParent(path);
@@ -67,34 +70,87 @@ public class TestSuiteFileWriter {
 			Files.write(path, System.lineSeparator().getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND,
 					StandardOpenOption.CREATE);
 		}
-		
-		
-		double avgNumberOfVertices = (totalNumberOfVertices / (double)numberOfProducts);
-		double avgNumberOfEdges = (totalNumberOfEdges / (double)numberOfProducts);
-		double avgNumberOfSequences_L2 = (totalNumberOfSequences_L2 / (double)numberOfProducts);
-		double avgNumberOfEvents_L2 =  (totalNumberOfEvents_L2 / (double)numberOfProducts);
-		double avgNumberOfSequences_L3 = (totalNumberOfSequences_L3 / (double)numberOfProducts);
-		double avgNumberOfEvents_L3 =  (totalNumberOfEvents_L3 / (double)numberOfProducts);
-		double avgNumberOfSequences_L4 = (totalNumberOfSequences_L4 / (double)numberOfProducts);
-		double avgNumberOfEvents_L4 =  (totalNumberOfEvents_L4 / (double)numberOfProducts);
-		
+
+		double avgNumberOfVertices = (totalNumberOfVertices / (double) numberOfProducts);
+		double avgNumberOfEdges = (totalNumberOfEdges / (double) numberOfProducts);
+		double avgNumberOfSequences_L0 = (totalNumberOfSequences_L0 / (double) numberOfProducts);
+		double avgNumberOfEvents_L0 = (totalNumberOfEvents_L0 / (double) numberOfProducts);
+		double avgNumberOfSequences_L1 = (totalNumberOfSequences_L1 / (double) numberOfProducts);
+		double avgNumberOfEvents_L1 = (totalNumberOfEvents_L1 / (double) numberOfProducts);
+		double avgNumberOfSequences_L2 = (totalNumberOfSequences_L2 / (double) numberOfProducts);
+		double avgNumberOfEvents_L2 = (totalNumberOfEvents_L2 / (double) numberOfProducts);
+		double avgNumberOfSequences_L3 = (totalNumberOfSequences_L3 / (double) numberOfProducts);
+		double avgNumberOfEvents_L3 = (totalNumberOfEvents_L3 / (double) numberOfProducts);
+		double avgNumberOfSequences_L4 = (totalNumberOfSequences_L4 / (double) numberOfProducts);
+		double avgNumberOfEvents_L4 = (totalNumberOfEvents_L4 / (double) numberOfProducts);
+
 		try (PrintWriter pw = new PrintWriter(new FileWriter(filePath, true))) {
 			if (empty) {
 				pw.println("SPL;Number of Products;ESG-Fx Number of Vertices;ESG-Fx Number of Edges; "
 						+ "Avg Number of Vertices; Avg Number of Edges;"
-						+ "Total Number of Sequences: eventcouplecoverage; Total Number of Events: eventcouplecoverage;Avg Number of Sequences: eventcouplecoverage;Avg Number of Events: eventcouplecoverage;"
-						+ "Total Number of Sequences: eventtriplecoverage; Total Number of Events: eventtriplecoverage;Avg Number of Sequences: eventtriplecoverage;Avg Number of Events: eventtriplecoverage;"
-						+ "Total Number of Sequences: eventquadruplecoverage; Total Number of Exvents: eventquadruplecoverage;Avg Number of Sequences: eventquadruplecoverage;Avg Number of Events: eventquadruplecoverage;");
+						
+						+ "Total Number of Sequences: randomwalk;" 
+						+ "Total Number of Events: randomwalk;"
+						+ "Avg Number of Sequences: randomwalk;"
+						+ "Avg Number of Events: randomwalk;"
+						+ "Average randomwalkcoverage;"
+						
+						+ "Total Number of Sequences: eventcoverage;" 
+						+ "Total Number of Events: eventcoverage;"
+						+ "Avg Number of Sequences: eventcoverage;"
+						+ "Avg Number of Events: eventcoverage;"
+						+ "Average eventcoverage;"
+						
+						+ "Total Number of Sequences: eventcouplecoverage;" 
+						+ "Total Number of Events: eventcouplecoverage;"
+						+ "Avg Number of Sequences: eventcouplecoverage;"
+						+ "Avg Number of Events: eventcouplecoverage;"
+						+ "Average eventcouplecoverage;"
+						
+						+ "Total Number of Sequences: eventtriplecoverage;"
+						+ "Total Number of Events: eventtriplecoverage;"
+						+ "Avg Number of Sequences: eventtriplecoverage;"
+						+ "Avg Number of Events: eventtriplecoverage;"
+						+ "Average eventtriplecoverage;"
+						
+						+ "Total Number of Sequences: eventquadruplecoverage;"
+						+ "Total Number of Events: eventquadruplecoverage;"
+						+ "Avg Number of Sequences: eventquadruplecoverage;"
+						+ "Avg Number of Events: eventquadruplecoverage;"
+						+ "Average eventquadruplecoverage");
 			}
 			pw.println(escapeCsv(SPLName) + ";" + numberOfProducts + ";" + ESGFx_numberOfVertices + ";"
-					+ ESGFx_numberOfEdges + ";" + formatDouble_2(avgNumberOfVertices) + ";" 
-					+ formatDouble_2(avgNumberOfEdges) + ";" + totalNumberOfSequences_L2 + ";"
-					+ totalNumberOfEvents_L2 + ";" + formatDouble_2(avgNumberOfSequences_L2) + ";"
-					+ formatDouble_2(avgNumberOfEvents_L2) + ";" + totalNumberOfSequences_L3 + ";"
-					+ totalNumberOfEvents_L3 + ";" + formatDouble_2(avgNumberOfSequences_L3) + ";"
-					+ formatDouble_2(avgNumberOfEvents_L3) + ";" + totalNumberOfSequences_L4 + ";"
-					+ totalNumberOfEvents_L4 + ";" + formatDouble_2(avgNumberOfSequences_L4) + ";"
-					+ formatDouble_2(avgNumberOfEvents_L4));
+					+ ESGFx_numberOfEdges + ";" + formatDouble_2(avgNumberOfVertices) + ";" + formatDouble_2(avgNumberOfEdges) + ";" 
+					
+					+ totalNumberOfSequences_L0 + ";" 
+					+ totalNumberOfEvents_L0 + ";" 
+					+ formatDouble_2(avgNumberOfSequences_L0) + ";" 
+					+ formatDouble_2(avgNumberOfEvents_L0) + ";"
+					+ formatDouble_2(avgCoverageL0) + ";"
+					
+					+ totalNumberOfSequences_L1 + ";" 
+					+ totalNumberOfEvents_L1 + ";" 
+					+ formatDouble_2(avgNumberOfSequences_L1) + ";" 
+					+ formatDouble_2(avgNumberOfEvents_L1) + ";"
+					+ formatDouble_2(avgCoverageL1) + ";"
+					
+					+ totalNumberOfSequences_L2 + ";" 
+					+ totalNumberOfEvents_L2 + ";" 
+					+ formatDouble_2(avgNumberOfSequences_L2) + ";" 
+					+ formatDouble_2(avgNumberOfEvents_L2) + ";"
+					+ formatDouble_2(avgCoverageL2) + ";"
+					
+					+ totalNumberOfSequences_L3 + ";" 
+					+ totalNumberOfEvents_L3 + ";"
+					+ formatDouble_2(avgNumberOfSequences_L3) + ";" 
+					+ formatDouble_2(avgNumberOfEvents_L3) + ";"
+					+ formatDouble_2(avgCoverageL3) + ";"
+					
+					+ totalNumberOfSequences_L4 + ";" 
+					+ totalNumberOfEvents_L4 + ";"
+					+ formatDouble_2(avgNumberOfSequences_L4) + ";" 
+					+ formatDouble_2(avgNumberOfEvents_L4) + ";" 
+					+ formatDouble_2(avgCoverageL4));
 		}
 	}
 
@@ -131,7 +187,8 @@ public class TestSuiteFileWriter {
 			printWriter.println(es.length() + " : " + eventSequence);
 		}
 		printWriter.println(coverageType + " " + Double.toString(edgeCoverage) + "%");
-		printWriter.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+		printWriter.println(
+				"---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 		printWriter.print("\n");
 		printWriter.close();
 	}
@@ -233,14 +290,11 @@ public class TestSuiteFileWriter {
 		// Simple formatting without locale commas
 		return String.format(java.util.Locale.ROOT, "%.6f", d);
 	}
-	
 
 	private static String formatDouble_2(double d) {
 		// Simple formatting without locale commas
-		return String.format(Locale.forLanguageTag("tr-TR"),"%.2f", d);
+		return String.format(Locale.forLanguageTag("tr-TR"), "%.2f", d);
 	}
-	
-	
 
 	private static String escapeCsv(String s) {
 		if (s == null)

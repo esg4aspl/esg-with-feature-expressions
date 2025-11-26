@@ -39,6 +39,9 @@ public class ProductESGToEFGFileWriter extends CaseStudyUtilities {
 
 		SATSolverGenerationFromFeatureModel satSolverGenerationFromFeatureModel = new SATSolverGenerationFromFeatureModel();
 		ISolver solver = new ModelIterator(SolverFactory.newDefault());
+		
+		int N_SHARDS = Integer.parseInt(System.getenv().getOrDefault("N_SHARDS", "1"));
+		int CURRENT_SHARD = Integer.parseInt(System.getenv().getOrDefault("SHARD", "0"));
 
 		satSolverGenerationFromFeatureModel.addSATClauses(solver, featureModel, featureExpressionMapFromFeatureModel,
 				featureExpressionList);
@@ -82,13 +85,25 @@ public class ProductESGToEFGFileWriter extends CaseStudyUtilities {
 					featureExpressionMapFromFeatureModel);
 
 			if (isProductConfigurationValid) {
+				
+				// ---SHARD GATE ---
+				if (((productID - 1) % N_SHARDS) != CURRENT_SHARD) {
+					continue;
+				}
 
 				ProductESGFxGenerator productESGFxGenerator = new ProductESGFxGenerator();
 				ESG productESGFx = productESGFxGenerator.generateProductESGFx(productID, productName, ESGFx);
 				
+				if (N_SHARDS > 1) {
+					String shardResultFolderPath = shards_efgfilewriter + String.format("shard%02d/", CURRENT_SHARD) + productName;
+					ESGToEFGFileWriter.writeESGToEFGFile(productESGFx, productName , shardResultFolderPath);
+				}else {
+					ESGToEFGFileWriter.writeESGToEFGFile(productESGFx, productName , EFGFolderPath);
+				}
 				
-				ESGToDOTFileConverter.buildDOTFileFromESG(productESGFx,DOTFolderPath + productName + ".dot");
-				ESGToEFGFileWriter.writeESGToEFGFile(productESGFx, productName , EFGFolderPath);
+				
+//				ESGToDOTFileConverter.buildDOTFileFromESG(productESGFx,DOTFolderPath + productName + ".dot");
+//				ESGToEFGFileWriter.writeESGToEFGFile(productESGFx, productName , EFGFolderPath);
 				
 
 			} else {

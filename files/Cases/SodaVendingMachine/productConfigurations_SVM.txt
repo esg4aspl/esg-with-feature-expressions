@@ -1,12 +1,12 @@
-P01: <t>:1 features
-P02: <f, t>:2 features
-P03: <c, t>:2 features
-P04: <f, c, t>:3 features
-P05: <s>:1 features
-P06: <s, f>:2 features
-P07: <s, c>:2 features
-P08: <s, f, c>:3 features
-P09: <s, c, t>:3 features
-P10: <s, t>:2 features
-P11: <s, f, t>:3 features
-P12: <s, f, c, t>:4 features
+P000001: <t>:1 features
+P000002: <f, t>:2 features
+P000003: <c, t>:2 features
+P000004: <f, c, t>:3 features
+P000005: <s>:1 features
+P000006: <s, f>:2 features
+P000007: <s, c>:2 features
+P000008: <s, f, c>:3 features
+P000009: <s, c, t>:3 features
+P000010: <s, t>:2 features
+P000011: <s, f, t>:3 features
+P000012: <s, f, c, t>:4 features
