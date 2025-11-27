@@ -74,8 +74,7 @@ for i in $(seq $S_NODE $E_NODE); do
   # Launch Java Process
   # We pass 'N' as the total count, but 'i' as the specific shard ID.
   N_SHARDS=$N SHARD=$i \
-  JAVA_PATH="/root/.sdkman/candidates/java/current/bin/java"
-  nohup $JAVA_PATH $JAVA_OPTS -cp "target/classes:$CP" "$MAIN" > "$LOG" 2>&1 &
+  nohup java $JAVA_OPTS -cp "target/classes:$CP" "$MAIN" > "$LOG" 2>&1 &
   
   echo "✅ Shard $i dispatched -> $LOG"
   

@@ -70,8 +70,7 @@ for i in $(seq $S_NODE $E_NODE); do
 
   # N_SHARDS is total (30), SHARD is specific ID (i)
   N_SHARDS=$N SHARD=$i \
-  JAVA_PATH="/root/.sdkman/candidates/java/current/bin/java"
-  nohup $JAVA_PATH $JAVA_OPTS -cp "target/classes:$CP" "$MAIN" > "$LOG" 2>&1 &
+  nohup java $JAVA_OPTS -cp "target/classes:$CP" "$MAIN" > "$LOG" 2>&1 &
   
   echo "✅ Shard $i dispatched -> $LOG"
   
