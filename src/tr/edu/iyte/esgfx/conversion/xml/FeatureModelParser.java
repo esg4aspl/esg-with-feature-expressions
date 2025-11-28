@@ -61,9 +61,9 @@ public class FeatureModelParser extends DefaultHandler {
 		String name;
 
 		switch (qName.toLowerCase()) {
-	    case "graphics":
-	        //Ignore graphics
-	        break;
+		case "graphics":
+			// Ignore graphics
+			break;
 		case "and":
 			isAndEnded = false;
 			isAbstract = Boolean.parseBoolean(attributes.getValue("abstract"));
@@ -71,10 +71,10 @@ public class FeatureModelParser extends DefaultHandler {
 			isMandatory = Boolean.parseBoolean(attributes.getValue("mandatory"));
 
 			name = attributes.getValue("name");
-		    if (name == null || name.trim().isEmpty()) {
-		        System.err.println("Warning: " + qName + " element without name attribute, skipping...");
-		        break;
-		    }
+			if (name == null || name.trim().isEmpty()) {
+				System.err.println("Warning: " + qName + " element without name attribute, skipping...");
+				break;
+			}
 			currentFeature = new Feature(name, isAbstract, isMandatory);
 			parentFeature = currentFeature;
 
@@ -99,17 +99,17 @@ public class FeatureModelParser extends DefaultHandler {
 			isAbstract = Boolean.parseBoolean(attributes.getValue("abstract"));
 			isMandatory = Boolean.parseBoolean(attributes.getValue("mandatory"));
 			name = attributes.getValue("name");
-			
-		    if (name == null || name.trim().isEmpty()) {
-		        System.err.println("Warning: " + qName + " element without name attribute, skipping...");
-		        break;
-		    }
-			
+
+			if (name == null || name.trim().isEmpty()) {
+				System.err.println("Warning: " + qName + " element without name attribute, skipping...");
+				break;
+			}
+
 			currentFeature = new Feature(name, isAbstract, isMandatory);
-			
+
 			currentFeature.setParent(parentFeature);
 			featureModel.addFeature(currentFeature);
-			
+
 //			System.out.println(currentFeature.getName() + " isAbstract:" + currentFeature.isAbstract() + " isMandatory:"
 //			+ currentFeature.isMandatory() + " parent Feature:" + parentFeature.getName());
 
@@ -142,18 +142,19 @@ public class FeatureModelParser extends DefaultHandler {
 			isAbstract = Boolean.parseBoolean(attributes.getValue("abstract"));
 			isMandatory = Boolean.parseBoolean(attributes.getValue("mandatory"));
 			name = attributes.getValue("name");
+//			System.out.println(name);
 //			System.out.println("ALT");
 //			System.out.println("isAbstract: " + isAbstract);
 //			System.out.println("isMandatory: " + isMandatory);
 //			System.out.println("name: " + name);
 //			System.out.println("parentFeature: " + parentFeature.getName());
 			currentFeature = new Feature(name, isAbstract, isMandatory);
-			
-		    if (name == null || name.trim().isEmpty()) {
-		        System.err.println("Warning: " + qName + " element without name attribute, skipping...");
-		        break;
-		    }
-			
+
+			if (name == null || name.trim().isEmpty()) {
+				System.err.println("Warning: " + qName + " element without name attribute, skipping...");
+				break;
+			}
+
 			currentFeature.setParent(parentFeature);
 			featureModel.addFeature(currentFeature);
 
@@ -184,12 +185,12 @@ public class FeatureModelParser extends DefaultHandler {
 			isAbstract = Boolean.parseBoolean(attributes.getValue("abstract"));
 			isMandatory = Boolean.parseBoolean(attributes.getValue("mandatory"));
 			name = attributes.getValue("name");
-			
-		    if (name == null || name.trim().isEmpty()) {
-		        System.err.println("Warning: " + qName + " element without name attribute, skipping...");
-		        break;
-		    }
-			
+
+			if (name == null || name.trim().isEmpty()) {
+				System.err.println("Warning: " + qName + " element without name attribute, skipping...");
+				break;
+			}
+
 			currentFeature = new Feature(name, isAbstract, isMandatory);
 			currentFeature.setParent(parentFeature);
 			featureModel.addFeature(currentFeature);
@@ -201,11 +202,11 @@ public class FeatureModelParser extends DefaultHandler {
 //				System.out.println("Adding ALT feature");
 				featureModel.addXORFeature(parentFeature, currentFeature);
 			}
-			
+
 			if (!isAndEnded && isAltEnded && isOrEnded) {
 				featureModel.addANDFeature(parentFeature, currentFeature);
 			}
-			
+
 //			else if (!isAndEnded) {
 //				System.out.println("Adding AND feature");
 //				featureModel.addANDFeature(parentFeature, currentFeature);
@@ -216,18 +217,19 @@ public class FeatureModelParser extends DefaultHandler {
 			break;
 		case "disj":
 			isDisjEnded = false;
-			if (currentORConnector == null || !(currentORConnector instanceof ConnectorOR)) {
-				currentORConnector = new ConnectorOR();
-				connectorStack.push(currentORConnector);
-			}
 
+			ConnectorOR newOr = new ConnectorOR();
+			connectorStack.push(newOr);
+
+			currentORConnector = newOr;
 			break;
+
 		case "conj":
 			isConjEnded = false;
-			if (currentANDConnector == null || !(currentANDConnector instanceof ConnectorAND)) {
-				currentANDConnector = new ConnectorAND();
-				connectorStack.push(currentANDConnector);
-			}
+
+			ConnectorAND newAnd = new ConnectorAND();
+			connectorStack.push(newAnd);
+			currentANDConnector = newAnd;
 			break;
 		case "imp":
 			isImplicationEnded = false;
@@ -261,9 +263,9 @@ public class FeatureModelParser extends DefaultHandler {
 //		System.out.println("End Element:" + qName);
 
 		switch (qName.toLowerCase()) {
-	    case "graphics":
-	        // Ignore graphics
-	        break;
+		case "graphics":
+			// Ignore graphics
+			break;
 		case "and":
 			parentFeature = featureModel.getRoot();
 			isAndEnded = true;
@@ -297,51 +299,57 @@ public class FeatureModelParser extends DefaultHandler {
 			setLHSType(currentImplication);
 			setRHSType(currentImplication);
 
-//			for (Implicant implicant : currentImplication.getImplicants()) {
-//				System.out.println("Implicant in iff: " + implicant.toString());
-//			}
 			featureModel.addIffConstraint(currentImplication);
-//			System.out.println("Number of iffs " + featureModel.getIffConstraints().size());
 
 			break;
 		case "disj":
-
 			isDisjEnded = true;
 
 			if (!connectorStack.isEmpty()) {
+
 				Connector finishedConnector = connectorStack.pop();
-//				System.out.println("Finished connector: " + finishedConnector);
-				if (connectorStack.isEmpty() && (!isImplicationEnded || !isIffEnded)) {
-//					System.out.println("Adding imp");
-					currentImplication.addImplicant(finishedConnector);
+
+				if (!connectorStack.isEmpty()) {
+
+					Connector parentConnector = connectorStack.peek();
+					parentConnector.addImplicant(finishedConnector);
+
+					if (parentConnector instanceof ConnectorOR) {
+						currentORConnector = (ConnectorOR) parentConnector;
+					}
+				} else {
+
+					if (!isImplicationEnded || !isIffEnded) {
+						currentImplication.addImplicant(finishedConnector);
+					}
+
+					else {
+						featureModel.addConnConstraint(finishedConnector);
+					}
 					currentORConnector = null;
 				}
 			}
-
-			if (isImplicationEnded || isIffEnded) {
-				if (currentORConnector != null) {
-					featureModel.addConnConstraint(currentORConnector);
-				}
-			}
-
 			break;
 		case "conj":
 			isConjEnded = true;
 
 			if (!connectorStack.isEmpty()) {
 				Connector finishedConnector = connectorStack.pop();
-				if (connectorStack.isEmpty() && (!isImplicationEnded || !isIffEnded)) {
-//					System.out.println("Adding imp");
-					currentImplication.addImplicant(finishedConnector);
+				if (!connectorStack.isEmpty()) {
+					Connector parentConnector = connectorStack.peek();
+
+					parentConnector.addImplicant(finishedConnector);
+					if (parentConnector instanceof ConnectorAND) {
+						currentANDConnector = (ConnectorAND) parentConnector;
+					}
+				} else {
+					if (!isImplicationEnded || !isIffEnded) {
+						currentImplication.addImplicant(finishedConnector);
+					}
 					currentANDConnector = null;
 				}
 			}
 
-			if (isImplicationEnded || isIffEnded) {
-				if (currentORConnector != null) {
-					featureModel.addConnConstraint(currentANDConnector);
-				}
-			}
 			break;
 		case "var":
 			isVarEnded = true;
@@ -379,46 +387,84 @@ public class FeatureModelParser extends DefaultHandler {
 	public void characters(char[] ch, int start, int length) throws SAXException {
 
 		if (!isVarEnded) {
+
 			varString = new String(ch, start, length);
-//			System.out.println("VAR: " + varString);
+
+			// System.out.println("VAR: " + varString);
+
 			constraintFeature = featureModel.findFeatureByName(varString.trim());
-//			System.out.println("constraintFeature: " + constraintFeature.getName());
-			
+
+			// System.out.println("constraintFeature: " + constraintFeature.getName());
+
 			if (!isNotEnded) {
+
 				constraintFeature = new Negation(constraintFeature);
+
 			}
 
 			if (constraintFeature != null) {
 
-//				System.out.println("!isRuleEnded && !isDisjEnded " + (!isRuleEnded && !isDisjEnded));
+				// System.out.println("!isRuleEnded && !isDisjEnded " + (!isRuleEnded &&
+				// !isDisjEnded));
+
 				if (!isRuleEnded && !isDisjEnded) {
-//					currentORConnector.addFeature(constraintFeature);
+
+					// currentORConnector.addFeature(constraintFeature);
+
 					if (!connectorStack.isEmpty()) {
+
 						Connector topConnector = connectorStack.peek();
-						topConnector.addFeature(constraintFeature); // Add to the top connector
-//						System.out.println("Is ConnectorOR? " + (topConnector instanceof ConnectorOR));
-//						System.out.println("Top connector: " + topConnector.toString());
+
+						topConnector.addImplicant(constraintFeature); // Add to the top connector
+
+						// System.out.println("Is ConnectorOR? " + (topConnector instanceof
+						// ConnectorOR));
+
+						// System.out.println("Top connector: " + topConnector.toString());
+
+					} else if (!isImplicationEnded || !isIffEnded) {
+
+						currentImplication.addImplicant(constraintFeature);
+
 					}
+
 				}
 
-//				System.out.println("!isRuleEnded && !isConjEnded " + (!isRuleEnded && !isConjEnded));
+				// System.out.println("!isRuleEnded && !isConjEnded " + (!isRuleEnded &&
+				// !isConjEnded));
+
 				if (!isRuleEnded && !isConjEnded) {
-//					currentANDConnector.addFeature(constraintFeature);
+
+					// currentANDConnector.addFeature(constraintFeature);
+
 					if (!connectorStack.isEmpty()) {
+
 						Connector topConnector = connectorStack.peek();
-						topConnector.addFeature(constraintFeature); // Add to the top connector
-//						System.out.println("Is ConnectorAND? " + (topConnector instanceof ConnectorAND));
-//						System.out.println("Top connector: " + topConnector.toString());
+
+						topConnector.addImplicant(constraintFeature); // Add to the top connector
+
+						// System.out.println("Is ConnectorAND? " + (topConnector instanceof
+						// ConnectorAND));
+
+						// System.out.println("Top connector: " + topConnector.toString());
+
 					}
+
 				}
 
-//				System.out.println("!(!isDisjEnded || !isConjEnded) && (!isImplicationEnded || !isIffEnded) "
-//						+ (!(!isDisjEnded || !isConjEnded) && !isImplicationEnded || !isIffEnded));
+				// System.out.println("!(!isDisjEnded || !isConjEnded) && (!isImplicationEnded
+				// || !isIffEnded) "
+
+				// + (!(!isDisjEnded || !isConjEnded) && !isImplicationEnded || !isIffEnded));
 
 				if (!(!isDisjEnded || !isConjEnded) && (!isImplicationEnded || !isIffEnded)) {
+
 					currentImplication.addImplicant(constraintFeature); // Add directly to implication
+
 				}
+
 			}
+
 		}
 
 	}

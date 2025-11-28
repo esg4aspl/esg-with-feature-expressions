@@ -1,9 +1,6 @@
 package tr.edu.iyte.esgfx.cases;
 
 import java.util.List;
-import java.util.Set;
-import java.util.Map.Entry;
-import java.util.LinkedHashSet;
 
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.SolverFactory;
@@ -11,23 +8,23 @@ import org.sat4j.specs.ISolver;
 import org.sat4j.tools.ModelIterator;
 
 import tr.edu.iyte.esg.model.ESG;
-
+import tr.edu.iyte.esg.model.Vertex;
 import tr.edu.iyte.esgfx.model.featureexpression.FeatureExpression;
 
 import tr.edu.iyte.esgfx.mutationtesting.faultdetection.FaultDetector;
 import tr.edu.iyte.esgfx.mutationtesting.mutationoperators.EventOmitter;
-import tr.edu.iyte.esgfx.mutationtesting.mutationoperators.MutationOperator;
 import tr.edu.iyte.esgfx.mutationtesting.resultutils.FaultDetectionResultRecorder;
 import tr.edu.iyte.esgfx.productconfigurationgeneration.SATSolverGenerationFromFeatureModel;
 import tr.edu.iyte.esgfx.productmodelgeneration.ProductESGFxGenerator;
 
 public class MutantGeneratorEventOmitter extends MutantGenerator {
 
-    public void generateMutants() throws Exception {
+	public void generateMutants() throws Exception {
+
+	    
 
         featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFilePath,
                 ESGFxFilePath);
-
         List<FeatureExpression> featureExpressionList = getFeatureExpressionList(featureExpressionMapFromFeatureModel);
 
         SATSolverGenerationFromFeatureModel sat = new SATSolverGenerationFromFeatureModel();
@@ -39,269 +36,235 @@ public class MutantGeneratorEventOmitter extends MutantGenerator {
 
         int handledProducts = 0;
         int productID = 0;
-
         int numberOfMutantsInSPL = 0;
 
-        // Updated counters for L0-L4
+        // Counters for L0-L4
         int numberOfDetectedMutantsInSPL_L0 = 0;
         int numberOfDetectedMutantsInSPL_L1 = 0;
         int numberOfDetectedMutantsInSPL_L2 = 0;
         int numberOfDetectedMutantsInSPL_L3 = 0;
         int numberOfDetectedMutantsInSPL_L4 = 0;
 
+        // Reusable Generator
+        ProductESGFxGenerator productESGFxGenerator = new ProductESGFxGenerator();
+
         while (solver.isSatisfiable()) {
             productID++;
 
-            // Product name and configuration
+            // --- Product Configuration Setup ---
             String productName = ProductIDUtil.format(productID);
-            StringBuilder productConfiguration = new StringBuilder(productName + ": <");
-            int numberOfFeatures = 0;
-
+            // (String building logic kept simple for brevity, logic remains same)
+            
             int[] model = solver.model();
-            for (int i = 0; i < model.length; i++) {
-                FeatureExpression fe = featureExpressionList.get(i);
-                String fname = fe.getFeature().getName();
-                if (model[i] > 0) {
-                    fe.setTruthValue(true);
-                    productConfiguration.append(fname).append(", ");
-                    numberOfFeatures++;
-                } else {
-                    fe.setTruthValue(false);
-                }
-            }
-            if (numberOfFeatures > 0) {
-                productConfiguration.setLength(productConfiguration.length() - 2);
-            }
-            productConfiguration.append(">:").append(numberOfFeatures).append(" features");
-
-            // Block current model to find the next one
             VecInt blockingClause = new VecInt();
-            for (int i = 0; i < model.length; i++)
+            for (int i = 0; i < model.length; i++) {
+                // Update feature expressions based on model
+                FeatureExpression fe = featureExpressionList.get(i);
+                if (model[i] > 0) fe.setTruthValue(true);
+                else fe.setTruthValue(false);
+                
                 blockingClause.push(-model[i]);
+            }
             solver.addClause(blockingClause);
 
-            boolean isProductConfigurationValid = isProductConfigurationValid(featureModel,
-                    featureExpressionMapFromFeatureModel);
+            boolean isProductConfigurationValid = isProductConfigurationValid(featureModel, featureExpressionMapFromFeatureModel);
 
             if (!isProductConfigurationValid) {
-                productID--;
+                // productID--; 
                 continue;
             }
 
-            // ---SHARD GATE ---
+            // --- SHARD GATE ---
             if (((productID - 1) % N_SHARDS) != CURRENT_SHARD) {
                 continue;
             }
             
             handledProducts++;
-
-            // Build product ESG-Fx once
-            String ESGFxName = productName + Integer.toString(productID);
-            ProductESGFxGenerator productESGFxGenerator = new ProductESGFxGenerator();
-            ESG productESGFx = productESGFxGenerator.generateProductESGFx(productID, ESGFxName, ESGFx);
-
-            // Build test suites for L=0,1,2,3,4
-            FaultDetector detectorL0 = generateFaultDetector(productESGFx, 0);
-            FaultDetector detectorL1 = generateFaultDetector(productESGFx, 1);
-            FaultDetector detectorL2 = generateFaultDetector(productESGFx, 2);
-            FaultDetector detectorL3 = generateFaultDetector(productESGFx, 3);
-            FaultDetector detectorL4 = generateFaultDetector(productESGFx, 4);
-
-            // Generate mutants ON ORIGINAL product ESG-Fx
-            MutationOperator mutationOperator = new EventOmitter();
-            mutationOperator.generateMutantESGFxSets(productESGFx);
-
-            Set<ESG> validMutants = mutationOperator.getValidMutantESGFxSet();
-            Set<ESG> invalidMutants = mutationOperator.getInvalidMutantESGFxSet();
-
-            Set<ESG> allMutants = new LinkedHashSet<>();
-            allMutants.addAll(validMutants);
-            allMutants.addAll(invalidMutants);
-
-            int numberOfAllMutantsCurrentProduct = allMutants.size();
-            numberOfMutantsInSPL += numberOfAllMutantsCurrentProduct;
-
-            // Local counters per product
-            int numberOfDetectedValidPerProductL0 = 0;
-            int numberOfDetectedInValidPerProductL0 = 0;
+            String ESGFxName = productName + productID;
             
-            int numberOfDetectedValidPerProductL1 = 0;
-            int numberOfDetectedInValidPerProductL1 = 0;
+            // 1. Generate Product ESG (Base for all mutants)
+            ESG productESGFx = productESGFxGenerator.generateProductESGFx(productID, ESGFxName, ESGFx);
+            List<Vertex> productESGFxVertices = productESGFx.getRealVertexList();
+            
+            // Global mutant count updates (Add only once per product)
+            numberOfMutantsInSPL += productESGFxVertices.size();
+            
+            EventOmitter eventOmitter = new EventOmitter();
+            int localMutantID = 0;
 
-            int numberOfDetectedValidPerProductL2 = 0;
-            int numberOfDetectedInValidPerProductL2 = 0;
+            // =================================================================================
+            // RAM OPTIMIZATION: LOOP INVERSION STRATEGY
+            // We create detectors ONE BY ONE, use them, and destroy them immediately.
+            // =================================================================================
 
-            int numberOfDetectedValidPerProductL3 = 0;
-            int numberOfDetectedInValidPerProductL3 = 0;
-
-            int numberOfDetectedValidPerProductL4 = 0;
-            int numberOfDetectedInValidPerProductL4 = 0;
-
+            // ----------------------------- LEVEL 0 -----------------------------
+            FaultDetector detectorL0 = generateFaultDetector(productESGFx, 0);
             long execTimeCurrentProductL0 = 0;
-            long execTimeCurrentProductL1 = 0;
-            long execTimeCurrentProductL2 = 0;
-            long execTimeCurrentProductL3 = 0;
-            long execTimeCurrentProductL4 = 0;
+            localMutantID = 0; // Reset ID for consistent iteration
 
-            for (Entry<String, ESG> entry : ((EventOmitter) mutationOperator).getEventMutantMap().entrySet()) {
-                ESG mutantESGFx = entry.getValue();
-                boolean isMutantValid = validMutants.contains(mutantESGFx);
+				for (Vertex eventToOmit : productESGFxVertices) {
+					localMutantID++;
+					ESG mutant = eventOmitter.createSingleMutant(productESGFx, eventToOmit, localMutantID);
 
-				for(int w=0; w<WARMUP_COUNT; w++) {
-			        detectorL0.isFaultDetected(mutantESGFx);
-			    }
-				
-				long sumNanosL0 = 0;
-			    boolean d0 = false;
-			    for (int i = 0; i < MEASURE_COUNT; i++) {
-			        long start = System.nanoTime();
-			        d0 = detectorL0.isFaultDetected(mutantESGFx);
-			        long end = System.nanoTime();
-			        sumNanosL0 += (end - start);
-			    }
-			    execTimeCurrentProductL0 += (sumNanosL0 / MEASURE_COUNT);
-			    
-			    for(int w=0; w<WARMUP_COUNT; w++) {
-			    	detectorL1.isFaultDetected(mutantESGFx);
-			    }
-			    
-				long sumNanosL1 = 0;
-			    boolean d1 = false;
-			    for (int i = 0; i < MEASURE_COUNT; i++) {
-			        long start = System.nanoTime();
-			        d1 = detectorL1.isFaultDetected(mutantESGFx);
-			        long end = System.nanoTime();
-			        sumNanosL1 += (end - start);
-			    }
-			    execTimeCurrentProductL1 += (sumNanosL1 / MEASURE_COUNT);
-			    
-			    for(int w=0; w<WARMUP_COUNT; w++) {
-			    	detectorL2.isFaultDetected(mutantESGFx);
-			    }
-			    
-				long sumNanosL2 = 0;
-			    boolean d2 = false;
-			    for (int i = 0; i < MEASURE_COUNT; i++) {
-			        long start = System.nanoTime();
-			        d2 = detectorL2.isFaultDetected(mutantESGFx);
-			        long end = System.nanoTime();
-			        sumNanosL2 += (end - start);
-			    }
-			    execTimeCurrentProductL2 += (sumNanosL2 / MEASURE_COUNT);
-			    
-			    for(int w=0; w<WARMUP_COUNT; w++) {
-			    	detectorL3.isFaultDetected(mutantESGFx);
-			    }
-			    
-				long sumNanosL3 = 0;
-			    boolean d3 = false;
-			    for (int i = 0; i < MEASURE_COUNT; i++) {
-			        long start = System.nanoTime();
-			        d3 = detectorL3.isFaultDetected(mutantESGFx);
-			        long end = System.nanoTime();
-			        sumNanosL3 += (end - start);
-			    }
-			    execTimeCurrentProductL3 += (sumNanosL3 / MEASURE_COUNT);
-			    
-			    for(int w=0; w<WARMUP_COUNT; w++) {
-			    	detectorL4.isFaultDetected(mutantESGFx);
-			    }
-			    
-				long sumNanosL4 = 0;
-			    boolean d4 = false;
-			    for (int i = 0; i < MEASURE_COUNT; i++) {
-			        long start = System.nanoTime();
-			        d4 = detectorL4.isFaultDetected(mutantESGFx);
-			        long end = System.nanoTime();
-			        sumNanosL4 += (end - start);
-			    }
-			    execTimeCurrentProductL4 += (sumNanosL4 / MEASURE_COUNT);
+					// Warmup & Measure
+					runDetector(detectorL0, mutant);
+					execTimeCurrentProductL0 += measureTime(detectorL0, mutant);
 
-                if (d0) {
-                    if (isMutantValid) numberOfDetectedValidPerProductL0++;
-                    else numberOfDetectedInValidPerProductL0++;
-                }
-                if (d1) {
-                    if (isMutantValid) numberOfDetectedValidPerProductL1++;
-                    else numberOfDetectedInValidPerProductL1++;
-                }
-                if (d2) {
-                    if (isMutantValid) numberOfDetectedValidPerProductL2++;
-                    else numberOfDetectedInValidPerProductL2++;
-                }
-                if (d3) {
-                    if (isMutantValid) numberOfDetectedValidPerProductL3++;
-                    else numberOfDetectedInValidPerProductL3++;
-                }
-                if (d4) {
-                    if (isMutantValid) numberOfDetectedValidPerProductL4++;
-                    else numberOfDetectedInValidPerProductL4++;
-                }
-            } // endfor
-
+					if (detectorL0.isFaultDetected(mutant)) {
+						numberOfDetectedMutantsInSPL_L0++;
+					}
+					mutant = null; // Destroy mutant immediately
+				}
+			
             totalExecTimeNanosL0 += execTimeCurrentProductL0;
+            detectorL0 = null; // DESTROY DETECTOR L0 (Free RAM)
+            System.gc(); // Suggest GC to clean up L0 mess
+
+            // ----------------------------- LEVEL 1 -----------------------------
+            FaultDetector detectorL1 = generateFaultDetector(productESGFx, 1);
+            long execTimeCurrentProductL1 = 0;
+            localMutantID = 0;
+
+			for (Vertex eventToOmit : productESGFxVertices) {
+				localMutantID++;
+				ESG mutant = eventOmitter.createSingleMutant(productESGFx, eventToOmit, localMutantID);
+
+					// Warmup & Measure
+					runDetector(detectorL1, mutant);
+					execTimeCurrentProductL1 += measureTime(detectorL1, mutant);
+
+					if (detectorL1.isFaultDetected(mutant)) {
+						numberOfDetectedMutantsInSPL_L1++;
+					}
+					mutant = null; // Destroy mutant immediately
+				}
             totalExecTimeNanosL1 += execTimeCurrentProductL1;
+            detectorL1 = null; // DESTROY DETECTOR L1
+            System.gc();
+
+            // ----------------------------- LEVEL 2 -----------------------------
+            FaultDetector detectorL2 = generateFaultDetector(productESGFx, 2);
+            long execTimeCurrentProductL2 = 0;
+            localMutantID = 0;
+            
+			for (Vertex eventToOmit : productESGFxVertices) {
+				localMutantID++;
+				ESG mutant = eventOmitter.createSingleMutant(productESGFx, eventToOmit, localMutantID);
+
+					// Warmup & Measure
+					runDetector(detectorL2, mutant);
+					execTimeCurrentProductL2 += measureTime(detectorL2, mutant);
+
+					if (detectorL2.isFaultDetected(mutant)) {
+						numberOfDetectedMutantsInSPL_L2++;
+					}
+					mutant = null; // Destroy mutant immediately
+				}
+			
             totalExecTimeNanosL2 += execTimeCurrentProductL2;
+            detectorL2 = null; // DESTROY DETECTOR L2
+            System.gc();
+
+            // ----------------------------- LEVEL 3 -----------------------------
+            FaultDetector detectorL3 = generateFaultDetector(productESGFx, 3);
+            long execTimeCurrentProductL3 = 0;
+            localMutantID = 0;
+
+			for (Vertex eventToOmit : productESGFxVertices) {
+				localMutantID++;
+				ESG mutant = eventOmitter.createSingleMutant(productESGFx, eventToOmit, localMutantID);
+
+					// Warmup & Measure
+					runDetector(detectorL3, mutant);
+					execTimeCurrentProductL3 += measureTime(detectorL3, mutant);
+
+					if (detectorL3.isFaultDetected(mutant)) {
+						numberOfDetectedMutantsInSPL_L3++;
+					}
+					mutant = null; // Destroy mutant immediately
+				}
+			
             totalExecTimeNanosL3 += execTimeCurrentProductL3;
+            detectorL3 = null; // DESTROY DETECTOR L3
+            System.gc();
+
+            // ----------------------------- LEVEL 4 -----------------------------
+            FaultDetector detectorL4 = generateFaultDetector(productESGFx, 4);
+            long execTimeCurrentProductL4 = 0;
+            localMutantID = 0;
+
+			for (Vertex eventToOmit : productESGFxVertices) {
+				localMutantID++;
+				ESG mutant = eventOmitter.createSingleMutant(productESGFx, eventToOmit, localMutantID);
+
+					// Warmup & Measure
+					runDetector(detectorL4, mutant);
+					execTimeCurrentProductL4 += measureTime(detectorL4, mutant);
+
+					if (detectorL4.isFaultDetected(mutant)) {
+						numberOfDetectedMutantsInSPL_L4++;
+					}
+					mutant = null; // Destroy mutant immediately
+				}
+			
             totalExecTimeNanosL4 += execTimeCurrentProductL4;
+            detectorL4 = null; // DESTROY DETECTOR L4
+            System.gc();
 
-            int numberOfDetectedPerProductL0 = numberOfDetectedValidPerProductL0 + numberOfDetectedInValidPerProductL0;
-            int numberOfDetectedPerProductL1 = numberOfDetectedValidPerProductL1 + numberOfDetectedInValidPerProductL1;
-            int numberOfDetectedPerProductL2 = numberOfDetectedValidPerProductL2 + numberOfDetectedInValidPerProductL2;
-            int numberOfDetectedPerProductL3 = numberOfDetectedValidPerProductL3 + numberOfDetectedInValidPerProductL3;
-            int numberOfDetectedPerProductL4 = numberOfDetectedValidPerProductL4 + numberOfDetectedInValidPerProductL4;
-
-            numberOfDetectedMutantsInSPL_L0 += numberOfDetectedPerProductL0;
-            numberOfDetectedMutantsInSPL_L1 += numberOfDetectedPerProductL1;
-            numberOfDetectedMutantsInSPL_L2 += numberOfDetectedPerProductL2;
-            numberOfDetectedMutantsInSPL_L3 += numberOfDetectedPerProductL3;
-            numberOfDetectedMutantsInSPL_L4 += numberOfDetectedPerProductL4;
+            // -------------------------------------------------------------------
+            
+            
+            
+            // Clean up product level objects
+            productESGFx = null;
+            eventOmitter = null;
+            
+            // Force GC periodically
+            if (handledProducts % 25 == 0) {
+                System.gc();
+            }
 
         } // endwhile
 
-        double percentageInSPLL0 = percentageOfFaultDetection(numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L0);
-        double percentageInSPLL1 = percentageOfFaultDetection(numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L1);
-        double percentageInSPLL2 = percentageOfFaultDetection(numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L2);
-        double percentageInSPLL3 = percentageOfFaultDetection(numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L3);
-        double percentageInSPLL4 = percentageOfFaultDetection(numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L4);
+        // --- Calculate Stats & Record Results ---
 
-        double totalSecondsL0 = totalExecTimeNanosL0 / 1_000_000_000.0;
-        double totalSecondsL1 = totalExecTimeNanosL1 / 1_000_000_000.0;
-        double totalSecondsL2 = totalExecTimeNanosL2 / 1_000_000_000.0;
-        double totalSecondsL3 = totalExecTimeNanosL3 / 1_000_000_000.0;
-        double totalSecondsL4 = totalExecTimeNanosL4 / 1_000_000_000.0;
+		double percentageInSPLL0 = percentageOfFaultDetection(numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L0);
+		double percentageInSPLL1 = percentageOfFaultDetection(numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L1);
+		double percentageInSPLL2 = percentageOfFaultDetection(numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L2);
+		double percentageInSPLL3 = percentageOfFaultDetection(numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L3);
+		double percentageInSPLL4 = percentageOfFaultDetection(numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L4);
 
-        double killedPerSecondL0 = (totalSecondsL0 > 0) ? numberOfDetectedMutantsInSPL_L0 / totalSecondsL0 : 0;
-        double killedPerSecondL1 = (totalSecondsL1 > 0) ? numberOfDetectedMutantsInSPL_L1 / totalSecondsL1 : 0;
-        double killedPerSecondL2 = (totalSecondsL2 > 0) ? numberOfDetectedMutantsInSPL_L2 / totalSecondsL2 : 0;
-        double killedPerSecondL3 = (totalSecondsL3 > 0) ? numberOfDetectedMutantsInSPL_L3 / totalSecondsL3 : 0;
-        double killedPerSecondL4 = (totalSecondsL4 > 0) ? numberOfDetectedMutantsInSPL_L4 / totalSecondsL4 : 0;
+		double totalSecondsL0 = totalExecTimeNanosL0 / 1_000_000_000.0;
+		double totalSecondsL1 = totalExecTimeNanosL1 / 1_000_000_000.0;
+		double totalSecondsL2 = totalExecTimeNanosL2 / 1_000_000_000.0;
+		double totalSecondsL3 = totalExecTimeNanosL3 / 1_000_000_000.0;
+		double totalSecondsL4 = totalExecTimeNanosL4 / 1_000_000_000.0;
 
-        if (N_SHARDS > 1) {
-  
-//        	System.out.println("Shard " + CURRENT_SHARD + " Completed.");
-//        	System.out.println("Total Products Processed by this Shard: " + handledProducts); // <--- Add this
-//        	System.out.println("Total Mutants Generated: " + numberOfMutantsInSPL);
-        	
-            String shardResultFilePath = shards_mutantgenerator_eventomitter
-                    + String.format("faultdetection.shard%02d.csv", CURRENT_SHARD);
-            FaultDetectionResultRecorder.writeFaultDetectionResultsForSPL(shardResultFilePath, SPLName,
-                    "Event Omitter", numberOfMutantsInSPL, 
-                    numberOfDetectedMutantsInSPL_L0, percentageInSPLL0, killedPerSecondL0,
-                    numberOfDetectedMutantsInSPL_L1, percentageInSPLL1, killedPerSecondL1,
-                    numberOfDetectedMutantsInSPL_L2, percentageInSPLL2, killedPerSecondL2,
-                    numberOfDetectedMutantsInSPL_L3, percentageInSPLL3, killedPerSecondL3,
-                    numberOfDetectedMutantsInSPL_L4, percentageInSPLL4, killedPerSecondL4);
-        } else {
+		double killedPerSecondL0 = (totalSecondsL0 > 0) ? numberOfDetectedMutantsInSPL_L0 / totalSecondsL0 : 0;
+		double killedPerSecondL1 = (totalSecondsL1 > 0) ? numberOfDetectedMutantsInSPL_L1 / totalSecondsL1 : 0;
+		double killedPerSecondL2 = (totalSecondsL2 > 0) ? numberOfDetectedMutantsInSPL_L2 / totalSecondsL2 : 0;
+		double killedPerSecondL3 = (totalSecondsL3 > 0) ? numberOfDetectedMutantsInSPL_L3 / totalSecondsL3 : 0;
+		double killedPerSecondL4 = (totalSecondsL4 > 0) ? numberOfDetectedMutantsInSPL_L4 / totalSecondsL4 : 0;
 
-            FaultDetectionResultRecorder.writeFaultDetectionResultsForSPL(SPLSummary_FaultDetection, SPLName,
-                    "Event Omitter", numberOfMutantsInSPL, 
-                    numberOfDetectedMutantsInSPL_L0, percentageInSPLL0, killedPerSecondL0,
-                    numberOfDetectedMutantsInSPL_L1, percentageInSPLL1, killedPerSecondL1,
-                    numberOfDetectedMutantsInSPL_L2, percentageInSPLL2, killedPerSecondL2,
-                    numberOfDetectedMutantsInSPL_L3, percentageInSPLL3, killedPerSecondL3,
-                    numberOfDetectedMutantsInSPL_L4, percentageInSPLL4, killedPerSecondL4);
-        }
+		if (N_SHARDS > 1) {
 
-    }
+			String shardResultFilePath = shards_mutantgenerator_eventomitter
+					+ String.format("faultdetection.shard%02d.csv", CURRENT_SHARD);
+			FaultDetectionResultRecorder.writeFaultDetectionResultsForSPL(shardResultFilePath, SPLName, "Event Omitter",
+					numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L0, percentageInSPLL0, killedPerSecondL0,
+					numberOfDetectedMutantsInSPL_L1, percentageInSPLL1, killedPerSecondL1,
+					numberOfDetectedMutantsInSPL_L2, percentageInSPLL2, killedPerSecondL2,
+					numberOfDetectedMutantsInSPL_L3, percentageInSPLL3, killedPerSecondL3,
+					numberOfDetectedMutantsInSPL_L4, percentageInSPLL4, killedPerSecondL4);
+		} else {
+
+			FaultDetectionResultRecorder.writeFaultDetectionResultsForSPL(SPLSummary_FaultDetection, SPLName,
+					"Event Omitter", numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L0, percentageInSPLL0,
+					killedPerSecondL0, numberOfDetectedMutantsInSPL_L1, percentageInSPLL1, killedPerSecondL1,
+					numberOfDetectedMutantsInSPL_L2, percentageInSPLL2, killedPerSecondL2,
+					numberOfDetectedMutantsInSPL_L3, percentageInSPLL3, killedPerSecondL3,
+					numberOfDetectedMutantsInSPL_L4, percentageInSPLL4, killedPerSecondL4);
+		}
+
+	}
 }

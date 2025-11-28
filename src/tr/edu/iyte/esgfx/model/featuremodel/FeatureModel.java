@@ -322,10 +322,10 @@ public class FeatureModel {
 
 			Iterator<Connector> connConstraintsIterator = connConstraints.iterator();
 			while (connConstraintsIterator.hasNext()) {
-				Set<Feature> connFeature = connConstraintsIterator.next().getFeatureSet();
-				Iterator<Feature> connFeatureIterator = connFeature.iterator();
+				Set<Implicant> connFeature = connConstraintsIterator.next().getImplicantSet();
+				Iterator<Implicant> connFeatureIterator = connFeature.iterator();
 				while (connFeatureIterator.hasNext()) {
-					Feature next = connFeatureIterator.next();
+					Implicant next = connFeatureIterator.next();
 //					System.out.println("NEXT " + next.getName());
 //					System.out.println("FEATURE " + feature.getName());
 					if (next.equals(feature)) {

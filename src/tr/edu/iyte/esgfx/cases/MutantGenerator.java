@@ -95,5 +95,20 @@ public class MutantGenerator extends CaseStudyUtilities {
 		}
 
 	}
+	
+    // --- Helper Methods ---
+    protected void runDetector(FaultDetector detector, ESG mutant) {
+        for(int w=0; w<WARMUP_COUNT; w++) detector.isFaultDetected(mutant);
+    }
+    
+    protected long measureTime(FaultDetector detector, ESG mutant) {
+        long sum = 0;
+        for (int i = 0; i < MEASURE_COUNT; i++) {
+            long start = System.nanoTime();
+            detector.isFaultDetected(mutant);
+            sum += (System.nanoTime() - start);
+        }
+        return sum / MEASURE_COUNT;
+    }
 
 }

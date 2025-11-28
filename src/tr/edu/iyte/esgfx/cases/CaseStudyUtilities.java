@@ -123,7 +123,7 @@ public class CaseStudyUtilities {
         shards_mutantgenerator_edgeredirector = caseStudyFolderPath + "shards_mutantgenerator_edgeredirector/";
         shards_mutantgenerator_eventinserter = caseStudyFolderPath + "shards_mutantgenerator_eventinserter/";
         shards_mutantgenerator_eventomitter = caseStudyFolderPath + "shards_mutantgenerator_eventomitter/";
-        shards_productconfigurations = caseStudyFolderPath + "shards_productconfigurations/";
+        shards_productconfigurations = caseStudyFolderPath + "shards_productconfigurations";
         shards_testsequencegeneration = caseStudyFolderPath + "shards_testsequencegeneration/";
         shards_timemeasurement = caseStudyFolderPath + "shards_timemeasurement/" + coverageType + "/";
         
@@ -159,10 +159,13 @@ public class CaseStudyUtilities {
         
         featureModel = MXEFileToESGFxConverter.parseFeatureModel(featureModelFilePath);
         
+//        System.out.println(featureModel);
+        
         ESGFx = MXEFileToESGFxConverter.parseMXEFileForESGFxCreation(ESGFxFilePath);
         
         featureExpressionMapFromFeatureModel = MXEFileToESGFxConverter.getFeatureExpressionMap();
         
+//        printFeatureExpressionMapFromFeatureModel(featureExpressionMapFromFeatureModel);
         return featureExpressionMapFromFeatureModel;
     }
 

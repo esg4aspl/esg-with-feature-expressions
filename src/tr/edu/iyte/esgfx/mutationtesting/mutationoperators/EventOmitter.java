@@ -2,10 +2,14 @@ package tr.edu.iyte.esgfx.mutationtesting.mutationoperators;
 
 import java.util.Iterator;
 
+
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+
+import java.util.List;
+import java.util.ArrayList;
 
 import tr.edu.iyte.esg.model.ESG;
 import tr.edu.iyte.esg.model.Edge;
@@ -47,6 +51,33 @@ public class EventOmitter extends MutationOperator {
 			eventMutantMap.put(vertex.toString(), mutantESGFx);
 		}
 	}
+	
+	public ESG createSingleMutant(ESG originalESGFx, Vertex vertexToOmit, int currentMutantID) {
+
+        ESG mutantESGFx = new ESGFx(originalESGFx);
+        
+        ((ESGFx)mutantESGFx).setID(currentMutantID); 
+        
+        List<Edge> edgesToIterate = new ArrayList<>(mutantESGFx.getEdgeList());
+		Iterator<Edge> edgeIterator = edgesToIterate.iterator();
+
+		while (edgeIterator.hasNext()) {
+			Edge edge = edgeIterator.next();
+			if (edge.getSource().equals(vertexToOmit) || edge.getTarget().equals(vertexToOmit)) {
+				mutantESGFx.removeEdge(edge);
+			}
+		}
+        mutantESGFx.removeVertex(vertexToOmit); 
+        mutantESGFx.removeEvent(vertexToOmit.getEvent());
+        
+//		ESGValidator ESGValidator = new ESGValidator();
+//		if (ESGValidator.isValid(mutantESGFx))
+//			getValidMutantESGFxSet().add(mutantESGFx);
+//		else
+//			getInvalidMutantESGFxSet().add(mutantESGFx);
+
+        return mutantESGFx;
+    }
 
 	private ESG omitEvent(ESG cloneESGFx, Vertex vertex) {
 

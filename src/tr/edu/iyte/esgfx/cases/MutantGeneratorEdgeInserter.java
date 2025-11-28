@@ -39,7 +39,6 @@ public class MutantGeneratorEdgeInserter extends MutantGenerator {
 		int N_SHARDS = Integer.parseInt(System.getenv().getOrDefault("N_SHARDS", "1"));
 		int CURRENT_SHARD = Integer.parseInt(System.getenv().getOrDefault("SHARD", "0"));
 
-		int handledProducts = 0; // Counts the products actually processed by this shard
 		int productID = 0;
 
 		int numberOfMutantsInSPL = 0;
@@ -88,7 +87,6 @@ public class MutantGeneratorEdgeInserter extends MutantGenerator {
 				continue;
 			}
 			
-			handledProducts++;
 
 			// Build product ESG-Fx once
 			String ESGFxName = productName + productID;

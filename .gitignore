@@ -9,8 +9,9 @@ target/
 *.log
 logs/
 dist/
-cases/
+!src/tr/edu/iyte/esgfx/cases/
+!files/Cases/
 guitar-out/
-**/*.EFG
 target/
 .DS_Store
+ElevatorPL/

@@ -65,5 +65,21 @@ public class EdgeOmitter extends MutationOperator {
 //		System.out.println("Mutant ESGFx: " + mutantESGFx.toString());
 		return mutantESGFx;
 	}
+	
+	public ESG createSingleMutant(ESG originalESGFx, Edge edgeToOmit, int currentMutantID) {
+
+        ESG mutantESGFx = new ESGFx(originalESGFx);
+        
+        ((ESGFx)mutantESGFx).setID(currentMutantID);        
+        mutantESGFx.removeEdge(edgeToOmit); 
+        
+//		ESGValidator ESGValidator = new ESGValidator();
+//		if (ESGValidator.isValid(mutantESGFx))
+//			getValidMutantESGFxSet().add(mutantESGFx);
+//		else
+//			getInvalidMutantESGFxSet().add(mutantESGFx);
+
+        return mutantESGFx;
+    }
 
 }

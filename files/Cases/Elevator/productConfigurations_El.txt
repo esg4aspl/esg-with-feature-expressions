@@ -1,0 +1,11 @@
+P000001: <ControlButtons, Alarm, Intercom, MobileKey, ManualDoorControl>:5 features
+P000002: <ControlButtons, Alarm, Intercom, CardReader, ManualDoorControl>:5 features
+P000003: <ControlButtons, Alarm, Intercom, CardReader, ManualDoorControl, ExecutiveFloor>:6 features
+P000004: <ControlButtons, Alarm, Intercom, MobileKey, ExecutiveFloor>:5 features
+P000005: <ControlButtons, Alarm, Intercom, CardReader, ExecutiveFloor>:5 features
+P000006: <ControlButtons, Alarm, Intercom, MobileKey, ManualDoorControl, ExecutiveFloor>:6 features
+P000007: <ControlButtons, Alarm, Intercom, ManualDoorControl, ExecutiveFloor, PinPad>:6 features
+P000008: <ControlButtons, Alarm, Intercom, ManualDoorControl, PinPad>:5 features
+P000009: <ControlButtons, Alarm, Intercom, ExecutiveFloor, PinPad>:5 features
+P000010: <FirefighterService, ControlButtons, Alarm, Intercom>:4 features
+P000011: <FirefighterService, ControlButtons, Alarm, Intercom, ManualDoorControl>:5 features

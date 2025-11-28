@@ -6,20 +6,20 @@ import java.util.Set;
 
 public abstract class Connector implements Implicant {
 	
-	private Set<Feature> featureSet;
+	private Set<Implicant> implicantSet;
 	private final String operator;
 	
 	public Connector(String operator) {
 		this.operator = operator;
-		featureSet = new LinkedHashSet<Feature>();
+		implicantSet = new LinkedHashSet<Implicant>();
 	}
 
-	public Set<Feature> getFeatureSet() {
-		return featureSet;
+	public Set<Implicant> getImplicantSet() {
+		return implicantSet;
 	}
 
-	public void addFeature(Feature feature) {
-		this.featureSet.add(feature);
+	public void addImplicant(Implicant implicant) {
+		this.implicantSet.add(implicant);
 	}
 
 	public String getOperator() {
@@ -28,8 +28,8 @@ public abstract class Connector implements Implicant {
 	
 	public String searchKey() {
 		String str = "";
-		for(Feature feature : featureSet) {
-			String name = feature.getName();
+		for(Implicant implicant : implicantSet) {
+			String name = implicant.implicantToString();
 			str += name.toLowerCase();
 		}
 		return str;
@@ -39,15 +39,15 @@ public abstract class Connector implements Implicant {
 	public String toString() {
 		
 		String str = "";
-		Iterator<Feature> featureSetIterator = featureSet.iterator();
+		Iterator<Implicant> implicantSetIterator = implicantSet.iterator();
 		int i = 0;
 		
-		while(featureSetIterator.hasNext()) {
-			Feature feature = featureSetIterator.next();
-			str += feature.getName();
+		while(implicantSetIterator.hasNext()) {
+			Implicant implicant = implicantSetIterator.next();
+			str += implicant.implicantToString();
 			i++;
 			
-			if(i != featureSet.size()) {
+			if(i != implicantSet.size()) {
 				str += " " + operator + " ";
 			}
 		}

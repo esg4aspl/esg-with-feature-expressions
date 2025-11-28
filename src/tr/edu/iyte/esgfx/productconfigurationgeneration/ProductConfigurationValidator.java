@@ -1,6 +1,7 @@
 package tr.edu.iyte.esgfx.productconfigurationgeneration;
 
 import java.util.Iterator;
+
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -118,7 +119,7 @@ public class ProductConfigurationValidator {
 
 	}
 
-	private boolean hasMandatoryXORFeature(FeatureModel featureModel) {
+	public boolean hasMandatoryXORFeature(FeatureModel featureModel) {
 		boolean hasMandatoryXORFeature = featureModel.getXORFeatures().entrySet().stream()
 				.anyMatch(entry -> entry.getKey().isMandatory());
 
@@ -259,7 +260,7 @@ public class ProductConfigurationValidator {
 		return noneOptionalXORFeatureSelected;
 	}
 
-	private boolean onlyOneOrNoneOptionalXORFeatureIsSelected(Set<Feature> featureSet,
+	public boolean onlyOneOrNoneOptionalXORFeatureIsSelected(Set<Feature> featureSet,
 			Map<String, FeatureExpression> featureExpressionMapFromFeatureModel) {
 
 		boolean onlyOneOrNoneOptionalXORFeatureIsSelected = true;

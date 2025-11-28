@@ -117,8 +117,8 @@ public class MXEFileToESGFxConverter extends MXEFiletoESGConverter {
 				if (!eventName.equals("[") && !eventName.equals("]")) {
 //					System.out.println("unsplitted eventName in file " + eventName);
 					String[] eventNameArray = eventName.split("/");
-					eventName = eventNameArray[0];
-					String featureName = eventNameArray[1];
+					eventName = eventNameArray[0].trim();
+					String featureName = eventNameArray[1].trim();
 //					System.out.println("eventName in file " + eventName);
 //					System.out.println("featureName in file " + featureName);
 					Event event = new EventSimple(ESGFx.getNextEventID(), eventName);

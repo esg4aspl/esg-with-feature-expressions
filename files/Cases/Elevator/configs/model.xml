@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<featureModel>
+	<properties>
+		<graphics key="autolayoutconstraints" value="false"/>
+		<graphics key="legendautolayout" value="true"/>
+		<graphics key="showconstraints" value="true"/>
+		<graphics key="showshortnames" value="false"/>
+		<graphics key="layout" value="horizontal"/>
+		<graphics key="showcollapsedconstraints" value="true"/>
+		<graphics key="legendhidden" value="false"/>
+		<graphics key="layoutalgorithm" value="1"/>
+	</properties>
+	<struct>
+		<and abstract="true" mandatory="true" name="ElevatorSystem">
+			<graphics key="collapsed" value="false"/>
+			<feature mandatory="true" name="ControlButtons"/>
+			<and abstract="true" mandatory="true" name="EmergencyFeatures">
+				<feature mandatory="true" name="Alarm"/>
+				<feature mandatory="true" name="Intercom"/>
+			</and>
+			<feature name="ManualDoorControl"/>
+			<feature name="FirefighterService"/>
+			<alt abstract="true" name="AccessControl">
+				<feature name="CardReader"/>
+				<feature name="MobileKey"/>
+				<feature name="PinPad"/>
+			</alt>
+			<feature name="ExecutiveFloor"/>
+		</and>
+	</struct>
+	<constraints>
+		<rule>
+			<imp>
+				<var>ExecutiveFloor</var>
+				<disj>
+					<var>CardReader</var>
+					<disj>
+						<var>MobileKey</var>
+						<var>PinPad</var>
+					</disj>
+				</disj>
+			</imp>
+		</rule>
+		<rule>
+			<eq>
+				<disj>
+					<var>CardReader</var>
+					<disj>
+						<var>MobileKey</var>
+						<var>PinPad</var>
+					</disj>
+				</disj>
+				<not>
+					<var>FirefighterService</var>
+				</not>
+			</eq>
+		</rule>
+	</constraints>
+</featureModel>

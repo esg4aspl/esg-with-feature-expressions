@@ -40,6 +40,7 @@ PYTHON_SCRIPT_DIR="${PROJECT_ROOT}/scripts"
 CASES=(
   "SodaVendingMachine SVM"
   "eMail eM"
+  "Elevator El"
   "BankAccountv2 BAv2"
   "StudentAttendanceSystem SAS"
   "syngovia Svia"
