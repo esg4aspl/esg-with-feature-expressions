@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<EFG>
+    <Events>
+        <Event>
+            <EventId>e0</EventId>
+            <WidgetId>w0</WidgetId>
+            <Type>SYSTEM INTERACTION</Type>
+            <Initial>false</Initial>
+            <Action>edu.umd.cs.guitar.event.WebToggleCheckbox</Action>
+            <Name>release door open</Name>
+        </Event>
+        <Event>
+            <EventId>e1</EventId>
+            <WidgetId>w1</WidgetId>
+            <Type>SYSTEM INTERACTION</Type>
+            <Initial>false</Initial>
+            <Action>edu.umd.cs.guitar.event.WebToggleCheckbox</Action>
+            <Name>release door close</Name>
+        </Event>
+        <Event>
+            <EventId>e2</EventId>
+            <WidgetId>w2</WidgetId>
+            <Type>SYSTEM INTERACTION</Type>
+            <Initial>false</Initial>
+            <Action>edu.umd.cs.guitar.event.WebToggleCheckbox</Action>
+            <Name>press&amp;hold door close</Name>
+        </Event>
+        <Event>
+            <EventId>e3</EventId>
+            <WidgetId>w3</WidgetId>
+            <Type>SYSTEM INTERACTION</Type>
+            <Initial>false</Initial>
+            <Action>edu.umd.cs.guitar.event.WebToggleCheckbox</Action>
+            <Name>press&amp;hold door open</Name>
+        </Event>
+        <Event>
+            <EventId>e4</EventId>
+            <WidgetId>w4</WidgetId>
+            <Type>SYSTEM INTERACTION</Type>
+            <Initial>true</Initial>
+            <Action>edu.umd.cs.guitar.event.WebToggleCheckbox</Action>
+            <Name>press hall down</Name>
+        </Event>
+        <Event>
+            <EventId>e5</EventId>
+            <WidgetId>w5</WidgetId>
+            <Type>SYSTEM INTERACTION</Type>
+            <Initial>true</Initial>
+            <Action>edu.umd.cs.guitar.event.WebToggleCheckbox</Action>
+            <Name>press hall LobbyUp</Name>
+        </Event>
+        <Event>
+            <EventId>e6</EventId>
+            <WidgetId>w6</WidgetId>
+            <Type>SYSTEM INTERACTION</Type>
+            <Initial>true</Initial>
+            <Action>edu.umd.cs.guitar.event.WebToggleCheckbox</Action>
+            <Name>press hall RoofDown</Name>
+        </Event>
+        <Event>
+            <EventId>e7</EventId>
+            <WidgetId>w7</WidgetId>
+            <Type>SYSTEM INTERACTION</Type>
+            <Initial>true</Initial>
+            <Action>edu.umd.cs.guitar.event.WebToggleCheckbox</Action>
+            <Name>press hall up</Name>
+        </Event>
+        <Event>
+            <EventId>e9</EventId>
+            <WidgetId>w9</WidgetId>
+            <Type>SYSTEM INTERACTION</Type>
+            <Initial>false</Initial>
+            <Action>edu.umd.cs.guitar.event.WebToggleCheckbox</Action>
+            <Name>press cabin lobby</Name>
+        </Event>
+        <Event>
+            <EventId>e11</EventId>
+            <WidgetId>w11</WidgetId>
+            <Type>SYSTEM INTERACTION</Type>
+            <Initial>false</Initial>
+            <Action>edu.umd.cs.guitar.event.WebToggleCheckbox</Action>
+            <Name>press cabin roof</Name>
+        </Event>
+        <Event>
+            <EventId>e12</EventId>
+            <WidgetId>w12</WidgetId>
+            <Type>SYSTEM INTERACTION</Type>
+            <Initial>false</Initial>
+            <Action>edu.umd.cs.guitar.event.WebToggleCheckbox</Action>
+            <Name>press alarm button</Name>
+        </Event>
+        <Event>
+            <EventId>e13</EventId>
+            <WidgetId>w13</WidgetId>
+            <Type>SYSTEM INTERACTION</Type>
+            <Initial>false</Initial>
+            <Action>edu.umd.cs.guitar.event.WebToggleCheckbox</Action>
+            <Name>press intercom</Name>
+        </Event>
+        <Event>
+            <EventId>e14</EventId>
+            <WidgetId>w14</WidgetId>
+            <Type>SYSTEM INTERACTION</Type>
+            <Initial>false</Initial>
+            <Action>edu.umd.cs.guitar.event.WebToggleCheckbox</Action>
+            <Name>press cabin [1-N] floor</Name>
+        </Event>
+    </Events>
+    <EventGraph>
+        <Row>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>2</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+        </Row>
+        <Row>
+            <E>0</E>
+            <E>0</E>
+            <E>2</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+        </Row>
+        <Row>
+            <E>0</E>
+            <E>2</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+        </Row>
+        <Row>
+            <E>2</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+        </Row>
+        <Row>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>2</E>
+            <E>2</E>
+            <E>0</E>
+            <E>0</E>
+            <E>2</E>
+        </Row>
+        <Row>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>2</E>
+            <E>2</E>
+            <E>0</E>
+            <E>0</E>
+            <E>2</E>
+        </Row>
+        <Row>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>2</E>
+            <E>2</E>
+            <E>0</E>
+            <E>0</E>
+            <E>2</E>
+        </Row>
+        <Row>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>2</E>
+            <E>2</E>
+            <E>0</E>
+            <E>0</E>
+            <E>2</E>
+        </Row>
+        <Row>
+            <E>0</E>
+            <E>0</E>
+            <E>2</E>
+            <E>2</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>2</E>
+            <E>2</E>
+            <E>0</E>
+        </Row>
+        <Row>
+            <E>0</E>
+            <E>0</E>
+            <E>2</E>
+            <E>2</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>2</E>
+            <E>2</E>
+            <E>0</E>
+        </Row>
+        <Row>
+            <E>0</E>
+            <E>0</E>
+            <E>2</E>
+            <E>2</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+        </Row>
+        <Row>
+            <E>0</E>
+            <E>0</E>
+            <E>2</E>
+            <E>2</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+        </Row>
+        <Row>
+            <E>0</E>
+            <E>0</E>
+            <E>2</E>
+            <E>2</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>2</E>
+            <E>2</E>
+            <E>0</E>
+        </Row>
+    </EventGraph>
+</EFG>

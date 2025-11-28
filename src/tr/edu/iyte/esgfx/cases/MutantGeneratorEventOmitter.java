@@ -80,12 +80,13 @@ public class MutantGeneratorEventOmitter extends MutantGenerator {
             }
             
             handledProducts++;
-            String ESGFxName = productName + productID;
+            
             
             // 1. Generate Product ESG (Base for all mutants)
-            ESG productESGFx = productESGFxGenerator.generateProductESGFx(productID, ESGFxName, ESGFx);
+            ESG productESGFx = productESGFxGenerator.generateProductESGFx(productID, productName, ESGFx);
             List<Vertex> productESGFxVertices = productESGFx.getRealVertexList();
             
+            //System.out.println("Product ESGFx Events:" + productESGFx.getRealVertexList().toString() + "\n");
             // Global mutant count updates (Add only once per product)
             numberOfMutantsInSPL += productESGFxVertices.size();
             
@@ -105,6 +106,7 @@ public class MutantGeneratorEventOmitter extends MutantGenerator {
 				for (Vertex eventToOmit : productESGFxVertices) {
 					localMutantID++;
 					ESG mutant = eventOmitter.createSingleMutant(productESGFx, eventToOmit, localMutantID);
+					//System.out.println("eventToOmit "+ eventToOmit);
 
 					// Warmup & Measure
 					runDetector(detectorL0, mutant);
@@ -115,11 +117,12 @@ public class MutantGeneratorEventOmitter extends MutantGenerator {
 					}
 					mutant = null; // Destroy mutant immediately
 				}
-			
+
             totalExecTimeNanosL0 += execTimeCurrentProductL0;
             detectorL0 = null; // DESTROY DETECTOR L0 (Free RAM)
             System.gc(); // Suggest GC to clean up L0 mess
-
+			//System.out.println("L0 finished");
+			//System.out.println("----------------------------- LEVEL 1 -----------------------------");
             // ----------------------------- LEVEL 1 -----------------------------
             FaultDetector detectorL1 = generateFaultDetector(productESGFx, 1);
             long execTimeCurrentProductL1 = 0;
@@ -128,7 +131,7 @@ public class MutantGeneratorEventOmitter extends MutantGenerator {
 			for (Vertex eventToOmit : productESGFxVertices) {
 				localMutantID++;
 				ESG mutant = eventOmitter.createSingleMutant(productESGFx, eventToOmit, localMutantID);
-
+				//System.out.println("eventToOmit ".toUpperCase() + eventToOmit);
 					// Warmup & Measure
 					runDetector(detectorL1, mutant);
 					execTimeCurrentProductL1 += measureTime(detectorL1, mutant);
@@ -137,11 +140,15 @@ public class MutantGeneratorEventOmitter extends MutantGenerator {
 						numberOfDetectedMutantsInSPL_L1++;
 					}
 					mutant = null; // Destroy mutant immediately
+					//System.out.println("PASSED");
 				}
+			//System.out.println("S1");
             totalExecTimeNanosL1 += execTimeCurrentProductL1;
+            //System.out.println("S2");
             detectorL1 = null; // DESTROY DETECTOR L1
+            //System.out.println("S3");
             System.gc();
-
+            //System.out.println("L1 finished");
             // ----------------------------- LEVEL 2 -----------------------------
             FaultDetector detectorL2 = generateFaultDetector(productESGFx, 2);
             long execTimeCurrentProductL2 = 0;
@@ -150,7 +157,7 @@ public class MutantGeneratorEventOmitter extends MutantGenerator {
 			for (Vertex eventToOmit : productESGFxVertices) {
 				localMutantID++;
 				ESG mutant = eventOmitter.createSingleMutant(productESGFx, eventToOmit, localMutantID);
-
+				//System.out.println("eventToOmit "+ eventToOmit);
 					// Warmup & Measure
 					runDetector(detectorL2, mutant);
 					execTimeCurrentProductL2 += measureTime(detectorL2, mutant);
@@ -164,7 +171,7 @@ public class MutantGeneratorEventOmitter extends MutantGenerator {
             totalExecTimeNanosL2 += execTimeCurrentProductL2;
             detectorL2 = null; // DESTROY DETECTOR L2
             System.gc();
-
+			//System.out.println("L2 finished");
             // ----------------------------- LEVEL 3 -----------------------------
             FaultDetector detectorL3 = generateFaultDetector(productESGFx, 3);
             long execTimeCurrentProductL3 = 0;
@@ -173,7 +180,7 @@ public class MutantGeneratorEventOmitter extends MutantGenerator {
 			for (Vertex eventToOmit : productESGFxVertices) {
 				localMutantID++;
 				ESG mutant = eventOmitter.createSingleMutant(productESGFx, eventToOmit, localMutantID);
-
+				//System.out.println("eventToOmit "+ eventToOmit);
 					// Warmup & Measure
 					runDetector(detectorL3, mutant);
 					execTimeCurrentProductL3 += measureTime(detectorL3, mutant);
@@ -183,20 +190,20 @@ public class MutantGeneratorEventOmitter extends MutantGenerator {
 					}
 					mutant = null; // Destroy mutant immediately
 				}
-			
+			;
             totalExecTimeNanosL3 += execTimeCurrentProductL3;
             detectorL3 = null; // DESTROY DETECTOR L3
             System.gc();
-
+            //System.out.println("L3 finished");
             // ----------------------------- LEVEL 4 -----------------------------
             FaultDetector detectorL4 = generateFaultDetector(productESGFx, 4);
             long execTimeCurrentProductL4 = 0;
             localMutantID = 0;
-
+            
 			for (Vertex eventToOmit : productESGFxVertices) {
 				localMutantID++;
 				ESG mutant = eventOmitter.createSingleMutant(productESGFx, eventToOmit, localMutantID);
-
+				//System.out.println("eventToOmit "+ eventToOmit);
 					// Warmup & Measure
 					runDetector(detectorL4, mutant);
 					execTimeCurrentProductL4 += measureTime(detectorL4, mutant);
@@ -210,7 +217,7 @@ public class MutantGeneratorEventOmitter extends MutantGenerator {
             totalExecTimeNanosL4 += execTimeCurrentProductL4;
             detectorL4 = null; // DESTROY DETECTOR L4
             System.gc();
-
+			//System.out.println("L4 finished");
             // -------------------------------------------------------------------
             
             

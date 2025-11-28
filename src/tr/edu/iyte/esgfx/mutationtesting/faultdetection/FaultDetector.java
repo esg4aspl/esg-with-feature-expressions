@@ -91,13 +91,13 @@ public class FaultDetector {
 
 		boolean isAllEventsOnTheSequenceAreOmitted = true;
 		for (Vertex vertex : eventSequence.getEventSequence()) {
-//			//System.out.println("(mutantESGFx.getVertexByEventName(vertex.toString()) == null " + (mutantESGFx.getVertexByEventName(vertex.toString()) == null));
-//			//System.out.println("vertex.toString()" + vertex.toString());
+//			////System.out.println("(mutantESGFx.getVertexByEventName(vertex.toString()) == null " + (mutantESGFx.getVertexByEventName(vertex.toString()) == null));
+//			////System.out.println("vertex.toString()" + vertex.toString());
 			isAllEventsOnTheSequenceAreOmitted = isAllEventsOnTheSequenceAreOmitted
 					&& (mutantESGFx.getVertexByEventName(vertex.toString()) == null);
 
 		}
-		//System.out.println("isAllEventsOnTheSequenceAreOmitted: " + isAllEventsOnTheSequenceAreOmitted);
+		////System.out.println("isAllEventsOnTheSequenceAreOmitted: " + isAllEventsOnTheSequenceAreOmitted);
 		return isAllEventsOnTheSequenceAreOmitted;
 	}
 
@@ -117,13 +117,13 @@ public class FaultDetector {
 			}
 		}
 		
-//		System.out.println("Visited Vertices: " + visitedEventsOnMutant.toString());
-//		System.out.println("Inserted Vertices: " + insertedEventSet.toString());
-//		System.out.println("Omitted Vertices: " + omittedEventSet.toString());
-//		
-//		System.out.println("Visited Edges: " + visitedEdgesOnMutant.toString());
-//		System.out.println("Inserted Edges: " + insertedEdgeSet.toString());
-//		System.out.println("Omitted Edges: " + omittedEdgeSet.toString());
+		//System.out.println("Visited Vertices: " + visitedEventsOnMutant.toString());
+		//System.out.println("Inserted Vertices: " + insertedEventSet.toString());
+		//System.out.println("Omitted Vertices: " + omittedEventSet.toString());
+		
+		//System.out.println("Visited Edges: " + visitedEdgesOnMutant.toString());
+		//System.out.println("Inserted Edges: " + insertedEdgeSet.toString());
+		//System.out.println("Omitted Edges: " + omittedEdgeSet.toString());
 
 		boolean isEdgeInserted = isEdgeInserted();
 		boolean isEventInserted = false;
@@ -134,11 +134,11 @@ public class FaultDetector {
 		if (isEdgeInserted) {
 			isEventInserted = isEventInserted();
 			if (isEventInserted) {
-				//System.out.println("Fault Detected: Event Inserted");
-				//System.out.println("Event Inserted: " + insertedEventSet.toString());
+				////System.out.println("Fault Detected: Event Inserted");
+				////System.out.println("Event Inserted: " + insertedEventSet.toString());
 			} else {
-				//System.out.println("Fault Detected: Edge Inserted");
-				//System.out.println("Edge Inserted: " + insertedEdgeSet.toString());
+				////System.out.println("Fault Detected: Edge Inserted");
+				////System.out.println("Edge Inserted: " + insertedEdgeSet.toString());
 			}
 		}
 
@@ -146,11 +146,11 @@ public class FaultDetector {
 		if (isEdgeOmitted) {
 			isEventOmitted = isEventOmitted();
 			if (isEventOmitted) {
-				//System.out.println("Fault Detected: Event Omitted");
-				//System.out.println("Event Omitted: " + omittedEventSet.toString());
+				////System.out.println("Fault Detected: Event Omitted");
+				////System.out.println("Event Omitted: " + omittedEventSet.toString());
 			} else {
-				//System.out.println("Fault Detected: Edge Omitted");
-				//System.out.println("Edge Omitted: " + omittedEdgeSet.toString());
+				////System.out.println("Fault Detected: Edge Omitted");
+				////System.out.println("Edge Omitted: " + omittedEdgeSet.toString());
 			}
 		}
 
@@ -177,8 +177,8 @@ public class FaultDetector {
 
 	private boolean isVisitedEdgeOnEventSequences(String visitedEdge) {
 		for (EventSequence eventSequence : CESsOfESG) {
-			//System.out.println("Visited Edge:" + visitedEdge +".");
-			//System.out.println("Event Sequence: " + eventSequence.toString());
+			////System.out.println("Visited Edge:" + visitedEdge +".");
+			////System.out.println("Event Sequence: " + eventSequence.toString());
 			if (eventSequence.toString().contains(visitedEdge)) {
 				return true;
 			}
@@ -215,9 +215,9 @@ public class FaultDetector {
 	}
 
 	public boolean isVisitedVertexOnEventSequences(String visitedVertex) {
-		//System.out.println("Visited Vertex: " + visitedVertex.toString());
+		////System.out.println("Visited Vertex: " + visitedVertex.toString());
 		for (EventSequence eventSequence : CESsOfESG) {
-			//System.out.println("Event Sequence: " + eventSequence.toString());
+			////System.out.println("Event Sequence: " + eventSequence.toString());
 			if (eventSequence.toString().contains(visitedVertex)) {
 				return true;
 			}
@@ -250,10 +250,10 @@ public class FaultDetector {
 	public boolean isFeatureInserted() {
 		if (isEdgeInserted()) {
 //			if (insertedEdgeSet.size() >= 2) {
-//				//System.out.println("insertedEdgeSet: " + insertedEdgeSet.toString());
+//				////System.out.println("insertedEdgeSet: " + insertedEdgeSet.toString());
 			if (isEventInserted()) {
 				if (insertedEventSet.size() >= 2) {
-//						//System.out.println("insertedEventSet: " + insertedEventSet.toString());
+//						////System.out.println("insertedEventSet: " + insertedEventSet.toString());
 					return true;
 				}
 			}
@@ -277,14 +277,18 @@ public class FaultDetector {
 
 	public boolean traverseESGForEventSequence(ESG mutantESGFx, EventSequence eventSequence) {
 
+		//System.out.println("event sequence 1111" + eventSequence.length());
+		//System.out.println(eventSequence.toString());
 
 		Vertex startVertex = eventSequence.getStartVertex();
 		Vertex startVertexOnMutantESGFx = mutantESGFx.getVertexByEventName(startVertex.toString());
 
+		int start = 0;
 		while (startVertexOnMutantESGFx == null) {
-			//System.out.println("Omitted Event: 1");
+			start++;
+			////System.out.println("Omitted Event: 1");
 			omittedEventSet.add(startVertex.toString());
-			startVertex = eventSequence.successors(startVertex).get(0);
+			startVertex = eventSequence.getEventSequence().get(start);
 			startVertexOnMutantESGFx = (VertexRefinedByFeatureExpression) mutantESGFx
 					.getVertexByEventName(startVertex.toString());
 		}
@@ -295,12 +299,17 @@ public class FaultDetector {
 
 		Vertex endVertex = eventSequence.getEndVertex();
 		Vertex endVertexOnMutantESGFx = mutantESGFx.getVertexByEventName(endVertex.toString());
-
+		
+		int eventSequenceLength = eventSequence.length();
+		//System.out.println("event sequence length " + eventSequence.length());
 		while (endVertexOnMutantESGFx == null) {
+			eventSequenceLength--;
 			//System.out.println("Omitted Event: 2");
 			omittedEventSet.add(endVertex.toString());
-			//System.out.println(eventSequence.predecessors(endVertex).toString());
-			endVertex = eventSequence.predecessors(endVertex).get(eventSequence.predecessors(endVertex).size() - 1);
+			
+			endVertex = eventSequence.getEventSequence().get(eventSequenceLength-1);
+			//System.out.println("endVertex " + endVertex.toString());
+			
 			endVertexOnMutantESGFx = (VertexRefinedByFeatureExpression) mutantESGFx
 					.getVertexByEventName(endVertex.toString());
 		}
@@ -308,8 +317,10 @@ public class FaultDetector {
 		//System.out.println("endVertexOnMutantESGFx " + endVertexOnMutantESGFx);
 
 		boolean isAllVerticesReachingEndVertex = true;
-
+		//System.out.println("Event Sequence " + eventSequence);
 		for (Vertex vertex : eventSequence.getEventSequence()) {
+			
+			
 			if (!vertex.equals(startVertex)) {
 				traverseESGFromSourceToTarget(mutantESGFx, startVertexOnMutantESGFx, vertex);
 				visitedEventsOnMutant.add(startVertexOnMutantESGFx.toString());
@@ -353,32 +364,32 @@ public class FaultDetector {
 			
 			
 //			List<Vertex> adjacencyList = ((ESGFx) mutantESGFx).getAdjacencyList(source);
-//			System.out.println(source.toString());
+			
 			List<Vertex> adjacencyListFromEventSequences = getAdjacentVerticesOfVertex(CESsOfESG, source);
-//			System.out.println("adjacencyListFromEventSequences " + adjacencyListFromEventSequences.toString());
+			//System.out.println((source.toString() + " adjacencyListFromEventSequences " + adjacencyListFromEventSequences.toString()));
 			List<Vertex> adjacencyList = ((ESGFx) mutantESGFx).getAdjacencyList(source);
 			adjacencyList.retainAll(adjacencyListFromEventSequences);
-//			System.out.println(source.toString() + " adjacencyList " + adjacencyList.toString());
+			//System.out.println(source.toString() + " adjacencyList " + adjacencyList.toString());
 
 			for (Vertex adjacent : adjacencyList) {
 				if (!adjacent.isPseudoEndVertex()) {
-					//System.out.println("Adjacent " + adjacent.toString());
+					////System.out.println("Adjacent " + adjacent.toString());
 //					 If the adjacent vertex has not been visited, add it to the queue
 					if (!visitedVertices.contains(adjacent)) {
 						visitedVertices.add(adjacent);
 						queue.add(adjacent);
 						String edgeString = "<" + source.toString() + ", " + adjacent.toString() + ">";
-						//System.out.println("edgeString " + edgeString);
+						////System.out.println("edgeString " + edgeString);
 
 						Vertex vertexOnMutant = mutantESGFx.getVertexByEventName(adjacent.toString());
 
 						boolean isVertexNull = vertexOnMutant == null;
-						//System.out.println("isVertexNull " + isVertexNull);
+						////System.out.println("isVertexNull " + isVertexNull);
 						if (isVertexNull) {
-							//System.out.println("Omitted Event: 4");
+							////System.out.println("Omitted Event: 4");
 							omittedEventSet.add(adjacent.toString());
 						} else {
-							//System.out.println("Visited Event: " + adjacent.toString());
+							////System.out.println("Visited Event: " + adjacent.toString());
 							visitedEventsOnMutant.add(adjacent.toString());
 						}
 
@@ -401,7 +412,7 @@ public class FaultDetector {
 			List<Vertex> eventSequenceAL = new ArrayList<Vertex>(eventSequence.getEventSequence());
 
 			int index = eventSequenceAL.indexOf(vertex);
-//			System.out.println(vertex.toString() + " " + index);
+//			//System.out.println(vertex.toString() + " " + index);
 
 			if (index > -1 && index < (eventSequenceAL.size() - 1)) {
 				Vertex adjacent = eventSequenceAL.get(index + 1);

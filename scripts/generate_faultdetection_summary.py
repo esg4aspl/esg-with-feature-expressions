@@ -11,9 +11,10 @@ def generate_fault_detection_summary():
     output_file = os.path.join(base_dir, "SPLFaultDetectionSummary.csv")
 
     target_folders = [
-        "shards_mutantgenerator_edgeinserter",
+        #"shards_mutantgenerator_edgeinserter",
         "shards_mutantgenerator_edgeomitter",
-        "shards_mutantgenerator_eventinserter",
+        "shards_mutantgenerator_edgeredirector",
+        #"shards_mutantgenerator_eventinserter",
         "shards_mutantgenerator_eventomitter"
     ]
 
