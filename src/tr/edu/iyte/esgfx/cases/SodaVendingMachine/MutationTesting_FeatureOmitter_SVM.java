@@ -1,7 +1,7 @@
 package tr.edu.iyte.esgfx.cases.SodaVendingMachine;
 
 import tr.edu.iyte.esgfx.cases.MutantGeneratorFeatureOmitter;
-import tr.edu.iyte.esgfx.cases.HockertyShirts.CaseStudyUtilities_HS;
+
 import tr.edu.iyte.esgfx.conversion.mxe.FeatureESGSetGenerator;
 
 public class MutationTesting_FeatureOmitter_SVM extends CaseStudyUtilities_SVM {

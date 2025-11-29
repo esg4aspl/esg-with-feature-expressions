@@ -1,5 +1,7 @@
 package tr.edu.iyte.esgfx.model;
 
+import java.util.Objects;
+
 import tr.edu.iyte.esg.model.Event;
 import tr.edu.iyte.esg.model.Vertex;
 import tr.edu.iyte.esgfx.model.featureexpression.FeatureExpression;
@@ -21,7 +23,7 @@ public class VertexRefinedByFeatureExpression extends Vertex {
 	public FeatureExpression getFeatureExpression() {
 		return featureExpression;
 	}
-	
+
 	@Override
 	public String getShape() {
 		return "\", shape = ellipse";
@@ -38,31 +40,34 @@ public class VertexRefinedByFeatureExpression extends Vertex {
 	}
 
 	@Override
-	public boolean equals(Object object) {
+	public int hashCode() {
 
-		if (object instanceof VertexRefinedByFeatureExpression) {
-			VertexRefinedByFeatureExpression toCompare = (VertexRefinedByFeatureExpression) object;
-			if (this.toString().equals(toCompare.toString())) {
-				return true;
-			} else
-				return false;
-		}
-
-		return false;
-
+		return Objects.hash(this.getEvent().getName(), this.featureExpression);
 	}
-	
+
+	@Override
+	public boolean equals(Object object) {
+	    if (this == object) return true;
+	    if (!(object instanceof VertexRefinedByFeatureExpression)) return false;
+	    
+	    VertexRefinedByFeatureExpression other = (VertexRefinedByFeatureExpression) object;
+
+	    boolean eventMatch = Objects.equals(this.getEvent().getName(), other.getEvent().getName());
+
+	    boolean featureMatch = Objects.equals(this.featureExpression, other.featureExpression);
+
+	    return eventMatch && featureMatch;
+	}
+
 	public String toString() {
-		
+
 		if (this.getEvent().getName().trim().equals("[") || this.getEvent().getName().trim().equals("]")) {
 			return super.toString();
-		}else {
+		} else {
 			String str = this.getEvent().getName().trim() + "/" + this.featureExpression.toString();
 			return str;
 		}
 
 	}
-
-
 
 }

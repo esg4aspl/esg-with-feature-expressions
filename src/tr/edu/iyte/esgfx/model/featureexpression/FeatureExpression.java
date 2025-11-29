@@ -48,14 +48,24 @@ public class FeatureExpression {
 		return feature.getName(); //+ " " + truthValue;
 	}
 	
+	@Override
 	public boolean equals(Object object) {
-		if(object instanceof FeatureExpression) {
-			if(this.toString().equals(object.toString()))
-				return true;
-			else
-				return false;
-		}else
-			return false;
+        
+		if (this == object) return true;
+		if (object == null || getClass() != object.getClass()) return false;
+		
+        
+		FeatureExpression other = (FeatureExpression) object;
+		
+       
+		if (feature == null) return other.feature == null;
+        
+		return feature.getName().equals(other.feature.getName());
+	}
+	
+	@Override
+	public int hashCode() {
+		return (feature != null) ? feature.getName().hashCode() : 0;
 	}
 
 }

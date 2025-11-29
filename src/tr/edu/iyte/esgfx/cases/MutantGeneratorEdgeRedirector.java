@@ -2,10 +2,6 @@ package tr.edu.iyte.esgfx.cases;
 
 import java.util.List;
 
-import java.util.Set;
-import java.util.Map.Entry;
-import java.util.LinkedHashSet;
-
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.SolverFactory;
 import org.sat4j.specs.ISolver;
@@ -17,9 +13,8 @@ import tr.edu.iyte.esg.model.Vertex;
 import tr.edu.iyte.esgfx.model.featureexpression.FeatureExpression;
 
 import tr.edu.iyte.esgfx.mutationtesting.faultdetection.FaultDetector;
-import tr.edu.iyte.esgfx.mutationtesting.mutationoperators.EdgeOmitter;
+
 import tr.edu.iyte.esgfx.mutationtesting.mutationoperators.EdgeRedirector;
-import tr.edu.iyte.esgfx.mutationtesting.mutationoperators.MutationOperator;
 import tr.edu.iyte.esgfx.mutationtesting.resultutils.FaultDetectionResultRecorder;
 import tr.edu.iyte.esgfx.productconfigurationgeneration.SATSolverGenerationFromFeatureModel;
 import tr.edu.iyte.esgfx.productmodelgeneration.ProductESGFxGenerator;

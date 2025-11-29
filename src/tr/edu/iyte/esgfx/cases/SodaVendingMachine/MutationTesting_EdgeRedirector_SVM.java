@@ -7,7 +7,7 @@ public class MutationTesting_EdgeRedirector_SVM extends CaseStudyUtilities_SVM {
 	public static void main(String[] args) throws Exception {
 
 		
-		initializeFilePaths();
+		CaseStudyUtilities_SVM.initializeFilePaths();
 		
 		MutantGeneratorEdgeRedirector edgeRedirectorMutantGenerator = new MutantGeneratorEdgeRedirector();
 		edgeRedirectorMutantGenerator.generateMutants();

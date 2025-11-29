@@ -82,6 +82,8 @@ public class MutantGeneratorEdgeOmitter extends MutantGenerator {
             List<Edge> productESGFxEdges = productESGFx.getRealEdgeList();
             numberOfMutantsInSPL += productESGFxEdges.size();
             
+//            System.out.println(productESGFx.toString());
+            
             EdgeOmitter edgeOmitter = new EdgeOmitter();
             int localMutantID = 0;
 
@@ -105,8 +107,12 @@ public class MutantGeneratorEdgeOmitter extends MutantGenerator {
                 execTimeCurrentProductL0 += measureTime(detectorL0, mutant);
                 
                 if (detectorL0.isFaultDetected(mutant)) {
+//                	System.out.println("DETECTED");
                     numberOfDetectedMutantsInSPL_L0++;
                 }
+//                else
+//                	System.out.println("NOT DETECTED");
+                
                 mutant = null; // Destroy mutant immediately
             }
             totalExecTimeNanosL0 += execTimeCurrentProductL0;
@@ -121,13 +127,16 @@ public class MutantGeneratorEdgeOmitter extends MutantGenerator {
             for (Edge edge : productESGFxEdges) {
                 localMutantID++;
                 ESG mutant = edgeOmitter.createSingleMutant(productESGFx, edge, localMutantID);
-                
+//                System.out.println("mutation element " + edge.toString());
                 runDetector(detectorL1, mutant);
                 execTimeCurrentProductL1 += measureTime(detectorL1, mutant);
                 
                 if (detectorL1.isFaultDetected(mutant)) {
+//                	System.out.println("DETECTED");
                     numberOfDetectedMutantsInSPL_L1++;
                 }
+//                else
+//                	System.out.println("NOT DETECTED");
                 mutant = null;
             }
             totalExecTimeNanosL1 += execTimeCurrentProductL1;
@@ -147,8 +156,11 @@ public class MutantGeneratorEdgeOmitter extends MutantGenerator {
                 execTimeCurrentProductL2 += measureTime(detectorL2, mutant);
                 
                 if (detectorL2.isFaultDetected(mutant)) {
+//                	System.out.println("DETECTED");
                     numberOfDetectedMutantsInSPL_L2++;
                 }
+//                else
+//                	System.out.println("NOT DETECTED");
                 mutant = null;
             }
             totalExecTimeNanosL2 += execTimeCurrentProductL2;
@@ -169,8 +181,11 @@ public class MutantGeneratorEdgeOmitter extends MutantGenerator {
                 execTimeCurrentProductL3 += measureTime(detectorL3, mutant);
                 
                 if (detectorL3.isFaultDetected(mutant)) {
+//                	System.out.println("DETECTED");
                     numberOfDetectedMutantsInSPL_L3++;
                 }
+//                else
+//                	System.out.println("NOT DETECTED");
                 mutant = null;
             }
             totalExecTimeNanosL3 += execTimeCurrentProductL3;
@@ -190,8 +205,11 @@ public class MutantGeneratorEdgeOmitter extends MutantGenerator {
                 execTimeCurrentProductL4 += measureTime(detectorL4, mutant);
                 
                 if (detectorL4.isFaultDetected(mutant)) {
+//                	System.out.println("DETECTED");
                     numberOfDetectedMutantsInSPL_L4++;
                 }
+//                else
+//                	System.out.println("NOT DETECTED");
                 mutant = null;
             }
             totalExecTimeNanosL4 += execTimeCurrentProductL4;
