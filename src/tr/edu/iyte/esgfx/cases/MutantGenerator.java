@@ -28,7 +28,7 @@ public class MutantGenerator extends CaseStudyUtilities {
 	protected long totalExecTimeNanosL4 = 0;
 	
 	
-	protected final int MEASURE_COUNT = 10;
+	protected final int MEASURE_COUNT = 2;
 
 	protected final int WARMUP_COUNT = 1;
 
