@@ -7,8 +7,8 @@
 # Location: esg-with-feature-expressions/bashscripts/
 # ============================================================
 
-# Configuration: Repeat execution 10 times to ensure statistical significance
-REPEAT_COUNT=10
+# Configuration: Repeat execution 5 times to ensure statistical significance
+REPEAT_COUNT=5 
 
 # --- 1. CLUSTER & SHARD CONFIGURATION ---
 
