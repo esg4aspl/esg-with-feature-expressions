@@ -22,88 +22,99 @@ import tr.edu.iyte.esgfx.productmodelgeneration.ProductESGFxGenerator;
 public class MutantGeneratorEdgeRedirector extends MutantGenerator {
 
 	public void generateMutants() throws Exception {
-	    
-	        featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFilePath,
-	                ESGFxFilePath);
-	        List<FeatureExpression> featureExpressionList = getFeatureExpressionList(featureExpressionMapFromFeatureModel);
 
-	        SATSolverGenerationFromFeatureModel sat = new SATSolverGenerationFromFeatureModel();
-	        ISolver solver = new ModelIterator(SolverFactory.newDefault());
-	        sat.addSATClauses(solver, featureModel, featureExpressionMapFromFeatureModel, featureExpressionList);
+		featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFilePath,
+				ESGFxFilePath);
+		List<FeatureExpression> featureExpressionList = getFeatureExpressionList(featureExpressionMapFromFeatureModel);
 
-	        int N_SHARDS = Integer.parseInt(System.getenv().getOrDefault("N_SHARDS", "1"));
-	        int CURRENT_SHARD = Integer.parseInt(System.getenv().getOrDefault("SHARD", "0"));
+		SATSolverGenerationFromFeatureModel sat = new SATSolverGenerationFromFeatureModel();
+		ISolver solver = new ModelIterator(SolverFactory.newDefault());
+		sat.addSATClauses(solver, featureModel, featureExpressionMapFromFeatureModel, featureExpressionList);
 
-	        int handledProducts = 0;
-	        int productID = 0;
-	        int numberOfMutantsInSPL = 0;
+		int N_SHARDS = Integer.parseInt(System.getenv().getOrDefault("N_SHARDS", "1"));
+		int CURRENT_SHARD = Integer.parseInt(System.getenv().getOrDefault("SHARD", "0"));
 
-	        // Counters for L0-L4
-	        int numberOfDetectedMutantsInSPL_L0 = 0;
-	        int numberOfDetectedMutantsInSPL_L1 = 0;
-	        int numberOfDetectedMutantsInSPL_L2 = 0;
-	        int numberOfDetectedMutantsInSPL_L3 = 0;
-	        int numberOfDetectedMutantsInSPL_L4 = 0;
+		int handledProducts = 0;
+		int productID = 0;
+		int numberOfMutantsInSPL = 0;
 
-	        // Reusable Generator
-	        ProductESGFxGenerator productESGFxGenerator = new ProductESGFxGenerator();
+		// Counters for L0-L4
+		int numberOfDetectedMutantsInSPL_L0 = 0;
+		int numberOfDetectedMutantsInSPL_L1 = 0;
+		int numberOfDetectedMutantsInSPL_L2 = 0;
+		int numberOfDetectedMutantsInSPL_L3 = 0;
+		int numberOfDetectedMutantsInSPL_L4 = 0;
 
-	        while (solver.isSatisfiable()) {
-	            productID++;
+		// Reusable Generator
+		ProductESGFxGenerator productESGFxGenerator = new ProductESGFxGenerator();
 
-	            String productName = ProductIDUtil.format(productID);
-	            
-	            int[] model = solver.model();
-	            VecInt blockingClause = new VecInt();
-	            for (int i = 0; i < model.length; i++) {
-	                // Update feature expressions based on model
-	                FeatureExpression fe = featureExpressionList.get(i);
-	                if (model[i] > 0) fe.setTruthValue(true);
-	                else fe.setTruthValue(false);
-	                
-	                blockingClause.push(-model[i]);
-	            }
-	            solver.addClause(blockingClause);
+		while (solver.isSatisfiable()) {
+			productID++;
 
-	            boolean isProductConfigurationValid = isProductConfigurationValid(featureModel, featureExpressionMapFromFeatureModel);
+			String productName = ProductIDUtil.format(productID);
 
-	            if (!isProductConfigurationValid) {
-	                // productID--; 
-	                continue;
-	            }
+			int[] model = solver.model();
+			VecInt blockingClause = new VecInt();
+			for (int i = 0; i < model.length; i++) {
+				// Update feature expressions based on model
+				FeatureExpression fe = featureExpressionList.get(i);
+				if (model[i] > 0)
+					fe.setTruthValue(true);
+				else
+					fe.setTruthValue(false);
 
-	            // --- SHARD GATE ---
-	            if (((productID - 1) % N_SHARDS) != CURRENT_SHARD) {
-	                continue;
-	            }
-	            handledProducts++;
-	            // 1. Generate Product ESG (Base for all mutants)
-	            ESG productESGFx = productESGFxGenerator.generateProductESGFx(productID, productName, ESGFx);
-	            List<Edge> productESGFxEdges = productESGFx.getRealEdgeList();
-	            List<Vertex> productESGFxVertices = productESGFx.getRealVertexList();
-	            
-	            // Global mutant count updates (Add only once per product)
-	            numberOfMutantsInSPL += productESGFxEdges.size() * productESGFxVertices.size();
-	            
-	            EdgeRedirector edgeRedirector = new EdgeRedirector();
-	            int localMutantID = 0;
+				blockingClause.push(-model[i]);
+			}
+			solver.addClause(blockingClause);
 
-	            // =================================================================================
-	            // RAM OPTIMIZATION: LOOP INVERSION STRATEGY
-	            // We create detectors ONE BY ONE, use them, and destroy them immediately.
-	            // =================================================================================
+			boolean isProductConfigurationValid = isProductConfigurationValid(featureModel,
+					featureExpressionMapFromFeatureModel);
 
-	            // ----------------------------- LEVEL 0 -----------------------------
-	            FaultDetector detectorL0 = generateFaultDetector(productESGFx, 0);
-	            long execTimeCurrentProductL0 = 0;
-	            localMutantID = 0; // Reset ID for consistent iteration
+			if (!isProductConfigurationValid) {
+				// productID--;
+				continue;
+			}
 
-				for (Edge edgeToRedirect : productESGFxEdges) {
+			// --- SHARD GATE ---
+			if (((productID - 1) % N_SHARDS) != CURRENT_SHARD) {
+				continue;
+			}
+			handledProducts++;
+			// 1. Generate Product ESG (Base for all mutants)
+			ESG productESGFx = productESGFxGenerator.generateProductESGFx(productID, productName, ESGFx);
+			List<Edge> productESGFxEdges = productESGFx.getRealEdgeList();
+			List<Vertex> productESGFxVertices = productESGFx.getRealVertexList();
+
+			// Global mutant count updates (Add only once per product)
+			numberOfMutantsInSPL += productESGFxEdges.size() * productESGFxVertices.size();
+
+			EdgeRedirector edgeRedirector = new EdgeRedirector();
+			int localMutantID = 0;
+
+			// =================================================================================
+			// RAM OPTIMIZATION: LOOP INVERSION STRATEGY
+			// We create detectors ONE BY ONE, use them, and destroy them immediately.
+			// =================================================================================
+
+			// ----------------------------- LEVEL 0 -----------------------------
+			FaultDetector detectorL0 = generateFaultDetector(productESGFx, 0);
+			long execTimeCurrentProductL0 = 0;
+			localMutantID = 0; // Reset ID for consistent iteration
+
+			for (int i = 0; i < productESGFxEdges.size(); i++) {
+
+				Edge edgeToRedirect = productESGFxEdges.get(i);
+				Vertex source = edgeToRedirect.getSource();
+				Vertex oldTarget = edgeToRedirect.getTarget();
+
+				for (int j = 0; j < productESGFxVertices.size(); j++) {
+					Vertex newTarget = productESGFxVertices.get(j);
+
 					localMutantID++;
-					for (Vertex newTarget : productESGFxVertices) {
 
-						ESG mutant = edgeRedirector.createSingleMutant(productESGFx, edgeToRedirect.getSource(),
-								edgeToRedirect.getTarget(), newTarget,localMutantID);
+					ESG mutant = null;
+					if (!newTarget.equals(oldTarget)) {
+						mutant = edgeRedirector.createSingleMutant(productESGFx, i, j, localMutantID);
 
 						// Warmup & Measure
 						runDetector(detectorL0, mutant);
@@ -112,24 +123,34 @@ public class MutantGeneratorEdgeRedirector extends MutantGenerator {
 						if (detectorL0.isFaultDetected(mutant)) {
 							numberOfDetectedMutantsInSPL_L0++;
 						}
-						mutant = null; // Destroy mutant immediately
 					}
+
+					mutant = null; // Destroy mutant immediately
 				}
-	            totalExecTimeNanosL0 += execTimeCurrentProductL0;
-	            detectorL0 = null; // DESTROY DETECTOR L0 (Free RAM)
-	            System.gc(); // Suggest GC to clean up L0 mess
+			}
+			totalExecTimeNanosL0 += execTimeCurrentProductL0;
+			detectorL0 = null; // DESTROY DETECTOR L0 (Free RAM)
+			System.gc(); // Suggest GC to clean up L0 mess
 
-	            // ----------------------------- LEVEL 1 -----------------------------
-	            FaultDetector detectorL1 = generateFaultDetector(productESGFx, 1);
-	            long execTimeCurrentProductL1 = 0;
-	            localMutantID = 0;
+			// ----------------------------- LEVEL 1 -----------------------------
+			FaultDetector detectorL1 = generateFaultDetector(productESGFx, 1);
+			long execTimeCurrentProductL1 = 0;
+			localMutantID = 0;
 
-				for (Edge edgeToRedirect : productESGFxEdges) {
+			for (int i = 0; i < productESGFxEdges.size(); i++) {
+
+				Edge edgeToRedirect = productESGFxEdges.get(i);
+				Vertex source = edgeToRedirect.getSource();
+				Vertex oldTarget = edgeToRedirect.getTarget();
+
+				for (int j = 0; j < productESGFxVertices.size(); j++) {
+					Vertex newTarget = productESGFxVertices.get(j);
+
 					localMutantID++;
-					for (Vertex newTarget : productESGFxVertices) {
 
-						ESG mutant = edgeRedirector.createSingleMutant(productESGFx, edgeToRedirect.getSource(),
-								edgeToRedirect.getTarget(), newTarget,localMutantID);
+					ESG mutant = null;
+					if (!newTarget.equals(oldTarget)) {
+						mutant = edgeRedirector.createSingleMutant(productESGFx, i, j, localMutantID);
 
 						// Warmup & Measure
 						runDetector(detectorL1, mutant);
@@ -138,24 +159,32 @@ public class MutantGeneratorEdgeRedirector extends MutantGenerator {
 						if (detectorL1.isFaultDetected(mutant)) {
 							numberOfDetectedMutantsInSPL_L1++;
 						}
-						mutant = null; // Destroy mutant immediately
 					}
+					mutant = null; // Destroy mutant immediately
 				}
-	            totalExecTimeNanosL1 += execTimeCurrentProductL1;
-	            detectorL1 = null; // DESTROY DETECTOR L1
-	            System.gc();
+			}
+			totalExecTimeNanosL1 += execTimeCurrentProductL1;
+			detectorL1 = null; // DESTROY DETECTOR L1
+			System.gc();
 
-	            // ----------------------------- LEVEL 2 -----------------------------
-	            FaultDetector detectorL2 = generateFaultDetector(productESGFx, 2);
-	            long execTimeCurrentProductL2 = 0;
-	            localMutantID = 0;
+			// ----------------------------- LEVEL 2 -----------------------------
+			FaultDetector detectorL2 = generateFaultDetector(productESGFx, 2);
+			long execTimeCurrentProductL2 = 0;
+			localMutantID = 0;
 
-				for (Edge edgeToRedirect : productESGFxEdges) {
+			for (int i = 0; i < productESGFxEdges.size(); i++) {
+
+				Edge edgeToRedirect = productESGFxEdges.get(i);
+				Vertex oldTarget = edgeToRedirect.getTarget();
+
+				for (int j = 0; j < productESGFxVertices.size(); j++) {
+					Vertex newTarget = productESGFxVertices.get(j);
+
 					localMutantID++;
-					for (Vertex newTarget : productESGFxVertices) {
 
-						ESG mutant = edgeRedirector.createSingleMutant(productESGFx, edgeToRedirect.getSource(),
-								edgeToRedirect.getTarget(), newTarget,localMutantID);
+					ESG mutant = null;
+					if (!newTarget.equals(oldTarget)) {
+						mutant = edgeRedirector.createSingleMutant(productESGFx, i, j, localMutantID);
 
 						// Warmup & Measure
 						runDetector(detectorL2, mutant);
@@ -164,25 +193,33 @@ public class MutantGeneratorEdgeRedirector extends MutantGenerator {
 						if (detectorL2.isFaultDetected(mutant)) {
 							numberOfDetectedMutantsInSPL_L2++;
 						}
-						mutant = null; // Destroy mutant immediately
 					}
+					mutant = null; // Destroy mutant immediately
+
 				}
-	            totalExecTimeNanosL2 += execTimeCurrentProductL2;
-	            detectorL2 = null; // DESTROY DETECTOR L2
-	            System.gc();
+			}
+			totalExecTimeNanosL2 += execTimeCurrentProductL2;
+			detectorL2 = null; // DESTROY DETECTOR L2
+			System.gc();
 
-	            // ----------------------------- LEVEL 3 -----------------------------
-	            FaultDetector detectorL3 = generateFaultDetector(productESGFx, 3);
-	            long execTimeCurrentProductL3 = 0;
-	            localMutantID = 0;
+			// ----------------------------- LEVEL 3 -----------------------------
+			FaultDetector detectorL3 = generateFaultDetector(productESGFx, 3);
+			long execTimeCurrentProductL3 = 0;
+			localMutantID = 0;
 
-				for (Edge edgeToRedirect : productESGFxEdges) {
+			for (int i = 0; i < productESGFxEdges.size(); i++) {
+
+				Edge edgeToRedirect = productESGFxEdges.get(i);
+				Vertex oldTarget = edgeToRedirect.getTarget();
+
+				for (int j = 0; j < productESGFxVertices.size(); j++) {
+					Vertex newTarget = productESGFxVertices.get(j);
+
 					localMutantID++;
-					
-					for (Vertex newTarget : productESGFxVertices) {
 
-						ESG mutant = edgeRedirector.createSingleMutant(productESGFx, edgeToRedirect.getSource(),
-								edgeToRedirect.getTarget(), newTarget,localMutantID);
+					ESG mutant = null;
+					if (!newTarget.equals(oldTarget)) {
+						mutant = edgeRedirector.createSingleMutant(productESGFx, i, j, localMutantID);
 
 						// Warmup & Measure
 						runDetector(detectorL3, mutant);
@@ -191,24 +228,32 @@ public class MutantGeneratorEdgeRedirector extends MutantGenerator {
 						if (detectorL3.isFaultDetected(mutant)) {
 							numberOfDetectedMutantsInSPL_L3++;
 						}
-						mutant = null; // Destroy mutant immediately
 					}
+					mutant = null; // Destroy mutant immediately
 				}
-	            totalExecTimeNanosL3 += execTimeCurrentProductL3;
-	            detectorL3 = null; // DESTROY DETECTOR L3
-	            System.gc();
+			}
+			totalExecTimeNanosL3 += execTimeCurrentProductL3;
+			detectorL3 = null; // DESTROY DETECTOR L3
+			System.gc();
 
-	            // ----------------------------- LEVEL 4 -----------------------------
-	            FaultDetector detectorL4 = generateFaultDetector(productESGFx, 4);
-	            long execTimeCurrentProductL4 = 0;
-	            localMutantID = 0;
+			// ----------------------------- LEVEL 4 -----------------------------
+			FaultDetector detectorL4 = generateFaultDetector(productESGFx, 4);
+			long execTimeCurrentProductL4 = 0;
+			localMutantID = 0;
 
-				for (Edge edgeToRedirect : productESGFxEdges) {
+			for (int i = 0; i < productESGFxEdges.size(); i++) {
+
+				Edge edgeToRedirect = productESGFxEdges.get(i);
+				Vertex oldTarget = edgeToRedirect.getTarget();
+
+				for (int j = 0; j < productESGFxVertices.size(); j++) {
+					Vertex newTarget = productESGFxVertices.get(j);
+
 					localMutantID++;
-					for (Vertex newTarget : productESGFxVertices) {
 
-						ESG mutant = edgeRedirector.createSingleMutant(productESGFx, edgeToRedirect.getSource(),
-								edgeToRedirect.getTarget(), newTarget,localMutantID);
+					ESG mutant = null;
+					if (!newTarget.equals(oldTarget)) {
+						mutant = edgeRedirector.createSingleMutant(productESGFx, i, j, localMutantID);
 
 						// Warmup & Measure
 						runDetector(detectorL4, mutant);
@@ -220,42 +265,43 @@ public class MutantGeneratorEdgeRedirector extends MutantGenerator {
 						mutant = null; // Destroy mutant immediately
 					}
 				}
-	            totalExecTimeNanosL4 += execTimeCurrentProductL4;
-	            detectorL4 = null; // DESTROY DETECTOR L4
-	            System.gc();
+			}
+			totalExecTimeNanosL4 += execTimeCurrentProductL4;
+			detectorL4 = null; // DESTROY DETECTOR L4
+			System.gc();
 
-	            // -------------------------------------------------------------------
-	            	            
-	            // Clean up product level objects
-	            productESGFx = null;
-	            edgeRedirector = null;
-	            
-	            // Force GC periodically
-	            if (handledProducts % 25 == 0) {
-	                System.gc();
-	            }
+			// -------------------------------------------------------------------
 
-	        } // endwhile
+			// Clean up product level objects
+			productESGFx = null;
+			edgeRedirector = null;
 
-	        // --- Calculate Stats & Record Results ---
-	        
-	        double percentageInSPLL0 = percentageOfFaultDetection(numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L0);
-	        double percentageInSPLL1 = percentageOfFaultDetection(numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L1);
-	        double percentageInSPLL2 = percentageOfFaultDetection(numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L2);
-	        double percentageInSPLL3 = percentageOfFaultDetection(numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L3);
-	        double percentageInSPLL4 = percentageOfFaultDetection(numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L4);
+			// Force GC periodically
+			if (handledProducts % 25 == 0) {
+				System.gc();
+			}
 
-	        double totalSecondsL0 = totalExecTimeNanosL0 / 1_000_000_000.0;
-	        double totalSecondsL1 = totalExecTimeNanosL1 / 1_000_000_000.0;
-	        double totalSecondsL2 = totalExecTimeNanosL2 / 1_000_000_000.0;
-	        double totalSecondsL3 = totalExecTimeNanosL3 / 1_000_000_000.0;
-	        double totalSecondsL4 = totalExecTimeNanosL4 / 1_000_000_000.0;
+		} // endwhile
 
-	        double killedPerSecondL0 = (totalSecondsL0 > 0) ? numberOfDetectedMutantsInSPL_L0 / totalSecondsL0 : 0;
-	        double killedPerSecondL1 = (totalSecondsL1 > 0) ? numberOfDetectedMutantsInSPL_L1 / totalSecondsL1 : 0;
-	        double killedPerSecondL2 = (totalSecondsL2 > 0) ? numberOfDetectedMutantsInSPL_L2 / totalSecondsL2 : 0;
-	        double killedPerSecondL3 = (totalSecondsL3 > 0) ? numberOfDetectedMutantsInSPL_L3 / totalSecondsL3 : 0;
-	        double killedPerSecondL4 = (totalSecondsL4 > 0) ? numberOfDetectedMutantsInSPL_L4 / totalSecondsL4 : 0;
+		// --- Calculate Stats & Record Results ---
+
+		double percentageInSPLL0 = percentageOfFaultDetection(numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L0);
+		double percentageInSPLL1 = percentageOfFaultDetection(numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L1);
+		double percentageInSPLL2 = percentageOfFaultDetection(numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L2);
+		double percentageInSPLL3 = percentageOfFaultDetection(numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L3);
+		double percentageInSPLL4 = percentageOfFaultDetection(numberOfMutantsInSPL, numberOfDetectedMutantsInSPL_L4);
+
+		double totalSecondsL0 = totalExecTimeNanosL0 / 1_000_000_000.0;
+		double totalSecondsL1 = totalExecTimeNanosL1 / 1_000_000_000.0;
+		double totalSecondsL2 = totalExecTimeNanosL2 / 1_000_000_000.0;
+		double totalSecondsL3 = totalExecTimeNanosL3 / 1_000_000_000.0;
+		double totalSecondsL4 = totalExecTimeNanosL4 / 1_000_000_000.0;
+
+		double killedPerSecondL0 = (totalSecondsL0 > 0) ? numberOfDetectedMutantsInSPL_L0 / totalSecondsL0 : 0;
+		double killedPerSecondL1 = (totalSecondsL1 > 0) ? numberOfDetectedMutantsInSPL_L1 / totalSecondsL1 : 0;
+		double killedPerSecondL2 = (totalSecondsL2 > 0) ? numberOfDetectedMutantsInSPL_L2 / totalSecondsL2 : 0;
+		double killedPerSecondL3 = (totalSecondsL3 > 0) ? numberOfDetectedMutantsInSPL_L3 / totalSecondsL3 : 0;
+		double killedPerSecondL4 = (totalSecondsL4 > 0) ? numberOfDetectedMutantsInSPL_L4 / totalSecondsL4 : 0;
 
 		if (N_SHARDS > 1) {
 //        	System.out.println("Shard " + CURRENT_SHARD + " Completed.");

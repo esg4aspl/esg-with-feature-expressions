@@ -71,5 +71,11 @@ public class EulerCycleToTestSequenceGenerator {
 		return CESsOfESG;
 
 	}
+	
+	public void reset() {
+        if (this.eventSequenceFeatureExpressionMap != null) {
+            this.eventSequenceFeatureExpressionMap.clear();
+        }
+    }
 
 }

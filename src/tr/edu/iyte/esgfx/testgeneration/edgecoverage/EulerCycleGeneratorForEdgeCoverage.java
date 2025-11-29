@@ -130,4 +130,10 @@ public class EulerCycleGeneratorForEdgeCoverage {
 	public Map<Vertex, List<Vertex>> getAdjacencyMap() {
 		return adjacencyMap;
 	}
+	
+	public void reset() {
+        if (this.vertexStack != null) this.vertexStack.clear();
+        if (this.eulerCycle != null) this.eulerCycle.clear();
+        if (this.adjacencyMap != null) this.adjacencyMap.clear();
+    }
 }

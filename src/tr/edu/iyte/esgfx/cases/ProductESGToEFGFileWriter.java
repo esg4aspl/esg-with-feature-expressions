@@ -45,34 +45,29 @@ public class ProductESGToEFGFileWriter extends CaseStudyUtilities {
 
 		satSolverGenerationFromFeatureModel.addSATClauses(solver, featureModel, featureExpressionMapFromFeatureModel,
 				featureExpressionList);
+		ProductESGFxGenerator productESGFxGenerator = new ProductESGFxGenerator();
 
 		int productID = 0;
+		int processedCount = 0;
 		while (solver.isSatisfiable()) {
 
 			productID++;
 			// Generate product name
 			String productName = ProductIDUtil.format(productID);
 
-			StringBuilder productConfiguration = new StringBuilder(productName + ": <");
+			
 			int numberOfFeatures = 0;
 
 			int[] model = solver.model();
 			for (int i = 0; i < model.length; i++) {
 				FeatureExpression featureExpression = featureExpressionList.get(i);
-				String featureName = featureExpression.getFeature().getName();
 				if (model[i] > 0) {
 					featureExpression.setTruthValue(true);
-					productConfiguration.append(featureName).append(", ");
 					numberOfFeatures++;
 				} else {
 					featureExpression.setTruthValue(false);
 				}
 			}
-			// Finalize product configuration string
-			if (numberOfFeatures > 0) {
-				productConfiguration.setLength(productConfiguration.length() - 2); // Remove trailing ", "
-			}
-			productConfiguration.append(">:").append(numberOfFeatures).append(" features");
 
 			// Add a clause to block the current model to find the next one
 			VecInt blockingClause = new VecInt();
@@ -90,16 +85,22 @@ public class ProductESGToEFGFileWriter extends CaseStudyUtilities {
 				if (((productID - 1) % N_SHARDS) != CURRENT_SHARD) {
 					continue;
 				}
-
-				ProductESGFxGenerator productESGFxGenerator = new ProductESGFxGenerator();
+				processedCount++;
 				ESG productESGFx = productESGFxGenerator.generateProductESGFx(productID, productName, ESGFx);
 				
 				if (N_SHARDS > 1) {
 					String shardResultFolderPath = shards_efgfilewriter + String.format("shard%02d/", CURRENT_SHARD) + productName;
 					ESGToEFGFileWriter.writeESGToEFGFile(productESGFx, productName , shardResultFolderPath);
+					
 				}else {
 					ESGToEFGFileWriter.writeESGToEFGFile(productESGFx, productName , EFGFolderPath);
+					
 				}
+				
+				productESGFx = null;
+                if (processedCount % 50 == 0) {
+                    System.gc();
+                }
 				
 				
 //				ESGToDOTFileConverter.buildDOTFileFromESG(productESGFx,DOTFolderPath + productName + ".dot");

@@ -80,28 +80,47 @@ public class EdgeRedirector extends MutationOperator {
 		return mutantESGFx;
 	}
 
-	public ESG createSingleMutant(ESG originalESGFx, Vertex source, Vertex oldTarget, Vertex newTarget,
-			int currentMutantID) {
+//	public ESG createSingleMutant(ESG originalESGFx, Vertex source, Vertex oldTarget, Vertex newTarget,
+//			int currentMutantID) {
+//		ESG mutantESGFx = new ESGFx(originalESGFx);
+//		((ESGFx) mutantESGFx).setID(currentMutantID);
+//
+//		Edge edgeToRemove = mutantESGFx.getEdgeBySourceEventNameTargetEventName(source.getEvent().getName(),
+//				oldTarget.getEvent().getName());
+//
+//		if (edgeToRemove != null) {
+//
+//			int ID = edgeToRemove.getID();
+//			mutantESGFx.removeEdge(edgeToRemove);
+//
+//			// 2. Add the new edge (Redirection)
+//			mutantESGFx.addEdge(new EdgeSimple(ID, source, newTarget));
+//
+////				ESGValidator ESGValidator = new ESGValidator();
+////				if (ESGValidator.isValid(mutantESGFx))
+////					getValidMutantESGFxSet().add(mutantESGFx);
+////				else
+////					getInvalidMutantESGFxSet().add(mutantESGFx);
+//		}
+//
+//		return mutantESGFx;
+//	}
+
+	public ESG createSingleMutant(ESG originalESGFx, int edgeToIndex, int newTargetIndex, int currentMutantID) {
+
 		ESG mutantESGFx = new ESGFx(originalESGFx);
 		((ESGFx) mutantESGFx).setID(currentMutantID);
 
-		Edge edgeToRemove = mutantESGFx.getEdgeBySourceEventNameTargetEventName(source.getEvent().getName(),
-				oldTarget.getEvent().getName());
+		Edge edgeToRemove = mutantESGFx.getRealEdgeList().get(edgeToIndex);
 
-		if (edgeToRemove != null) {
+		Vertex newTarget = mutantESGFx.getRealVertexList().get(newTargetIndex);
 
-			int ID = edgeToRemove.getID();
-			mutantESGFx.removeEdge(edgeToRemove);
+		Vertex source = edgeToRemove.getSource();
+		int ID = edgeToRemove.getID();
 
-			// 2. Add the new edge (Redirection)
-			mutantESGFx.addEdge(new EdgeSimple(ID, source, newTarget));
+		mutantESGFx.removeEdge(edgeToRemove);
 
-//				ESGValidator ESGValidator = new ESGValidator();
-//				if (ESGValidator.isValid(mutantESGFx))
-//					getValidMutantESGFxSet().add(mutantESGFx);
-//				else
-//					getInvalidMutantESGFxSet().add(mutantESGFx);
-		}
+		mutantESGFx.addEdge(new EdgeSimple(ID, source, newTarget));
 
 		return mutantESGFx;
 	}

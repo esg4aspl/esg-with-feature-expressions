@@ -32,24 +32,12 @@
 		<rule>
 			<imp>
 				<var>ExecutiveFloor</var>
-				<disj>
-					<var>CardReader</var>
-					<disj>
-						<var>MobileKey</var>
-						<var>PinPad</var>
-					</disj>
-				</disj>
+				<var>AccessControl</var>
 			</imp>
 		</rule>
 		<rule>
 			<eq>
-				<disj>
-					<var>CardReader</var>
-					<disj>
-						<var>MobileKey</var>
-						<var>PinPad</var>
-					</disj>
-				</disj>
+				<var>AccessControl</var>
 				<not>
 					<var>FirefighterService</var>
 				</not>

@@ -343,4 +343,12 @@ public class EulerCycleGeneratorForEventCoverage {
 	public Map<Vertex, List<Vertex>> getAdjacencyMap() {
 		return adjacencyMap;
 	}
+	
+	public void reset() {
+	    this.toCover.clear();
+	    this.featureTruthValueMap.clear();
+	    this.vertexStack.clear();
+	    this.eulerCycle.clear();
+	    this.adjacencyMap.clear();
+	}
 }
