@@ -76,7 +76,7 @@ public class MutantGeneratorEdgeOmitter extends MutantGenerator {
             
             handledProducts++;
 
-            
+//            System.out.println(productID);
             // 1. Generate Product ESG (Base for all mutants)
             ESG productESGFx = productESGFxGenerator.generateProductESGFx(productID,productName , ESGFx);
             List<Edge> productESGFxEdges = productESGFx.getRealEdgeList();
@@ -92,7 +92,7 @@ public class MutantGeneratorEdgeOmitter extends MutantGenerator {
             // We create detectors ONE BY ONE, use them, and destroy them immediately.
             // =================================================================================
 
-            // ----------------------------- LEVEL 0 -----------------------------
+//            System.out.println("----------------------------- LEVEL 0 -----------------------------");
             FaultDetector detectorL0 = generateFaultDetector(productESGFx, 0);
             long execTimeCurrentProductL0 = 0;
             localMutantID = 0; // Reset ID for consistent iteration
@@ -119,7 +119,7 @@ public class MutantGeneratorEdgeOmitter extends MutantGenerator {
             detectorL0 = null; // DESTROY DETECTOR L0 (Free RAM)
             System.gc(); // Suggest GC to clean up L0 mess
 
-            // ----------------------------- LEVEL 1 -----------------------------
+//            System.out.println("----------------------------- LEVEL 1 -----------------------------");
             FaultDetector detectorL1 = generateFaultDetector(productESGFx, 1);
             long execTimeCurrentProductL1 = 0;
             localMutantID = 0;
@@ -143,7 +143,7 @@ public class MutantGeneratorEdgeOmitter extends MutantGenerator {
             detectorL1 = null; // DESTROY DETECTOR L1
             System.gc();
 
-            // ----------------------------- LEVEL 2 -----------------------------
+//            System.out.println("----------------------------- LEVEL 2 -----------------------------");
             FaultDetector detectorL2 = generateFaultDetector(productESGFx, 2);
             long execTimeCurrentProductL2 = 0;
             localMutantID = 0;
@@ -167,7 +167,7 @@ public class MutantGeneratorEdgeOmitter extends MutantGenerator {
             detectorL2 = null; // DESTROY DETECTOR L2
             System.gc();
 
-            // ----------------------------- LEVEL 3 -----------------------------
+//            System.out.println("----------------------------- LEVEL 3 -----------------------------");
             FaultDetector detectorL3 = generateFaultDetector(productESGFx, 3);
             long execTimeCurrentProductL3 = 0;
             localMutantID = 0;
@@ -192,7 +192,7 @@ public class MutantGeneratorEdgeOmitter extends MutantGenerator {
             detectorL3 = null; // DESTROY DETECTOR L3
             System.gc();
 
-            // ----------------------------- LEVEL 4 -----------------------------
+//            System.out.println("----------------------------- LEVEL 4 -----------------------------");
             FaultDetector detectorL4 = generateFaultDetector(productESGFx, 4);
             long execTimeCurrentProductL4 = 0;
             localMutantID = 0;

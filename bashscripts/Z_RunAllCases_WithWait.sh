@@ -8,22 +8,15 @@
 # ============================================================
 
 # --- 1. DYNAMIC SHARD CONFIGURATION ---
-# TARGET_SHARDS represents the total logical partitions of the workload.
-# This must remain constant (e.g., 30) across all nodes to ensure 
-# consistent mathematical distribution (modulus operations) in Java.
 if [[ "$OSTYPE" == "darwin"* ]]; then
-  TARGET_SHARDS=4  # Local macOS development environment
+  TARGET_SHARDS=4  
 else
-  TARGET_SHARDS=30 # Production environment (Linux Cluster)
+  TARGET_SHARDS=30 
 fi
 
-# --- 2. EXECUTION RANGE (CLUSTER CONFIGURATION) ---
-# Accepts command-line arguments to define the specific workload for this node.
-# Usage: ./master_runner.sh [START_NODE] [END_NODE]
-# Example: ./master_runner.sh 0 3 (Runs shards 0, 1, 2, and 3)
-
-START_SHARD=${1:-0}                    # Default: Start from shard 0
-END_SHARD=${2:-$((TARGET_SHARDS-1))}   # Default: Run until the last shard
+# --- 2. EXECUTION RANGE ---
+START_SHARD=${1:-0}                    
+END_SHARD=${2:-$((TARGET_SHARDS-1))}   
 
 echo "--------------------------------------------------"
 echo "🖥️  Detected OS: $OSTYPE"
@@ -34,47 +27,68 @@ echo "--------------------------------------------------"
 # --- 3. PATH CONFIGURATION ---
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
-PYTHON_SCRIPT_DIR="${PROJECT_ROOT}/scripts"
 
-# 1. DEFINE CASES (Subject Software Product Lines)
+# 1. DEFINE CASES
 CASES=(
   #"SodaVendingMachine SVM"
   #"eMail eM"
-  #"Elevator El"
+  "Elevator El"               # Açık
   #"BankAccountv2 BAv2"
-  #"StudentAttendanceSystem SAS"
-  "syngovia Svia"
-  "Tesla Te"
-  #"HockertyShirts HS"
+  "StudentAttendanceSystem SAS" # Açık
+  "syngovia Svia"             # Açık
+  "Tesla Te"                  # Açık
 )
 
 # 2. DEFINE TASK SCRIPTS
 SCRIPTS=(
- # "AutomaticProductConfigurationGeneration.sh"
- # "MutantGeneratorEdgeInserter.sh"
   "MutantGeneratorEdgeOmitter.sh"
-  #"MutantGeneratorEdgeRedirector.sh"
- # "MutantGeneratorEventInserter.sh"
+  #"MutantGeneratorEdgeRedirector.sh" # KAPALI
   "MutantGeneratorEventOmitter.sh"
   "ProductESGToEFGFileWriter.sh"
   "TestSequenceRecorder.sh"
 )
 
-# Error keywords to monitor in logs
 ERROR_KEYWORDS="Exception|Error|FAILURE|Java heap space|AccessDenied"
+
+# --- VERIFICATION FUNCTION ---
+# Bu fonksiyon işlem bitince dosyaları sayar
+verify_results() {
+    local case_name=$1
+    local script_name=$2
+    
+    # Script ismine göre çıktı klasörünü tahmin et
+    local target_dir=""
+    if [[ "$script_name" == *"EdgeOmitter"* ]]; then target_dir="shards_mutantgenerator_edgeomitter"; fi
+    if [[ "$script_name" == *"EventOmitter"* ]]; then target_dir="shards_mutantgenerator_eventomitter"; fi
+    if [[ "$script_name" == *"EFG"* ]]; then target_dir="shards_efgfilewriter"; fi
+    if [[ "$script_name" == *"TestSequence"* ]]; then target_dir="shards_testsequencegeneration"; fi
+    
+    local full_path="$PROJECT_ROOT/files/Cases/$case_name/$target_dir"
+    
+    if [ -d "$full_path" ]; then
+        # CSV veya EFG dosyası say
+        local count=$(find "$full_path" -type f \( -name "*.csv" -o -name "*.EFG" \) | wc -l)
+        if [ "$count" -gt 0 ]; then
+            echo "   ✅ VERIFIED: $count output files found in $target_dir"
+        else
+            echo "   ⚠️  WARNING: Folder exists but NO files found in $target_dir"
+        fi
+    else
+        echo "   ❌ ERROR: Output folder NOT created: $target_dir"
+    fi
+}
 
 # --- MONITORING FUNCTION ---
 wait_and_monitor() {
   local case_name=$1
   local log_dir=$2
+  local script_name=$3
   local error_detected=false
 
   echo "⏳ Monitoring logs in: $log_dir"
 
-  # Monitor while the Java process for this case is running
   while pgrep -f "java.*$case_name" > /dev/null; do
     if [ -d "$log_dir" ]; then
-        # Check for critical errors in recent log files (last 5 minutes)
         if find "$log_dir" -name "run_${case_name}_s*.log" -mmin -5 -exec grep -E "$ERROR_KEYWORDS" {} + 2>/dev/null | tail -n 1 > error_snippet.tmp; then
             if [ -s error_snippet.tmp ] && [ "$error_detected" = false ]; then
                 local msg=$(cat error_snippet.tmp)
@@ -83,13 +97,15 @@ wait_and_monitor() {
             fi
         fi
     fi
-    # Refresh status line
     echo -ne "   ... Processing Shards $START_SHARD-$END_SHARD ... (Error Status: $error_detected)\r"
     sleep 10
   done
   
   rm -f error_snippet.tmp
-  echo -e "\n✅ COMPLETED: $case_name"
+  echo -e "\n✅ PROCESS FINISHED: $case_name ($script_name)"
+  
+  # İşlem bitince hemen sonucu kontrol et
+  verify_results "$case_name" "$script_name"
 }
 
 echo "=== STARTING MASTER RUNNER ==="
@@ -106,6 +122,13 @@ for entry in "${CASES[@]}"; do
   echo "🔷 PROCESSING CASE: $CASE_NAME"
 
   for SCRIPT_NAME in "${SCRIPTS[@]}"; do
+    
+    # --- SAFETY SKIP: EdgeRedirector ---
+    if [[ "$SCRIPT_NAME" == *"EdgeRedirector"* ]]; then
+        echo "⏩ SKIPPING: $SCRIPT_NAME (Globally Disabled)"
+        continue
+    fi
+
     TARGET_SCRIPT="${SCRIPT_DIR}/${SCRIPT_NAME}"
     
     if [ ! -f "$TARGET_SCRIPT" ]; then
@@ -115,16 +138,14 @@ for entry in "${CASES[@]}"; do
 
     echo "▶️  EXECUTING: $SCRIPT_NAME (Range: $START_SHARD - $END_SHARD)"
     
-    # Pass the range arguments to the child script
     bash "$TARGET_SCRIPT" "$CASE_NAME" "$SHORT_NAME" "$TARGET_SHARDS" "$START_SHARD" "$END_SHARD" > /dev/null 2>&1
     
-    wait_and_monitor "$CASE_NAME" "$LOG_DIR"
+    # Script ismini de gönderiyoruz ki hangi klasöre bakacağını bilsin
+    wait_and_monitor "$CASE_NAME" "$LOG_DIR" "$SCRIPT_NAME"
     sleep 2
   done 
 done
 
-# --- COMPLETION ---
-# Summary generation is skipped here as it requires aggregation of results from all nodes.
 echo ""
 echo "=================================================="
 echo "🏁 ALL TASKS COMPLETED ON THIS NODE ($START_SHARD-$END_SHARD)!"
