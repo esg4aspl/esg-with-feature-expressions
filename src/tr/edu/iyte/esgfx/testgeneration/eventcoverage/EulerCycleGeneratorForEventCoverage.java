@@ -1,6 +1,7 @@
 package tr.edu.iyte.esgfx.testgeneration.eventcoverage;
 
 import java.util.Map;
+
 import java.util.Set;
 
 import tr.edu.iyte.esg.model.ESG;
@@ -23,7 +24,8 @@ import java.util.ArrayList;
 
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
-import org.jgrapht.alg.shortestpath.FloydWarshallShortestPaths;
+import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
+import org.jgrapht.alg.interfaces.ShortestPathAlgorithm.SingleSourcePaths;
 
 public class EulerCycleGeneratorForEventCoverage {
 
@@ -32,6 +34,8 @@ public class EulerCycleGeneratorForEventCoverage {
 	private List<Vertex> vertexStack;
 	private List<Vertex> eulerCycle;
 	private Map<Vertex, List<Vertex>> adjacencyMap;
+	
+	private DijkstraShortestPath<Vertex, Edge> dijkstraAlgorithm;
 
 	public EulerCycleGeneratorForEventCoverage(Map<String, FeatureExpression> featureExpressionMap) {
 		this.toCover = new LinkedHashSet<>();
@@ -42,12 +46,21 @@ public class EulerCycleGeneratorForEventCoverage {
 
 	}
 
+	public void reset() {
+		this.toCover.clear();
+		this.featureTruthValueMap.clear();
+		this.vertexStack.clear();
+		this.eulerCycle.clear();
+		this.adjacencyMap.clear();
+		dijkstraAlgorithm = null;
+	}
+
 	private boolean containsOnlyOnePseudoEnd(List<Vertex> adjacentVertexList) {
 
-		// System.out.println("containsOnlyOnePseudoEnd");
+		// //System.out.println("containsOnlyOnePseudoEnd");
 		if (adjacentVertexList.size() == 1) {
 			if (adjacentVertexList.get(0).isPseudoEndVertex()) {
-//				System.out.println("containsOnlyOnePseudoEnd" + "TRUE");
+//				//System.out.println("containsOnlyOnePseudoEnd" + "TRUE");
 				return true;
 			} else
 				return false;
@@ -59,10 +72,10 @@ public class EulerCycleGeneratorForEventCoverage {
 	private void findToCover(ESG ESGFx) {
 		List<Vertex> vertexList = ESGFx.getRealVertexList();
 
-//		System.out.println("findToCover");
+		// System.out.println("FINDTOCOVER METHOD START");
 		for (Vertex vertex : vertexList) {
 			VertexRefinedByFeatureExpression vertexRefinedByFeatureExpression = (VertexRefinedByFeatureExpression) vertex;
-//			System.out.println(vertexRefinedByFeatureExpression.getEvent().getName() + " "	+ vertexRefinedByFeatureExpression.getFeatureExpression().getFeature().getName() + " " + vertexRefinedByFeatureExpression.getFeatureExpression().evaluate());
+//			//System.out.println(vertexRefinedByFeatureExpression.getEvent().getName() + " "	+ vertexRefinedByFeatureExpression.getFeatureExpression().getFeature().getName() + " " + vertexRefinedByFeatureExpression.getFeatureExpression().evaluate());
 
 			if (vertexRefinedByFeatureExpression.getFeatureExpression().evaluate()) {
 				toCover.add(vertexRefinedByFeatureExpression);
@@ -70,6 +83,7 @@ public class EulerCycleGeneratorForEventCoverage {
 			}
 
 		}
+		// System.out.println("FINDTOCOVER METHOD FINISH");
 	}
 
 	private void findAdjMap() {
@@ -81,10 +95,10 @@ public class EulerCycleGeneratorForEventCoverage {
 			Iterator<Vertex> adjacentVertexListIterator = adjacencyMap.get(key).iterator();
 			while (adjacentVertexListIterator.hasNext()) {
 				Vertex adjVertex = adjacentVertexListIterator.next();
-				// System.out.println("adjVertex " + adjVertex);
+//				 //System.out.println("adjVertex " + adjVertex);
 				if (!toCover.contains(adjVertex) && !adjVertex.isPseudoStartVertex()
 						&& !adjVertex.isPseudoEndVertex()) {
-//					System.out.println("adjVertex " + adjVertex + " is removed");
+//					//System.out.println("adjVertex " + adjVertex + " is removed");
 					adjacentVertexListIterator.remove();
 				}
 			}
@@ -95,14 +109,20 @@ public class EulerCycleGeneratorForEventCoverage {
 		 * adjacentVertexListIterator = adjacencyMap.get(key).iterator(); while
 		 * (adjacentVertexListIterator.hasNext()) {
 		 * System.out.print(adjacentVertexListIterator.next().getEvent().getName()); }
-		 * System.out.println(); }
+		 * //System.out.println(); }
 		 */
 	}
 
 	public void generateEulerCycle(ESG stronglyConnectedBalancedESGFx) {
+		reset();
 		ESG ESGFx = new ESGFx(stronglyConnectedBalancedESGFx);
+		
+		ESGToJgraphConverter ESGToJgraphConverter = new ESGToJgraphConverter();
+		Graph<Vertex, Edge> jGraph = ESGToJgraphConverter.buildJGraphFromESG(ESGFx);
+		this.dijkstraAlgorithm = new DijkstraShortestPath<>(jGraph);
+		
 		findToCover(ESGFx);
-//		System.out.println("toCover " + toCover);
+		// System.out.println("toCover " + toCover);
 		adjacencyMap.putAll(((ESGFx) ESGFx).getAdjacencyMap());
 		findAdjMap();
 		Vertex currentVertex = ESGFx.getPseudoStartVertex();
@@ -110,15 +130,16 @@ public class EulerCycleGeneratorForEventCoverage {
 		boolean generationStarted = false;
 
 		while (!vertexStack.isEmpty()) {
-//			System.out.println("currentVertex " + currentVertex);
+			// System.out.println("currentVertex " + currentVertex);
 			List<Vertex> adjacentVertexList = adjacencyMap.get(currentVertex);
 			Iterator<Vertex> adjacentVertexListIterator = adjacentVertexList.iterator();
 
-//			System.out.println("adjacentVertexList " + adjacentVertexList);
-//			System.out.println("toCover " + toCover);
+			// System.out.println("adjacentVertexList " + adjacentVertexList);
+			// System.out.println("toCover " + toCover);
 
 			if (currentVertex.isPseudoStartVertex()) {
-//				System.out.println("currentVertex isPseudoStartVertex " + currentVertex.isPseudoStartVertex());
+				// System.out.println("currentVertex isPseudoStartVertex " +
+				// currentVertex.isPseudoStartVertex());
 				featureTruthValueMap.clear();
 			} else if (!currentVertex.isPseudoStartVertex() && !currentVertex.isPseudoEndVertex()) {
 				if (!featureTruthValueMap.containsKey(
@@ -131,16 +152,17 @@ public class EulerCycleGeneratorForEventCoverage {
 				((Stack<Vertex>) vertexStack).push(currentVertex);
 				Vertex nextVertex = null;
 				if (currentVertex.isPseudoEndVertex()) {
-//					System.out.println("currentVertex isPseudoEndVertex " + currentVertex.isPseudoEndVertex());
-//					System.out.println(adjacentVertexList.size());
+					// System.out.println("currentVertex isPseudoEndVertex " +
+					// currentVertex.isPseudoEndVertex());
+					// System.out.println(adjacentVertexList.size());
 					Vertex candidateVertex = adjacentVertexListIterator.next();
-//					System.out.println(candidateVertex.toString());
+					// System.out.println(candidateVertex.toString());
 					nextVertex = candidateVertex;
 					// break;
 				} else {
 					while (adjacentVertexListIterator.hasNext()) {
 						Vertex candidateVertex = adjacentVertexListIterator.next();
-//						System.out.println("candidateVertex " + candidateVertex.toString());
+						// System.out.println("candidateVertex " + candidateVertex.toString());
 						if (!candidateVertex.isPseudoStartVertex() && !candidateVertex.isPseudoEndVertex()) {
 							if (!featureTruthValueMap.containsKey(((VertexRefinedByFeatureExpression) candidateVertex)
 									.getFeatureExpression().getFeature())) {
@@ -153,17 +175,17 @@ public class EulerCycleGeneratorForEventCoverage {
 							break;
 						} else if (isCompatible(candidateVertex)) {
 							if (allOfAdjacentVerticesCoveredBefore(adjacentVertexList)) {
-//								System.out.println("allOfAdjacentVerticesCoveredBefore".toUpperCase());
+								// System.out.println("allOfAdjacentVerticesCoveredBefore".toUpperCase());
 								nextVertex = findPrior(ESGFx, adjacentVertexList);
 								break;
 							} else if (anyOfAdjacentVerticesCoveredBefore(adjacentVertexList)) {
-//								System.out.println("anyOfAdjacentVerticesCoveredBefore".toUpperCase());
+								// System.out.println("anyOfAdjacentVerticesCoveredBefore".toUpperCase());
 								nextVertex = candidateVertex;
 								break;
 							} else {
 								// List<Vertex> notCoveredList =
 								// adjacentVerticesNOTCoveredBefore(adjacentVertexList);
-//								System.out.println("someOfAdjacentVerticesCoveredBefore".toUpperCase());
+								// System.out.println("someOfAdjacentVerticesCoveredBefore".toUpperCase());
 								List<Vertex> verticesNOTcoveredYet = adjacentVerticesNOTCoveredBefore(
 										adjacentVertexList);
 								nextVertex = verticesNOTcoveredYet.get(0);
@@ -184,12 +206,12 @@ public class EulerCycleGeneratorForEventCoverage {
 //					&& containsOnlyOnePseudoEnd(adjacentVertexList)
 					&& (!currentVertex.isPseudoStartVertex() && !currentVertex.isPseudoEndVertex())
 					&& !generationStarted) {
-//				System.out.println("BEKLENEN");
+				// System.out.println("EXPECTED");
 				((Stack<Vertex>) vertexStack).push(currentVertex);
 				currentVertex = adjacentVertexListIterator.next();
 				adjacentVertexListIterator.remove();
 			} else {
-//				System.out.println("EULER CYCLE");
+				// System.out.println("EULER CYCLE");
 				generationStarted = true;
 
 				eulerCycle.add(currentVertex);
@@ -197,7 +219,8 @@ public class EulerCycleGeneratorForEventCoverage {
 			}
 		}
 
-//		System.out.println(eulerCycle);
+//		 System.out.println(eulerCycle);
+//		 System.out.println("------------------------------------------------------------");
 
 	}
 
@@ -235,44 +258,52 @@ public class EulerCycleGeneratorForEventCoverage {
 	}
 
 	private Vertex findPrior(ESG ESGFx, List<Vertex> adjacentVertexList) {
-
 //		System.out.println("FINDPRIOR METHOD START");
-//		System.out.println("adjacentVertexList " + adjacentVertexList);
-		ESGToJgraphConverter ESGToJgraphConverter = new ESGToJgraphConverter();
-		Graph<Vertex, Edge> jGraph = ESGToJgraphConverter.buildJGraphFromESG(ESGFx);
 
-		FloydWarshallShortestPaths<Vertex, Edge> floydWarshallShortestPaths = new FloydWarshallShortestPaths<Vertex, Edge>(
-				jGraph);
+		GraphPath<Vertex, Edge> bestPath = null;
+		double minLength = Double.MAX_VALUE; // Use double for length in JGraphT generally, or int if weighted 1
 
-		GraphPath<Vertex, Edge> foundPath = null;
-		int minLength = Integer.MAX_VALUE;
+		// 2. Optimization: Instead of calculating path for every (source, target) pair,
+		// calculate all paths starting from 'source' once.
 		for (Vertex source : adjacentVertexList) {
-//			System.out.println("source " + source);
+			
+			// Compute Shortest Path Tree from this source to ALL other nodes
+			SingleSourcePaths<Vertex, Edge> pathsFromSource = dijkstraAlgorithm.getPaths(source);
+
 			for (Vertex target : toCover) {
-//				System.out.println("target " + target);
-//				System.out.println("Path between " + source.toString() + " " + target.toString());
-				GraphPath<Vertex, Edge> path = floydWarshallShortestPaths.getPath(source, target);
-//				System.out.println("Path length " + path.getLength());
-				if (path.getLength() < minLength) {
-					foundPath = path;
-					minLength = path.getLength();
+				// Efficient lookup from the pre-calculated tree
+				GraphPath<Vertex, Edge> path = pathsFromSource.getPath(target);
+
+				if (path != null) {
+//					System.out.println("Considering path from " + source + " to " + target + " with length " + path.getLength());
+					// Check if this path is shorter than the current best
+					if (path.getLength() < minLength) {
+						minLength = path.getLength();
+						bestPath = path;
+					}
 				}
 			}
 		}
 
-//		System.out.println("FINDPRIOR METHOD FINISH");
-		return foundPath.getStartVertex();
+//		System.out.println("FINDPRIOR METHOD FINISH - Found path length: " + (bestPath != null ? bestPath.getLength() : "None"));
+
+		if (bestPath != null) {
+			return bestPath.getStartVertex();
+		} else {
+			return null;
+		}
 	}
 
 	private void fillFeatureTruthValueMap(Vertex currentVertex) {
-//		System.out.println("fillFeatureTruthValueMap METHOD START");
+		// System.out.println("fillFeatureTruthValueMap METHOD START");
 		VertexRefinedByFeatureExpression vertexRefinedByFeatureExpression = (VertexRefinedByFeatureExpression) currentVertex;
 		FeatureExpression featureExpression = vertexRefinedByFeatureExpression.getFeatureExpression();
 		Feature feature = featureExpression.getFeature();
-//		System.out.println(currentVertex.toString());
-//		System.out.println("featureTruthValueMap.containsKey(feature) " + featureTruthValueMap.containsKey(feature));
+		// System.out.println(currentVertex.toString());
+		// System.out.println("featureTruthValueMap.containsKey(feature) " +
+		// featureTruthValueMap.containsKey(feature));
 		if (featureTruthValueMap.containsKey(feature)) {
-//			System.out.println("fillFeatureTruthValueMap METHOD FINISH");
+			// System.out.println("fillFeatureTruthValueMap METHOD FINISH");
 			return;
 		} else {
 			if (featureExpression instanceof Negation) {
@@ -282,17 +313,17 @@ public class EulerCycleGeneratorForEventCoverage {
 			}
 		}
 
-//		System.out.println(featureTruthValueMap);
-//		System.out.println("fillFeatureTruthValueMap METHOD FINISH");
+		// System.out.println(featureTruthValueMap);
+		// System.out.println("fillFeatureTruthValueMap METHOD FINISH");
 	}
 
 	private boolean isCompatible(Vertex candidateVertex) {
-//		System.out.println("isCompatible METHOD START");
+		// System.out.println("isCompatible METHOD START");
 
 		VertexRefinedByFeatureExpression vertexRefinedByFeatureExpression = (VertexRefinedByFeatureExpression) candidateVertex;
 		FeatureExpression featureExpression = vertexRefinedByFeatureExpression.getFeatureExpression();
 		Feature feature = featureExpression.getFeature();
-//		System.out.println(candidateVertex.toString());
+		// System.out.println(candidateVertex.toString());
 		boolean result = false;
 
 		if (featureTruthValueMap.isEmpty()) {
@@ -303,8 +334,8 @@ public class EulerCycleGeneratorForEventCoverage {
 				result = true;
 			}
 		}
-//		System.out.println("result is " + result);
-//		System.out.println("isCompatible METHOD FINISH");
+		// System.out.println("result is " + result);
+		// System.out.println("isCompatible METHOD FINISH");
 		return result;
 	}
 
@@ -343,12 +374,5 @@ public class EulerCycleGeneratorForEventCoverage {
 	public Map<Vertex, List<Vertex>> getAdjacencyMap() {
 		return adjacencyMap;
 	}
-	
-	public void reset() {
-	    this.toCover.clear();
-	    this.featureTruthValueMap.clear();
-	    this.vertexStack.clear();
-	    this.eulerCycle.clear();
-	    this.adjacencyMap.clear();
-	}
+
 }

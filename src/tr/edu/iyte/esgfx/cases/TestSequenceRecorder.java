@@ -38,6 +38,7 @@ public class TestSequenceRecorder extends CaseStudyUtilities {
 		satSolverGenerationFromFeatureModel.addSATClauses(solver, featureModel, featureExpressionMapFromFeatureModel,
 				featureExpressionList);
 
+		System.out.println("TEST SEQUENCE RECORDER " + SPLName + " STARTED");
 		// --- SHARD CONFIGURATION ---
 		int N_SHARDS = Integer.parseInt(System.getenv().getOrDefault("N_SHARDS", "1"));
 		int CURRENT_SHARD = Integer.parseInt(System.getenv().getOrDefault("SHARD", "0"));
@@ -75,7 +76,7 @@ public class TestSequenceRecorder extends CaseStudyUtilities {
 		EulerCycleGeneratorForEdgeCoverage eulerCycleGeneratorForEdgeCoverage = new EulerCycleGeneratorForEdgeCoverage();
 		EulerCycleGeneratorForEventCoverage eulerGen = new EulerCycleGeneratorForEventCoverage(
 				featureExpressionMapFromFeatureModel);
-		
+
 		EventCoverageAnalyser eventCoverageAnalyser = new EventCoverageAnalyser();
 		EdgeCoverageAnalyser edgeCoverageAnalyser = new EdgeCoverageAnalyser();
 		while (solver.isSatisfiable()) {
@@ -152,7 +153,7 @@ public class TestSequenceRecorder extends CaseStudyUtilities {
 
 					ESG stronglyConnectedL1 = StronglyConnectedBalancedESGFxGeneration
 							.getStronglyConnectedBalancedESGFxGeneration(productESGFx);
-					
+
 					eulerGen.generateEulerCycle(stronglyConnectedL1);
 
 					List<Vertex> eulerCycle = eulerGen.getEulerCycle();
@@ -184,7 +185,7 @@ public class TestSequenceRecorder extends CaseStudyUtilities {
 
 					eulerCycleGeneratorForEdgeCoverage.generateEulerCycle(stronglyConnectedBalancedESGFx);
 					List<Vertex> eulerCycle = eulerCycleGeneratorForEdgeCoverage.getEulerCycle();
-					
+
 					Set<EventSequence> CESsOfESG = eulerCycleToTestSequenceGenerator.CESgenerator(eulerCycle);
 
 					double coverage = edgeCoverageAnalyser.analyseEdgeCoverage(stronglyConnectedBalancedESGFx,
@@ -227,11 +228,11 @@ public class TestSequenceRecorder extends CaseStudyUtilities {
 			productESGFx = null;
 
 			if (handledProducts % 25 == 0) {
+				System.out.println("Processed " + handledProducts + " products. Current product ID: " + productID);
 				System.gc();
 			}
 
 		} // End While Loop
-
 
 		double avgCoverageL0 = (handledProducts > 0) ? (totalCoverage_L0 / handledProducts) : 0.0;
 		double avgCoverageL1 = (handledProducts > 0) ? (totalCoverage_L1 / handledProducts) : 0.0;
@@ -240,6 +241,9 @@ public class TestSequenceRecorder extends CaseStudyUtilities {
 		double avgCoverageL4 = (handledProducts > 0) ? (totalCoverage_L4 / handledProducts) : 0.0;
 
 		if (N_SHARDS > 1) {
+			System.out.println("TEST SEQUENCE RECORDER " + SPLName + " Shard " + CURRENT_SHARD + " FINISHED");
+
+			System.out.println("Total Products Processed by this Shard: " + handledProducts); // <--- Add this
 			String shardResultFilePath = shards_testsequencegeneration
 					+ String.format("testsuite.shard%02d.csv", CURRENT_SHARD);
 
@@ -251,6 +255,7 @@ public class TestSequenceRecorder extends CaseStudyUtilities {
 					totalNumberOfSequences_L4, totalNumberOfEvents_L4, avgCoverageL4);
 
 		} else {
+			System.out.println("TEST SEQUENCE RECORDER " + SPLName + " FINISHED " + productID + " products");
 			TestSuiteFileWriter.writeSPLModelTestSuiteSummary(SPLSummary_TestSuite, SPLName, productID,
 					ESGFx_numberOfVertices, ESGFx_numberOfEdges, totalNumberOfVertices, totalNumberOfEdges,
 					totalNumberOfSequences_L0, totalNumberOfEvents_L0, avgCoverageL0, totalNumberOfSequences_L1,

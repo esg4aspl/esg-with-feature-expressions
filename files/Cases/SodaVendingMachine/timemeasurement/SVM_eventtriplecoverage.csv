@@ -1,0 +1,2 @@
+SPL Name;Coverage Type;Total Time(ms);SAT Time(ms);ProductESGGeneration Time(ms);Test Generation Time(ms);Processed Products
+SVM;eventtriplecoverage;48,99;3,09;0,67;24,76;12

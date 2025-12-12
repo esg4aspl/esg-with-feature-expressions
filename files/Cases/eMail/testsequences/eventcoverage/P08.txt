@@ -1,4 +1,0 @@
-9 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
-2 : open_mailbox, select_email
-5 : compose_new_email, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email
-Event coverage is 100.0%

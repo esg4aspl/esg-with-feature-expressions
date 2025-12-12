@@ -160,6 +160,7 @@ public class CaseStudyUtilities {
         featureModel = MXEFileToESGFxConverter.parseFeatureModel(featureModelFilePath);
         
 //        System.out.println(featureModel);
+//        System.out.println("-----------------------------------------");
         
         ESGFx = MXEFileToESGFxConverter.parseMXEFileForESGFxCreation(ESGFxFilePath);
         

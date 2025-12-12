@@ -40,9 +40,9 @@ CASES=(
   "Elevator El"
   "BankAccountv2 BAv2"
   "StudentAttendanceSystem SAS"
-  "syngovia Svia"
   "Tesla Te"
-  #"HockertyShirts HS" 
+  "syngovia Svia"
+  "HockertyShirts HS" 
 )
 
 # 2. DEFINE LEVELS

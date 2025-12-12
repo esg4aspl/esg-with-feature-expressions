@@ -29,9 +29,10 @@ public class RandomWalkTestGenerator {
         Set<Integer> visitedEdgeIDs = new HashSet<>();
         List<Vertex> currentSequenceBuffer = new ArrayList<>();
 
+        // Optimization: Use list size directly (O(1) in ArrayList)
         int totalEdgesInGraph = graph.getEdgeList().size();
+        
         if (totalEdgesInGraph == 0) {
-            // Edge case: Graph with no edges is implicitly 100% covered but generates no sequences.
              return cesSet; 
         }
 
@@ -39,57 +40,49 @@ public class RandomWalkTestGenerator {
         if (startVertex == null) throw new IllegalStateException("Graph does not contain '['.");
 
         Vertex current = startVertex;
-        // Buffer starts empty (we don't store '[')
-
         int steps = 0;
-        double currentCoverage = 0.0;
         boolean coverageSatisfied = false;
 
-        // MODIFIED LOOP CONDITION:
-        // We continue if steps are within limit. 
-        // We decide to BREAK inside the loop only when coverage is met AND sequence is finished.
         while (steps < maxStepsSafetyLimit) {
             
             Vertex next = getNextVertex(current, startVertex);
             
-            // --- Coverage Logic ---
+            // --- Coverage Logic (Optimized) ---
             Integer edgeID = getRealEdgeID(current, next);
             if (edgeID != null) {
                 visitedEdgeIDs.add(edgeID);
             }
             
-            // Update coverage
-            currentCoverage = (double) visitedEdgeIDs.size() / totalEdgesInGraph * 100.0;
-            
-            // Check if we reached the target coverage
-            if (currentCoverage >= targetCoveragePercentage) {
+            // Only re-calculate coverage if a new edge was found (Micro-optimization)
+            if (visitedEdgeIDs.size() >= (totalEdgesInGraph * targetCoveragePercentage / 100.0)) {
                 coverageSatisfied = true;
             }
 
             // --- Sequence Construction Logic ---
             
             if (current.isPseudoEndVertex()) {
-                // SCENARIO 1: Reached ']' (Sequence Complete)
+                // Sequence Complete
                 
-                EventSequence ces = new EventSequence();
-                ces.setEventSequence(new ArrayList<>(currentSequenceBuffer));
-                cesSet.add(ces);
+                // Only create sequence object if we have steps
+                if (!currentSequenceBuffer.isEmpty()) {
+                    EventSequence ces = new EventSequence();
+                    ces.setEventSequence(new ArrayList<>(currentSequenceBuffer));
+                    cesSet.add(ces);
+                }
                 
                 currentSequenceBuffer.clear();
                 
-                // CRITICAL FIX:
-                // Only stop if we have enough coverage AND we just finished a sequence.
-                // This prevents stopping in the middle of a path.
+                // Stop if coverage met AND sequence finished
                 if (coverageSatisfied) {
                     break; 
                 }
                 
             } else if (next.isPseudoStartVertex() && !current.isPseudoEndVertex()) {
-                // SCENARIO 2: Teleportation (Broken Sequence)
+                // Broken Sequence (Teleport)
                 currentSequenceBuffer.clear();
                 
             } else {
-                // SCENARIO 3: Normal Traversal
+                // Normal Traversal
                 if (!next.isPseudoEndVertex()) {
                     currentSequenceBuffer.add(next);
                 }
@@ -99,37 +92,42 @@ public class RandomWalkTestGenerator {
             steps++;
         }
 
-//        // Logging
-//        System.out.println("Generation finished.");
-//        System.out.println("Total Steps: " + steps);
-//        System.out.println("Edge Coverage: " + String.format("%.2f", currentCoverage) + "%");
-//        System.out.println("Generated " + cesSet.size() + " unique Complete Event Sequences.");
-
         return cesSet;
     }
 
-    // --- Helper Methods (Unchanged) ---
+    // --- Helper Methods ---
 
     private Vertex getNextVertex(Vertex current, Vertex startVertex) {
         if (current.isPseudoEndVertex()) return startVertex;
         if (random.nextDouble() > dampingFactor) return startVertex;
         
+        // Optimization: getAdjacencyMap().get() is O(1)
         List<Vertex> neighbors = graph.getAdjacencyMap().get(current);
+        
         if (neighbors == null || neighbors.isEmpty()) return startVertex; 
         
         return neighbors.get(random.nextInt(neighbors.size()));
     }
 
+    // --- CRITICAL OPTIMIZATION: O(1) Lookup ---
     private Integer getRealEdgeID(Vertex source, Vertex target) {
-        for (Edge edge : graph.getEdgeList()) {
-            if (edge.getSource().equals(source) && edge.getTarget().equals(target)) {
-                return edge.getID();
-            }
+        // Use the Cache-based lookup method we optimized in ESG/ESGFx class
+        Edge edge = graph.getEdgeBySourceEventNameTargetEventName(
+                source.getEvent().getName(), 
+                target.getEvent().getName()
+        );
+        
+        if (edge != null) {
+            return edge.getID();
         }
         return null;
     }
 
     private Vertex findPseudoStartVertex() {
+        // Faster: Use the optimized method from ESG class if available
+        // return graph.getPseudoStartVertex(); 
+        
+        // Or manual iteration (acceptable since it runs once)
         for (Vertex v : graph.getVertexList()) {
             if (v.isPseudoStartVertex()) return v;
         }

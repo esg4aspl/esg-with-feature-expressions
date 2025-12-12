@@ -1,0 +1,31 @@
+SUT: P01.mxe
+************************
+Full Resolution Approach
+************************
+Länge: 2
+# Nodes: 14
+# Edges: 42
+
+# Nodes (CPP): 14
+# Edges (CPP): 42
+
+CES:
+5: [, press hall RoofDown/ControlButtons, press cabin [1-N] floor/ControlButtons, press door close/ManualDoorControl, press door open/ManualDoorControl, press door close/ManualDoorControl, ], 
+3: [, press hall up/ControlButtons, press cabin [1-N] floor/ControlButtons, press door open/ManualDoorControl, ], 
+3: [, press hall down/ControlButtons, press cabin lobby/ControlButtons, press door close/ManualDoorControl, ], 
+3: [, press hall LobbyUp/ControlButtons, press cabin [1-N] floor/ControlButtons, press intercom/Intercom, ], 
+3: [, press hall up/ControlButtons, press cabin roof/ControlButtons, press door close/ManualDoorControl, ], 
+3: [, press hall up/ControlButtons, press cabin lobby/ControlButtons, press door open/ManualDoorControl, ], 
+4: [, press hall up/ControlButtons, tap mobilekey/MobileKey, press cabin roof/ControlButtons, press door open/ManualDoorControl, ], 
+3: [, press hall up/ControlButtons, press cabin roof/ControlButtons, press intercom/Intercom, ], 
+3: [, press hall RoofDown/ControlButtons, press cabin lobby/ControlButtons, press intercom/Intercom, ], 
+3: [, press hall RoofDown/ControlButtons, tap mobilekey/MobileKey, press cabin [1-N] floor/ControlButtons, ], 
+2: [, press hall LobbyUp/ControlButtons, press cabin roof/ControlButtons, ], 
+3: [, press hall LobbyUp/ControlButtons, tap mobilekey/MobileKey, press cabin lobby/ControlButtons, ], 
+3: [, press hall down/ControlButtons, press cabin [1-N] floor/ControlButtons, press alarmbutton/Alarm, ], 
+3: [, press hall down/ControlButtons, press cabin roof/ControlButtons, press alarmbutton/Alarm, ], 
+4: [, press hall down/ControlButtons, tap mobilekey/MobileKey, press cabin lobby/ControlButtons, press alarmbutton/Alarm, ], 
+No. of CES: 15
+No. of Events: 48
+
+FCES: not generated

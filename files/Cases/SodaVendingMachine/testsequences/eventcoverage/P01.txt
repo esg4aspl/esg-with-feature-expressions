@@ -1,2 +1,0 @@
-7 : pay, change, soda, serveSoda, open, take, close
-Edge coverage is 100.0%

@@ -1,3 +1,0 @@
-7 : pay, change, soda, serveSoda, open, take, close
-4 : pay, change, cancel, return
-Event coverage is 100.0%

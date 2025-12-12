@@ -46,25 +46,24 @@ public class VertexRefinedByFeatureExpression extends Vertex {
 	}
 
 	@Override
-	public boolean equals(Object object) {
-	    if (this == object) return true;
-	    if (!(object instanceof VertexRefinedByFeatureExpression)) return false;
-	    
-	    VertexRefinedByFeatureExpression other = (VertexRefinedByFeatureExpression) object;
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null) return false;
+        
+        if (getClass() != object.getClass()) return false;
+        
+        VertexRefinedByFeatureExpression other = (VertexRefinedByFeatureExpression) object;
 
-	    boolean eventMatch = Objects.equals(this.getEvent().getName(), other.getEvent().getName());
-
-	    boolean featureMatch = Objects.equals(this.featureExpression, other.featureExpression);
-
-	    return eventMatch && featureMatch;
-	}
+        
+        return getID() == other.getID();
+    }
 
 	public String toString() {
 
-		if (this.getEvent().getName().trim().equals("[") || this.getEvent().getName().trim().equals("]")) {
+		if (this.isPseudoStartVertex() || this.isPseudoEndVertex()) {
 			return super.toString();
 		} else {
-			String str = this.getEvent().getName().trim() + "/" + this.featureExpression.toString();
+			String str = this.getEvent().getName() + "/" + this.featureExpression.toString();
 			return str;
 		}
 

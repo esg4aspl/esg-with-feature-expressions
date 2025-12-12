@@ -40,6 +40,8 @@ public class MutantGeneratorEdgeInserter extends MutantGenerator {
 		int CURRENT_SHARD = Integer.parseInt(System.getenv().getOrDefault("SHARD", "0"));
 
 		int productID = 0;
+		
+		int handledProducts = 0;
 
 		int numberOfMutantsInSPL = 0;
 		
@@ -86,6 +88,8 @@ public class MutantGeneratorEdgeInserter extends MutantGenerator {
 			if (((productID - 1) % N_SHARDS) != CURRENT_SHARD) {
 				continue;
 			}
+			
+			handledProducts++;
 			
 
 			// Build product ESG-Fx once
@@ -290,8 +294,6 @@ public class MutantGeneratorEdgeInserter extends MutantGenerator {
 		double totalSecondsL3 = totalExecTimeNanosL3 / 1_000_000_000.0;
 		double totalSecondsL4 = totalExecTimeNanosL4 / 1_000_000_000.0;
 
-
-
 		double killedPerSecondL0 = (totalSecondsL0 > 0) ? numberOfDetectedMutantsInSPL_L0 / totalSecondsL0 : 0;
 		double killedPerSecondL1 = (totalSecondsL1 > 0) ? numberOfDetectedMutantsInSPL_L1 / totalSecondsL1 : 0;
 		double killedPerSecondL2 = (totalSecondsL2 > 0) ? numberOfDetectedMutantsInSPL_L2 / totalSecondsL2 : 0;
@@ -299,9 +301,9 @@ public class MutantGeneratorEdgeInserter extends MutantGenerator {
 		double killedPerSecondL4 = (totalSecondsL4 > 0) ? numberOfDetectedMutantsInSPL_L4 / totalSecondsL4 : 0;
 
 		if (N_SHARDS > 1) {
-//        	System.out.println("Shard " + CURRENT_SHARD + " Completed.");
-//        	System.out.println("Total Products Processed by this Shard: " + handledProducts); // <--- Add this
-//        	System.out.println("Total Mutants Generated: " + numberOfMutantsInSPL);
+        	System.out.println("Shard " + CURRENT_SHARD + " Completed.");
+        	System.out.println("Total Products Processed by this Shard: " + handledProducts); // <--- Add this
+        	System.out.println("Total Mutants Generated: " + numberOfMutantsInSPL);
         	
 			String shardResultFilePath = shards_mutantgenerator_edgeinserter
 					+ String.format("faultdetection.shard%02d.csv", CURRENT_SHARD);

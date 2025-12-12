@@ -1,4 +1,0 @@
-9 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
-2 : open_mailbox, select_email
-3 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval
-Event coverage is 100.0%

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<EFG>
+    <Events>
+        <Event>
+            <EventId>e2</EventId>
+            <WidgetId>w2</WidgetId>
+            <Type>SYSTEM INTERACTION</Type>
+            <Initial>false</Initial>
+            <Action>edu.umd.cs.guitar.event.WebToggleCheckbox</Action>
+            <Name>soda</Name>
+        </Event>
+        <Event>
+            <EventId>e3</EventId>
+            <WidgetId>w3</WidgetId>
+            <Type>SYSTEM INTERACTION</Type>
+            <Initial>false</Initial>
+            <Action>edu.umd.cs.guitar.event.WebToggleCheckbox</Action>
+            <Name>serveSoda</Name>
+        </Event>
+        <Event>
+            <EventId>e4</EventId>
+            <WidgetId>w4</WidgetId>
+            <Type>SYSTEM INTERACTION</Type>
+            <Initial>true</Initial>
+            <Action>edu.umd.cs.guitar.event.WebToggleCheckbox</Action>
+            <Name>free</Name>
+        </Event>
+        <Event>
+            <EventId>e5</EventId>
+            <WidgetId>w5</WidgetId>
+            <Type>SYSTEM INTERACTION</Type>
+            <Initial>false</Initial>
+            <Action>edu.umd.cs.guitar.event.WebToggleCheckbox</Action>
+            <Name>take</Name>
+        </Event>
+    </Events>
+    <EventGraph>
+        <Row>
+            <E>0</E>
+            <E>2</E>
+            <E>0</E>
+            <E>0</E>
+        </Row>
+        <Row>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>2</E>
+        </Row>
+        <Row>
+            <E>2</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+        </Row>
+        <Row>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+            <E>0</E>
+        </Row>
+    </EventGraph>
+</EFG>

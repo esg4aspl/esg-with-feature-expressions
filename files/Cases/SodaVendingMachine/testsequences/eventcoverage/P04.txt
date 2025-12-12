@@ -1,2 +1,0 @@
-4 : free, soda, serveSoda, take
-Event coverage is 100.0%

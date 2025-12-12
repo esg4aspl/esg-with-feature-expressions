@@ -1,0 +1,23 @@
+P000001: <e, au>:2 features
+P000002: <e, ad>:2 features
+P000003: <e, au, ad>:3 features
+P000004: <e, ad, en>:3 features
+P000005: <e, en>:2 features
+P000006: <e, au, en>:3 features
+P000007: <e, au, ad, en>:4 features
+P000008: <e, ad, en, s>:4 features
+P000009: <e, s>:2 features
+P000010: <e, au, s>:3 features
+P000011: <e, ad, s>:3 features
+P000012: <e, au, ad, s>:4 features
+P000013: <e, au, ad, en, s>:5 features
+P000014: <e, en, s>:3 features
+P000015: <e, au, en, s>:4 features
+P000016: <e, ad, s, f>:4 features
+P000017: <e, f>:2 features
+P000018: <e, au, f>:3 features
+P000019: <e, ad, f>:3 features
+P000020: <e, au, ad, f>:4 features
+P000021: <e, au, ad, s, f>:5 features
+P000022: <e, s, f>:3 features
+P000023: <e, au, s, f>:4 features

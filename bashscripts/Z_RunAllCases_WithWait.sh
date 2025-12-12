@@ -4,6 +4,7 @@
 # MASTER RUNNER: DISTRIBUTED SHARD ORCHESTRATOR
 # Description: Orchestrates the execution of mutation analysis 
 #              and test generation scripts across distributed nodes.
+#              (Ordered by SCRIPT, then by CASE)
 # Location: esg-with-feature-expressions/bashscripts/
 # ============================================================
 
@@ -30,33 +31,34 @@ PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
 # 1. DEFINE CASES
 CASES=(
-  #"SodaVendingMachine SVM"
-  #"eMail eM"
-  "Elevator El"               # Açık
-  #"BankAccountv2 BAv2"
-  "StudentAttendanceSystem SAS" # Açık
-  "syngovia Svia"             # Açık
-  "Tesla Te"                  # Açık
+  "SodaVendingMachine SVM"
+  "eMail eM"
+  "Elevator El"
+  "BankAccountv2 BAv2"
+  "StudentAttendanceSystem SAS"
+  "Tesla Te"
+  "syngovia Svia"
+  "HockertyShirts HS" 
 )
 
 # 2. DEFINE TASK SCRIPTS
 SCRIPTS=(
-  "MutantGeneratorEdgeOmitter.sh"
-  #"MutantGeneratorEdgeRedirector.sh" # KAPALI
-  "MutantGeneratorEventOmitter.sh"
-  "ProductESGToEFGFileWriter.sh"
   "TestSequenceRecorder.sh"
+  "MutantGeneratorEdgeOmitter.sh"
+  "MutantGeneratorEventOmitter.sh"
+  #"MutantGeneratorEdgeRedirector.sh" # DISABLED
+  #"ProductESGToEFGFileWriter.sh" 
 )
 
 ERROR_KEYWORDS="Exception|Error|FAILURE|Java heap space|AccessDenied"
 
 # --- VERIFICATION FUNCTION ---
-# Bu fonksiyon işlem bitince dosyaları sayar
+# Checks output files after the process finishes
 verify_results() {
     local case_name=$1
     local script_name=$2
     
-    # Script ismine göre çıktı klasörünü tahmin et
+    # Determine output directory based on script name
     local target_dir=""
     if [[ "$script_name" == *"EdgeOmitter"* ]]; then target_dir="shards_mutantgenerator_edgeomitter"; fi
     if [[ "$script_name" == *"EventOmitter"* ]]; then target_dir="shards_mutantgenerator_eventomitter"; fi
@@ -66,7 +68,7 @@ verify_results() {
     local full_path="$PROJECT_ROOT/files/Cases/$case_name/$target_dir"
     
     if [ -d "$full_path" ]; then
-        # CSV veya EFG dosyası say
+        # Count CSV or EFG files
         local count=$(find "$full_path" -type f \( -name "*.csv" -o -name "*.EFG" \) | wc -l)
         if [ "$count" -gt 0 ]; then
             echo "   ✅ VERIFIED: $count output files found in $target_dir"
@@ -104,24 +106,14 @@ wait_and_monitor() {
   rm -f error_snippet.tmp
   echo -e "\n✅ PROCESS FINISHED: $case_name ($script_name)"
   
-  # İşlem bitince hemen sonucu kontrol et
+  # Check results immediately after process finishes
   verify_results "$case_name" "$script_name"
 }
 
 echo "=== STARTING MASTER RUNNER ==="
 
-# --- MAIN EXECUTION LOOP ---
-for entry in "${CASES[@]}"; do
-  set -- $entry
-  CASE_NAME=$1
-  SHORT_NAME=$2
-
-  LOG_DIR="${PROJECT_ROOT}/logs/${CASE_NAME}"
-  mkdir -p "$LOG_DIR"
-
-  echo "🔷 PROCESSING CASE: $CASE_NAME"
-
-  for SCRIPT_NAME in "${SCRIPTS[@]}"; do
+# --- MAIN EXECUTION LOOP (Swapped: Script -> Case) ---
+for SCRIPT_NAME in "${SCRIPTS[@]}"; do
     
     # --- SAFETY SKIP: EdgeRedirector ---
     if [[ "$SCRIPT_NAME" == *"EdgeRedirector"* ]]; then
@@ -135,15 +127,28 @@ for entry in "${CASES[@]}"; do
       echo "⚠️  Warning: Script not found: $TARGET_SCRIPT"
       continue
     fi
+    
+    echo "=================================================="
+    echo "🚀 STARTING BATCH TASK: $SCRIPT_NAME"
+    echo "=================================================="
 
-    echo "▶️  EXECUTING: $SCRIPT_NAME (Range: $START_SHARD - $END_SHARD)"
-    
-    bash "$TARGET_SCRIPT" "$CASE_NAME" "$SHORT_NAME" "$TARGET_SHARDS" "$START_SHARD" "$END_SHARD" > /dev/null 2>&1
-    
-    # Script ismini de gönderiyoruz ki hangi klasöre bakacağını bilsin
-    wait_and_monitor "$CASE_NAME" "$LOG_DIR" "$SCRIPT_NAME"
-    sleep 2
-  done 
+    for entry in "${CASES[@]}"; do
+        set -- $entry
+        CASE_NAME=$1
+        SHORT_NAME=$2
+
+        LOG_DIR="${PROJECT_ROOT}/logs/${CASE_NAME}"
+        mkdir -p "$LOG_DIR"
+
+        echo "🔷 PROCESSING CASE: $CASE_NAME"
+        echo "▶️  EXECUTING: $SCRIPT_NAME (Range: $START_SHARD - $END_SHARD)"
+        
+        bash "$TARGET_SCRIPT" "$CASE_NAME" "$SHORT_NAME" "$TARGET_SHARDS" "$START_SHARD" "$END_SHARD" > /dev/null 2>&1
+        
+        # Monitor this specific case/script combination
+        wait_and_monitor "$CASE_NAME" "$LOG_DIR" "$SCRIPT_NAME"
+        sleep 2
+    done
 done
 
 echo ""

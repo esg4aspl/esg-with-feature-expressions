@@ -1,0 +1,660 @@
+P000001: <sas, ta, es, a, e, vc, ur>:7 features
+P000002: <sas, ta, dc, es, a, e, vc, ur>:8 features
+P000003: <sas, ta, dc, anc, es, a, e, vc, ur>:9 features
+P000004: <sas, ta, ass, es, a, e, vc, ur>:8 features
+P000005: <sas, ta, dc, ass, es, a, e, vc, ur>:9 features
+P000006: <sas, ta, dc, anc, ass, es, a, e, vc, ur>:10 features
+P000007: <sas, ta, ass, ans, es, a, e, vc, ur>:9 features
+P000008: <sas, ta, dc, ass, ans, es, a, e, vc, ur>:10 features
+P000009: <sas, ta, dc, anc, ass, ans, es, a, e, vc, ur>:11 features
+P000010: <sas, ta, dc, anc, ucd, ass, ans, es, a, e, vc, ur>:12 features
+P000011: <sas, ta, dc, anc, ucd, ass, ans, es, a, e, vs, vc, ur>:13 features
+P000012: <sas, ta, es, a, e, vs, vc, ur>:8 features
+P000013: <sas, ta, dc, es, a, e, vs, vc, ur>:9 features
+P000014: <sas, ta, dc, anc, es, a, e, vs, vc, ur>:10 features
+P000015: <sas, ta, ass, es, a, e, vs, vc, ur>:9 features
+P000016: <sas, ta, dc, ass, es, a, e, vs, vc, ur>:10 features
+P000017: <sas, ta, dc, anc, ass, es, a, e, vs, vc, ur>:11 features
+P000018: <sas, ta, dc, anc, ass, ans, es, a, e, vs, vc, ur>:12 features
+P000019: <sas, ta, ass, ans, es, a, e, vs, vc, ur>:10 features
+P000020: <sas, ta, dc, ass, ans, es, a, e, vs, vc, ur>:11 features
+P000021: <sas, ta, es, a, e, vc, mas>:7 features
+P000022: <sas, ta, dc, es, a, e, vc, mas>:8 features
+P000023: <sas, ta, dc, anc, es, a, e, vc, mas>:9 features
+P000024: <sas, ta, ass, es, a, e, vc, mas>:8 features
+P000025: <sas, ta, dc, ass, es, a, e, vc, mas>:9 features
+P000026: <sas, ta, dc, anc, ass, es, a, e, vc, mas>:10 features
+P000027: <sas, ta, ass, ans, es, a, e, vc, mas>:9 features
+P000028: <sas, ta, dc, ass, ans, es, a, e, vc, mas>:10 features
+P000029: <sas, ta, dc, anc, ass, ans, es, a, e, vc, mas>:11 features
+P000030: <sas, ta, dc, anc, ucd, ass, ans, es, a, e, vc, mas>:12 features
+P000031: <sas, ta, dc, anc, ucd, ass, ans, es, a, e, vs, vc, mas>:13 features
+P000032: <sas, ta, es, a, e, vs, vc, mas>:8 features
+P000033: <sas, ta, dc, es, a, e, vs, vc, mas>:9 features
+P000034: <sas, ta, dc, anc, es, a, e, vs, vc, mas>:10 features
+P000035: <sas, ta, ass, es, a, e, vs, vc, mas>:9 features
+P000036: <sas, ta, dc, ass, es, a, e, vs, vc, mas>:10 features
+P000037: <sas, ta, dc, anc, ass, es, a, e, vs, vc, mas>:11 features
+P000038: <sas, ta, ass, ans, es, a, e, vs, vc, mas>:10 features
+P000039: <sas, ta, dc, ass, ans, es, a, e, vs, vc, mas>:11 features
+P000040: <sas, ta, dc, anc, ass, ans, es, a, e, vs, vc, mas>:12 features
+P000041: <sas, ta, dc, anc, ucd, ass, ans, es, a, e, vs, vc, ur, mas>:14 features
+P000042: <sas, ta, es, a, e, vc, ur, mas>:8 features
+P000043: <sas, ta, dc, es, a, e, vc, ur, mas>:9 features
+P000044: <sas, ta, dc, anc, es, a, e, vc, ur, mas>:10 features
+P000045: <sas, ta, ass, es, a, e, vc, ur, mas>:9 features
+P000046: <sas, ta, dc, ass, es, a, e, vc, ur, mas>:10 features
+P000047: <sas, ta, dc, anc, ass, es, a, e, vc, ur, mas>:11 features
+P000048: <sas, ta, ass, ans, es, a, e, vc, ur, mas>:10 features
+P000049: <sas, ta, dc, ass, ans, es, a, e, vc, ur, mas>:11 features
+P000050: <sas, ta, dc, anc, ass, ans, es, a, e, vc, ur, mas>:12 features
+P000051: <sas, ta, dc, anc, ucd, ass, ans, es, a, e, vc, ur, mas>:13 features
+P000052: <sas, ta, es, a, e, vs, vc, ur, mas>:9 features
+P000053: <sas, ta, dc, es, a, e, vs, vc, ur, mas>:10 features
+P000054: <sas, ta, dc, anc, es, a, e, vs, vc, ur, mas>:11 features
+P000055: <sas, ta, ass, es, a, e, vs, vc, ur, mas>:10 features
+P000056: <sas, ta, dc, ass, es, a, e, vs, vc, ur, mas>:11 features
+P000057: <sas, ta, dc, anc, ass, es, a, e, vs, vc, ur, mas>:12 features
+P000058: <sas, ta, dc, anc, ass, ans, es, a, e, vs, vc, ur, mas>:13 features
+P000059: <sas, ta, ass, ans, es, a, e, vs, vc, ur, mas>:11 features
+P000060: <sas, ta, dc, ass, ans, es, a, e, vs, vc, ur, mas>:12 features
+P000061: <sas, ta, dc, es, a, e, taa, mas>:8 features
+P000062: <sas, ta, dc, anc, es, a, e, taa, mas>:9 features
+P000063: <sas, ta, dc, ass, es, a, e, taa, mas>:9 features
+P000064: <sas, ta, dc, anc, ass, es, a, e, taa, mas>:10 features
+P000065: <sas, ta, dc, ass, ans, es, a, e, taa, mas>:10 features
+P000066: <sas, ta, dc, anc, ass, ans, es, a, e, taa, mas>:11 features
+P000067: <sas, ta, dc, anc, ucd, ass, ans, es, a, e, taa, mas>:12 features
+P000068: <sas, ta, dc, anc, ucd, ass, ans, es, a, e, vs, taa, mas>:13 features
+P000069: <sas, ta, dc, es, a, e, vs, taa, mas>:9 features
+P000070: <sas, ta, dc, anc, es, a, e, vs, taa, mas>:10 features
+P000071: <sas, ta, dc, ass, es, a, e, vs, taa, mas>:10 features
+P000072: <sas, ta, dc, anc, ass, es, a, e, vs, taa, mas>:11 features
+P000073: <sas, ta, dc, ass, ans, es, a, e, vs, taa, mas>:11 features
+P000074: <sas, ta, dc, anc, ass, ans, es, a, e, vs, taa, mas>:12 features
+P000075: <sas, ta, es, a, e, vc, taa, mas>:8 features
+P000076: <sas, ta, dc, es, a, e, vc, taa, mas>:9 features
+P000077: <sas, ta, dc, anc, es, a, e, vc, taa, mas>:10 features
+P000078: <sas, ta, ass, es, a, e, vc, taa, mas>:9 features
+P000079: <sas, ta, dc, ass, es, a, e, vc, taa, mas>:10 features
+P000080: <sas, ta, dc, anc, ass, es, a, e, vc, taa, mas>:11 features
+P000081: <sas, ta, ass, ans, es, a, e, vc, taa, mas>:10 features
+P000082: <sas, ta, dc, ass, ans, es, a, e, vc, taa, mas>:11 features
+P000083: <sas, ta, dc, anc, ass, ans, es, a, e, vc, taa, mas>:12 features
+P000084: <sas, ta, dc, anc, ucd, ass, ans, es, a, e, vc, taa, mas>:13 features
+P000085: <sas, ta, dc, anc, ucd, ass, ans, es, a, e, vs, vc, taa, mas>:14 features
+P000086: <sas, ta, es, a, e, vs, vc, taa, mas>:9 features
+P000087: <sas, ta, dc, es, a, e, vs, vc, taa, mas>:10 features
+P000088: <sas, ta, dc, anc, es, a, e, vs, vc, taa, mas>:11 features
+P000089: <sas, ta, ass, es, a, e, vs, vc, taa, mas>:10 features
+P000090: <sas, ta, dc, ass, es, a, e, vs, vc, taa, mas>:11 features
+P000091: <sas, ta, dc, anc, ass, es, a, e, vs, vc, taa, mas>:12 features
+P000092: <sas, ta, dc, anc, ass, ans, es, a, e, vs, vc, taa, mas>:13 features
+P000093: <sas, ta, ass, ans, es, a, e, vs, vc, taa, mas>:11 features
+P000094: <sas, ta, dc, ass, ans, es, a, e, vs, vc, taa, mas>:12 features
+P000095: <sas, ta, dc, anc, ucd, ass, ans, es, a, e, vs, vc, ur, taa, mas>:15 features
+P000096: <sas, ta, es, a, e, vc, ur, taa, mas>:9 features
+P000097: <sas, ta, dc, es, a, e, vc, ur, taa, mas>:10 features
+P000098: <sas, ta, dc, anc, es, a, e, vc, ur, taa, mas>:11 features
+P000099: <sas, ta, ass, es, a, e, vc, ur, taa, mas>:10 features
+P000100: <sas, ta, dc, ass, es, a, e, vc, ur, taa, mas>:11 features
+P000101: <sas, ta, dc, anc, ass, es, a, e, vc, ur, taa, mas>:12 features
+P000102: <sas, ta, ass, ans, es, a, e, vc, ur, taa, mas>:11 features
+P000103: <sas, ta, dc, ass, ans, es, a, e, vc, ur, taa, mas>:12 features
+P000104: <sas, ta, dc, anc, ass, ans, es, a, e, vc, ur, taa, mas>:13 features
+P000105: <sas, ta, dc, anc, ucd, ass, ans, es, a, e, vc, ur, taa, mas>:14 features
+P000106: <sas, ta, es, a, e, vs, vc, ur, taa, mas>:10 features
+P000107: <sas, ta, dc, es, a, e, vs, vc, ur, taa, mas>:11 features
+P000108: <sas, ta, dc, anc, es, a, e, vs, vc, ur, taa, mas>:12 features
+P000109: <sas, ta, ass, es, a, e, vs, vc, ur, taa, mas>:11 features
+P000110: <sas, ta, dc, ass, es, a, e, vs, vc, ur, taa, mas>:12 features
+P000111: <sas, ta, dc, anc, ass, es, a, e, vs, vc, ur, taa, mas>:13 features
+P000112: <sas, ta, dc, anc, ass, ans, es, a, e, vs, vc, ur, taa, mas>:14 features
+P000113: <sas, ta, ass, ans, es, a, e, vs, vc, ur, taa, mas>:12 features
+P000114: <sas, ta, dc, ass, ans, es, a, e, vs, vc, ur, taa, mas>:13 features
+P000115: <sas, ta, dc, es, a, e, vr, mas>:8 features
+P000116: <sas, ta, dc, anc, es, a, e, vr, mas>:9 features
+P000117: <sas, ta, dc, ass, es, a, e, vr, mas>:9 features
+P000118: <sas, ta, dc, anc, ass, es, a, e, vr, mas>:10 features
+P000119: <sas, ta, dc, ass, ans, es, a, e, vr, mas>:10 features
+P000120: <sas, ta, dc, anc, ass, ans, es, a, e, vr, mas>:11 features
+P000121: <sas, ta, dc, anc, ucd, ass, ans, es, a, e, vr, mas>:12 features
+P000122: <sas, ta, dc, anc, ucd, ass, ans, es, a, e, vs, vr, mas>:13 features
+P000123: <sas, ta, dc, es, a, e, vs, vr, mas>:9 features
+P000124: <sas, ta, dc, anc, es, a, e, vs, vr, mas>:10 features
+P000125: <sas, ta, dc, ass, es, a, e, vs, vr, mas>:10 features
+P000126: <sas, ta, dc, anc, ass, es, a, e, vs, vr, mas>:11 features
+P000127: <sas, ta, dc, ass, ans, es, a, e, vs, vr, mas>:11 features
+P000128: <sas, ta, dc, anc, ass, ans, es, a, e, vs, vr, mas>:12 features
+P000129: <sas, ta, es, a, e, vc, vr, mas>:8 features
+P000130: <sas, ta, dc, es, a, e, vc, vr, mas>:9 features
+P000131: <sas, ta, dc, anc, es, a, e, vc, vr, mas>:10 features
+P000132: <sas, ta, ass, es, a, e, vc, vr, mas>:9 features
+P000133: <sas, ta, dc, ass, es, a, e, vc, vr, mas>:10 features
+P000134: <sas, ta, dc, anc, ass, es, a, e, vc, vr, mas>:11 features
+P000135: <sas, ta, ass, ans, es, a, e, vc, vr, mas>:10 features
+P000136: <sas, ta, dc, ass, ans, es, a, e, vc, vr, mas>:11 features
+P000137: <sas, ta, dc, anc, ass, ans, es, a, e, vc, vr, mas>:12 features
+P000138: <sas, ta, dc, anc, ucd, ass, ans, es, a, e, vc, vr, mas>:13 features
+P000139: <sas, ta, dc, anc, ucd, ass, ans, es, a, e, vs, vc, vr, mas>:14 features
+P000140: <sas, ta, es, a, e, vs, vc, vr, mas>:9 features
+P000141: <sas, ta, dc, es, a, e, vs, vc, vr, mas>:10 features
+P000142: <sas, ta, dc, anc, es, a, e, vs, vc, vr, mas>:11 features
+P000143: <sas, ta, ass, es, a, e, vs, vc, vr, mas>:10 features
+P000144: <sas, ta, dc, ass, es, a, e, vs, vc, vr, mas>:11 features
+P000145: <sas, ta, dc, anc, ass, es, a, e, vs, vc, vr, mas>:12 features
+P000146: <sas, ta, dc, anc, ass, ans, es, a, e, vs, vc, vr, mas>:13 features
+P000147: <sas, ta, ass, ans, es, a, e, vs, vc, vr, mas>:11 features
+P000148: <sas, ta, dc, ass, ans, es, a, e, vs, vc, vr, mas>:12 features
+P000149: <sas, ta, es, a, e, vc, ur, vr, mas>:9 features
+P000150: <sas, ta, dc, es, a, e, vc, ur, vr, mas>:10 features
+P000151: <sas, ta, dc, anc, es, a, e, vc, ur, vr, mas>:11 features
+P000152: <sas, ta, ass, es, a, e, vc, ur, vr, mas>:10 features
+P000153: <sas, ta, dc, ass, es, a, e, vc, ur, vr, mas>:11 features
+P000154: <sas, ta, dc, anc, ass, es, a, e, vc, ur, vr, mas>:12 features
+P000155: <sas, ta, ass, ans, es, a, e, vc, ur, vr, mas>:11 features
+P000156: <sas, ta, dc, ass, ans, es, a, e, vc, ur, vr, mas>:12 features
+P000157: <sas, ta, dc, anc, ass, ans, es, a, e, vc, ur, vr, mas>:13 features
+P000158: <sas, ta, dc, anc, ucd, ass, ans, es, a, e, vc, ur, vr, mas>:14 features
+P000159: <sas, ta, dc, anc, ucd, ass, ans, es, a, e, vs, vc, ur, vr, mas>:15 features
+P000160: <sas, ta, es, a, e, vs, vc, ur, vr, mas>:10 features
+P000161: <sas, ta, dc, es, a, e, vs, vc, ur, vr, mas>:11 features
+P000162: <sas, ta, dc, anc, es, a, e, vs, vc, ur, vr, mas>:12 features
+P000163: <sas, ta, ass, es, a, e, vs, vc, ur, vr, mas>:11 features
+P000164: <sas, ta, dc, ass, es, a, e, vs, vc, ur, vr, mas>:12 features
+P000165: <sas, ta, dc, anc, ass, es, a, e, vs, vc, ur, vr, mas>:13 features
+P000166: <sas, ta, dc, anc, ass, ans, es, a, e, vs, vc, ur, vr, mas>:14 features
+P000167: <sas, ta, ass, ans, es, a, e, vs, vc, ur, vr, mas>:12 features
+P000168: <sas, ta, dc, ass, ans, es, a, e, vs, vc, ur, vr, mas>:13 features
+P000169: <sas, ta, dc, anc, ucd, ass, ans, es, a, e, vs, vc, ur, taa, vr, mas>:16 features
+P000170: <sas, ta, dc, es, a, e, taa, vr, mas>:9 features
+P000171: <sas, ta, dc, anc, es, a, e, taa, vr, mas>:10 features
+P000172: <sas, ta, dc, ass, es, a, e, taa, vr, mas>:10 features
+P000173: <sas, ta, dc, anc, ass, es, a, e, taa, vr, mas>:11 features
+P000174: <sas, ta, dc, ass, ans, es, a, e, taa, vr, mas>:11 features
+P000175: <sas, ta, dc, anc, ass, ans, es, a, e, taa, vr, mas>:12 features
+P000176: <sas, ta, dc, anc, ucd, ass, ans, es, a, e, taa, vr, mas>:13 features
+P000177: <sas, ta, dc, anc, ucd, ass, ans, es, a, e, vs, taa, vr, mas>:14 features
+P000178: <sas, ta, dc, es, a, e, vs, taa, vr, mas>:10 features
+P000179: <sas, ta, dc, anc, es, a, e, vs, taa, vr, mas>:11 features
+P000180: <sas, ta, dc, ass, es, a, e, vs, taa, vr, mas>:11 features
+P000181: <sas, ta, dc, anc, ass, es, a, e, vs, taa, vr, mas>:12 features
+P000182: <sas, ta, dc, ass, ans, es, a, e, vs, taa, vr, mas>:12 features
+P000183: <sas, ta, dc, anc, ass, ans, es, a, e, vs, taa, vr, mas>:13 features
+P000184: <sas, ta, es, a, e, vc, taa, vr, mas>:9 features
+P000185: <sas, ta, dc, es, a, e, vc, taa, vr, mas>:10 features
+P000186: <sas, ta, dc, anc, es, a, e, vc, taa, vr, mas>:11 features
+P000187: <sas, ta, ass, es, a, e, vc, taa, vr, mas>:10 features
+P000188: <sas, ta, dc, ass, es, a, e, vc, taa, vr, mas>:11 features
+P000189: <sas, ta, dc, anc, ass, es, a, e, vc, taa, vr, mas>:12 features
+P000190: <sas, ta, ass, ans, es, a, e, vc, taa, vr, mas>:11 features
+P000191: <sas, ta, dc, ass, ans, es, a, e, vc, taa, vr, mas>:12 features
+P000192: <sas, ta, dc, anc, ass, ans, es, a, e, vc, taa, vr, mas>:13 features
+P000193: <sas, ta, dc, anc, ucd, ass, ans, es, a, e, vc, taa, vr, mas>:14 features
+P000194: <sas, ta, dc, anc, ucd, ass, ans, es, a, e, vs, vc, taa, vr, mas>:15 features
+P000195: <sas, ta, es, a, e, vs, vc, taa, vr, mas>:10 features
+P000196: <sas, ta, dc, es, a, e, vs, vc, taa, vr, mas>:11 features
+P000197: <sas, ta, dc, anc, es, a, e, vs, vc, taa, vr, mas>:12 features
+P000198: <sas, ta, ass, es, a, e, vs, vc, taa, vr, mas>:11 features
+P000199: <sas, ta, dc, ass, es, a, e, vs, vc, taa, vr, mas>:12 features
+P000200: <sas, ta, dc, anc, ass, es, a, e, vs, vc, taa, vr, mas>:13 features
+P000201: <sas, ta, dc, anc, ass, ans, es, a, e, vs, vc, taa, vr, mas>:14 features
+P000202: <sas, ta, ass, ans, es, a, e, vs, vc, taa, vr, mas>:12 features
+P000203: <sas, ta, dc, ass, ans, es, a, e, vs, vc, taa, vr, mas>:13 features
+P000204: <sas, ta, es, a, e, vc, ur, taa, vr, mas>:10 features
+P000205: <sas, ta, dc, es, a, e, vc, ur, taa, vr, mas>:11 features
+P000206: <sas, ta, dc, anc, es, a, e, vc, ur, taa, vr, mas>:12 features
+P000207: <sas, ta, ass, es, a, e, vc, ur, taa, vr, mas>:11 features
+P000208: <sas, ta, dc, ass, es, a, e, vc, ur, taa, vr, mas>:12 features
+P000209: <sas, ta, dc, anc, ass, es, a, e, vc, ur, taa, vr, mas>:13 features
+P000210: <sas, ta, ass, ans, es, a, e, vc, ur, taa, vr, mas>:12 features
+P000211: <sas, ta, dc, ass, ans, es, a, e, vc, ur, taa, vr, mas>:13 features
+P000212: <sas, ta, dc, anc, ass, ans, es, a, e, vc, ur, taa, vr, mas>:14 features
+P000213: <sas, ta, dc, anc, ucd, ass, ans, es, a, e, vc, ur, taa, vr, mas>:15 features
+P000214: <sas, ta, es, a, e, vs, vc, ur, taa, vr, mas>:11 features
+P000215: <sas, ta, dc, es, a, e, vs, vc, ur, taa, vr, mas>:12 features
+P000216: <sas, ta, dc, anc, es, a, e, vs, vc, ur, taa, vr, mas>:13 features
+P000217: <sas, ta, ass, es, a, e, vs, vc, ur, taa, vr, mas>:12 features
+P000218: <sas, ta, dc, ass, es, a, e, vs, vc, ur, taa, vr, mas>:13 features
+P000219: <sas, ta, dc, anc, ass, es, a, e, vs, vc, ur, taa, vr, mas>:14 features
+P000220: <sas, ta, dc, anc, ass, ans, es, a, e, vs, vc, ur, taa, vr, mas>:15 features
+P000221: <sas, ta, ass, ans, es, a, e, vs, vc, ur, taa, vr, mas>:13 features
+P000222: <sas, ta, dc, ass, ans, es, a, e, vs, vc, ur, taa, vr, mas>:14 features
+P000223: <sas, dc, anc, ucd, ass, ans, e, vs, vc, ur, sa, f>:12 features
+P000224: <sas, dc, anc, ass, e, vc, ur, sa, f>:9 features
+P000225: <sas, ta, ass, e, vc, ur, sa, f>:8 features
+P000226: <sas, dc, ass, e, vc, ur, sa, f>:8 features
+P000227: <sas, ta, dc, ass, e, vc, ur, sa, f>:9 features
+P000228: <sas, ta, dc, anc, ass, e, vc, ur, sa, f>:10 features
+P000229: <sas, dc, anc, ass, ans, e, vc, ur, sa, f>:10 features
+P000230: <sas, ta, ass, ans, e, vc, ur, sa, f>:9 features
+P000231: <sas, dc, ass, ans, e, vc, ur, sa, f>:9 features
+P000232: <sas, ta, dc, ass, ans, e, vc, ur, sa, f>:10 features
+P000233: <sas, ta, dc, anc, ass, ans, e, vc, ur, sa, f>:11 features
+P000234: <sas, dc, anc, ucd, ass, ans, e, vc, ur, sa, f>:11 features
+P000235: <sas, ta, dc, anc, ucd, ass, ans, e, vc, ur, sa, f>:12 features
+P000236: <sas, ta, dc, anc, ucd, ass, ans, e, vs, vc, ur, sa, f>:13 features
+P000237: <sas, dc, anc, ass, ans, e, vs, vc, ur, sa, f>:11 features
+P000238: <sas, e, vs, vc, ur, sa, f>:7 features
+P000239: <sas, ta, e, vs, vc, ur, sa, f>:8 features
+P000240: <sas, dc, e, vs, vc, ur, sa, f>:8 features
+P000241: <sas, ta, dc, e, vs, vc, ur, sa, f>:9 features
+P000242: <sas, dc, anc, e, vs, vc, ur, sa, f>:9 features
+P000243: <sas, ta, dc, anc, e, vs, vc, ur, sa, f>:10 features
+P000244: <sas, dc, anc, ass, e, vs, vc, ur, sa, f>:10 features
+P000245: <sas, ass, e, vs, vc, ur, sa, f>:8 features
+P000246: <sas, ta, ass, e, vs, vc, ur, sa, f>:9 features
+P000247: <sas, dc, ass, e, vs, vc, ur, sa, f>:9 features
+P000248: <sas, ta, dc, ass, e, vs, vc, ur, sa, f>:10 features
+P000249: <sas, ta, dc, anc, ass, e, vs, vc, ur, sa, f>:11 features
+P000250: <sas, ta, dc, anc, ass, ans, e, vs, vc, ur, sa, f>:12 features
+P000251: <sas, ass, ans, e, vs, vc, ur, sa, f>:9 features
+P000252: <sas, ta, ass, ans, e, vs, vc, ur, sa, f>:10 features
+P000253: <sas, dc, ass, ans, e, vs, vc, ur, sa, f>:10 features
+P000254: <sas, ta, dc, ass, ans, e, vs, vc, ur, sa, f>:11 features
+P000255: <sas, dc, anc, ucd, ass, ans, e, vs, vc, ur, mas, sa, f>:13 features
+P000256: <sas, dc, anc, ass, e, vc, mas, sa, f>:9 features
+P000257: <sas, ta, ass, e, vc, mas, sa, f>:8 features
+P000258: <sas, dc, ass, e, vc, mas, sa, f>:8 features
+P000259: <sas, ta, dc, ass, e, vc, mas, sa, f>:9 features
+P000260: <sas, ta, dc, anc, ass, e, vc, mas, sa, f>:10 features
+P000261: <sas, dc, anc, ass, ans, e, vc, mas, sa, f>:10 features
+P000262: <sas, ta, ass, ans, e, vc, mas, sa, f>:9 features
+P000263: <sas, dc, ass, ans, e, vc, mas, sa, f>:9 features
+P000264: <sas, ta, dc, ass, ans, e, vc, mas, sa, f>:10 features
+P000265: <sas, ta, dc, anc, ass, ans, e, vc, mas, sa, f>:11 features
+P000266: <sas, dc, anc, ucd, ass, ans, e, vc, mas, sa, f>:11 features
+P000267: <sas, ta, dc, anc, ucd, ass, ans, e, vc, mas, sa, f>:12 features
+P000268: <sas, dc, anc, ucd, ass, ans, e, vs, vc, mas, sa, f>:12 features
+P000269: <sas, ta, dc, anc, ucd, ass, ans, e, vs, vc, mas, sa, f>:13 features
+P000270: <sas, e, vs, vc, mas, sa, f>:7 features
+P000271: <sas, ta, e, vs, vc, mas, sa, f>:8 features
+P000272: <sas, dc, e, vs, vc, mas, sa, f>:8 features
+P000273: <sas, ta, dc, e, vs, vc, mas, sa, f>:9 features
+P000274: <sas, dc, anc, e, vs, vc, mas, sa, f>:9 features
+P000275: <sas, ta, dc, anc, e, vs, vc, mas, sa, f>:10 features
+P000276: <sas, dc, anc, ass, e, vs, vc, mas, sa, f>:10 features
+P000277: <sas, ass, e, vs, vc, mas, sa, f>:8 features
+P000278: <sas, ta, ass, e, vs, vc, mas, sa, f>:9 features
+P000279: <sas, dc, ass, e, vs, vc, mas, sa, f>:9 features
+P000280: <sas, ta, dc, ass, e, vs, vc, mas, sa, f>:10 features
+P000281: <sas, ta, dc, anc, ass, e, vs, vc, mas, sa, f>:11 features
+P000282: <sas, dc, anc, ass, ans, e, vs, vc, mas, sa, f>:11 features
+P000283: <sas, ass, ans, e, vs, vc, mas, sa, f>:9 features
+P000284: <sas, ta, ass, ans, e, vs, vc, mas, sa, f>:10 features
+P000285: <sas, dc, ass, ans, e, vs, vc, mas, sa, f>:10 features
+P000286: <sas, ta, dc, ass, ans, e, vs, vc, mas, sa, f>:11 features
+P000287: <sas, ta, dc, anc, ass, ans, e, vs, vc, mas, sa, f>:12 features
+P000288: <sas, ta, dc, anc, ucd, ass, ans, e, vs, vc, ur, mas, sa, f>:14 features
+P000289: <sas, dc, anc, ass, e, vc, ur, mas, sa, f>:10 features
+P000290: <sas, ta, ass, e, vc, ur, mas, sa, f>:9 features
+P000291: <sas, dc, ass, e, vc, ur, mas, sa, f>:9 features
+P000292: <sas, ta, dc, ass, e, vc, ur, mas, sa, f>:10 features
+P000293: <sas, ta, dc, anc, ass, e, vc, ur, mas, sa, f>:11 features
+P000294: <sas, dc, anc, ass, ans, e, vc, ur, mas, sa, f>:11 features
+P000295: <sas, ta, ass, ans, e, vc, ur, mas, sa, f>:10 features
+P000296: <sas, dc, ass, ans, e, vc, ur, mas, sa, f>:10 features
+P000297: <sas, ta, dc, ass, ans, e, vc, ur, mas, sa, f>:11 features
+P000298: <sas, ta, dc, anc, ass, ans, e, vc, ur, mas, sa, f>:12 features
+P000299: <sas, dc, anc, ucd, ass, ans, e, vc, ur, mas, sa, f>:12 features
+P000300: <sas, ta, dc, anc, ucd, ass, ans, e, vc, ur, mas, sa, f>:13 features
+P000301: <sas, dc, anc, ass, ans, e, vs, vc, ur, mas, sa, f>:12 features
+P000302: <sas, e, vs, vc, ur, mas, sa, f>:8 features
+P000303: <sas, ta, e, vs, vc, ur, mas, sa, f>:9 features
+P000304: <sas, dc, e, vs, vc, ur, mas, sa, f>:9 features
+P000305: <sas, ta, dc, e, vs, vc, ur, mas, sa, f>:10 features
+P000306: <sas, dc, anc, e, vs, vc, ur, mas, sa, f>:10 features
+P000307: <sas, ta, dc, anc, e, vs, vc, ur, mas, sa, f>:11 features
+P000308: <sas, dc, anc, ass, e, vs, vc, ur, mas, sa, f>:11 features
+P000309: <sas, ass, e, vs, vc, ur, mas, sa, f>:9 features
+P000310: <sas, ta, ass, e, vs, vc, ur, mas, sa, f>:10 features
+P000311: <sas, dc, ass, e, vs, vc, ur, mas, sa, f>:10 features
+P000312: <sas, ta, dc, ass, e, vs, vc, ur, mas, sa, f>:11 features
+P000313: <sas, ta, dc, anc, ass, e, vs, vc, ur, mas, sa, f>:12 features
+P000314: <sas, ta, dc, anc, ass, ans, e, vs, vc, ur, mas, sa, f>:13 features
+P000315: <sas, ass, ans, e, vs, vc, ur, mas, sa, f>:10 features
+P000316: <sas, ta, ass, ans, e, vs, vc, ur, mas, sa, f>:11 features
+P000317: <sas, dc, ass, ans, e, vs, vc, ur, mas, sa, f>:11 features
+P000318: <sas, ta, dc, ass, ans, e, vs, vc, ur, mas, sa, f>:12 features
+P000319: <sas, dc, anc, ucd, ass, ans, e, vs, vc, ur, taa, mas, sa, f>:14 features
+P000320: <sas, dc, anc, ass, e, taa, mas, sa, f>:9 features
+P000321: <sas, dc, ass, e, taa, mas, sa, f>:8 features
+P000322: <sas, ta, dc, ass, e, taa, mas, sa, f>:9 features
+P000323: <sas, ta, dc, anc, ass, e, taa, mas, sa, f>:10 features
+P000324: <sas, dc, anc, ass, ans, e, taa, mas, sa, f>:10 features
+P000325: <sas, dc, ass, ans, e, taa, mas, sa, f>:9 features
+P000326: <sas, ta, dc, ass, ans, e, taa, mas, sa, f>:10 features
+P000327: <sas, ta, dc, anc, ass, ans, e, taa, mas, sa, f>:11 features
+P000328: <sas, dc, anc, ucd, ass, ans, e, taa, mas, sa, f>:11 features
+P000329: <sas, ta, dc, anc, ucd, ass, ans, e, taa, mas, sa, f>:12 features
+P000330: <sas, dc, anc, ucd, ass, ans, e, vs, taa, mas, sa, f>:12 features
+P000331: <sas, ta, dc, anc, ucd, ass, ans, e, vs, taa, mas, sa, f>:13 features
+P000332: <sas, dc, e, vs, taa, mas, sa, f>:8 features
+P000333: <sas, ta, dc, e, vs, taa, mas, sa, f>:9 features
+P000334: <sas, dc, anc, e, vs, taa, mas, sa, f>:9 features
+P000335: <sas, ta, dc, anc, e, vs, taa, mas, sa, f>:10 features
+P000336: <sas, dc, anc, ass, e, vs, taa, mas, sa, f>:10 features
+P000337: <sas, dc, ass, e, vs, taa, mas, sa, f>:9 features
+P000338: <sas, ta, dc, ass, e, vs, taa, mas, sa, f>:10 features
+P000339: <sas, ta, dc, anc, ass, e, vs, taa, mas, sa, f>:11 features
+P000340: <sas, dc, anc, ass, ans, e, vs, taa, mas, sa, f>:11 features
+P000341: <sas, dc, ass, ans, e, vs, taa, mas, sa, f>:10 features
+P000342: <sas, ta, dc, ass, ans, e, vs, taa, mas, sa, f>:11 features
+P000343: <sas, ta, dc, anc, ass, ans, e, vs, taa, mas, sa, f>:12 features
+P000344: <sas, dc, anc, ucd, ass, ans, e, vs, vc, taa, mas, sa, f>:13 features
+P000345: <sas, dc, anc, ass, e, vc, taa, mas, sa, f>:10 features
+P000346: <sas, ta, ass, e, vc, taa, mas, sa, f>:9 features
+P000347: <sas, dc, ass, e, vc, taa, mas, sa, f>:9 features
+P000348: <sas, ta, dc, ass, e, vc, taa, mas, sa, f>:10 features
+P000349: <sas, ta, dc, anc, ass, e, vc, taa, mas, sa, f>:11 features
+P000350: <sas, dc, anc, ass, ans, e, vc, taa, mas, sa, f>:11 features
+P000351: <sas, ta, ass, ans, e, vc, taa, mas, sa, f>:10 features
+P000352: <sas, dc, ass, ans, e, vc, taa, mas, sa, f>:10 features
+P000353: <sas, ta, dc, ass, ans, e, vc, taa, mas, sa, f>:11 features
+P000354: <sas, ta, dc, anc, ass, ans, e, vc, taa, mas, sa, f>:12 features
+P000355: <sas, dc, anc, ucd, ass, ans, e, vc, taa, mas, sa, f>:12 features
+P000356: <sas, ta, dc, anc, ucd, ass, ans, e, vc, taa, mas, sa, f>:13 features
+P000357: <sas, ta, dc, anc, ucd, ass, ans, e, vs, vc, taa, mas, sa, f>:14 features
+P000358: <sas, dc, anc, ass, ans, e, vs, vc, taa, mas, sa, f>:12 features
+P000359: <sas, e, vs, vc, taa, mas, sa, f>:8 features
+P000360: <sas, ta, e, vs, vc, taa, mas, sa, f>:9 features
+P000361: <sas, dc, e, vs, vc, taa, mas, sa, f>:9 features
+P000362: <sas, ta, dc, e, vs, vc, taa, mas, sa, f>:10 features
+P000363: <sas, dc, anc, e, vs, vc, taa, mas, sa, f>:10 features
+P000364: <sas, ta, dc, anc, e, vs, vc, taa, mas, sa, f>:11 features
+P000365: <sas, dc, anc, ass, e, vs, vc, taa, mas, sa, f>:11 features
+P000366: <sas, ass, e, vs, vc, taa, mas, sa, f>:9 features
+P000367: <sas, ta, ass, e, vs, vc, taa, mas, sa, f>:10 features
+P000368: <sas, dc, ass, e, vs, vc, taa, mas, sa, f>:10 features
+P000369: <sas, ta, dc, ass, e, vs, vc, taa, mas, sa, f>:11 features
+P000370: <sas, ta, dc, anc, ass, e, vs, vc, taa, mas, sa, f>:12 features
+P000371: <sas, ta, dc, anc, ass, ans, e, vs, vc, taa, mas, sa, f>:13 features
+P000372: <sas, ass, ans, e, vs, vc, taa, mas, sa, f>:10 features
+P000373: <sas, ta, ass, ans, e, vs, vc, taa, mas, sa, f>:11 features
+P000374: <sas, dc, ass, ans, e, vs, vc, taa, mas, sa, f>:11 features
+P000375: <sas, ta, dc, ass, ans, e, vs, vc, taa, mas, sa, f>:12 features
+P000376: <sas, ta, dc, anc, ucd, ass, ans, e, vs, vc, ur, taa, mas, sa, f>:15 features
+P000377: <sas, dc, anc, ass, e, vc, ur, taa, mas, sa, f>:11 features
+P000378: <sas, ta, ass, e, vc, ur, taa, mas, sa, f>:10 features
+P000379: <sas, dc, ass, e, vc, ur, taa, mas, sa, f>:10 features
+P000380: <sas, ta, dc, ass, e, vc, ur, taa, mas, sa, f>:11 features
+P000381: <sas, ta, dc, anc, ass, e, vc, ur, taa, mas, sa, f>:12 features
+P000382: <sas, dc, anc, ass, ans, e, vc, ur, taa, mas, sa, f>:12 features
+P000383: <sas, ta, ass, ans, e, vc, ur, taa, mas, sa, f>:11 features
+P000384: <sas, dc, ass, ans, e, vc, ur, taa, mas, sa, f>:11 features
+P000385: <sas, ta, dc, ass, ans, e, vc, ur, taa, mas, sa, f>:12 features
+P000386: <sas, ta, dc, anc, ass, ans, e, vc, ur, taa, mas, sa, f>:13 features
+P000387: <sas, dc, anc, ucd, ass, ans, e, vc, ur, taa, mas, sa, f>:13 features
+P000388: <sas, ta, dc, anc, ucd, ass, ans, e, vc, ur, taa, mas, sa, f>:14 features
+P000389: <sas, dc, anc, ass, ans, e, vs, vc, ur, taa, mas, sa, f>:13 features
+P000390: <sas, e, vs, vc, ur, taa, mas, sa, f>:9 features
+P000391: <sas, ta, e, vs, vc, ur, taa, mas, sa, f>:10 features
+P000392: <sas, dc, e, vs, vc, ur, taa, mas, sa, f>:10 features
+P000393: <sas, ta, dc, e, vs, vc, ur, taa, mas, sa, f>:11 features
+P000394: <sas, dc, anc, e, vs, vc, ur, taa, mas, sa, f>:11 features
+P000395: <sas, ta, dc, anc, e, vs, vc, ur, taa, mas, sa, f>:12 features
+P000396: <sas, dc, anc, ass, e, vs, vc, ur, taa, mas, sa, f>:12 features
+P000397: <sas, ass, e, vs, vc, ur, taa, mas, sa, f>:10 features
+P000398: <sas, ta, ass, e, vs, vc, ur, taa, mas, sa, f>:11 features
+P000399: <sas, dc, ass, e, vs, vc, ur, taa, mas, sa, f>:11 features
+P000400: <sas, ta, dc, ass, e, vs, vc, ur, taa, mas, sa, f>:12 features
+P000401: <sas, ta, dc, anc, ass, e, vs, vc, ur, taa, mas, sa, f>:13 features
+P000402: <sas, ta, dc, anc, ass, ans, e, vs, vc, ur, taa, mas, sa, f>:14 features
+P000403: <sas, ass, ans, e, vs, vc, ur, taa, mas, sa, f>:11 features
+P000404: <sas, ta, ass, ans, e, vs, vc, ur, taa, mas, sa, f>:12 features
+P000405: <sas, dc, ass, ans, e, vs, vc, ur, taa, mas, sa, f>:12 features
+P000406: <sas, ta, dc, ass, ans, e, vs, vc, ur, taa, mas, sa, f>:13 features
+P000407: <sas, dc, anc, ucd, ass, ans, e, vs, vc, ur, taa, vr, mas, sa, f>:15 features
+P000408: <sas, dc, anc, ass, e, vr, mas, sa, f>:9 features
+P000409: <sas, dc, ass, e, vr, mas, sa, f>:8 features
+P000410: <sas, ta, dc, ass, e, vr, mas, sa, f>:9 features
+P000411: <sas, ta, dc, anc, ass, e, vr, mas, sa, f>:10 features
+P000412: <sas, dc, anc, ass, ans, e, vr, mas, sa, f>:10 features
+P000413: <sas, dc, ass, ans, e, vr, mas, sa, f>:9 features
+P000414: <sas, ta, dc, ass, ans, e, vr, mas, sa, f>:10 features
+P000415: <sas, ta, dc, anc, ass, ans, e, vr, mas, sa, f>:11 features
+P000416: <sas, dc, anc, ucd, ass, ans, e, vr, mas, sa, f>:11 features
+P000417: <sas, ta, dc, anc, ucd, ass, ans, e, vr, mas, sa, f>:12 features
+P000418: <sas, dc, anc, ucd, ass, ans, e, vs, vr, mas, sa, f>:12 features
+P000419: <sas, ta, dc, anc, ucd, ass, ans, e, vs, vr, mas, sa, f>:13 features
+P000420: <sas, dc, e, vs, vr, mas, sa, f>:8 features
+P000421: <sas, ta, dc, e, vs, vr, mas, sa, f>:9 features
+P000422: <sas, dc, anc, e, vs, vr, mas, sa, f>:9 features
+P000423: <sas, ta, dc, anc, e, vs, vr, mas, sa, f>:10 features
+P000424: <sas, dc, anc, ass, e, vs, vr, mas, sa, f>:10 features
+P000425: <sas, dc, ass, e, vs, vr, mas, sa, f>:9 features
+P000426: <sas, ta, dc, ass, e, vs, vr, mas, sa, f>:10 features
+P000427: <sas, ta, dc, anc, ass, e, vs, vr, mas, sa, f>:11 features
+P000428: <sas, dc, anc, ass, ans, e, vs, vr, mas, sa, f>:11 features
+P000429: <sas, dc, ass, ans, e, vs, vr, mas, sa, f>:10 features
+P000430: <sas, ta, dc, ass, ans, e, vs, vr, mas, sa, f>:11 features
+P000431: <sas, ta, dc, anc, ass, ans, e, vs, vr, mas, sa, f>:12 features
+P000432: <sas, dc, anc, ucd, ass, ans, e, vs, vc, vr, mas, sa, f>:13 features
+P000433: <sas, dc, anc, ass, e, vc, vr, mas, sa, f>:10 features
+P000434: <sas, ta, ass, e, vc, vr, mas, sa, f>:9 features
+P000435: <sas, dc, ass, e, vc, vr, mas, sa, f>:9 features
+P000436: <sas, ta, dc, ass, e, vc, vr, mas, sa, f>:10 features
+P000437: <sas, ta, dc, anc, ass, e, vc, vr, mas, sa, f>:11 features
+P000438: <sas, dc, anc, ass, ans, e, vc, vr, mas, sa, f>:11 features
+P000439: <sas, ta, ass, ans, e, vc, vr, mas, sa, f>:10 features
+P000440: <sas, dc, ass, ans, e, vc, vr, mas, sa, f>:10 features
+P000441: <sas, ta, dc, ass, ans, e, vc, vr, mas, sa, f>:11 features
+P000442: <sas, ta, dc, anc, ass, ans, e, vc, vr, mas, sa, f>:12 features
+P000443: <sas, dc, anc, ucd, ass, ans, e, vc, vr, mas, sa, f>:12 features
+P000444: <sas, ta, dc, anc, ucd, ass, ans, e, vc, vr, mas, sa, f>:13 features
+P000445: <sas, ta, dc, anc, ucd, ass, ans, e, vs, vc, vr, mas, sa, f>:14 features
+P000446: <sas, dc, anc, ass, ans, e, vs, vc, vr, mas, sa, f>:12 features
+P000447: <sas, e, vs, vc, vr, mas, sa, f>:8 features
+P000448: <sas, ta, e, vs, vc, vr, mas, sa, f>:9 features
+P000449: <sas, dc, e, vs, vc, vr, mas, sa, f>:9 features
+P000450: <sas, ta, dc, e, vs, vc, vr, mas, sa, f>:10 features
+P000451: <sas, dc, anc, e, vs, vc, vr, mas, sa, f>:10 features
+P000452: <sas, ta, dc, anc, e, vs, vc, vr, mas, sa, f>:11 features
+P000453: <sas, dc, anc, ass, e, vs, vc, vr, mas, sa, f>:11 features
+P000454: <sas, ass, e, vs, vc, vr, mas, sa, f>:9 features
+P000455: <sas, ta, ass, e, vs, vc, vr, mas, sa, f>:10 features
+P000456: <sas, dc, ass, e, vs, vc, vr, mas, sa, f>:10 features
+P000457: <sas, ta, dc, ass, e, vs, vc, vr, mas, sa, f>:11 features
+P000458: <sas, ta, dc, anc, ass, e, vs, vc, vr, mas, sa, f>:12 features
+P000459: <sas, ta, dc, anc, ass, ans, e, vs, vc, vr, mas, sa, f>:13 features
+P000460: <sas, ass, ans, e, vs, vc, vr, mas, sa, f>:10 features
+P000461: <sas, ta, ass, ans, e, vs, vc, vr, mas, sa, f>:11 features
+P000462: <sas, dc, ass, ans, e, vs, vc, vr, mas, sa, f>:11 features
+P000463: <sas, ta, dc, ass, ans, e, vs, vc, vr, mas, sa, f>:12 features
+P000464: <sas, dc, anc, ucd, ass, ans, e, vs, vc, ur, vr, mas, sa, f>:14 features
+P000465: <sas, dc, anc, ass, e, vc, ur, vr, mas, sa, f>:11 features
+P000466: <sas, ta, ass, e, vc, ur, vr, mas, sa, f>:10 features
+P000467: <sas, dc, ass, e, vc, ur, vr, mas, sa, f>:10 features
+P000468: <sas, ta, dc, ass, e, vc, ur, vr, mas, sa, f>:11 features
+P000469: <sas, ta, dc, anc, ass, e, vc, ur, vr, mas, sa, f>:12 features
+P000470: <sas, dc, anc, ass, ans, e, vc, ur, vr, mas, sa, f>:12 features
+P000471: <sas, ta, ass, ans, e, vc, ur, vr, mas, sa, f>:11 features
+P000472: <sas, dc, ass, ans, e, vc, ur, vr, mas, sa, f>:11 features
+P000473: <sas, ta, dc, ass, ans, e, vc, ur, vr, mas, sa, f>:12 features
+P000474: <sas, ta, dc, anc, ass, ans, e, vc, ur, vr, mas, sa, f>:13 features
+P000475: <sas, dc, anc, ucd, ass, ans, e, vc, ur, vr, mas, sa, f>:13 features
+P000476: <sas, ta, dc, anc, ucd, ass, ans, e, vc, ur, vr, mas, sa, f>:14 features
+P000477: <sas, ta, dc, anc, ucd, ass, ans, e, vs, vc, ur, vr, mas, sa, f>:15 features
+P000478: <sas, dc, anc, ass, ans, e, vs, vc, ur, vr, mas, sa, f>:13 features
+P000479: <sas, e, vs, vc, ur, vr, mas, sa, f>:9 features
+P000480: <sas, ta, e, vs, vc, ur, vr, mas, sa, f>:10 features
+P000481: <sas, dc, e, vs, vc, ur, vr, mas, sa, f>:10 features
+P000482: <sas, ta, dc, e, vs, vc, ur, vr, mas, sa, f>:11 features
+P000483: <sas, dc, anc, e, vs, vc, ur, vr, mas, sa, f>:11 features
+P000484: <sas, ta, dc, anc, e, vs, vc, ur, vr, mas, sa, f>:12 features
+P000485: <sas, dc, anc, ass, e, vs, vc, ur, vr, mas, sa, f>:12 features
+P000486: <sas, ass, e, vs, vc, ur, vr, mas, sa, f>:10 features
+P000487: <sas, ta, ass, e, vs, vc, ur, vr, mas, sa, f>:11 features
+P000488: <sas, dc, ass, e, vs, vc, ur, vr, mas, sa, f>:11 features
+P000489: <sas, ta, dc, ass, e, vs, vc, ur, vr, mas, sa, f>:12 features
+P000490: <sas, ta, dc, anc, ass, e, vs, vc, ur, vr, mas, sa, f>:13 features
+P000491: <sas, ta, dc, anc, ass, ans, e, vs, vc, ur, vr, mas, sa, f>:14 features
+P000492: <sas, ass, ans, e, vs, vc, ur, vr, mas, sa, f>:11 features
+P000493: <sas, ta, ass, ans, e, vs, vc, ur, vr, mas, sa, f>:12 features
+P000494: <sas, dc, ass, ans, e, vs, vc, ur, vr, mas, sa, f>:12 features
+P000495: <sas, ta, dc, ass, ans, e, vs, vc, ur, vr, mas, sa, f>:13 features
+P000496: <sas, ta, dc, anc, ucd, ass, ans, e, vs, vc, ur, taa, vr, mas, sa, f>:16 features
+P000497: <sas, dc, anc, ass, e, taa, vr, mas, sa, f>:10 features
+P000498: <sas, dc, ass, e, taa, vr, mas, sa, f>:9 features
+P000499: <sas, ta, dc, ass, e, taa, vr, mas, sa, f>:10 features
+P000500: <sas, ta, dc, anc, ass, e, taa, vr, mas, sa, f>:11 features
+P000501: <sas, dc, anc, ass, ans, e, taa, vr, mas, sa, f>:11 features
+P000502: <sas, dc, ass, ans, e, taa, vr, mas, sa, f>:10 features
+P000503: <sas, ta, dc, ass, ans, e, taa, vr, mas, sa, f>:11 features
+P000504: <sas, ta, dc, anc, ass, ans, e, taa, vr, mas, sa, f>:12 features
+P000505: <sas, dc, anc, ucd, ass, ans, e, taa, vr, mas, sa, f>:12 features
+P000506: <sas, ta, dc, anc, ucd, ass, ans, e, taa, vr, mas, sa, f>:13 features
+P000507: <sas, dc, anc, ucd, ass, ans, e, vs, taa, vr, mas, sa, f>:13 features
+P000508: <sas, ta, dc, anc, ucd, ass, ans, e, vs, taa, vr, mas, sa, f>:14 features
+P000509: <sas, dc, e, vs, taa, vr, mas, sa, f>:9 features
+P000510: <sas, ta, dc, e, vs, taa, vr, mas, sa, f>:10 features
+P000511: <sas, dc, anc, e, vs, taa, vr, mas, sa, f>:10 features
+P000512: <sas, ta, dc, anc, e, vs, taa, vr, mas, sa, f>:11 features
+P000513: <sas, dc, anc, ass, e, vs, taa, vr, mas, sa, f>:11 features
+P000514: <sas, dc, ass, e, vs, taa, vr, mas, sa, f>:10 features
+P000515: <sas, ta, dc, ass, e, vs, taa, vr, mas, sa, f>:11 features
+P000516: <sas, ta, dc, anc, ass, e, vs, taa, vr, mas, sa, f>:12 features
+P000517: <sas, dc, anc, ass, ans, e, vs, taa, vr, mas, sa, f>:12 features
+P000518: <sas, dc, ass, ans, e, vs, taa, vr, mas, sa, f>:11 features
+P000519: <sas, ta, dc, ass, ans, e, vs, taa, vr, mas, sa, f>:12 features
+P000520: <sas, ta, dc, anc, ass, ans, e, vs, taa, vr, mas, sa, f>:13 features
+P000521: <sas, dc, anc, ucd, ass, ans, e, vs, vc, taa, vr, mas, sa, f>:14 features
+P000522: <sas, dc, anc, ass, e, vc, taa, vr, mas, sa, f>:11 features
+P000523: <sas, ta, ass, e, vc, taa, vr, mas, sa, f>:10 features
+P000524: <sas, dc, ass, e, vc, taa, vr, mas, sa, f>:10 features
+P000525: <sas, ta, dc, ass, e, vc, taa, vr, mas, sa, f>:11 features
+P000526: <sas, ta, dc, anc, ass, e, vc, taa, vr, mas, sa, f>:12 features
+P000527: <sas, dc, anc, ass, ans, e, vc, taa, vr, mas, sa, f>:12 features
+P000528: <sas, ta, ass, ans, e, vc, taa, vr, mas, sa, f>:11 features
+P000529: <sas, dc, ass, ans, e, vc, taa, vr, mas, sa, f>:11 features
+P000530: <sas, ta, dc, ass, ans, e, vc, taa, vr, mas, sa, f>:12 features
+P000531: <sas, ta, dc, anc, ass, ans, e, vc, taa, vr, mas, sa, f>:13 features
+P000532: <sas, dc, anc, ucd, ass, ans, e, vc, taa, vr, mas, sa, f>:13 features
+P000533: <sas, ta, dc, anc, ucd, ass, ans, e, vc, taa, vr, mas, sa, f>:14 features
+P000534: <sas, ta, dc, anc, ucd, ass, ans, e, vs, vc, taa, vr, mas, sa, f>:15 features
+P000535: <sas, dc, anc, ass, ans, e, vs, vc, taa, vr, mas, sa, f>:13 features
+P000536: <sas, e, vs, vc, taa, vr, mas, sa, f>:9 features
+P000537: <sas, ta, e, vs, vc, taa, vr, mas, sa, f>:10 features
+P000538: <sas, dc, e, vs, vc, taa, vr, mas, sa, f>:10 features
+P000539: <sas, ta, dc, e, vs, vc, taa, vr, mas, sa, f>:11 features
+P000540: <sas, dc, anc, e, vs, vc, taa, vr, mas, sa, f>:11 features
+P000541: <sas, ta, dc, anc, e, vs, vc, taa, vr, mas, sa, f>:12 features
+P000542: <sas, dc, anc, ass, e, vs, vc, taa, vr, mas, sa, f>:12 features
+P000543: <sas, ass, e, vs, vc, taa, vr, mas, sa, f>:10 features
+P000544: <sas, ta, ass, e, vs, vc, taa, vr, mas, sa, f>:11 features
+P000545: <sas, dc, ass, e, vs, vc, taa, vr, mas, sa, f>:11 features
+P000546: <sas, ta, dc, ass, e, vs, vc, taa, vr, mas, sa, f>:12 features
+P000547: <sas, ta, dc, anc, ass, e, vs, vc, taa, vr, mas, sa, f>:13 features
+P000548: <sas, ta, dc, anc, ass, ans, e, vs, vc, taa, vr, mas, sa, f>:14 features
+P000549: <sas, ass, ans, e, vs, vc, taa, vr, mas, sa, f>:11 features
+P000550: <sas, ta, ass, ans, e, vs, vc, taa, vr, mas, sa, f>:12 features
+P000551: <sas, dc, ass, ans, e, vs, vc, taa, vr, mas, sa, f>:12 features
+P000552: <sas, ta, dc, ass, ans, e, vs, vc, taa, vr, mas, sa, f>:13 features
+P000553: <sas, dc, anc, ucd, ass, ans, e, vc, ur, taa, vr, mas, sa, f>:14 features
+P000554: <sas, dc, anc, ass, e, vc, ur, taa, vr, mas, sa, f>:12 features
+P000555: <sas, ta, ass, e, vc, ur, taa, vr, mas, sa, f>:11 features
+P000556: <sas, dc, ass, e, vc, ur, taa, vr, mas, sa, f>:11 features
+P000557: <sas, ta, dc, ass, e, vc, ur, taa, vr, mas, sa, f>:12 features
+P000558: <sas, ta, dc, anc, ass, e, vc, ur, taa, vr, mas, sa, f>:13 features
+P000559: <sas, dc, anc, ass, ans, e, vc, ur, taa, vr, mas, sa, f>:13 features
+P000560: <sas, ta, ass, ans, e, vc, ur, taa, vr, mas, sa, f>:12 features
+P000561: <sas, dc, ass, ans, e, vc, ur, taa, vr, mas, sa, f>:12 features
+P000562: <sas, ta, dc, ass, ans, e, vc, ur, taa, vr, mas, sa, f>:13 features
+P000563: <sas, ta, dc, anc, ass, ans, e, vc, ur, taa, vr, mas, sa, f>:14 features
+P000564: <sas, ta, dc, anc, ucd, ass, ans, e, vc, ur, taa, vr, mas, sa, f>:15 features
+P000565: <sas, dc, anc, ass, ans, e, vs, vc, ur, taa, vr, mas, sa, f>:14 features
+P000566: <sas, e, vs, vc, ur, taa, vr, mas, sa, f>:10 features
+P000567: <sas, ta, e, vs, vc, ur, taa, vr, mas, sa, f>:11 features
+P000568: <sas, dc, e, vs, vc, ur, taa, vr, mas, sa, f>:11 features
+P000569: <sas, ta, dc, e, vs, vc, ur, taa, vr, mas, sa, f>:12 features
+P000570: <sas, dc, anc, e, vs, vc, ur, taa, vr, mas, sa, f>:12 features
+P000571: <sas, ta, dc, anc, e, vs, vc, ur, taa, vr, mas, sa, f>:13 features
+P000572: <sas, dc, anc, ass, e, vs, vc, ur, taa, vr, mas, sa, f>:13 features
+P000573: <sas, ass, e, vs, vc, ur, taa, vr, mas, sa, f>:11 features
+P000574: <sas, ta, ass, e, vs, vc, ur, taa, vr, mas, sa, f>:12 features
+P000575: <sas, dc, ass, e, vs, vc, ur, taa, vr, mas, sa, f>:12 features
+P000576: <sas, ta, dc, ass, e, vs, vc, ur, taa, vr, mas, sa, f>:13 features
+P000577: <sas, ta, dc, anc, ass, e, vs, vc, ur, taa, vr, mas, sa, f>:14 features
+P000578: <sas, ta, dc, anc, ass, ans, e, vs, vc, ur, taa, vr, mas, sa, f>:15 features
+P000579: <sas, ass, ans, e, vs, vc, ur, taa, vr, mas, sa, f>:12 features
+P000580: <sas, ta, ass, ans, e, vs, vc, ur, taa, vr, mas, sa, f>:13 features
+P000581: <sas, dc, ass, ans, e, vs, vc, ur, taa, vr, mas, sa, f>:13 features
+P000582: <sas, ta, dc, ass, ans, e, vs, vc, ur, taa, vr, mas, sa, f>:14 features
+P000583: <sas, ta, ass, a, vs, vc, ur, s>:8 features
+P000584: <sas, ta, dc, ass, a, vs, vc, ur, s>:9 features
+P000585: <sas, ta, dc, anc, ass, a, vs, vc, ur, s>:10 features
+P000586: <sas, ta, ass, ans, a, vs, vc, ur, s>:9 features
+P000587: <sas, ta, dc, ass, ans, a, vs, vc, ur, s>:10 features
+P000588: <sas, ta, dc, anc, ass, ans, a, vs, vc, ur, s>:11 features
+P000589: <sas, ta, dc, anc, ucd, ass, ans, a, vs, vc, ur, s>:12 features
+P000590: <sas, ta, ass, a, vs, vc, mas, s>:8 features
+P000591: <sas, ta, dc, ass, a, vs, vc, mas, s>:9 features
+P000592: <sas, ta, dc, anc, ass, a, vs, vc, mas, s>:10 features
+P000593: <sas, ta, ass, ans, a, vs, vc, mas, s>:9 features
+P000594: <sas, ta, dc, ass, ans, a, vs, vc, mas, s>:10 features
+P000595: <sas, ta, dc, anc, ass, ans, a, vs, vc, mas, s>:11 features
+P000596: <sas, ta, dc, anc, ucd, ass, ans, a, vs, vc, mas, s>:12 features
+P000597: <sas, ta, ass, a, vs, vc, ur, mas, s>:9 features
+P000598: <sas, ta, dc, ass, a, vs, vc, ur, mas, s>:10 features
+P000599: <sas, ta, dc, anc, ass, a, vs, vc, ur, mas, s>:11 features
+P000600: <sas, ta, ass, ans, a, vs, vc, ur, mas, s>:10 features
+P000601: <sas, ta, dc, ass, ans, a, vs, vc, ur, mas, s>:11 features
+P000602: <sas, ta, dc, anc, ass, ans, a, vs, vc, ur, mas, s>:12 features
+P000603: <sas, ta, dc, anc, ucd, ass, ans, a, vs, vc, ur, mas, s>:13 features
+P000604: <sas, ta, dc, ass, a, vs, taa, mas, s>:9 features
+P000605: <sas, ta, dc, anc, ass, a, vs, taa, mas, s>:10 features
+P000606: <sas, ta, dc, ass, ans, a, vs, taa, mas, s>:10 features
+P000607: <sas, ta, dc, anc, ass, ans, a, vs, taa, mas, s>:11 features
+P000608: <sas, ta, dc, anc, ucd, ass, ans, a, vs, taa, mas, s>:12 features
+P000609: <sas, ta, ass, a, vs, vc, taa, mas, s>:9 features
+P000610: <sas, ta, dc, ass, a, vs, vc, taa, mas, s>:10 features
+P000611: <sas, ta, dc, anc, ass, a, vs, vc, taa, mas, s>:11 features
+P000612: <sas, ta, ass, ans, a, vs, vc, taa, mas, s>:10 features
+P000613: <sas, ta, dc, ass, ans, a, vs, vc, taa, mas, s>:11 features
+P000614: <sas, ta, dc, anc, ass, ans, a, vs, vc, taa, mas, s>:12 features
+P000615: <sas, ta, dc, anc, ucd, ass, ans, a, vs, vc, taa, mas, s>:13 features
+P000616: <sas, ta, ass, a, vs, vc, ur, taa, mas, s>:10 features
+P000617: <sas, ta, dc, ass, a, vs, vc, ur, taa, mas, s>:11 features
+P000618: <sas, ta, dc, anc, ass, a, vs, vc, ur, taa, mas, s>:12 features
+P000619: <sas, ta, ass, ans, a, vs, vc, ur, taa, mas, s>:11 features
+P000620: <sas, ta, dc, ass, ans, a, vs, vc, ur, taa, mas, s>:12 features
+P000621: <sas, ta, dc, anc, ass, ans, a, vs, vc, ur, taa, mas, s>:13 features
+P000622: <sas, ta, dc, anc, ucd, ass, ans, a, vs, vc, ur, taa, mas, s>:14 features
+P000623: <sas, ta, dc, ass, a, vs, vr, mas, s>:9 features
+P000624: <sas, ta, dc, anc, ass, a, vs, vr, mas, s>:10 features
+P000625: <sas, ta, dc, ass, ans, a, vs, vr, mas, s>:10 features
+P000626: <sas, ta, dc, anc, ass, ans, a, vs, vr, mas, s>:11 features
+P000627: <sas, ta, dc, anc, ucd, ass, ans, a, vs, vr, mas, s>:12 features
+P000628: <sas, ta, ass, a, vs, vc, vr, mas, s>:9 features
+P000629: <sas, ta, dc, ass, a, vs, vc, vr, mas, s>:10 features
+P000630: <sas, ta, dc, anc, ass, a, vs, vc, vr, mas, s>:11 features
+P000631: <sas, ta, ass, ans, a, vs, vc, vr, mas, s>:10 features
+P000632: <sas, ta, dc, ass, ans, a, vs, vc, vr, mas, s>:11 features
+P000633: <sas, ta, dc, anc, ass, ans, a, vs, vc, vr, mas, s>:12 features
+P000634: <sas, ta, dc, anc, ucd, ass, ans, a, vs, vc, vr, mas, s>:13 features
+P000635: <sas, ta, ass, a, vs, vc, ur, vr, mas, s>:10 features
+P000636: <sas, ta, dc, ass, a, vs, vc, ur, vr, mas, s>:11 features
+P000637: <sas, ta, dc, anc, ass, a, vs, vc, ur, vr, mas, s>:12 features
+P000638: <sas, ta, ass, ans, a, vs, vc, ur, vr, mas, s>:11 features
+P000639: <sas, ta, dc, ass, ans, a, vs, vc, ur, vr, mas, s>:12 features
+P000640: <sas, ta, dc, anc, ass, ans, a, vs, vc, ur, vr, mas, s>:13 features
+P000641: <sas, ta, dc, anc, ucd, ass, ans, a, vs, vc, ur, vr, mas, s>:14 features
+P000642: <sas, ta, dc, ass, a, vs, taa, vr, mas, s>:10 features
+P000643: <sas, ta, dc, anc, ass, a, vs, taa, vr, mas, s>:11 features
+P000644: <sas, ta, dc, ass, ans, a, vs, taa, vr, mas, s>:11 features
+P000645: <sas, ta, dc, anc, ass, ans, a, vs, taa, vr, mas, s>:12 features
+P000646: <sas, ta, dc, anc, ucd, ass, ans, a, vs, taa, vr, mas, s>:13 features
+P000647: <sas, ta, ass, a, vs, vc, taa, vr, mas, s>:10 features
+P000648: <sas, ta, dc, ass, a, vs, vc, taa, vr, mas, s>:11 features
+P000649: <sas, ta, dc, anc, ass, a, vs, vc, taa, vr, mas, s>:12 features
+P000650: <sas, ta, ass, ans, a, vs, vc, taa, vr, mas, s>:11 features
+P000651: <sas, ta, dc, ass, ans, a, vs, vc, taa, vr, mas, s>:12 features
+P000652: <sas, ta, dc, anc, ass, ans, a, vs, vc, taa, vr, mas, s>:13 features
+P000653: <sas, ta, dc, anc, ucd, ass, ans, a, vs, vc, taa, vr, mas, s>:14 features
+P000654: <sas, ta, ass, a, vs, vc, ur, taa, vr, mas, s>:11 features
+P000655: <sas, ta, dc, ass, a, vs, vc, ur, taa, vr, mas, s>:12 features
+P000656: <sas, ta, dc, anc, ass, a, vs, vc, ur, taa, vr, mas, s>:13 features
+P000657: <sas, ta, ass, ans, a, vs, vc, ur, taa, vr, mas, s>:12 features
+P000658: <sas, ta, dc, ass, ans, a, vs, vc, ur, taa, vr, mas, s>:13 features
+P000659: <sas, ta, dc, anc, ass, ans, a, vs, vc, ur, taa, vr, mas, s>:14 features
+P000660: <sas, ta, dc, anc, ucd, ass, ans, a, vs, vc, ur, taa, vr, mas, s>:15 features

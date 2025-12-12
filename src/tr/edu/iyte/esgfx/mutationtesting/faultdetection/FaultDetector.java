@@ -1,6 +1,8 @@
 package tr.edu.iyte.esgfx.mutationtesting.faultdetection;
 
 import java.util.HashMap;
+
+
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -13,7 +15,6 @@ import java.util.ArrayList;
 import tr.edu.iyte.esg.eventsequence.EventSequence;
 import tr.edu.iyte.esg.model.ESG;
 import tr.edu.iyte.esg.model.Vertex;
-import tr.edu.iyte.esg.model.Edge; 
 import tr.edu.iyte.esgfx.model.ESGFx;
 import tr.edu.iyte.esgfx.model.VertexRefinedByFeatureExpression;
 
@@ -33,7 +34,11 @@ public class FaultDetector {
     private Set<String> omittedEventSet;
     private Set<String> omittedEdgeSet;
     
-    // CACHE: Hangi düğümden sonra hangileri geliyor?
+    private int currentCES;
+    
+
+    
+    // Optimization Cache: Map Vertex to its possible next vertices based on Test Suite
     private Map<Vertex, Set<Vertex>> nextStepsCache;
 
     public FaultDetector() {
@@ -51,6 +56,10 @@ public class FaultDetector {
     public void setCESsOfESG(Set<EventSequence> cESsOfESG) {
         CESsOfESG = cESsOfESG;
     }
+    
+    public int getCurrentCES() {
+    	return currentCES;
+    }
 
     private void initializer() {
         visitedEventsOnMutant = new LinkedHashSet<String>();
@@ -62,59 +71,46 @@ public class FaultDetector {
         omittedEventSet = new LinkedHashSet<String>();
         omittedEdgeSet = new LinkedHashSet<String>();
         
-        
         nextStepsCache = new HashMap<>();
 
-       
-        setVerticesOnEventSequences();
-        setEdgesOnEventSequences();
-        
-        
-        preComputeAdjacencyCache();
+        // Precompute sets and cache for O(1) access
+        preComputeTestData();
     }
     
-
-    private void preComputeAdjacencyCache() {
+    // Replaces slow setVerticesOnEventSequences & setEdgesOnEventSequences
+    private void preComputeTestData() {
+        eventsOnEventSequences = new HashSet<>();
+        edgesOnEventSequences = new HashSet<>();
+        
         for (EventSequence eventSequence : CESsOfESG) {
             List<Vertex> seq = eventSequence.getEventSequence();
             
-
-            for (int i = 0; i < seq.size() - 1; i++) {
+            for (int i = 0; i < seq.size(); i++) {
                 Vertex current = seq.get(i);
-                Vertex next = seq.get(i+1);
+                eventsOnEventSequences.add(current.toString());
                 
-                nextStepsCache.computeIfAbsent(current, k -> new HashSet<>()).add(next);
+                if (i < seq.size() - 1) {
+                    Vertex next = seq.get(i + 1);
+                    String edge = "<" + current.toString() + ", " + next.toString() + ">";
+                    edgesOnEventSequences.add(edge);
+                    
+                    // Fill Cache
+                    nextStepsCache.computeIfAbsent(current, k -> new HashSet<>()).add(next);
+                }
             }
         }
     }
 
-    public void setVerticesOnEventSequences() {
-        eventsOnEventSequences = new LinkedHashSet<String>();
-        for (EventSequence eventSequence : CESsOfESG) {
-            for (Vertex vertex : eventSequence.getEventSequence()) {
-                eventsOnEventSequences.add(vertex.toString());
-            }
-        }
-    }
-
-    public void setEdgesOnEventSequences() {
-        edgesOnEventSequences = new LinkedHashSet<String>();
-        for (EventSequence eventSequence : CESsOfESG) {
-            List<Vertex> seq = eventSequence.getEventSequence();
-            for (int i = 0; i < seq.size() - 1; i++) {
-               Vertex v1 = seq.get(i);
-               Vertex v2 = seq.get(i+1);
-               String edge = "<" + v1.toString() + ", " + v2.toString() + ">";
-               edgesOnEventSequences.add(edge);
-            }
-        }
-    }
+    // Legacy method signatures kept for compatibility, logic moved to preComputeTestData
+    public void setVerticesOnEventSequences() { }
+    public void setEdgesOnEventSequences() { }
 
     public boolean isAllEventsOnTheSequenceAreOmitted(ESG mutantESGFx, EventSequence eventSequence) {
         boolean isAllEventsOnTheSequenceAreOmitted = true;
         for (Vertex vertex : eventSequence.getEventSequence()) {
+            // Optimized ID-based check via getVertexByID in ESG
             isAllEventsOnTheSequenceAreOmitted = isAllEventsOnTheSequenceAreOmitted
-                    && (mutantESGFx.getVertexByEventName(vertex.toString()) == null);
+                    && (mutantESGFx.getVertexByID(vertex.getID()) == null);
         }
         return isAllEventsOnTheSequenceAreOmitted;
     }
@@ -123,6 +119,7 @@ public class FaultDetector {
         initializer();
 
         for (EventSequence eventSequence : CESsOfESG) {
+        	currentCES++;
             if(isAllEventsOnTheSequenceAreOmitted(mutantESGFx, eventSequence)){
                 continue;
             } else {
@@ -146,14 +143,12 @@ public class FaultDetector {
         return isEdgeInserted || isEdgeOmitted || isEventInserted || isEventOmitted;
     }
 
-   
+    // --- OPTIMIZED SET CHECKS (O(1)) ---
 
     public boolean isEdgeInserted() {
         boolean allVisitedEdgesOnEventSequences = true;
         for (String visitedEdge : visitedEdgesOnMutant) {
-            
             boolean isVisitedEdgeOnEventSequences = edgesOnEventSequences.contains(visitedEdge);
-            
             if (!isVisitedEdgeOnEventSequences) {
                 insertedEdgeSet.add(visitedEdge);
             }
@@ -161,8 +156,8 @@ public class FaultDetector {
         }
         return !allVisitedEdgesOnEventSequences;
     }
-
-    // Artık kullanılmıyor ama uyumluluk için durabilir
+    
+    // Kept for compatibility
     private boolean isVisitedEdgeOnEventSequences(String visitedEdge) {
         return edgesOnEventSequences.contains(visitedEdge);
     }
@@ -207,34 +202,37 @@ public class FaultDetector {
         return !allEventsOnEventSequenceVisited;
     }
 
-    private boolean isEventOnEventSequenceVisited(String vertexOnEventSequences) {
-        return visitedEventsOnMutant.contains(vertexOnEventSequences);
-    }
+//    private boolean isEventOnEventSequenceVisited(String vertexOnEventSequences) {
+//        return visitedEventsOnMutant.contains(vertexOnEventSequences);
+//    }
     
-   
+    // --- OPTIMIZED TRAVERSAL ---
 
     public boolean traverseESGForEventSequence(ESG mutantESGFx, EventSequence eventSequence) {
         Vertex startVertex = eventSequence.getStartVertex();
-        Vertex startVertexOnMutantESGFx = mutantESGFx.getVertexByEventName(startVertex.toString());
+        
+        // Use ID-based lookup for O(1) speed
+        Vertex startVertexOnMutantESGFx = mutantESGFx.getVertexByID(startVertex.getID());
 
         int start = 0;
-        while (startVertexOnMutantESGFx == null && start < eventSequence.length() - 1) { // Bounds check
+        while (startVertexOnMutantESGFx == null && start < eventSequence.length() - 1) {
             start++;
             omittedEventSet.add(startVertex.toString());
+            
             startVertex = eventSequence.getEventSequence().get(start);
-            startVertexOnMutantESGFx = (VertexRefinedByFeatureExpression) mutantESGFx.getVertexByEventName(startVertex.toString());
+            startVertexOnMutantESGFx = (VertexRefinedByFeatureExpression) mutantESGFx.getVertexByID(startVertex.getID());
         }
 
         Vertex endVertex = eventSequence.getEndVertex();
-        Vertex endVertexOnMutantESGFx = mutantESGFx.getVertexByEventName(endVertex.toString());
+        Vertex endVertexOnMutantESGFx = mutantESGFx.getVertexByID(endVertex.getID());
         
         int eventSequenceLength = eventSequence.length();
-        while (endVertexOnMutantESGFx == null && eventSequenceLength > 0) { // Bounds check
+        while (endVertexOnMutantESGFx == null && eventSequenceLength > 0) {
             eventSequenceLength--;
             omittedEventSet.add(endVertex.toString());
             if(eventSequenceLength > 0) {
                 endVertex = eventSequence.getEventSequence().get(eventSequenceLength-1);
-                endVertexOnMutantESGFx = (VertexRefinedByFeatureExpression) mutantESGFx.getVertexByEventName(endVertex.toString());
+                endVertexOnMutantESGFx = (VertexRefinedByFeatureExpression) mutantESGFx.getVertexByID(endVertex.getID());
             }
         }
 
@@ -253,14 +251,15 @@ public class FaultDetector {
     }
 
     public void traverseESGFromSourceToTarget(ESG mutantESGFx, Vertex source, Vertex target) {
-        if(source == null) return; // Null safety
+        if(source == null) return;
 
-        Set<Vertex> visitedVertices = new LinkedHashSet<Vertex>();
-        Queue<Vertex> queue = new LinkedList<Vertex>();
+        Set<Vertex> visitedVertices = new HashSet<>(); // Faster HashSet
+        Queue<Vertex> queue = new LinkedList<>();
         visitedVertices.add(source);
         queue.add(source);
         
-        Vertex sourceOnMutantESGFx = ((ESGFx) mutantESGFx).getVertexByEventName(source.toString());
+        // Use ID lookup
+        Vertex sourceOnMutantESGFx = ((ESGFx) mutantESGFx).getVertexByID(source.getID());
 
         if (sourceOnMutantESGFx == null) {
             omittedEventSet.add(source.toString());
@@ -271,18 +270,18 @@ public class FaultDetector {
         while (!queue.isEmpty()) {
             source = queue.poll();
             
+            // --- CACHE OPTIMIZATION ---
+            // Instead of slow indexOf search, use precomputed cache
             Set<Vertex> validNextSteps = nextStepsCache.get(source);
             
-
             if(validNextSteps == null || validNextSteps.isEmpty()) continue;
 
             List<Vertex> adjacencyList = ((ESGFx) mutantESGFx).getAdjacencyList(source);
             
-
             if(adjacencyList != null) {
                 for (Vertex adjacent : adjacencyList) {
                     
-
+                    // O(1) Check
                     if (validNextSteps.contains(adjacent)) {
                         
                         if (!adjacent.isPseudoEndVertex()) {
@@ -291,7 +290,8 @@ public class FaultDetector {
                                 queue.add(adjacent);
                                 String edgeString = "<" + source.toString() + ", " + adjacent.toString() + ">";
 
-                                Vertex vertexOnMutant = mutantESGFx.getVertexByEventName(adjacent.toString());
+                                // Use ID lookup
+                                Vertex vertexOnMutant = mutantESGFx.getVertexByID(adjacent.getID());
 
                                 if (vertexOnMutant == null) {
                                     omittedEventSet.add(adjacent.toString());
@@ -307,6 +307,7 @@ public class FaultDetector {
         }
     }
     
+    // Legacy method, no longer used but kept for API compatibility
     public List<Vertex> getAdjacentVerticesOfVertex(Set<EventSequence> CESsOfESG, Vertex vertex) {
         return new ArrayList<>(); 
     }

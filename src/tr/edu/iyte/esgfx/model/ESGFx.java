@@ -12,135 +12,143 @@ import tr.edu.iyte.esg.model.Vertex;
 
 public class ESGFx extends ESG {
 
-	private Map<Vertex, List<Vertex>> adjacencyMap;
+    private Map<Vertex, List<Vertex>> adjacencyMap;
 
-	private Map<String, Vertex> nameToVertexCache;
+    // Optimization: Lookup vertex by name in O(1)
+    private Map<String, Vertex> vertexNameMap;
 
-	public ESGFx(int ID, String name) {
-		super(ID, name);
-		adjacencyMap = new LinkedHashMap<>();
-		nameToVertexCache = new LinkedHashMap<>();
+    public ESGFx(int ID, String name) {
+        super(ID, name);
+        adjacencyMap = new LinkedHashMap<>();
+        vertexNameMap = new LinkedHashMap<>();
+    }
 
-	}
+    public ESGFx(ESG esg) {
+        super(esg);
+        adjacencyMap = new LinkedHashMap<>();
+        vertexNameMap = new LinkedHashMap<>();
 
-	public ESGFx(ESG ESG) {
-		super(ESG);
-		adjacencyMap = new LinkedHashMap<>();
-		nameToVertexCache = new LinkedHashMap<>();
+        // Populate adjacencyMap based on the input type
+        if (esg instanceof ESGFx) {
+            // If it is already an ESGFx, copy the List-based map directly (Deep Copy)
+            Map<Vertex, List<Vertex>> originalMap = ((ESGFx) esg).getAdjacencyMap();
+            for (Map.Entry<Vertex, List<Vertex>> entry : originalMap.entrySet()) {
+                adjacencyMap.put(entry.getKey(), new ArrayList<>(entry.getValue()));
+            }
+        } else {
+            // If it is a standard ESG, convert Set-based map to List-based map
+            for (Map.Entry<Vertex, Set<Vertex>> entry : esg.getVertexMap().entrySet()) {
+                adjacencyMap.put(entry.getKey(), new ArrayList<>(entry.getValue()));
+            }
+        }
 
-		Map<Vertex, List<Vertex>> originalMap = ((ESGFx) ESG).getAdjacencyMap();
+        // Initialize Cache
+        for (Vertex v : this.getVertexList()) {
+            vertexNameMap.put(v.toString(), v);
+        }
+    }
 
-		for (Map.Entry<Vertex, List<Vertex>> entry : originalMap.entrySet()) {
+    public Map<Vertex, List<Vertex>> getAdjacencyMap() {
+        return adjacencyMap;
+    }
 
-			adjacencyMap.put(entry.getKey(), new ArrayList<>(entry.getValue()));
-		}
+    public List<Vertex> getAdjacencyList(Vertex vertex) {
+        // Directly fetch from map. 
+        // Requires Vertex.hashCode() and equals() to be ID-based or correctly implemented.
+        return adjacencyMap.getOrDefault(vertex, new ArrayList<>());
+    }
 
-		for (Vertex v : this.getVertexList()) {
-			nameToVertexCache.put(v.toString(), v);
-		}
-	}
+    public void setID(int ID) {
+        this.ID = ID;
+    }
 
-	public Map<Vertex, List<Vertex>> getAdjacencyMap() {
-		return adjacencyMap;
-	}
+    @Override
+    public void addEdge(Edge edge) {
+        super.addEdge(edge);
+        // computeIfAbsent: If key exists, get list; if not, create new list, then add target
+        adjacencyMap.computeIfAbsent(edge.getSource(), k -> new ArrayList<>()).add(edge.getTarget());
+    }
 
-	public List<Vertex> getAdjacencyList(Vertex vertex) {
+    @Override
+    public void removeEdge(Edge edge) {
+        super.removeEdge(edge);
 
-		List<Vertex> adjacencyList = new ArrayList<Vertex>();
-		Set<Vertex> keySet = getAdjacencyMap().keySet();
-		for (Vertex key : keySet) {
-			if (key.toString().equals(vertex.toString())) {
-				adjacencyList = getAdjacencyMap().get(key);
-			}
-		}
-		return adjacencyList;
-	}
+        List<Vertex> targetList = adjacencyMap.get(edge.getSource());
+        if (targetList != null) {
+            targetList.remove(edge.getTarget());
+        }
+    }
 
-	public void setID(int ID) {
-		this.ID = ID;
-	}
+    @Override
+    public Vertex getVertexByEventName(String eventName) {
+        // 1. Check Cache first (Fast)
+        Vertex v = vertexNameMap.get(eventName);
+        if (v != null) return v;
 
-	@Override
-	public void addEdge(Edge edge) {
-		super.addEdge(edge);
-		adjacencyMap.computeIfAbsent(edge.getSource(), k -> new ArrayList<>()).add(edge.getTarget());
-	}
+        // 2. Fallback: Iterate list (Slower, but necessary if cache missed)
+        for (Vertex vertex : getVertexList()) {
+            if (vertex.toString().contentEquals(eventName)) {
+                vertexNameMap.put(eventName, vertex); // Update cache
+                return vertex;
+            }
+        }
+        return null;
+    }
 
-	@Override
-	public void removeEdge(Edge edge) {
-		super.removeEdge(edge);
+    // --- StringBuilder Optimizations (Memory Efficient) ---
 
-		List<Vertex> targetList = adjacencyMap.get(edge.getSource());
-		if (adjacencyMap.containsKey(edge.getSource())) {
-			targetList.remove(edge.getTarget());
-		}
-	}
+    private String vertexListToString() {
+        StringBuilder sb = new StringBuilder("Vertex List as (ID)Event: \n");
+        for (Vertex vertex : getVertexList()) {
+            sb.append("(").append(vertex.getID()).append(")").append(vertex.toString()).append(", ");
+        }
+        sb.append("\n");
+        return sb.toString();
+    }
 
-	@Override
-	public Vertex getVertexByEventName(String eventName) {
+    private String edgeListToString() {
+        StringBuilder sb = new StringBuilder("Edge List as (ID): \n");
+        for (Edge edge : getEdgeList()) {
+            sb.append("(").append(edge.getID()).append(")<")
+              .append(edge.getSource().toString()).append("-")
+              .append(edge.getTarget().toString()).append(">, ");
+        }
+        sb.append("\n");
+        return sb.toString();
+    }
 
-		Vertex v = nameToVertexCache.get(eventName);
-		if (v != null)
-			return v;
+    public String vertexMapToString() {
+        StringBuilder sb = new StringBuilder("Vertex Map as <(ID)Event, (ID)Event>:\n");
+        
+        // Using super.getVertexMap().keySet() as requested
+        Set<Vertex> keySet = getVertexMap().keySet();
 
-		for (Vertex vertex : getVertexList()) {
-//			System.out.println("vertex.toString()_" + vertex.toString()+ "_" );
-//			System.out.println(vertex.toString().contentEquals(eventName));
-			if (vertex.toString().contentEquals(eventName)) {
-				nameToVertexCache.put(eventName, vertex);
-				return vertex;
-			}
-		}
-		return null;
-	}
+        for (Vertex key : keySet) {
+            sb.append("<(").append(key.getID()).append(")").append(key.toString()).append(" -> ");
 
-	private String vertexListToString() {
-		String vertexListToString = "Vertex List as (ID)Event: \n";
-		for (Vertex vertex : getVertexList()) {
-			vertexListToString += "(" + vertex.getID() + ")" + vertex.toString() + ", ";
-		}
-		vertexListToString += "\n";
-		return vertexListToString;
-	}
+            // Fetch values from local adjacencyMap
+            List<Vertex> targetList = adjacencyMap.get(key);
+            
+            if (targetList != null) {
+                for (Vertex target : targetList) {
+                    sb.append("(").append(target.getID()).append(")").append(target.toString()).append(", ");
+                }
+                // Remove trailing comma if list is not empty
+                if (!targetList.isEmpty()) {
+                    sb.setLength(sb.length() - 2);
+                }
+            }
+            sb.append(">\n");
+        }
+        sb.append("\n");
+        return sb.toString();
+    }
 
-	private String edgeListToString() {
-		String edgeListToString = "Edge List as (ID): \n";
-		for (Edge edge : getEdgeList()) {
-			Vertex source = edge.getSource();
-			Vertex target = edge.getTarget();
-
-			edgeListToString += "(" + edge.getID() + ")" + "<" + source.toString() + "-" + target.toString() + ">, ";
-
-			edgeListToString += "\n";
-
-		}
-		return edgeListToString;
-	}
-
-	public String vertexMapToString() {
-		Set<Vertex> keySet = getVertexMap().keySet();
-		String edgeMapToString = "Vertex Map as <(ID)Event, (ID)Event>:\n";
-		for (Vertex key : keySet) {
-
-			edgeMapToString += "<" + "(" + key.getID() + ")" + key.toString() + " -> ";
-
-			List<Vertex> targetList = adjacencyMap.get(key);
-			for (Vertex target : targetList) {
-				edgeMapToString += "(" + target.getID() + ")" + target.toString() + ", ";
-			}
-			edgeMapToString = edgeMapToString.substring(0, edgeMapToString.length() - 2);
-			edgeMapToString += ">\n";
-		}
-		edgeMapToString += "\n";
-		return edgeMapToString;
-	}
-
-	@Override
-	public String toString() {
-		String toString = "ESGFx " + getID() + ", " + getName() + "\n";
-		toString += vertexListToString();
-		toString += edgeListToString();
-		toString += vertexMapToString();
-		return toString;
-	}
+    @Override
+    public String toString() {
+        return "ESGFx " + getID() + ", " + getName() + "\n" +
+               vertexListToString() +
+               edgeListToString() +
+               vertexMapToString();
+    }
 }

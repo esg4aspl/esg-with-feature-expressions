@@ -119,7 +119,6 @@ public class EdgeRedirector extends MutationOperator {
 		int ID = edgeToRemove.getID();
 
 		mutantESGFx.removeEdge(edgeToRemove);
-
 		mutantESGFx.addEdge(new EdgeSimple(ID, source, newTarget));
 
 		return mutantESGFx;

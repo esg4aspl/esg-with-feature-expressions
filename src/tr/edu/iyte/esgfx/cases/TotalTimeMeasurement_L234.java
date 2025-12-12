@@ -20,7 +20,7 @@ import tr.edu.iyte.esgfx.testgeneration.eventtriplecoverage.TransformedESGFxGene
 public class TotalTimeMeasurement_L234 extends CaseStudyUtilities {
 
     public void measureToTalTimeForEdgeCoverage() throws Exception {
-        
+        System.out.println("Total Time Measurement L=" + coverageLength + " " +  SPLName + " STARTED");
         featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFilePath, ESGFxFilePath);
         List<FeatureExpression> featureExpressionList = getFeatureExpressionList(featureExpressionMapFromFeatureModel);
 
@@ -143,5 +143,6 @@ public class TotalTimeMeasurement_L234 extends CaseStudyUtilities {
                     timeElapsedTotalMs, satTimeMs, prodGenTimeMs, testGenTimeMs, handledProducts,
                     timemeasurementFolderPath + SPLName + "_" + coverageType + ".csv", SPLName, coverageType);
         }
+        System.out.println("Total Time Measurement L=" + coverageLength + " " +  SPLName + " FINISHED");
     }
 }

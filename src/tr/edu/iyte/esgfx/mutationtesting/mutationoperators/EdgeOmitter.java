@@ -68,7 +68,11 @@ public class EdgeOmitter extends MutationOperator {
 	
 	public ESG createSingleMutant(ESG originalESGFx, Edge edgeToOmit, int currentMutantID) {
 
-        ESG mutantESGFx = new ESGFx(originalESGFx);
+        
+//		System.out.println("reached clone");
+		ESG mutantESGFx = new ESGFx(originalESGFx);
+        
+//        System.out.println("clone is generated");
         
         ((ESGFx)mutantESGFx).setID(currentMutantID);        
         mutantESGFx.removeEdge(edgeToOmit); 

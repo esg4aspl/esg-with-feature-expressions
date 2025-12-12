@@ -1,13 +1,10 @@
 package tr.edu.iyte.esgfx.mutationtesting.mutationoperators;
 
 import java.util.Iterator;
-
-
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-
 import java.util.List;
 import java.util.ArrayList;
 
@@ -17,92 +14,92 @@ import tr.edu.iyte.esg.model.Vertex;
 import tr.edu.iyte.esg.model.validation.ESGValidator;
 import tr.edu.iyte.esgfx.model.ESGFx;
 
-
 public class EventOmitter extends MutationOperator {
 
-	private Map<String,ESG> eventMutantMap;
-	private int mutantID;
-	
-	public EventOmitter() {
-		super();
-		name = "Event Omitter";
-		eventMutantMap = new LinkedHashMap<String,ESG>();
-		mutantID = 0;
-	}
-	
-	public Map<String, ESG> getEventMutantMap() {
-		return eventMutantMap;
-	}
+    private Map<String, ESG> eventMutantMap;
+    private int mutantID;
 
-	@Override
-	public void generateMutantESGFxSets(ESG ESGFx) {
+    public EventOmitter() {
+        super();
+        name = "Event Omitter";
+        eventMutantMap = new LinkedHashMap<String, ESG>();
+        mutantID = 0;
+    }
 
-		ESG cloneESGFx = new ESGFx(ESGFx);
+    public Map<String, ESG> getEventMutantMap() {
+        return eventMutantMap;
+    }
 
-		Set<Vertex> vertexSet = new LinkedHashSet<Vertex>();
-		vertexSet.addAll(cloneESGFx.getRealVertexList());
+    // --- LEGACY METHOD (High RAM Usage - Not used in optimized loop) ---
+    @Override
+    public void generateMutantESGFxSets(ESG ESGFx) {
+        ESG cloneESGFx = new ESGFx(ESGFx);
+        Set<Vertex> vertexSet = new LinkedHashSet<Vertex>();
+        vertexSet.addAll(cloneESGFx.getRealVertexList());
 
-		Iterator<Vertex> vertexSetIterator = vertexSet.iterator();
+        Iterator<Vertex> vertexSetIterator = vertexSet.iterator();
 
-		while (vertexSetIterator.hasNext()) {
-			Vertex vertex = vertexSetIterator.next();
-//			System.out.println("Omitted Vertex: " + vertex.toString());
-			ESG mutantESGFx = omitEvent(cloneESGFx, vertex);
-			eventMutantMap.put(vertex.toString(), mutantESGFx);
-		}
-	}
-	
-	public ESG createSingleMutant(ESG originalESGFx, Vertex vertexToOmit, int currentMutantID) {
+        while (vertexSetIterator.hasNext()) {
+            Vertex vertex = vertexSetIterator.next();
+            ESG mutantESGFx = omitEvent(cloneESGFx, vertex);
+            eventMutantMap.put(vertex.toString(), mutantESGFx);
+        }
+    }
 
+    // --- NEW OPTIMIZED METHOD (RAM Friendly & Safe) ---
+    public ESG createSingleMutant(ESG originalESGFx, Vertex vertexToOmit, int currentMutantID) {
+
+        // 1. Clone the graph
         ESG mutantESGFx = new ESGFx(originalESGFx);
-        
-        ((ESGFx)mutantESGFx).setID(currentMutantID); 
-        
-        List<Edge> edgesToIterate = new ArrayList<>(mutantESGFx.getEdgeList());
-		Iterator<Edge> edgeIterator = edgesToIterate.iterator();
+        ((ESGFx) mutantESGFx).setID(currentMutantID);
 
-		while (edgeIterator.hasNext()) {
-			Edge edge = edgeIterator.next();
-			if (edge.getSource().equals(vertexToOmit) || edge.getTarget().equals(vertexToOmit)) {
-				mutantESGFx.removeEdge(edge);
-			}
-		}
-        mutantESGFx.removeVertex(vertexToOmit); 
+        // 2. Safely remove edges (Prevent ConcurrentModificationException)
+        // We create a copy (Snapshot) of the edge list to iterate over it safely.
+        List<Edge> edgesToIterate = new ArrayList<>(mutantESGFx.getEdgeList());
+
+        for (Edge edge : edgesToIterate) {
+            // If the source or target of the edge is the vertex to be omitted, remove the edge
+            if (edge.getSource().equals(vertexToOmit) || edge.getTarget().equals(vertexToOmit)) {
+                mutantESGFx.removeEdge(edge);
+            }
+        }
+
+        // 3. Remove the vertex and its event
+        mutantESGFx.removeVertex(vertexToOmit);
         mutantESGFx.removeEvent(vertexToOmit.getEvent());
-        
-//		ESGValidator ESGValidator = new ESGValidator();
-//		if (ESGValidator.isValid(mutantESGFx))
-//			getValidMutantESGFxSet().add(mutantESGFx);
-//		else
-//			getInvalidMutantESGFxSet().add(mutantESGFx);
 
         return mutantESGFx;
     }
+    
+    // Helper method to check validity from external classes
+    public boolean isValidMutant(ESG mutant) {
+        ESGValidator validator = new ESGValidator();
+        return validator.isValid(mutant);
+    }
 
-	private ESG omitEvent(ESG cloneESGFx, Vertex vertex) {
+    // Internal helper for legacy method
+    private ESG omitEvent(ESG cloneESGFx, Vertex vertex) {
+        ESG mutantESGFx = new ESGFx(cloneESGFx);
+        ((ESGFx) mutantESGFx).setID(++mutantID);
+        ESGValidator ESGValidator = new ESGValidator();
 
-		ESG mutantESGFx = new ESGFx(cloneESGFx);
-		((ESGFx)mutantESGFx).setID(++mutantID);
-		ESGValidator ESGValidator = new ESGValidator();
-		
-		Iterator<Edge> edgeIterator = cloneESGFx.getEdgeList().iterator();
+        // Apply safe removal logic here as well
+        List<Edge> edgesSnapshot = new ArrayList<>(cloneESGFx.getEdgeList());
+        
+        for (Edge edge : edgesSnapshot) {
+            if (edge.getSource().equals(vertex) || edge.getTarget().equals(vertex)) {
+                mutantESGFx.removeEdge(edge);
+            }
+        }
+        
+        mutantESGFx.removeVertex(vertex);
+        mutantESGFx.removeEvent(vertex.getEvent());
 
-		while (edgeIterator.hasNext()) {
-			Edge edge = edgeIterator.next();
-			if (edge.getSource().equals(vertex) || edge.getTarget().equals(vertex)) {
-				mutantESGFx.removeEdge(edge);
-			}
-		}
-		mutantESGFx.removeVertex(vertex);
-		mutantESGFx.removeEvent(vertex.getEvent());
+        if (ESGValidator.isValid(mutantESGFx))
+            getValidMutantESGFxSet().add(mutantESGFx);
+        else
+            getInvalidMutantESGFxSet().add(mutantESGFx);
 
-//		System.out.println("Mutant " + mutantESGFx.toString());
-		if (ESGValidator.isValid(mutantESGFx))
-			getValidMutantESGFxSet().add(mutantESGFx);
-		else
-			getInvalidMutantESGFxSet().add(mutantESGFx);
-
-		return mutantESGFx;
-	}
-
+        return mutantESGFx;
+    }
 }

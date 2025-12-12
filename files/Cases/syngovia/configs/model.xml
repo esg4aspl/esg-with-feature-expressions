@@ -29,7 +29,7 @@
 				<graphics key="collapsed" value="false"/>
 			</feature>
 			<and abstract="true" mandatory="true" name="CornerMenus">
-				<graphics key="collapsed" value="true"/>
+				<graphics key="collapsed" value="false"/>
 				<feature mandatory="true" name="tl"/>
 				<feature mandatory="true" name="tr"/>
 				<feature mandatory="true" name="bl"/>
@@ -62,9 +62,9 @@
 				<feature name="MGR">
 					<graphics key="collapsed" value="false"/>
 				</feature>
+				<feature name="CRR"/>
 				<feature name="PETR"/>
 				<feature name="SPECTR"/>
-				<feature name="CRR"/>
 				<feature name="RFXAR"/>
 				<feature name="USR"/>
 			</alt>
@@ -92,7 +92,7 @@
 				<feature name="le"/>
 			</or>
 			<or abstract="true" mandatory="true" name="Modality">
-				<graphics key="collapsed" value="true"/>
+				<graphics key="collapsed" value="false"/>
 				<feature abstract="true" name="CT"/>
 				<feature abstract="true" name="MR"/>
 				<feature abstract="true" name="MI"/>

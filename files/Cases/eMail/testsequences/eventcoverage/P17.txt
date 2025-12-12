@@ -1,7 +1,0 @@
-9 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email
-2 : open_mailbox, select_email
-3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver
-4 : open_mailbox, select_email, enter_forward_receiver's_email_address, send_email
-4 : compose_new_email, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email
-4 : compose_new_email, enter_receiver's_email_address, sign_mail, send_email
-Event coverage is 100.0%

@@ -9,6 +9,7 @@ import tr.edu.iyte.esg.model.Vertex;
 import tr.edu.iyte.esgfx.model.ESGFx;
 
 import java.util.Iterator;
+import java.util.Set;
 
 public class StronglyConnectedBalancedESGFxGeneration {
 
@@ -20,13 +21,25 @@ public class StronglyConnectedBalancedESGFxGeneration {
 		Graph<Vertex, Edge> balancedAndStronglyConnectedESG = balancedESGGenerator
 				.generateBalancedAndStronglyConnectedESG(ESGFx);
 		
-		ESGFx = convertJgraphToESG(balancedAndStronglyConnectedESG, ESGFx);
+		ESGFx = convertJgraphToESGFx(balancedAndStronglyConnectedESG,ESGFx);
+		
+		for(Vertex vertex : ESGFx.getVertexList()) {
+			if(vertex.getDegree() != 0) {
+				System.out.println("Strongly Connected&Balanced Product ESGFX  " + vertex.getID() + " " + vertex + " " + vertex.getDegree());
+				String eventName = vertex.toString();
+				Set<Edge> edgeSet = ESGFx.getEdgesByEventName(eventName);
+				edgeSet.forEach(e -> System.out.println("   Edge: " + e.toString()));
+			}
+		}
+//		balancedAndStronglyConnectedESG.edgeSet().forEach(e -> System.out.println("ESGFX " + e.getSource() + "->" + e.getTarget()));
+//		System.out.println("Strongly Connected Balanced ESGFx is generated");
+//		System.out.println("------------------------------------------------------------");
 		
 		return ESGFx;
 
 	}
 
-	private static ESG convertJgraphToESG(Graph<Vertex, Edge> balancedAndStronglyConnectedESG, ESG ESG) {
+	private static ESG convertJgraphToESGFx(Graph<Vertex, Edge> balancedAndStronglyConnectedESG, ESG ESG) {
 		ESG ESGFx = new ESGFx(ESG.getID(), ESG.getName());
 		//System.out.println(balancedAndStronglyConnectedESG.vertexSet().size());
 		Iterator<Vertex> vertexSetIterator = balancedAndStronglyConnectedESG.vertexSet().iterator();

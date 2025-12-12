@@ -106,30 +106,31 @@ public class MXEFileToESGFxConverter extends MXEFiletoESGConverter {
 
 			Map<String, Vertex> vertexIDvertexMap = new HashMap<String, Vertex>();
 
-//			System.out.println("vertexIdList.size() " + vertexIdList.size());
-//			int i = 0;
+			//System.out.println("vertexIdList.size() " + vertexIdList.size());
+			int i = 0;
 			for (int temp = 0; temp < vertexIdList.size(); temp++) {
 				String eventName = vertexNameList.get(temp);
 				eventName = EventNameModifier.modifyEventName(eventName);
-//				System.out.println("eventName in file" + eventName);
+//				System.out.println("eventName in file " + eventName);
 
 				Vertex vertex = null;
 				if (!eventName.equals("[") && !eventName.equals("]")) {
-//					System.out.println("unsplitted eventName in file " + eventName);
+					//System.out.println("unsplitted eventName in file " + eventName);
 					String[] eventNameArray = eventName.split("/");
 					eventName = eventNameArray[0].trim();
 					String featureName = eventNameArray[1].trim();
-//					System.out.println("eventName in file " + eventName);
-//					System.out.println("featureName in file " + featureName);
+					//System.out.println("eventName in file " + eventName);
+					//System.out.println("featureName in file " + featureName);
 					Event event = new EventSimple(ESGFx.getNextEventID(), eventName);
 					ESGFx.addEvent(event);
 
 					FeatureExpression featureExpression = new FeatureExpression();
 					featureExpression = parseFeatureExpression(featureName);
-//					System.out.println("featureExpression: "+featureExpression.toString());
-//					System.out.println("--------------------------");
+					//System.out.println("featureExpression: "+featureExpression.toString());
+					//System.out.println("--------------------------");
 					vertex = new VertexRefinedByFeatureExpression(ESGFx.getNextVertexID(), event, featureExpression);
 				} else {
+//					System.out.println(eventName);
 					Event event = new EventSimple(ESGFx.getNextEventID(), eventName);
 					ESGFx.addEvent(event);
 //					vertex = new VertexSimple(ESGFx.getNextVertexID(), event);
@@ -141,7 +142,7 @@ public class MXEFileToESGFxConverter extends MXEFiletoESGConverter {
 				vertexIDvertexMap.put(vertexIdList.get(temp), vertex);
 //				i++;
 			}
-//			System.out.println("vertexIdList.size() " + i);
+//			//System.out.println("vertexIdList.size() " + i);
 
 			for (int temp = 0; temp < edgeList.size(); temp++) {
 				String[] edges = edgeList.get(temp).split(",");
@@ -149,7 +150,10 @@ public class MXEFileToESGFxConverter extends MXEFiletoESGConverter {
 				String target = edges[1];
 
 				Vertex sourceVertex = vertexIDvertexMap.get(source);
+				
 				Vertex targetVertex = vertexIDvertexMap.get(target);
+				//System.out.println("sourceVertex " + sourceVertex);
+				//System.out.println("targetVertex " + targetVertex);
 
 				Edge edge = new EdgeSimple(ESGFx.getNextEdgeID(), sourceVertex, targetVertex);
 
@@ -165,10 +169,10 @@ public class MXEFileToESGFxConverter extends MXEFiletoESGConverter {
 		addAbstractFeatureExpressionsNecessaryForProductConfiguration(featureModel.getXORFeatures());
 
 		
-//		  System.out.println("ESGFx.getEventList().size() " +
+//		  //System.out.println("ESGFx.getEventList().size() " +
 //		  ESGFx.getEventList().size());
 //		  
-//		  for(String key : featureExpressionMap.keySet()) { System.out.println(key +"-"
+//		  for(String key : featureExpressionMap.keySet()) { //System.out.println(key +"-"
 //		  + featureExpressionMap.get(key).getFeature().getName());
 //		  
 //		  }
@@ -179,7 +183,7 @@ public class MXEFileToESGFxConverter extends MXEFiletoESGConverter {
 
 		Feature feature = featureModel.findFeatureByName(featureName);
 		if (feature == null) {
-			System.out.println("Feature not found in the feature model");
+			//System.out.println("Feature not found in the feature model");
 		}
 		return feature;
 
@@ -201,7 +205,7 @@ public class MXEFileToESGFxConverter extends MXEFiletoESGConverter {
 
 			// Get and print the populated FeatureModel
 			featureModel = parser.getFeatureModel();
-//			System.out.println(featureModel);
+//			//System.out.println(featureModel);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -209,7 +213,7 @@ public class MXEFileToESGFxConverter extends MXEFiletoESGConverter {
 
 //		FeatureModelParser featureModelParser = new FeatureModelParser();
 //		featureModel = featureModelParser.parseFeatureModel(featureModelPath);
-//		System.out.println(featureModel);
+//		//System.out.println(featureModel);
 		
 
 		return featureModel;
@@ -217,70 +221,70 @@ public class MXEFileToESGFxConverter extends MXEFiletoESGConverter {
 	
 	private FeatureExpression parseFeatureExpression(String featureName) {
 
-//			System.out.println("Feature name " + featureName);
+//			//System.out.println("Feature name " + featureName);
 
 		Feature feature = new Feature();
 		if (featureName.contains("!")) {
 			String updatedFeatureName = featureName.substring(1);
 			feature = searchFeature(updatedFeatureName);
-//				System.out.println("Found feature's name " + feature.getName());
+//				//System.out.println("Found feature's name " + feature.getName());
 
 		} else {
 			feature = searchFeature(featureName);
-//				System.out.println("Found feature's name "+ feature.getName());
+//				//System.out.println("Found feature's name "+ feature.getName());
 		}
 
 		if (featureExpressionMap.containsKey(featureName)) {
-//				System.out.println("1st IF");
+//				//System.out.println("1st IF");
 			
 //				for(String s : featureExpressionMap.keySet()) {
-//					System.out.println("1st IF " + s + " " + featureExpressionMap.get(s).getFeature().getName());
+//					//System.out.println("1st IF " + s + " " + featureExpressionMap.get(s).getFeature().getName());
 //				}
 
 			return featureExpressionMap.get(featureName);
 		} else {
-//				System.out.println("1st ELSE");
+//				//System.out.println("1st ELSE");
 			if (featureName.contains("!")) {
-//					System.out.println("2nd IF");
+//					//System.out.println("2nd IF");
 				String updatedFeatureName = featureName.substring(1);
 
 				if (featureExpressionMap.containsKey(updatedFeatureName)) {
-//						System.out.println("3rd IF");
+//						//System.out.println("3rd IF");
 					FeatureExpression existing = featureExpressionMap.get(updatedFeatureName);
-//						System.out.println("existing.equals(null) " + existing.equals(null));
+//						//System.out.println("existing.equals(null) " + existing.equals(null));
 					FeatureExpression negation = new Negation(existing);
 					featureExpressionMap.put(featureName, negation);
 
 //						for(String s : featureExpressionMap.keySet()) {
-//							System.out.println("3rd IF " + s + " " + featureExpressionMap.get(s).getFeature().getName());
+//							//System.out.println("3rd IF " + s + " " + featureExpressionMap.get(s).getFeature().getName());
 //						}
 
 					return negation;
 				} else {
-//					System.out.println("3rd ELSE");						
-//						System.out.println("feature.equals(null) " + feature.equals(null));
+//					//System.out.println("3rd ELSE");						
+//						//System.out.println("feature.equals(null) " + feature.equals(null));
 					FeatureExpression featureExpression = new FeatureExpression(feature);
-//						System.out.println("featureExpression.equals(null) " + featureExpression.equals(null));
+//						//System.out.println("featureExpression.equals(null) " + featureExpression.equals(null));
 					featureExpressionMap.put(updatedFeatureName, featureExpression);
 
 					FeatureExpression negation = new Negation(featureExpression);
-//						System.out.println("negation.equals(null) " + negation.equals(null));
+//						//System.out.println("negation.equals(null) " + negation.equals(null));
 					featureExpressionMap.put(featureName, negation);
 
 //						for(String s : featureExpressionMap.keySet()) {
-//							System.out.println("3rd ELSE " + s + " " + featureExpressionMap.get(s).getFeature().getName());
+//							//System.out.println("3rd ELSE " + s + " " + featureExpressionMap.get(s).getFeature().getName());
 //						}
 
 					return negation;
 				}
 			} else {
-//					System.out.println("2nd ELSE");
-//					System.out.println(feature);
+//					//System.out.println("2nd ELSE");
+//					//System.out.println(feature);
 				FeatureExpression featureExpression = new FeatureExpression(feature);
 				featureExpressionMap.put(featureName, featureExpression);
 
 //					for(String s : featureExpressionMap.keySet()) {
-//						System.out.println("2nd ELSE " + s + " " + featureExpressionMap.get(s).getFeature().getName());
+//						//System.out.println("2nd ELSE " + s + " " + featureExpressionMap.get(s).getFeature().getName());
 //					}
 
 				return featureExpression;
@@ -302,7 +306,7 @@ public class MXEFileToESGFxConverter extends MXEFiletoESGConverter {
 				while (valueSetIterator.hasNext()) {
 					Feature value = valueSetIterator.next();
 					
-//					System.out.println("FEATURE " + value.getName() + "isAbstract "+ value.isAbstract() + "isLeaf "+ featureModel.isLeaf(value));
+//					//System.out.println("FEATURE " + value.getName() + "isAbstract "+ value.isAbstract() + "isLeaf "+ featureModel.isLeaf(value));
 					
 					if (value.isAbstract() && featureModel.isLeaf(value)) {
 						if (!featureExpressionMap.containsKey(value.getName())) {

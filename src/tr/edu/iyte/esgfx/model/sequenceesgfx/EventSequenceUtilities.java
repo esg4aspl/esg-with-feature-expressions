@@ -1,11 +1,11 @@
 package tr.edu.iyte.esgfx.model.sequenceesgfx;
 
 import java.util.LinkedHashSet;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.Iterator;
+
 
 import tr.edu.iyte.esg.eventsequence.EventSequence;
 import tr.edu.iyte.esg.model.Vertex;
@@ -13,6 +13,28 @@ import tr.edu.iyte.esg.model.sequenceesg.Sequence;
 
 public class EventSequenceUtilities {
 	
+	public static void esgEventSequencePrinter(Set<EventSequence> composedSequences, int index, String header) {
+		int counter = 0;
+		System.out.println(header);
+		for (EventSequence es : composedSequences) {
+			if(counter == index) {
+			System.out.println(/* es.length() + " - " + */ es);
+			}
+			counter++;
+		}
+		System.out.println();
+	}
+	
+	
+	public static void esgEventSequenceSetPrinter(Set<EventSequence> composedSequences, String header) {
+		System.out.println(header);
+		for (EventSequence es : composedSequences) {
+			
+			System.out.println(/* es.length() + " - " + */ es);
+
+		}
+		System.out.println();
+	}
 	
 	public static Set<EventSequence> removeRepetitionsFromEventSequenceSet(int coverageLengt, Set<EventSequence> CESsOfESG) {
 		
