@@ -1,6 +1,6 @@
 #!/bin/bash
 # USAGE: ./Script.sh <CaseName> <ShortName> [TotalShards] [StartShard] [EndShard]
-# Example: ./MutantGeneratorEventOmitter.sh SVM SVM 30 0 3
+# Example: ./MutantGeneratorEventOmitter.sh SVM SVM 40 0 3
 
 # Validate arguments
 if [ -z "$1" ]; then 
@@ -23,7 +23,7 @@ if [ -n "$SHARD_PARAM" ]; then
     N=$SHARD_PARAM
 else 
     # Fallback defaults
-    if [[ "$OSTYPE" == "darwin"* ]]; then N=4; else N=30; fi
+    if [[ "$OSTYPE" == "darwin"* ]]; then N=4; else N=40; fi
 fi
 
 # 2. CONFIGURE EXECUTION RANGE FOR THIS NODE

@@ -22,7 +22,7 @@ PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 if [ -n "$SHARD_PARAM" ]; then
   N=$SHARD_PARAM
 else
-  if [[ "$OSTYPE" == "darwin"* ]]; then N=4; else N=30; fi
+  if [[ "$OSTYPE" == "darwin"* ]]; then N=4; else N=40; fi
 fi
 
 # Configure Execution Range for this Node
@@ -68,7 +68,7 @@ for i in $(seq $S_NODE $E_NODE); do
   LOG="${LOG_DIR}/run_timeL0_s$(printf "%02d" $i).log"
   # =======================================================
 
-  # N_SHARDS is total (30), SHARD is specific ID (i)
+  # N_SHARDS is total (40), SHARD is specific ID (i)
   N_SHARDS=$N SHARD=$i \
   nohup java $JAVA_OPTS -cp "target/classes:$CP" "$MAIN" > "$LOG" 2>&1 &
   

@@ -12,7 +12,7 @@
 if [[ "$OSTYPE" == "darwin"* ]]; then
   TARGET_SHARDS=4  
 else
-  TARGET_SHARDS=30 
+  TARGET_SHARDS=40 
 fi
 
 # --- 2. EXECUTION RANGE ---
@@ -38,12 +38,12 @@ CASES=(
   "StudentAttendanceSystem SAS"
   "Tesla Te"
   "syngovia Svia"
-  "HockertyShirts HS" 
+  #"HockertyShirts HS" 
 )
 
 # 2. DEFINE TASK SCRIPTS
 SCRIPTS=(
-  "TestSequenceRecorder.sh"
+  #"TestSequenceRecorder.sh"
   "MutantGeneratorEdgeOmitter.sh"
   "MutantGeneratorEventOmitter.sh"
   #"MutantGeneratorEdgeRedirector.sh" # DISABLED
