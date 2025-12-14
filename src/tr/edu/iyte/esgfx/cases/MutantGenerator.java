@@ -124,8 +124,8 @@ public class MutantGenerator extends CaseStudyUtilities {
 		});
 
 		try {
-			// 5 Seconds Timeout
-			future.get(5, TimeUnit.SECONDS);
+			// 30 Seconds Timeout
+			future.get(30, TimeUnit.SECONDS);
 		} catch (TimeoutException e) {
 			System.err.println("⚠️ TIMEOUT: Warmup skipped (Infinite Loop protection).");
 			System.err.println("Mutant ID " + mutant.getID());
@@ -156,8 +156,8 @@ public class MutantGenerator extends CaseStudyUtilities {
 		});
 
 		try {
-			// 5 Seconds Timeout
-			return future.get(5, TimeUnit.SECONDS);
+			// 30 Seconds Timeout
+			return future.get(30, TimeUnit.SECONDS);
 		} catch (TimeoutException e) {
 			System.err.println("⚠️ TIMEOUT: Measurement skipped (Infinite Loop protection). Returning 0.");
 			System.err.println("Mutant ID " + mutant.getID());

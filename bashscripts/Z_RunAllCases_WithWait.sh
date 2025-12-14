@@ -1,11 +1,9 @@
 #!/bin/bash
 
 # ============================================================
-# MASTER RUNNER: DISTRIBUTED SHARD ORCHESTRATOR
-# Description: Orchestrates the execution of mutation analysis 
-#              and test generation scripts across distributed nodes.
-#              (Ordered by SCRIPT, then by CASE)
-# Location: esg-with-feature-expressions/bashscripts/
+# MASTER RUNNER: DISTRIBUTED SHARD ORCHESTRATOR (CUSTOM FLOW)
+# Description: 1. Runs EdgeOmitter & Recorder ONLY for Elevator
+#              2. Runs EventOmitter for ALL cases
 # ============================================================
 
 # --- 1. DYNAMIC SHARD CONFIGURATION ---
@@ -29,36 +27,13 @@ echo "--------------------------------------------------"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
-# 1. DEFINE CASES
-CASES=(
-  "SodaVendingMachine SVM"
-  "eMail eM"
-  "Elevator El"
-  "BankAccountv2 BAv2"
-  "StudentAttendanceSystem SAS"
-  "Tesla Te"
-  "syngovia Svia"
-  #"HockertyShirts HS" 
-)
-
-# 2. DEFINE TASK SCRIPTS
-SCRIPTS=(
-  #"TestSequenceRecorder.sh"
-  "MutantGeneratorEdgeOmitter.sh"
-  "MutantGeneratorEventOmitter.sh"
-  #"MutantGeneratorEdgeRedirector.sh" # DISABLED
-  #"ProductESGToEFGFileWriter.sh" 
-)
-
 ERROR_KEYWORDS="Exception|Error|FAILURE|Java heap space|AccessDenied"
 
 # --- VERIFICATION FUNCTION ---
-# Checks output files after the process finishes
 verify_results() {
     local case_name=$1
     local script_name=$2
     
-    # Determine output directory based on script name
     local target_dir=""
     if [[ "$script_name" == *"EdgeOmitter"* ]]; then target_dir="shards_mutantgenerator_edgeomitter"; fi
     if [[ "$script_name" == *"EventOmitter"* ]]; then target_dir="shards_mutantgenerator_eventomitter"; fi
@@ -68,7 +43,6 @@ verify_results() {
     local full_path="$PROJECT_ROOT/files/Cases/$case_name/$target_dir"
     
     if [ -d "$full_path" ]; then
-        # Count CSV or EFG files
         local count=$(find "$full_path" -type f \( -name "*.csv" -o -name "*.EFG" \) | wc -l)
         if [ "$count" -gt 0 ]; then
             echo "   ✅ VERIFIED: $count output files found in $target_dir"
@@ -89,8 +63,10 @@ wait_and_monitor() {
 
   echo "⏳ Monitoring logs in: $log_dir"
 
+  # Wait while the specific case java process is running
   while pgrep -f "java.*$case_name" > /dev/null; do
     if [ -d "$log_dir" ]; then
+        # Check logs modified in the last 5 minutes for errors (Original Pattern Kept)
         if find "$log_dir" -name "run_${case_name}_s*.log" -mmin -5 -exec grep -E "$ERROR_KEYWORDS" {} + 2>/dev/null | tail -n 1 > error_snippet.tmp; then
             if [ -s error_snippet.tmp ] && [ "$error_detected" = false ]; then
                 local msg=$(cat error_snippet.tmp)
@@ -106,49 +82,84 @@ wait_and_monitor() {
   rm -f error_snippet.tmp
   echo -e "\n✅ PROCESS FINISHED: $case_name ($script_name)"
   
-  # Check results immediately after process finishes
   verify_results "$case_name" "$script_name"
 }
 
-echo "=== STARTING MASTER RUNNER ==="
+# --- CORE EXECUTION HELPER ---
+# Wrapper to run the script and monitor logs without changing logic
+execute_task() {
+    local SCRIPT_NAME=$1
+    local CASE_ENTRY=$2
 
-# --- MAIN EXECUTION LOOP (Swapped: Script -> Case) ---
-for SCRIPT_NAME in "${SCRIPTS[@]}"; do
-    
-    # --- SAFETY SKIP: EdgeRedirector ---
-    if [[ "$SCRIPT_NAME" == *"EdgeRedirector"* ]]; then
-        echo "⏩ SKIPPING: $SCRIPT_NAME (Globally Disabled)"
-        continue
-    fi
+    set -- $CASE_ENTRY
+    local CASE_NAME=$1
+    local SHORT_NAME=$2
+    local TARGET_SCRIPT="${SCRIPT_DIR}/${SCRIPT_NAME}"
+    local LOG_DIR="${PROJECT_ROOT}/logs/${CASE_NAME}"
 
-    TARGET_SCRIPT="${SCRIPT_DIR}/${SCRIPT_NAME}"
-    
+    # Check if script exists
     if [ ! -f "$TARGET_SCRIPT" ]; then
       echo "⚠️  Warning: Script not found: $TARGET_SCRIPT"
-      continue
+      return
     fi
+
+    mkdir -p "$LOG_DIR"
+
+    echo "=================================================="
+    echo "🔷 PROCESSING CASE: $CASE_NAME"
+    echo "▶️  EXECUTING: $SCRIPT_NAME"
+    echo "=================================================="
     
-    echo "=================================================="
-    echo "🚀 STARTING BATCH TASK: $SCRIPT_NAME"
-    echo "=================================================="
+    # Original Execution Command Preserved
+    bash "$TARGET_SCRIPT" "$CASE_NAME" "$SHORT_NAME" "$TARGET_SHARDS" "$START_SHARD" "$END_SHARD" > /dev/null 2>&1
+    
+    # Monitor using the exact same logic
+    wait_and_monitor "$CASE_NAME" "$LOG_DIR" "$SCRIPT_NAME"
+    sleep 2
+}
 
-    for entry in "${CASES[@]}"; do
-        set -- $entry
-        CASE_NAME=$1
-        SHORT_NAME=$2
+echo "=== STARTING MASTER RUNNER (CUSTOM SEQUENCE) ==="
 
-        LOG_DIR="${PROJECT_ROOT}/logs/${CASE_NAME}"
-        mkdir -p "$LOG_DIR"
+# ============================================================
+# PHASE 1: ELEVATOR SPECIAL TASKS
+# Run EdgeOmitter & Recorder ONLY for Elevator
+# ============================================================
+echo ""
+echo "##################################################"
+echo "### PHASE 1: ELEVATOR SPECIFIC TASKS           ###"
+echo "##################################################"
 
-        echo "🔷 PROCESSING CASE: $CASE_NAME"
-        echo "▶️  EXECUTING: $SCRIPT_NAME (Range: $START_SHARD - $END_SHARD)"
-        
-        bash "$TARGET_SCRIPT" "$CASE_NAME" "$SHORT_NAME" "$TARGET_SHARDS" "$START_SHARD" "$END_SHARD" > /dev/null 2>&1
-        
-        # Monitor this specific case/script combination
-        wait_and_monitor "$CASE_NAME" "$LOG_DIR" "$SCRIPT_NAME"
-        sleep 2
-    done
+ELEVATOR_CASE="Elevator El"
+
+# 1.1 Run Edge Omitter for Elevator
+execute_task "MutantGeneratorEdgeOmitter.sh" "$ELEVATOR_CASE"
+
+# 1.2 Run Test Sequence Recorder for Elevator
+execute_task "TestSequenceRecorder.sh" "$ELEVATOR_CASE"
+
+
+# ============================================================
+# PHASE 2: EVENT OMITTER FOR ALL CASES
+# Run EventOmitter for the full list
+# ============================================================
+echo ""
+echo "##################################################"
+echo "### PHASE 2: EVENT OMITTER FOR ALL CASES       ###"
+echo "##################################################"
+
+EVENT_OMITTER_CASES=(
+  "SodaVendingMachine SVM"
+  "eMail eM"
+  "Elevator El"
+  "BankAccountv2 BAv2"
+  "StudentAttendanceSystem SAS"
+  "Tesla Te"
+)
+
+SCRIPT_EVENT_OMITTER="MutantGeneratorEventOmitter.sh"
+
+for CASE_ENTRY in "${EVENT_OMITTER_CASES[@]}"; do
+    execute_task "$SCRIPT_EVENT_OMITTER" "$CASE_ENTRY"
 done
 
 echo ""

@@ -14,10 +14,10 @@
 		<and abstract="true" mandatory="true" name="ElevatorSystem">
 			<graphics key="collapsed" value="false"/>
 			<feature mandatory="true" name="ControlButtons"/>
-			<and abstract="true" mandatory="true" name="EmergencyFeatures">
-				<feature mandatory="true" name="Alarm"/>
-				<feature mandatory="true" name="Intercom"/>
-			</and>
+			<or abstract="true" mandatory="true" name="EmergencyFeatures">
+				<feature name="Alarm"/>
+				<feature name="Intercom"/>
+			</or>
 			<feature name="ManualDoorControl"/>
 			<feature name="FirefighterService"/>
 			<alt abstract="true" name="AccessControl">

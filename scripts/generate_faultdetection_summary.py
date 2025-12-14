@@ -1,126 +1,179 @@
 import pandas as pd
-import glob
 import os
-import numpy as np
+import glob
+import sys
 
-def generate_fault_detection_summary():
-    # --- CONFIGURATION ---
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    project_root = os.path.dirname(script_dir)
-    base_dir = os.path.join(project_root, "files", "Cases")
-    output_file = os.path.join(base_dir, "SPLFaultDetectionSummary.csv")
+# ================= DYNAMIC PATH CONFIGURATION =================
+# Scriptin bulunduğu konuma göre dinamik yol belirleme
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
+CASES_BASE_DIR = os.path.join(PROJECT_ROOT, "files", "Cases")
+OUTPUT_FILE = os.path.join(CASES_BASE_DIR, "SPLFaultDetectionSummary.csv")
 
-    target_folders = [
-        #"shards_mutantgenerator_edgeinserter",
-        "shards_mutantgenerator_edgeomitter",
-        "shards_mutantgenerator_edgeredirector",
-        #"shards_mutantgenerator_eventinserter",
-        "shards_mutantgenerator_eventomitter"
-    ]
+# ================= CASE & OPERATOR CONFIGURATION =================
+# Case Klasör Adı -> Beklenen SPL Kısaltması (CSV içindeki)
+CASE_MAPPING = {
+    "BankAccountv2": "BAv2",
+    "Elevator": "El",
+    "eMail": "eM",
+    "SodaVendingMachine": "SVM",
+    "StudentAttendanceSystem": "SAS",
+    "Tesla": "Te",
+    "syngovia": "Svia" 
+}
 
-    print(f"🔍 Summarizer started. Scanning: {base_dir}")
+# Operator Adı -> Klasör Soneki
+# Script hem Edge Omitter hem Event Omitter için çalışacak şekilde ayarlandı
+OPERATORS = {
+    "Edge Omitter": "shards_mutantgenerator_edgeomitter",
+    "Event Omitter": "shards_mutantgenerator_eventomitter"
+}
 
-    if not os.path.exists(base_dir):
-        print(f"⚠️ Warning: Base directory not found. Skipping summary.")
-        return
+# Hangi sütunların toplanacağı (Sum), hangilerinin yeniden hesaplanacağı
+SUM_COLS = [
+    "Number of Mutants",
+    "Number of Detected  Mutants RandomWalk",
+    "Detected Mutants Per Second RandomWalk",
+    "Number of Detected  Mutants L=1",
+    "Detected Mutants Per Second L=1",
+    "Number of Detected  Mutants L=2",
+    "Detected Mutants Per Second L=2",
+    "Number of Detected  Mutants L=3",
+    "Detected Mutants Per Second L=3",
+    "Number of Detected  Mutants L=4",
+    "Detected Mutants Per Second L=4"
+]
 
-    all_dataframes = []
-    cases = [d for d in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, d))]
-    cases.sort()
+# Yüzde sütunları (Toplanmayacak, hesaplanacak)
+PERCENT_COLS_MAPPING = {
+    "Fault Detection Percentange RandomWalk": "Number of Detected  Mutants RandomWalk",
+    "Fault Detection Percentange L=1": "Number of Detected  Mutants L=1",
+    "Fault Detection Percentange L=2": "Number of Detected  Mutants L=2",
+    "Fault Detection Percentange L=3": "Number of Detected  Mutants L=3",
+    "Fault Detection Percentange L=4": "Number of Detected  Mutants L=4"
+}
 
-    found_any = False
+# Çıktıdaki sütun sırasını korumak için (Senin verdiğin örneğe göre)
+FINAL_COLUMN_ORDER = [
+    "SPL", "Operator", "Number of Mutants",
+    "Number of Detected  Mutants RandomWalk", "Fault Detection Percentange RandomWalk", "Detected Mutants Per Second RandomWalk",
+    "Number of Detected  Mutants L=1", "Fault Detection Percentange L=1", "Detected Mutants Per Second L=1",
+    "Number of Detected  Mutants L=2", "Fault Detection Percentange L=2", "Detected Mutants Per Second L=2",
+    "Number of Detected  Mutants L=3", "Fault Detection Percentange L=3", "Detected Mutants Per Second L=3",
+    "Number of Detected  Mutants L=4", "Fault Detection Percentange L=4", "Detected Mutants Per Second L=4"
+]
 
-    for case_name in cases:
-        case_path = os.path.join(base_dir, case_name)
-        
-        for subfolder in target_folders:
-            shard_dir = os.path.join(case_path, subfolder)
-            
-            if os.path.exists(shard_dir):
-                pattern = os.path.join(shard_dir, "faultdetection.shard*.csv")
-                shard_files = glob.glob(pattern)
-                
-                if shard_files:
-                    found_any = True
-                    # Sadece dosya bulursa ekrana bas, yoksa sessiz geç
-                    # print(f"   🔹 Found data in: {case_name} / {subfolder}")
-                    
-                    case_dfs = []
-                    for f in shard_files:
-                        try:
-                            df = pd.read_csv(f, sep=";")
-                            if 'SPL' in df.columns: df = df.dropna(subset=['SPL'])
-                            for col in df.columns:
-                                if df[col].dtype == 'object':
-                                    try:
-                                        if df[col].str.match(r'^-?\d+(?:,\d+)?$').all():
-                                            df[col] = df[col].str.replace(',', '.').astype(float)
-                                    except: pass
-                            case_dfs.append(df)
-                        except: pass # Hatalı dosya varsa sessizce geç
-                    
-                    if case_dfs: all_dataframes.extend(case_dfs)
-
-    if not all_dataframes:
-        print("⚠️  No fault detection data found across all cases. Summary NOT created.")
-        return
-
-    # ... (Matematiksel işlemler aynen devam ediyor) ...
-    print("📊 Aggregating data...")
-    full_df = pd.concat(all_dataframes, ignore_index=True)
+def process_fault_detection():
+    all_summaries = []
     
-    group_cols = ['SPL', 'Operator']
-    weight_col = "Number of Mutants"
-    num_cols = [c for c in full_df.columns if "Number of" in c]
-    speed_cols = [c for c in full_df.columns if "Per Second" in c]
+    print(f"🚀 Starting Fault Detection Aggregation...")
+    print(f"📍 Script Location: {SCRIPT_DIR}")
 
-    def weighted_avg(x, weights):
-        if weights.sum() == 0: return 0
-        return np.average(x, weights=weights)
+    for case_folder, expected_spl_code in CASE_MAPPING.items():
+        for operator_name, folder_suffix in OPERATORS.items():
+            
+            # Dinamik klasör yolu: .../Cases/{CaseName}/{shards_folder}
+            target_dir = os.path.join(CASES_BASE_DIR, case_folder, folder_suffix)
+            
+            # Klasör var mı kontrolü
+            if not os.path.exists(target_dir):
+                # Bazı case'lerde Event Omitter olmayabilir, sessizce geçebiliriz veya info basabiliriz
+                # print(f"   ℹ️  Folder not found (skipping): {target_dir}")
+                continue
 
-    grouped = full_df.groupby(group_cols)
-    summary_rows = []
+            # Klasör içindeki faultdetection*.csv dosyalarını bul
+            file_pattern = os.path.join(target_dir, "faultdetection*.csv")
+            all_files = glob.glob(file_pattern)
 
-    for name, group in grouped:
-        spl, operator = name
-        row = {'SPL': spl, 'Operator': operator}
-        total_mutants = group[weight_col].sum()
-        row[weight_col] = total_mutants
-        
-        for col in num_cols:
-            if col != weight_col: row[col] = group[col].sum()
+            if not all_files:
+                print(f"   ⚠️  WARNING: Folder exists but IS EMPTY: {case_folder} -> {operator_name}")
+                print(f"       Path: {target_dir}")
+                continue
 
-        for col in speed_cols:
-            if pd.api.types.is_numeric_dtype(group[col]):
-                w_avg = weighted_avg(group[col], group[weight_col])
-                row[col] = w_avg
-            else: row[col] = 0
+            print(f"   📂 Processing {case_folder} [{operator_name}] -> Found {len(all_files)} files.")
 
-        for col in full_df.columns:
-            if "Fault Detection Percentange" in col:
-                suffix = col.split("Percentange")[-1]
-                matching_count_col = next((c for c in num_cols if c.endswith(suffix) and "Detected" in c), None)
-                if matching_count_col:
-                    total_detected = row[matching_count_col]
-                    row[col] = (total_detected / total_mutants * 100) if total_mutants > 0 else 0
-                else: row[col] = 0
+            df_list = []
+            for file in all_files:
+                try:
+                    if os.stat(file).st_size == 0:
+                        continue
+                    
+                    # CSV Oku (Noktalı virgül ayracı, virgül ondalık)
+                    df = pd.read_csv(file, sep=';', decimal=',')
+                    df.columns = df.columns.str.strip() # Headerdaki boşlukları temizle
+                    
+                    # Basit Validasyon
+                    if 'SPL' not in df.columns:
+                        print(f"      ⚠️  Skipping malformed file: {os.path.basename(file)}")
+                        continue
+                        
+                    # SPL Kodunun doğruluğunu kontrol et
+                    if df['SPL'].iloc[0] != expected_spl_code:
+                        print(f"      ⚠️  Skipping file with wrong SPL code: {os.path.basename(file)}")
+                        continue
 
-        summary_rows.append(row)
+                    df_list.append(df)
 
-    summary_df = pd.DataFrame(summary_rows)
-    for col in summary_df.columns:
-        if pd.api.types.is_numeric_dtype(summary_df[col]):
-             summary_df[col] = summary_df[col].apply(lambda x: f"{x:.2f}".replace('.', ','))
+                except Exception as e:
+                    print(f"      ❌ Error reading {os.path.basename(file)}: {e}")
+                    continue
+            
+            if not df_list:
+                continue
 
-    cols = list(summary_df.columns)
-    for c in ['SPL', 'Operator', 'Number of Mutants']: 
-        if c in cols: cols.remove(c)
-    final_cols = ['SPL', 'Operator', 'Number of Mutants'] + sorted(cols)
-    final_cols = [c for c in final_cols if c in summary_df.columns]
-    summary_df = summary_df[final_cols]
+            # --- AGGREGATION LOGIC ---
+            combined_df = pd.concat(df_list, ignore_index=True)
+            result_row = {}
 
-    summary_df.to_csv(output_file, sep=";", index=False)
-    print(f"✅ Fault Detection Summary Updated: {output_file}")
+            # 1. Static Columns
+            result_row["SPL"] = expected_spl_code
+            result_row["Operator"] = operator_name
+
+            # 2. Sum Columns (Mutants, Detected, Per Second)
+            for col in SUM_COLS:
+                if col in combined_df.columns:
+                    result_row[col] = combined_df[col].sum()
+                else:
+                    result_row[col] = 0
+
+            # 3. Recalculate Percentages
+            # Formül: (Toplam Yakalanan / Toplam Mutant) * 100
+            total_mutants = result_row["Number of Mutants"]
+            
+            for pct_col, detected_col in PERCENT_COLS_MAPPING.items():
+                detected_count = result_row.get(detected_col, 0)
+                
+                if total_mutants > 0:
+                    percentage = (detected_count / total_mutants) * 100.0
+                    # Yüzde 100'ü geçemez (veri hatası koruması)
+                    result_row[pct_col] = min(percentage, 100.0)
+                else:
+                    result_row[pct_col] = 0.0
+
+            all_summaries.append(result_row)
+
+    # --- SAVE RESULTS ---
+    if not all_summaries:
+        print("\n❌ No valid data found to process.")
+        return
+
+    final_df = pd.DataFrame(all_summaries)
+
+    # İstenen sütun sırasını uygula
+    # Veri setinde olmayan sütunlar varsa hata vermemesi için filtreleyelim
+    valid_cols = [c for c in FINAL_COLUMN_ORDER if c in final_df.columns]
+    final_df = final_df[valid_cols]
+
+    # Sayıları yuvarla (2 basamak)
+    final_df = final_df.round(2)
+
+    # Klasörü oluştur ve kaydet
+    os.makedirs(os.path.dirname(OUTPUT_FILE), exist_ok=True)
+    
+    # Format: Noktalı virgül (;) ayracı ve virgül (,) ondalık
+    final_df.to_csv(OUTPUT_FILE, index=False, sep=';', decimal=',')
+    
+    print(f"\n✅ SUCCESS! Summary saved to: {OUTPUT_FILE}")
 
 if __name__ == "__main__":
-    generate_fault_detection_summary()
+    process_fault_detection()

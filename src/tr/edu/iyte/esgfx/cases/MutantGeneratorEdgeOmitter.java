@@ -107,9 +107,9 @@ public class MutantGeneratorEdgeOmitter extends MutantGenerator {
 
 					if (detectorL0.isFaultDetected(mutant)) {
 						numberOfDetectedMutantsInSPL_L0++;
-//						System.out.println("Mutant " + localMutantID + " DETECTED");
+						System.out.println("Mutant " + localMutantID + " DETECTED");
 					} else
-//						System.out.println("Mutant " + localMutantID + " NOT DETECTED");
+						System.out.println("Mutant " + localMutantID + " NOT DETECTED");
 
 					localMutantID++;
 					mutant = null;

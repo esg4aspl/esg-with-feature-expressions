@@ -1,162 +1,167 @@
 import pandas as pd
-import glob
 import os
+import glob
 import sys
 
-def generate_time_measurement_summary():
-    # --- CONFIGURATION ---
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    project_root = os.path.dirname(script_dir)
-    base_dir = os.path.join(project_root, "files", "Cases")
-    output_file = os.path.join(base_dir, "SPLTimeMeasurementSummary.csv")
-    target_folder = "shards_timemeasurement"
+# ================= DYNAMIC PATH CONFIGURATION =================
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.path.dirname(SCRIPT_DIR)
+CASES_BASE_DIR = os.path.join(PROJECT_ROOT, "files", "Cases")
+OUTPUT_FILE = os.path.join(CASES_BASE_DIR, "SPLTestSuiteSummary.csv")
+
+# ================= CASE CONFIGURATION =================
+CASE_MAPPING = {
+    "BankAccountv2": "BAv2",
+    "Elevator": "El",
+    "eMail": "eM",
+    "StudentAttendanceSystem": "SAS",
+    "syngovia": "Svia",
+    "Tesla": "Tesla"
+}
+
+SHARD_SUBFOLDER = "shards_testsequencegeneration"
+
+# Calculation Logic Prefixes
+TOTAL_PREFIXES = ["Total"] 
+AVG_PREFIXES = ["Avg", "Average"]
+STATIC_COLS = ["SPL", "ESG-Fx Number of Vertices", "ESG-Fx Number of Edges"]
+
+def process_cases():
+    all_summaries = []
+    skipped_files = [] 
     
-    coverage_types = [
-        "randomwalk",
-        "eventcoverage", 
-        "eventcouplecoverage", 
-        "eventtriplecoverage", 
-        "eventquadruplecoverage"
-    ]
+    final_column_order = [] 
 
-    print(f"🔍 Summarizer started. Scanning: {base_dir}")
+    print(f"🚀 Starting aggregation for {len(CASE_MAPPING)} cases...")
+    print(f"📍 Script Location: {SCRIPT_DIR}")
 
-    if not os.path.exists(base_dir):
-        print("⚠️ Warning: Base directory not found. Skipping summary.")
-        return
-
-    all_dataframes = []
-    
-    if os.path.exists(base_dir):
-        cases = [d for d in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, d))]
-        cases.sort()
-    else:
-        cases = []
-
-    for case_name in cases:
-        case_path = os.path.join(base_dir, case_name)
-        base_shard_dir = os.path.join(case_path, target_folder)
+    for case_folder, expected_spl_code in CASE_MAPPING.items():
         
-        if os.path.exists(base_shard_dir):
-            for cov_type in coverage_types:
-                specific_shard_dir = os.path.join(base_shard_dir, cov_type)
-                
-                if os.path.exists(specific_shard_dir):
-                    pattern = os.path.join(specific_shard_dir, "*shard*.csv")
-                    shard_files = glob.glob(pattern)
-                    
-                    if shard_files:
-                        for f in shard_files:
-                            try:
-                                df = pd.read_csv(f, sep=";")
-                                
-                                # Basic Cleaning
-                                if 'SPL Name' in df.columns: 
-                                    df = df.dropna(subset=['SPL Name'])
-                                
-                                if 'Coverage Type' not in df.columns:
-                                    df['Coverage Type'] = cov_type
-                                
-                                # Add Shard ID for grouping repetitions
-                                df['ShardID'] = os.path.basename(f)
-                                
-                                all_dataframes.append(df)
-                            except Exception as e: 
-                                pass
+        case_path = os.path.join(CASES_BASE_DIR, case_folder, SHARD_SUBFOLDER)
+        file_pattern = os.path.join(case_path, "testsuite.shard*.csv")
+        all_files = glob.glob(file_pattern)
 
-    if not all_dataframes:
-        print("⚠️  No Time Measurement data found. Summary NOT created.")
+        if not all_files:
+            print(f"⚠️  WARNING: No files found for case: {case_folder}")
+            continue
+
+        print(f"   📂 Processing {case_folder} -> Expecting SPL: '{expected_spl_code}'")
+
+        df_list = []
+        
+        for file in all_files:
+            try:
+                # 1. Check if file is empty
+                if os.stat(file).st_size == 0:
+                    print(f"      ⚠️  SKIPPING EMPTY FILE: {os.path.basename(file)}")
+                    skipped_files.append(file)
+                    continue
+
+                # =========================================================
+                # READING CSV (Semi-colon sep, Comma decimal)
+                # =========================================================
+                df = pd.read_csv(file, sep=';', decimal=',') 
+                
+                # TRIM WHITESPACE from headers
+                df.columns = df.columns.str.strip()
+
+                # 2. Header Check
+                if 'SPL' not in df.columns:
+                    print(f"      ⚠️  SKIPPING MALFORMED FILE (No SPL Header): {os.path.basename(file)}")
+                    skipped_files.append(file)
+                    continue 
+                
+                # 3. Content Check
+                if df.empty:
+                     print(f"      ⚠️  SKIPPING NO DATA: {os.path.basename(file)}")
+                     skipped_files.append(file)
+                     continue
+
+                # 4. SPL Validation
+                actual_spl_in_file = df['SPL'].iloc[0]
+                if actual_spl_in_file != expected_spl_code:
+                    print(f"      ⚠️  SKIPPING WRONG SPL CODE: {os.path.basename(file)}")
+                    skipped_files.append(file)
+                    continue
+                
+                # Capture Column Order
+                if not final_column_order:
+                    raw_cols = list(df.columns)
+                    priority = ["SPL", "Number of Products"]
+                    others = [c for c in raw_cols if c not in priority]
+                    final_column_order = priority + others
+
+                df_list.append(df)
+                
+            except Exception as e:
+                print(f"      ❌ Error reading file {os.path.basename(file)}: {e}")
+                skipped_files.append(file)
+                continue
+
+        if not df_list:
+            print(f"      ❌ No valid files collected for {case_folder}. Skipping.")
+            continue
+
+        # --- MERGE LOGIC ---
+        combined_df = pd.concat(df_list, ignore_index=True)
+        result_row = {}
+
+        # A. Static Info
+        for col in STATIC_COLS:
+            if col in combined_df.columns and not combined_df[col].empty:
+                result_row[col] = combined_df[col].iloc[0]
+            else:
+                result_row[col] = 0
+        
+        result_row["SPL"] = expected_spl_code
+
+        # B. Sum of Products
+        total_products = combined_df["Number of Products"].sum()
+        result_row["Number of Products"] = total_products
+
+        # C. Process Other Columns
+        for col in combined_df.columns:
+            if col in STATIC_COLS or col == "Number of Products":
+                continue 
+
+            # Sum logic
+            if any(col.startswith(prefix) for prefix in TOTAL_PREFIXES):
+                result_row[col] = combined_df[col].sum()
+            
+            # Weighted Average logic
+            elif any(col.startswith(prefix) for prefix in AVG_PREFIXES):
+                weighted_sum = (combined_df[col] * combined_df["Number of Products"]).sum()
+                if total_products > 0:
+                    result_row[col] = weighted_sum / total_products
+                else:
+                    result_row[col] = 0
+
+        all_summaries.append(result_row)
+
+    # --- SAVE RESULT ---
+    final_df = pd.DataFrame(all_summaries)
+    
+    if final_df.empty:
+        print("\n❌ No data processed.")
         return
 
-    full_df = pd.concat(all_dataframes, ignore_index=True)
+    # Enforce order
+    valid_order = [c for c in final_column_order if c in final_df.columns]
+    final_df = final_df[valid_order]
 
-    # --- NUMERIC CONVERSIONS ---
-    # List of time columns to process
-    time_cols = [
-        'Total Time(ms)', 
-        'SAT Time(ms)', 
-        'ProductESGGeneration Time(ms)', 
-        'Test Generation Time(ms)'
-    ]
-    
-    # Convert all time columns and Processed Products to float
-    cols_to_convert = time_cols + ['Processed Products']
-    
-    for col in cols_to_convert:
-        if col in full_df.columns:
-             if full_df[col].dtype == 'object':
-                 full_df[col] = full_df[col].astype(str).str.replace(',', '.').astype(float)
+    final_df = final_df.round(2)
 
-    # --- STEP 1: AGGREGATE PER SHARD (Mean of 10 runs) ---
-    # We calculate the average time for each shard (across its repetitions)
-    shard_group_cols = ['SPL Name', 'Coverage Type', 'ShardID']
+    os.makedirs(os.path.dirname(OUTPUT_FILE), exist_ok=True)
     
-    # Dictionary to define aggregation: Mean for times, Max for count
-    shard_agg_dict = {col: 'mean' for col in time_cols if col in full_df.columns}
-    shard_agg_dict['Processed Products'] = 'max' 
+    # Save as semi-colon separated
+    final_df.to_csv(OUTPUT_FILE, index=False, sep=';', decimal=',') 
     
-    shard_df = full_df.groupby(shard_group_cols).agg(shard_agg_dict).reset_index()
-
-    # --- STEP 2: AGGREGATE ACROSS SHARDS (Weighted Average) ---
-    # Prepare weighted sums for all time columns
-    for col in time_cols:
-        if col in shard_df.columns:
-            # Calculate Total Duration for this shard = AvgTime * ProductCount
-            shard_df[f'Weighted_{col}'] = shard_df[col] * shard_df['Processed Products']
-
-    # Group by SPL and Coverage
-    final_group_cols = ['SPL Name', 'Coverage Type']
+    print(f"\n✅ SUCCESS! Summary saved to: {OUTPUT_FILE}")
     
-    # Define final aggregation: Sum of Weighted Times and Sum of Products
-    final_agg_dict = {f'Weighted_{col}': 'sum' for col in time_cols if col in shard_df.columns}
-    final_agg_dict['Processed Products'] = 'sum'
-    
-    summary_df = shard_df.groupby(final_group_cols).agg(final_agg_dict).reset_index()
-
-    # Calculate final weighted averages
-    def calc_weighted_avg(row, col_name):
-        if row['Processed Products'] > 0:
-            return row[f'Weighted_{col_name}'] / row['Processed Products']
-        return 0
-
-    for col in time_cols:
-        if col in full_df.columns:
-            summary_df[col] = summary_df.apply(lambda row: calc_weighted_avg(row, col), axis=1)
-
-    # --- RENAME AND FORMAT ---
-    column_mapping = {
-        'SPL Name': 'SPL',
-        'Coverage Type': 'coverage type',
-        'Processed Products': 'number of products',
-        'Total Time(ms)': 'average total time',
-        'SAT Time(ms)': 'average sat time',
-        'ProductESGGeneration Time(ms)': 'average product gen time',
-        'Test Generation Time(ms)': 'average test gen time'
-    }
-    summary_df = summary_df.rename(columns=column_mapping)
-    
-    # Select columns in order
-    target_columns = ['SPL', 'coverage type', 'number of products', 
-                      'average total time', 'average sat time', 
-                      'average product gen time', 'average test gen time']
-    
-    # Filter to keep only columns that actually exist (in case some are missing in CSV)
-    target_columns = [c for c in target_columns if c in summary_df.columns]
-    summary_df = summary_df[target_columns]
-
-    # Re-format numbers to European style (comma)
-    for col in summary_df.columns:
-        if col != 'SPL' and col != 'coverage type':
-             # Format count as int-string if integer, else float-string
-             if col == 'number of products':
-                 summary_df[col] = summary_df[col].apply(lambda x: str(int(x)) if x.is_integer() else f"{x:.2f}".replace('.', ','))
-             else:
-                 summary_df[col] = summary_df[col].apply(lambda x: f"{x:.2f}".replace('.', ','))
-
-    summary_df = summary_df.sort_values(by=['SPL', 'coverage type'])
-    
-    summary_df.to_csv(output_file, sep=";", index=False)
-    print(f"✅ Time Measurement Summary Updated (With Breakdown): {output_file}")
+    if skipped_files:
+        print("\n⚠️  WARNING: The following files were skipped due to errors:")
+        for f in skipped_files:
+            print(f"   - {f}")
 
 if __name__ == "__main__":
-    generate_time_measurement_summary()
+    process_cases()
