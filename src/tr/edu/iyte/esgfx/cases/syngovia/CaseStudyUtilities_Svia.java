@@ -6,7 +6,7 @@ public class CaseStudyUtilities_Svia extends CaseStudyUtilities {
 
 	public static void initializeFilePaths() {
 
-		caseStudyFolderPath = "files/Cases/syngovia/";
+		caseStudyFolder = "files/Cases/syngovia/";
 		SPLName = "Svia";
 		
 		mutantEventName = "Event";

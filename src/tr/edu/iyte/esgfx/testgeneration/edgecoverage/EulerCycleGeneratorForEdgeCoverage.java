@@ -31,6 +31,7 @@ public class EulerCycleGeneratorForEdgeCoverage {
     }
 
     public void generateEulerCycle(ESG stronglyConnectedBalancedESGFx) {
+
         // 1. Create a clone because Euler Cycle algorithm destroys edges
         ESG localESGFx = new ESGFx(stronglyConnectedBalancedESGFx);
         

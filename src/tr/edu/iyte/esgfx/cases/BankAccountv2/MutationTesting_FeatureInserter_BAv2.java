@@ -10,7 +10,7 @@ public class MutationTesting_FeatureInserter_BAv2 extends CaseStudyUtilities_BAv
 		CaseStudyUtilities_BAv2.coverageLength = 2;
 		CaseStudyUtilities_BAv2.initializeFilePaths();
 
-		CaseStudyUtilities_BAv2.featureESGSet = FeatureESGSetGenerator.createFeatureESGSet(CaseStudyUtilities_BAv2.featureESGSetFolderPath_FeatureInsertion);
+		CaseStudyUtilities_BAv2.featureESGSet = FeatureESGSetGenerator.createFeatureESGSet(CaseStudyUtilities_BAv2.featureESGSetFolder_FeatureInsertion);
 
 		MutantGeneratorFeaturenserter mutantGeneratorFeaturenserter = new MutantGeneratorFeaturenserter();
 		mutantGeneratorFeaturenserter.generateMutants();

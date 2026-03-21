@@ -9,7 +9,7 @@ public class MutationTesting_FeatureInserter_HS extends CaseStudyUtilities_HS {
 		CaseStudyUtilities_HS.initializeFilePaths();
 
 		CaseStudyUtilities_HS.featureESGSet = FeatureESGSetGenerator
-				.createFeatureESGSet(CaseStudyUtilities_HS.featureESGSetFolderPath_FeatureInsertion);
+				.createFeatureESGSet(CaseStudyUtilities_HS.featureESGSetFolder_FeatureInsertion);
 
 		MutantGeneratorFeaturenserter mutantGeneratorFeaturenserter = new MutantGeneratorFeaturenserter();
 		mutantGeneratorFeaturenserter.generateMutants();

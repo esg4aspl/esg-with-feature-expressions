@@ -6,7 +6,7 @@ public class CaseStudyUtilities_El extends CaseStudyUtilities {
 	
 	public static void initializeFilePaths() {
 		
-		caseStudyFolderPath = "files/Cases/Elevator/";
+		caseStudyFolder = "files/Cases/Elevator/";
 		SPLName = "El";
 		
 		mutantEventName = "e";

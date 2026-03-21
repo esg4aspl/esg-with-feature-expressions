@@ -25,10 +25,10 @@ public class StronglyConnectedBalancedESGFxGeneration {
 		
 		for(Vertex vertex : ESGFx.getVertexList()) {
 			if(vertex.getDegree() != 0) {
-				System.out.println("Strongly Connected&Balanced Product ESGFX  " + vertex.getID() + " " + vertex + " " + vertex.getDegree());
+//				System.out.println("Strongly Connected&Balanced Product ESGFX  " + vertex.getID() + " " + vertex + " " + vertex.getDegree());
 				String eventName = vertex.toString();
 				Set<Edge> edgeSet = ESGFx.getEdgesByEventName(eventName);
-				edgeSet.forEach(e -> System.out.println("   Edge: " + e.toString()));
+//				edgeSet.forEach(e -> System.out.println("   Edge: " + e.toString()));
 			}
 		}
 //		balancedAndStronglyConnectedESG.edgeSet().forEach(e -> System.out.println("ESGFX " + e.getSource() + "->" + e.getTarget()));

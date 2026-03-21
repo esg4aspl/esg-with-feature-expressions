@@ -10,7 +10,7 @@ public class MutationTesting_FeatureOmitter_Svia extends CaseStudyUtilities_Svia
 		CaseStudyUtilities_Svia.initializeFilePaths();
 
 		CaseStudyUtilities_Svia.featureESGSet = FeatureESGSetGenerator
-				.createFeatureESGSet(CaseStudyUtilities_Svia.featureESGSetFolderPath_FeatureOmission);
+				.createFeatureESGSet(CaseStudyUtilities_Svia.featureESGSetFolder_FeatureOmission);
 
 		MutantGeneratorFeatureOmitter mutantGeneratorFeatureOmitter = new MutantGeneratorFeatureOmitter();
 		mutantGeneratorFeatureOmitter.generateMutants();

@@ -54,6 +54,150 @@ public class FaultDetectionResultRecorder {
 
 	// ---------- Existing public writers (kept) ----------
 
+	
+	public static void writeRQ3PerProductLog(String filePath, String splName, String productName, String mutationOperator, 
+            String testingApproach, int totalMutants, int detectedMutants, double mutationScore, 
+            int totalEventsInSuite, double medianEventsToDetect, double medianPercentageOfSuiteToDetect) {
+
+        Path path = Path.of(filePath);
+        ensureParent(path);
+
+        boolean exists = Files.exists(path);
+        boolean empty = !exists || getFileSize(path) == 0;
+
+        try (PrintWriter pw = new PrintWriter(new FileWriter(path.toFile(), true))) {
+            if (empty) {
+                pw.println("SPL;ProductID;Operator;TestingApproach;TotalMutants;DetectedMutants;MutationScore(%);TotalEventsInSuite;EventsToDetect;PercentageOfSuiteToDetect(%)");
+            }
+            pw.println(splName + ";" + productName + ";" + mutationOperator + ";" + testingApproach + ";" 
+                    + totalMutants + ";" + detectedMutants + ";" + formatDouble_2(mutationScore) + ";" 
+                    + totalEventsInSuite + ";" + formatDouble_2(medianEventsToDetect) + ";" + formatDouble_2(medianPercentageOfSuiteToDetect));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+	// ---------- NEW: Multi-seed Random Walk per-product writer ----------
+
+	/**
+	 * Records fault detection results for a specific Random Walk seed.
+	 * Same metrics as writeRQ3PerProductLog but with an additional Seed column
+	 * to distinguish results across different random seeds.
+	 */
+	public static void writeRQ3MultiSeedPerProductLog(String filePath, String splName, String productName,
+			String mutationOperator, long seed, int totalMutants, int detectedMutants, double mutationScore,
+			int totalEventsInSuite, double medianEventsToDetect, double medianPercentageOfSuiteToDetect) {
+
+		Path path = Path.of(filePath);
+		ensureParent(path);
+
+		boolean exists = Files.exists(path);
+		boolean empty = !exists || getFileSize(path) == 0;
+
+		try (PrintWriter pw = new PrintWriter(new FileWriter(path.toFile(), true))) {
+			if (empty) {
+				pw.println("SPL;ProductID;Operator;Seed;TotalMutants;DetectedMutants;MutationScore(%);"
+						+ "TotalEventsInSuite;MedianEventsToDetect;MedianPercentageOfSuiteToDetect(%)");
+			}
+			pw.println(splName + ";" + productName + ";" + mutationOperator + ";" + seed + ";"
+					+ totalMutants + ";" + detectedMutants + ";" + formatDouble_2(mutationScore) + ";"
+					+ totalEventsInSuite + ";" + formatDouble_2(medianEventsToDetect) + ";"
+					+ formatDouble_2(medianPercentageOfSuiteToDetect));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// ---------- NEW: Multi-seed Random Walk SPL summary writer ----------
+
+	/**
+	 * Records SPL-level summary for a specific Random Walk seed.
+	 */
+	public static void writeRQ3MultiSeedSPLSummaryLog(String filePath, String splName, String mutationOperator,
+			long seed, long totalMutants, long detectedMutants, double mutationScore,
+			double medianEventsToDetect, double medianPercentageOfSuiteToDetect) {
+
+		Path path = Path.of(filePath);
+		ensureParent(path);
+
+		boolean exists = Files.exists(path);
+		boolean empty = !exists || getFileSize(path) == 0;
+
+		try (PrintWriter pw = new PrintWriter(new FileWriter(path.toFile(), true))) {
+			if (empty) {
+				pw.println("SPL;Operator;Seed;TotalMutantsSPL;DetectedMutantsSPL;OverallMutationScore(%);"
+						+ "GlobalMedianEventsToDetect;GlobalMedianPercentageOfSuiteToDetect(%)");
+			}
+			pw.println(splName + ";" + mutationOperator + ";" + seed + ";"
+					+ totalMutants + ";" + detectedMutants + ";" + formatDouble_2(mutationScore) + ";"
+					+ formatDouble_2(medianEventsToDetect) + ";" + formatDouble_2(medianPercentageOfSuiteToDetect));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// ---------- NEW: Damping factor sensitivity analysis writer ----------
+
+	/**
+	 * Records fault detection results for a specific damping factor.
+	 * Used in sensitivity analysis to show stability across damping values.
+	 */
+	public static void writeRQ3DampingSensitivityLog(String filePath, String splName, String productName,
+			String mutationOperator, double dampingFactor, int totalMutants, int detectedMutants, double mutationScore,
+			int totalEventsInSuite, double medianEventsToDetect, double medianPercentageOfSuiteToDetect) {
+
+		Path path = Path.of(filePath);
+		ensureParent(path);
+
+		boolean exists = Files.exists(path);
+		boolean empty = !exists || getFileSize(path) == 0;
+
+		try (PrintWriter pw = new PrintWriter(new FileWriter(path.toFile(), true))) {
+			if (empty) {
+				pw.println("SPL;ProductID;Operator;DampingFactor;TotalMutants;DetectedMutants;MutationScore(%);"
+						+ "TotalEventsInSuite;MedianEventsToDetect;MedianPercentageOfSuiteToDetect(%)");
+			}
+			pw.println(splName + ";" + productName + ";" + mutationOperator + ";" + dampingFactor + ";"
+					+ totalMutants + ";" + detectedMutants + ";" + formatDouble_2(mutationScore) + ";"
+					+ totalEventsInSuite + ";" + formatDouble_2(medianEventsToDetect) + ";"
+					+ formatDouble_2(medianPercentageOfSuiteToDetect));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// ---------- Existing writers (unchanged) ----------
+
+	public static void writeRQ3SPLSummaryLog(String filePath, String splName, String mutationOperator, 
+            String testingApproach, long totalMutants, long detectedMutants, double mutationScore, 
+            double medianEventsToDetect, double medianPercentageOfSuiteToDetect) {
+
+        Path path = Path.of(filePath);
+        ensureParent(path);
+
+        boolean exists = Files.exists(path);
+        boolean empty = !exists || getFileSize(path) == 0;
+
+        try (PrintWriter pw = new PrintWriter(new FileWriter(path.toFile(), true))) {
+            if (empty) {
+                pw.println("SPL;Operator;TestingApproach;TotalMutantsSPL;DetectedMutantsSPL;OverallMutationScore(%);GlobalMedianEventsToDetect;GlobalMedianPercentageOfSuiteToDetect(%)");
+            }
+            pw.println(splName + ";" + mutationOperator + ";" + testingApproach + ";" 
+                    + totalMutants + ";" + detectedMutants + ";" + formatDouble_2(mutationScore) + ";" 
+                    + formatDouble_2(medianEventsToDetect) + ";" + formatDouble_2(medianPercentageOfSuiteToDetect));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private static long getFileSize(Path path) {
+    	try {
+			return Files.size(path);
+		} catch (IOException e) {
+			return 0;
+		}
+    }
+
 	public static void writeDetailedFaultDetectionResultL234(String fileNameBase, int productId, String features,
 			String mutationOperator, String mutationElement, int mutantId, boolean isMutantValid, String isDetectedL2,
 			String isDetectedL3, String isDetectedL4) {
@@ -152,7 +296,6 @@ public class FaultDetectionResultRecorder {
 	}
 
 	private static String formatDouble_2(double d) {
-		// Simple formatting without locale commas
 		return String.format(Locale.forLanguageTag("tr-TR"), "%.2f", d);
 	}
 
@@ -179,10 +322,6 @@ public class FaultDetectionResultRecorder {
 		writeCsvRow(path, splSummaryColumns, row);
 	}
 
-	/**
-	 * Recompute and upsert the ALL_OP line for the given SPL by summing all
-	 * operator lines.
-	 */
 	public static void upsertAllOperatorsSummary(String fileNameWithCsvExt, String splName) {
 		Path path = Path.of(fileNameWithCsvExt);
 		ensureParent(path);
@@ -194,21 +333,18 @@ public class FaultDetectionResultRecorder {
 
 				Map<String, Integer> idx = headerIndex(lines, splSummaryColumns);
 				if (idx == null) {
-					// Write header if empty and retry
 					writeCsvRow(path, splSummaryColumns, new String[] { splName, "ALL_OP", "0", "0", "0", "0", "0,00%",
 							"0", "0", "0,00%", "0", "0", "0,00%", "0", "0", "0,00%" });
 					lines = Files.readAllLines(path, StandardCharsets.UTF_8);
 					idx = headerIndex(lines, splSummaryColumns);
 				}
 
-				// Aggregate across operators for this SPL (exclude ALL_OP)
 				int aggValid = 0, aggInvalid = 0;
 				int detValidL2 = 0, detInvalidL2 = 0;
 				int detValidL3 = 0, detInvalidL3 = 0;
 				int detValidL4 = 0, detInvalidL4 = 0;
 				int totalMutants = 0, totalDetectedAny = 0;
 
-				int headerRow = 0;
 				for (int i = 1; i < lines.size(); i++) {
 					String ln = lines.get(i).trim();
 					if (ln.isEmpty())
@@ -233,7 +369,6 @@ public class FaultDetectionResultRecorder {
 					totalDetectedAny += parseIntSafe(t[idx.get("Total Number of Detected Faults")]);
 				}
 
-				// Build ALL_OP row
 				String[] allOpRow = { splName, "ALL_OP", String.valueOf(aggValid), String.valueOf(aggInvalid),
 
 						String.valueOf(detValidL2), String.valueOf(detInvalidL2),
@@ -245,7 +380,6 @@ public class FaultDetectionResultRecorder {
 						String.valueOf(totalMutants), String.valueOf(totalDetectedAny),
 						formatPercentComma(totalDetectedAny, totalMutants) };
 
-				// Upsert: if ALL_OP exists for this SPL, replace. Else append.
 				int allOpIndex = -1;
 				for (int i = 1; i < lines.size(); i++) {
 					String[] t = splitSemicolon(lines.get(i).trim());
@@ -271,8 +405,6 @@ public class FaultDetectionResultRecorder {
 		}
 	}
 
-	// Allow MutantGenerator to extract SPL name from results filename, e.g.
-	// "eM_faultDetectionResultsForSPL.csv" -> "eM"
 	public static String deriveSPLNameFromResultsFile(String fileName) {
 		if (fileName == null || fileName.isEmpty())
 			return "UNKNOWN_SPL";
@@ -340,8 +472,7 @@ public class FaultDetectionResultRecorder {
 						String line = lines.get(i).trim();
 						if (line.isEmpty())
 							continue;
-						String[] t = splitSemicolon(line); // legacy might be semicolon already
-						// Old: 9 columns
+						String[] t = splitSemicolon(line);
 						String coverageType = unquote(safeGet(t, 0));
 						String mutationOperator = unquote(safeGet(t, 1));
 						String productId = unquote(safeGet(t, 2));
@@ -385,7 +516,7 @@ public class FaultDetectionResultRecorder {
 		if (s == null)
 			return "";
 		if (s.matches("[0-9.,]+")) {
-			return s; // keep numeric-like tokens as-is to preserve comma decimals
+			return s;
 		}
 		String t = s.replace("\r", " ").replace("\n", " ").replace("\"", "\"\"");
 		return "\"" + t + "\"";
@@ -439,7 +570,6 @@ public class FaultDetectionResultRecorder {
 	}
 
 	private static String[] splitSemicolon(String line) {
-		// Very simple split for our generated CSV
 		return line.split(";", -1);
 	}
 
@@ -470,7 +600,6 @@ public class FaultDetectionResultRecorder {
 		for (int i = 0; i < cols.length; i++) {
 			idx.put(unquote(cols[i]), i);
 		}
-		// Best effort; do not strictly validate equality
 		return idx;
 	}
 }

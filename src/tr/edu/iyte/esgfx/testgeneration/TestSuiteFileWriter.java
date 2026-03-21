@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.io.File;
-import java.util.LinkedHashSet;
+
 import java.util.Locale;
 import java.util.Set;
 
@@ -20,16 +20,15 @@ import java.nio.ByteBuffer;
 import tr.edu.iyte.esg.eventsequence.EventSequence;
 import tr.edu.iyte.esg.model.Vertex;
 
-import tr.edu.iyte.esgfx.model.sequenceesgfx.EventSequenceUtilities;
 
 public class TestSuiteFileWriter {
 
-	public static void writeEventSequenceSetAndEventCoverageAnalysisToFile(String filePath,
-			Set<EventSequence> eventSequenceSet, double eventCoverage) throws IOException {
+	public static void writeEventSequenceSetAndCoverageAnalysisToFile(String filePath,
+			Set<EventSequence> eventSequenceSet, String coverageType, double coverage) throws IOException {
 		Writer fileWriter = new FileWriter(filePath);
 		PrintWriter printWriter = new PrintWriter(fileWriter);
 		for (EventSequence es : eventSequenceSet) {
-			// System.out.println("ES " + es.toString());
+//			System.out.println("ES " + es.toString());
 			String eventSequence = "";
 
 			for (int i = 0; i < es.length(); i++) {
@@ -47,7 +46,16 @@ public class TestSuiteFileWriter {
 
 			printWriter.println(es.length() + " : " + eventSequence);
 		}
-		printWriter.print("Event coverage is " + Double.toString(eventCoverage) + "%");
+		printWriter.print(coverageType + " is " + Double.toString(coverage) + "%");
+		printWriter.close();
+	}
+	
+	public static void writeCoverageAnalysisToFile(String filePath,
+			String coverageType, double coverage) throws IOException {
+		Writer fileWriter = new FileWriter(filePath,true);
+		PrintWriter printWriter = new PrintWriter(fileWriter);
+
+		printWriter.print(coverageType + " is " + Double.toString(coverage) + "%");
 		printWriter.close();
 	}
 

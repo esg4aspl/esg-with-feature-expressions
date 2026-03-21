@@ -10,7 +10,7 @@ public class MutationTesting_FeatureOmitter_HS extends CaseStudyUtilities_HS {
 		CaseStudyUtilities_HS.initializeFilePaths();
 
 		CaseStudyUtilities_HS.featureESGSet = FeatureESGSetGenerator
-				.createFeatureESGSet(CaseStudyUtilities_HS.featureESGSetFolderPath_FeatureOmission);
+				.createFeatureESGSet(CaseStudyUtilities_HS.featureESGSetFolder_FeatureOmission);
 
 		MutantGeneratorFeatureOmitter mutantGeneratorFeatureOmitter = new MutantGeneratorFeatureOmitter();
 		mutantGeneratorFeatureOmitter.generateMutants();

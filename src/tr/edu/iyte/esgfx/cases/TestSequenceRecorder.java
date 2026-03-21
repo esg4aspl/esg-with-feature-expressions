@@ -29,8 +29,8 @@ public class TestSequenceRecorder extends CaseStudyUtilities {
 
 	public void recordTestSequences() throws Exception {
 
-		featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFilePath,
-				ESGFxFilePath);
+		featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFile,
+				ESGFxFile);
 		List<FeatureExpression> featureExpressionList = getFeatureExpressionList(featureExpressionMapFromFeatureModel);
 
 		SATSolverGenerationFromFeatureModel satSolverGenerationFromFeatureModel = new SATSolverGenerationFromFeatureModel();
@@ -74,7 +74,7 @@ public class TestSequenceRecorder extends CaseStudyUtilities {
 
 		EulerCycleToTestSequenceGenerator eulerCycleToTestSequenceGenerator = new EulerCycleToTestSequenceGenerator();
 		EulerCycleGeneratorForEdgeCoverage eulerCycleGeneratorForEdgeCoverage = new EulerCycleGeneratorForEdgeCoverage();
-		EulerCycleGeneratorForEventCoverage eulerGen = new EulerCycleGeneratorForEventCoverage(
+		EulerCycleGeneratorForEventCoverage eulerCycleGeneratorForEventCoverage = new EulerCycleGeneratorForEventCoverage(
 				featureExpressionMapFromFeatureModel);
 
 		EventCoverageAnalyser eventCoverageAnalyser = new EventCoverageAnalyser();
@@ -133,9 +133,14 @@ public class TestSequenceRecorder extends CaseStudyUtilities {
 				setCoverageType();
 
 				if (coverageLength == 0) {
+			        // Random Walk Configuration
+			        double dampingFactor = 0.85;
+			        double targetCoverage = 100.0;
 					int safetyLimit = (int) (5 * Math.pow((productESGFx.getVertexList().size()), 3));
-					RandomWalkTestGenerator rw = new RandomWalkTestGenerator((ESGFx) productESGFx, 0.85);
-					Set<EventSequence> CESsOfESG_L0 = rw.generateWalkUntilEdgeCoverage(100, safetyLimit);
+					
+					long seed = 42L + productID; // Fixed reproducible seed
+					RandomWalkTestGenerator rw = new RandomWalkTestGenerator((ESGFx) productESGFx, dampingFactor,seed);
+					Set<EventSequence> CESsOfESG_L0 = rw.generateWalkUntilEdgeCoverage(targetCoverage, safetyLimit);
 
 					double coverage_L0 = edgeCoverageAnalyser.analyseEdgeCoverage(productESGFx, CESsOfESG_L0,
 							featureExpressionMapFromFeatureModel);
@@ -154,9 +159,9 @@ public class TestSequenceRecorder extends CaseStudyUtilities {
 					ESG stronglyConnectedL1 = StronglyConnectedBalancedESGFxGeneration
 							.getStronglyConnectedBalancedESGFxGeneration(productESGFx);
 
-					eulerGen.generateEulerCycle(stronglyConnectedL1);
+					eulerCycleGeneratorForEventCoverage.generateEulerCycle(stronglyConnectedL1);
 
-					List<Vertex> eulerCycle = eulerGen.getEulerCycle();
+					List<Vertex> eulerCycle = eulerCycleGeneratorForEventCoverage.getEulerCycle();
 					Set<EventSequence> CESsOfESG_L1 = eulerCycleToTestSequenceGenerator.CESgenerator(eulerCycle);
 
 					double coverage_L1 = eventCoverageAnalyser.analyseEventCoverage(stronglyConnectedL1, CESsOfESG_L1,
@@ -170,7 +175,7 @@ public class TestSequenceRecorder extends CaseStudyUtilities {
 
 					// MEMORY CLEANUP L1
 					eulerCycleToTestSequenceGenerator.reset();
-					eulerGen.reset();
+					eulerCycleGeneratorForEventCoverage.reset();
 					stronglyConnectedL1 = null;
 					CESsOfESG_L1 = null;
 
@@ -244,8 +249,8 @@ public class TestSequenceRecorder extends CaseStudyUtilities {
 			System.out.println("TEST SEQUENCE RECORDER " + SPLName + " Shard " + CURRENT_SHARD + " FINISHED");
 
 			System.out.println("Total Products Processed by this Shard: " + handledProducts); // <--- Add this
-			String shardResultFilePath = shards_testsequencegeneration
-					+ String.format("testsuite.shard%02d.csv", CURRENT_SHARD);
+			String shardResultFilePath = testsequencesFolder 
+					+ String.format("esgfx_testsuite.shard%02d.csv", CURRENT_SHARD);
 
 			TestSuiteFileWriter.writeSPLModelTestSuiteSummary(shardResultFilePath, SPLName, handledProducts,
 					ESGFx_numberOfVertices, ESGFx_numberOfEdges, totalNumberOfVertices, totalNumberOfEdges,
@@ -256,7 +261,7 @@ public class TestSequenceRecorder extends CaseStudyUtilities {
 
 		} else {
 			System.out.println("TEST SEQUENCE RECORDER " + SPLName + " FINISHED " + productID + " products");
-			TestSuiteFileWriter.writeSPLModelTestSuiteSummary(SPLSummary_TestSuite, SPLName, productID,
+			TestSuiteFileWriter.writeSPLModelTestSuiteSummary(TestSuiteSummaryESGFx, SPLName, productID,
 					ESGFx_numberOfVertices, ESGFx_numberOfEdges, totalNumberOfVertices, totalNumberOfEdges,
 					totalNumberOfSequences_L0, totalNumberOfEvents_L0, avgCoverageL0, totalNumberOfSequences_L1,
 					totalNumberOfEvents_L1, avgCoverageL1, totalNumberOfSequences_L2, totalNumberOfEvents_L2,

@@ -25,8 +25,8 @@ public class MutantGeneratorEventInserter extends MutantGenerator {
 
     public void generateMutants() throws Exception {
 
-        featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFilePath,
-                ESGFxFilePath);
+        featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFile,
+                ESGFxFile);
 
         List<FeatureExpression> featureExpressionList = getFeatureExpressionList(featureExpressionMapFromFeatureModel);
 
@@ -276,8 +276,8 @@ public class MutantGeneratorEventInserter extends MutantGenerator {
 //        	System.out.println("Total Products Processed by this Shard: " + handledProducts); // <--- Add this
 //        	System.out.println("Total Mutants Generated: " + numberOfMutantsInSPL);
         	
-            String shardResultFilePath = shards_mutantgenerator_eventinserter
-                    + String.format("faultdetection.shard%02d.csv", CURRENT_SHARD);
+            String shardResultFilePath = faultDetectionFolder 
+                    + String.format("faultdetection_eventinserter.shard%02d.csv", CURRENT_SHARD);
             
             FaultDetectionResultRecorder.writeFaultDetectionResultsForSPL(shardResultFilePath, SPLName,
                     "Event Inserter", numberOfMutantsInSPL, 
@@ -287,7 +287,7 @@ public class MutantGeneratorEventInserter extends MutantGenerator {
                     numberOfDetectedMutantsInSPL_L3, percentageInSPLL3, killedPerSecondL3,
                     numberOfDetectedMutantsInSPL_L4, percentageInSPLL4, killedPerSecondL4);
         } else {
-            FaultDetectionResultRecorder.writeFaultDetectionResultsForSPL(SPLSummary_FaultDetection, SPLName,
+            FaultDetectionResultRecorder.writeFaultDetectionResultsForSPL(FaultDetectionSummaryESGFx, SPLName,
                     "Event Inserter", numberOfMutantsInSPL, 
                     numberOfDetectedMutantsInSPL_L0, percentageInSPLL0, killedPerSecondL0,
                     numberOfDetectedMutantsInSPL_L1, percentageInSPLL1, killedPerSecondL1,

@@ -13,7 +13,7 @@ public class FeatureModelParserApp_Svia extends CaseStudyUtilities_Svia {
 		MXEFileToESGFxConverter MXEFileToESGFxConverter = new MXEFileToESGFxConverter();
 		FeatureModel featureModel = new FeatureModel();
 		try {
-			featureModel = MXEFileToESGFxConverter.parseFeatureModel(CaseStudyUtilities_Svia.featureModelFilePath);
+			featureModel = MXEFileToESGFxConverter.parseFeatureModel(CaseStudyUtilities_Svia.featureModelFile);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -10,7 +10,7 @@ public class MutationTesting_FeatureInserter_SVM extends CaseStudyUtilities_SVM 
 		
 		CaseStudyUtilities_SVM.initializeFilePaths();
 		
-		CaseStudyUtilities_SVM.featureESGSet = FeatureESGSetGenerator.createFeatureESGSet(CaseStudyUtilities_SVM.featureESGSetFolderPath_FeatureInsertion);
+		CaseStudyUtilities_SVM.featureESGSet = FeatureESGSetGenerator.createFeatureESGSet(CaseStudyUtilities_SVM.featureESGSetFolder_FeatureInsertion);
 
 		MutantGeneratorFeaturenserter mutantGeneratorFeaturenserter = new MutantGeneratorFeaturenserter();
 		mutantGeneratorFeaturenserter.generateMutants();

@@ -13,12 +13,12 @@ public class MXEFileToESGFxApp_Svia extends CaseStudyUtilities_Svia {
 		CaseStudyUtilities_Svia.initializeFilePaths();
 
 		MXEFileToESGFxConverter MXEFileToESGFxConverter = new MXEFileToESGFxConverter();
-		FeatureModel  fm = MXEFileToESGFxConverter.parseFeatureModel(CaseStudyUtilities_Svia.featureModelFilePath);
+		FeatureModel  fm = MXEFileToESGFxConverter.parseFeatureModel(CaseStudyUtilities_Svia.featureModelFile);
 		System.out.println(fm);
 		
 		ESG ESG = null;
 		try {
-			ESG = MXEFileToESGFxConverter.parseMXEFileForESGFxCreation(CaseStudyUtilities_Svia.ESGFxFilePath);
+			ESG = MXEFileToESGFxConverter.parseMXEFileForESGFxCreation(CaseStudyUtilities_Svia.ESGFxFile);
 
 		} catch (Exception e) {
 			e.printStackTrace();

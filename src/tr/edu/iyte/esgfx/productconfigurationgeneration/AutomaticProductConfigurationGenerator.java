@@ -21,8 +21,8 @@ public class AutomaticProductConfigurationGenerator extends CaseStudyUtilities {
 			Map<String, FeatureExpression> featureExpressionMapFromFeatureModel)
 			throws Exception {
 
-		featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFilePath,
-				ESGFxFilePath);
+		featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFile,
+				ESGFxFile);
 
 		List<FeatureExpression> featureExpressionList = getFeatureExpressionList(featureExpressionMapFromFeatureModel);
 //		printFeatureExpressionList(featureExpressionList);
@@ -36,7 +36,7 @@ public class AutomaticProductConfigurationGenerator extends CaseStudyUtilities {
 
 		
 		
-		String shardSpecificFilePath = shards_productconfigurations;
+		String shardSpecificFilePath = productConfigurationFolder;
 		if (N_SHARDS > 1) {
 			shardSpecificFilePath +=  String.format("productconfiguration%02d", CURRENT_SHARD) + ".txt";
 		}
@@ -86,7 +86,7 @@ public class AutomaticProductConfigurationGenerator extends CaseStudyUtilities {
 			if(N_SHARDS > 1) {
 				ProductConfigurationFileWriter.printProductConfiragutionToFile(shardSpecificFilePath, productConfiguration.toString());
 			}else {
-				ProductConfigurationFileWriter.printProductConfiragutionToFile(productConfigurationFilePath, productConfiguration.toString());
+				ProductConfigurationFileWriter.printProductConfiragutionToFile(productConfigurationFile, productConfiguration.toString());
 			}
 		}
 	}

@@ -1,6 +1,6 @@
 package tr.edu.iyte.esgfx.cases.StudentAttendanceSystem;
 
-import tr.edu.iyte.esgfx.cases.TotalTimeMeasurement_L234;
+import tr.edu.iyte.esgfx.cases.RQ2_ExtremeScalability_L234;
 
 public class TotalTimeMeasurementApp_L3_SAS extends CaseStudyUtilities_SAS {
 
@@ -11,7 +11,7 @@ public class TotalTimeMeasurementApp_L3_SAS extends CaseStudyUtilities_SAS {
 		/*
 		 * Event triple coverage
 		 */
-		TotalTimeMeasurement_L234 totalTimeMeasurement = new TotalTimeMeasurement_L234();
+		RQ2_ExtremeScalability_L234 totalTimeMeasurement = new RQ2_ExtremeScalability_L234();
 		totalTimeMeasurement.measureToTalTimeForEdgeCoverage();
 	}
 

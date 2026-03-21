@@ -5,8 +5,8 @@ import tr.edu.iyte.esgfx.productconfigurationgeneration.AutomaticProductConfigur
 public class AutomaticProductConfigurationGeneration extends CaseStudyUtilities {
 	
 	public void writeAllProductConfigurationsToFile() throws Exception {
-		featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFilePath,
-				ESGFxFilePath);
+		featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFile,
+				ESGFxFile);
 //		printFeatureExpressionMapFromFeatureModel(featureExpressionMapFromFeatureModel);
 		
 		AutomaticProductConfigurationGenerator automaticProductConfigurationGenerator = new AutomaticProductConfigurationGenerator();

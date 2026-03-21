@@ -6,7 +6,7 @@ public class CaseStudyUtilities_HS extends CaseStudyUtilities {
 
 	public static void initializeFilePaths() {
 
-		caseStudyFolderPath = "files/Cases/HockertyShirts/";
+		caseStudyFolder = "files/Cases/HockertyShirts/";
 		SPLName = "HS";
 		
 		mutantEventName = "Event";

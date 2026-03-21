@@ -1,4 +1,6 @@
-target/
+# ==========================================
+# IDE & OS Specific Files
+# ==========================================
 .classpath
 .project
 .settings/
@@ -6,12 +8,36 @@ target/
 *.iml
 .vscode/
 .DS_Store
+
+# ==========================================
+# Build & Output Directories
+# ==========================================
+target/
+dist/
+guitar-out/
+ElevatorPL/
+
+# ==========================================
+# Logs
+# ==========================================
 *.log
 logs/
-dist/
-!src/tr/edu/iyte/esgfx/cases/
+files/logs/
+
+# ==========================================
+# Experiment Data & Generated Files
+# ==========================================
+# We want to track the Cases folder structure...
 !files/Cases/
-guitar-out/
-target/
-.DS_Store
-ElevatorPL/
+
+# ...BUT ignore these generated folders/files INSIDE every Case folder
+files/Cases/*/comparativeEfficiencyTestPipeline/
+files/Cases/*/DOTs/
+files/Cases/*/EFGs/
+files/Cases/*/faultdetection/
+files/Cases/*/productConfigurations/
+files/Cases/*/testsequences/
+files/Cases/*/testsequenceanalysis/
+
+# Ignore the generated configurations text file for every case
+files/Cases/*/*_ProductConfigurations.txt

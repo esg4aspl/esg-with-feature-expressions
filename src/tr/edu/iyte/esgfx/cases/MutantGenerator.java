@@ -27,8 +27,9 @@ public class MutantGenerator extends CaseStudyUtilities {
 	protected long totalExecTimeNanosL3 = 0;
 	protected long totalExecTimeNanosL4 = 0;
 
-	protected final int MEASURE_COUNT = 1;
-	protected final int WARMUP_COUNT = 0;
+	protected final int MEASURE_COUNT = Integer.getInteger("measure.count", 10);
+	protected final int WARMUP_COUNT = Integer.getInteger("warmup.count", 1);
+	protected final long TIMEOUT_SECONDS = Long.getLong("timeout.seconds", 30);
 
 	protected Set<String> mutationElementSet = new LinkedHashSet<String>();
 
@@ -60,7 +61,8 @@ public class MutantGenerator extends CaseStudyUtilities {
 			int safetyLimit = (int) Math.min(calculatedLimit, 500_000);
 //			ESGFx clone = new ESGFx((ESGFx) productESGFx);
 
-			RandomWalkTestGenerator rw = new RandomWalkTestGenerator((ESGFx)productESGFx, 0.85);
+			long seed = 42L + productESGFx.getID(); // Fixed reproducible seed
+			RandomWalkTestGenerator rw = new RandomWalkTestGenerator((ESGFx)productESGFx, 0.85, seed);
 			Set<EventSequence> tests = rw.generateWalkUntilEdgeCoverage(100, safetyLimit);
 //			EventSequenceUtilities.esgEventSequenceSetPrinter(tests, "");
 //			clone = null; // Help GC
@@ -124,8 +126,7 @@ public class MutantGenerator extends CaseStudyUtilities {
 		});
 
 		try {
-			// 30 Seconds Timeout
-			future.get(30, TimeUnit.SECONDS);
+			future.get(TIMEOUT_SECONDS, TimeUnit.SECONDS);
 		} catch (TimeoutException e) {
 			System.err.println("⚠️ TIMEOUT: Warmup skipped (Infinite Loop protection).");
 			System.err.println("Mutant ID " + mutant.getID());
@@ -156,8 +157,8 @@ public class MutantGenerator extends CaseStudyUtilities {
 		});
 
 		try {
-			// 30 Seconds Timeout
-			return future.get(30, TimeUnit.SECONDS);
+			// Timeout
+			return future.get(TIMEOUT_SECONDS * MEASURE_COUNT, TimeUnit.SECONDS);
 		} catch (TimeoutException e) {
 			System.err.println("⚠️ TIMEOUT: Measurement skipped (Infinite Loop protection). Returning 0.");
 			System.err.println("Mutant ID " + mutant.getID());

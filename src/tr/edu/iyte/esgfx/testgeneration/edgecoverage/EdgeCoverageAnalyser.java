@@ -1,11 +1,10 @@
 package tr.edu.iyte.esgfx.testgeneration.edgecoverage;
 
-import java.util.Iterator;
-import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
+import java.util.LinkedHashMap;
 import java.util.Set;
 import java.util.Map.Entry;
 
@@ -17,130 +16,140 @@ import tr.edu.iyte.esgfx.model.VertexRefinedByFeatureExpression;
 import tr.edu.iyte.esgfx.model.featureexpression.FeatureExpression;
 
 public class EdgeCoverageAnalyser {
-	
-	public  void esgEventSequenceSetPrinter(Set<EventSequence> composedSequences) {
-		for (EventSequence es : composedSequences) {
-			System.out.println(/* es.length() + " - " + */es);
-		}
-		System.out.println();
-	}
 
-	public double analyseEdgeCoverage(ESG ESGFx, Set<EventSequence> CESsOfESGFx,
-			Map<String, FeatureExpression> featureExpressionMap) {
+    public void esgEventSequenceSetPrinter(Set<EventSequence> composedSequences) {
+        for (EventSequence es : composedSequences) {
+            System.out.println(es);
+        }
+        System.out.println();
+    }
 
-		List<String> mustCoveredEdges = detectMustCoveredEdges(ESGFx);
-//		System.out.println("mustCoveredEdges " + mustCoveredEdges);
-		
-		List<String> coveredEdges = detectCoveredEdges(CESsOfESGFx);
-//		System.out.println("coveredEdges " + coveredEdges);
-		
-		Map<String, Integer> edgeCoverageMap = edgeCoverageMap(mustCoveredEdges, coveredEdges);
-		List<String> uncoveredEdges = detectUncoveredEdges(edgeCoverageMap);
-//		System.out.println("uncoveredEdges " + uncoveredEdges);
-		
-		double coverage = percentageOfCoverage(mustCoveredEdges, uncoveredEdges);
-//		System.out.println("coverage " + coverage);
-		
-		return coverage;
+    public double analyseEdgeCoverage(ESG ESGFx, Set<EventSequence> CESsOfESGFx,
+            Map<String, FeatureExpression> featureExpressionMap) {
 
-	}
-	
-	public static List<String> detectUncoveredEdges(Map<String, Integer> edgeCoverageMap) {
+        Set<String> mustCoveredEdges = detectMustCoveredEdges(ESGFx);
+        List<String> coveredEdges = detectCoveredEdges(CESsOfESGFx);
 
-		List<String> uncoveredEdgeList = new LinkedList<String>();
-		for (Entry<String, Integer> entry : edgeCoverageMap.entrySet()) {
+        Map<String, Integer> edgeCoverageMap = edgeCoverageMap(mustCoveredEdges, coveredEdges);
+        Set<String> uncoveredEdges = detectUncoveredEdges(edgeCoverageMap);
 
-			if (entry.getValue() == 0) {
-				if (!entry.getKey().equals("Number of uncovered edges "))
-					uncoveredEdgeList.add(entry.getKey());
-			}
-		}
+        return percentageOfCoverage(mustCoveredEdges.size(), uncoveredEdges.size());
+    }
 
-		return uncoveredEdgeList;
-	}
-		
-	private static List<String> detectMustCoveredEdges(ESG ESGFx) {
-		List<String> edgeList = new LinkedList<String>();
+    public static Set<String> detectUncoveredEdges(Map<String, Integer> edgeCoverageMap) {
+        Set<String> uncoveredEdgeSet = new LinkedHashSet<>();
+        for (Entry<String, Integer> entry : edgeCoverageMap.entrySet()) {
+            if (entry.getValue() == 0) {
+                uncoveredEdgeSet.add(entry.getKey());
+            }
+        }
+        return uncoveredEdgeSet;
+    }
 
-		for (Edge edge : ESGFx.getRealEdgeList()) {
-			Vertex source = edge.getSource();
-			Vertex target = edge.getTarget();
-				
-			if(!source.isPseudoEndVertex() && !target.isPseudoStartVertex()) {
-//				System.out.print("source " + source + " ");System.out.println("target " + target);
-				
-				VertexRefinedByFeatureExpression sourceVertex = (VertexRefinedByFeatureExpression) source;
-				VertexRefinedByFeatureExpression targetVertex = (VertexRefinedByFeatureExpression) target;
-				
-				if (sourceVertex.getFeatureExpression().evaluate() && targetVertex.getFeatureExpression().evaluate()) {
-					String edgeName = edge.getSource().toString() + ", " + edge.getTarget().toString();
-					edgeList.add(edgeName);
-				}
-			}
-                
-		}
-		return edgeList;
-	}
+    private static String getCleanEventName(String rawName) {
+        String clean = rawName;
+        int featureSlashIndex = clean.indexOf('/');
+        if (featureSlashIndex != -1) {
+            clean = clean.substring(0, featureSlashIndex);
+        }
+        clean = clean.replaceAll("^\\[", "").replaceAll("\\]$", "");
+        clean = clean.replaceAll("\\s+", "");
+        int lastUnderscore = clean.lastIndexOf('_');
+        if (lastUnderscore != -1) {
+            String possibleNum = clean.substring(lastUnderscore + 1);
+            if (possibleNum.matches("\\d+")) {
+                clean = clean.substring(0, lastUnderscore);
+            }
+        }
+        return clean;
+    }
 
-	private List<String> detectCoveredEdges(Set<EventSequence> CESsOfESGFx) {
-		
-		List<String> lineList = new LinkedList<String>();
-		Iterator<EventSequence> cesSetIterator = CESsOfESGFx.iterator();
-		String line;
-		while (cesSetIterator.hasNext()) {
-			line = cesSetIterator.next().toString();
-			lineList.add(line);
-		}
+    private static String normalizeCompositeName(String compositeName) {
+        String normalized = compositeName.replace(" -> ", ",");
+        normalized = normalized.replace(" AND ", ",");
+        normalized = normalized.replace(":", ",");
+        String[] parts = normalized.split(",");
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < parts.length; i++) {
+            sb.append(getCleanEventName(parts[i].trim()));
+            if (i < parts.length - 1) {
+                sb.append(",");
+            }
+        }
+        return sb.toString();
+    }
 
-		return lineList;
-	}
-	
-	private static Map<String, Integer> edgeCoverageMap(List<String> edgeList, List<String> lineList) {
-		Map<String, Integer> edgeCoverageMap = new LinkedHashMap<String, Integer>();
+    // --- FIX: Set kullanarak duplicate edge'leri önle ---
+    private static Set<String> detectMustCoveredEdges(ESG ESGFx) {
+        Set<String> edgeSet = new LinkedHashSet<>();
+        for (Edge edge : ESGFx.getRealEdgeList()) {
+            Vertex source = edge.getSource();
+            Vertex target = edge.getTarget();
+            if (!source.isPseudoEndVertex() && !target.isPseudoStartVertex()) {
+                VertexRefinedByFeatureExpression sourceVertex = (VertexRefinedByFeatureExpression) source;
+                VertexRefinedByFeatureExpression targetVertex = (VertexRefinedByFeatureExpression) target;
+                if (sourceVertex.getFeatureExpression().evaluate() 
+                        && targetVertex.getFeatureExpression().evaluate()) {
+                    String sourceName = getCleanEventName(sourceVertex.getEvent().getName().trim());
+                    String targetName = getCleanEventName(targetVertex.getEvent().getName().trim());
+                    edgeSet.add(sourceName + "," + targetName);
+                }
+            }
+        }
+        return edgeSet;
+    }
 
-		int zeroCounter = 0;
+    private List<String> detectCoveredEdges(Set<EventSequence> CESsOfESGFx) {
+        List<String> lineList = new LinkedList<>();
+        if (CESsOfESGFx == null) return lineList;
+        for (EventSequence es : CESsOfESGFx) {
+            StringBuilder rawSequenceBuilder = new StringBuilder();
+            for (int i = 0; i < es.length(); i++) {
+                Vertex event = es.getEventSequence().get(i);
+                String rawStr = normalizeCompositeName(event.getEvent().getName().trim());
+                rawSequenceBuilder.append(rawStr);
+                if (i < es.length() - 1) {
+                    rawSequenceBuilder.append(",");
+                }
+            }
+            String finalLine = rawSequenceBuilder.toString().replaceAll(",+", ",");
+            lineList.add(finalLine);
+        }
+        return lineList;
+    }
 
-		for (String edge : edgeList) {
-			int counter = 0;
-			//System.out.println("edge " + edge);
-			for (String line : lineList) {
-				//System.out.println("line " + line);
-				if (line.contains(edge)) {
-					counter += count(line, edge);
-					//System.out.println("counter " + counter);
-				}
-			}
-			if (counter == 0) {
-				zeroCounter++;
-			}
+    // --- FIX: Sentinel key kaldırıldı, Set input kullanılıyor ---
+    private static Map<String, Integer> edgeCoverageMap(Set<String> edgeSet, List<String> lineList) {
+        Map<String, Integer> edgeCoverageMap = new LinkedHashMap<>();
+        for (String edge : edgeSet) {
+            int counter = 0;
+            for (String line : lineList) {
+                counter += countBounded(line, edge);
+            }
+            edgeCoverageMap.put(edge, counter);
+        }
+        return edgeCoverageMap;
+    }
 
-			edgeCoverageMap.put(edge, counter);
-		}
-		edgeCoverageMap.put("Number of uncovered edges ", zeroCounter);
+    private static int countBounded(String text, String find) {
+        int count = 0;
+        int index = 0;
+        while ((index = text.indexOf(find, index)) != -1) {
+            int end = index + find.length();
+            boolean startOk = (index == 0 || text.charAt(index - 1) == ',');
+            boolean endOk = (end == text.length() || text.charAt(end) == ',');
+            if (startOk && endOk) {
+                count++;
+            }
+            index += find.length();
+        }
+        return count;
+    }
 
-		return edgeCoverageMap;
-	}
-	
-	private static int count(String text, String find) {
-		int index = 0, count = 0, length = find.length();
-		while ((index = text.indexOf(find, index)) != -1) {
-			index += length;
-			count++;
-		}
-		return count;
-	}
 
-	public static double percentageOfCoverage(List<String> mustCoveredEdgeList, List<String> uncoveredEdgeList) {
-
-		double coverage = ((double) uncoveredEdgeList.size()) / ((double) mustCoveredEdgeList.size()) * 100.0;
-
-		if (uncoveredEdgeList.size() == 0) {
-			return 100.0;
-		} else {
-			// System.out.printf("Coverage %.2f %s\n", 100.0 - coverage, "%");
-			return 100.0 - coverage;
-		}
-
-	}
-
+    public static double percentageOfCoverage(int mustCoveredCount, int uncoveredCount) {
+        if (mustCoveredCount == 0) return 100.0;
+        if (uncoveredCount == 0) return 100.0;
+        return 100.0 - ((double) uncoveredCount / (double) mustCoveredCount * 100.0);
+    }
 }

@@ -7,7 +7,7 @@ public class CaseStudyUtilities_SAS extends CaseStudyUtilities {
 	public static void initializeFilePaths() {
 		
 
-		caseStudyFolderPath = "files/Cases/StudentAttendanceSystem/";
+		caseStudyFolder = "files/Cases/StudentAttendanceSystem/";
 		SPLName = "SAS";
 		
 		setCoverageType();

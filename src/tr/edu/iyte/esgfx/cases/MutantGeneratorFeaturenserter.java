@@ -28,8 +28,8 @@ import tr.edu.iyte.esgfx.testgeneration.util.StronglyConnectedBalancedESGFxGener
 public class MutantGeneratorFeaturenserter extends CaseStudyUtilities {
 
 	public void generateMutants() throws Exception {
-		featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFilePath,
-				ESGFxFilePath);
+		featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFile,
+				ESGFxFile);
 		printFeatureExpressionMapFromFeatureModel(featureExpressionMapFromFeatureModel);
 
 		List<FeatureExpression> featureExpressionList = getFeatureExpressionList(featureExpressionMapFromFeatureModel);

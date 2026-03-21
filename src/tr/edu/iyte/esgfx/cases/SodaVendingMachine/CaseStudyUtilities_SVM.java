@@ -6,7 +6,7 @@ public class CaseStudyUtilities_SVM extends CaseStudyUtilities {
 
 	public static void initializeFilePaths() {
 		
-		caseStudyFolderPath = "files/Cases/SodaVendingMachine/";
+		caseStudyFolder = "files/Cases/SodaVendingMachine/";
 		SPLName = "SVM";
 		
 		mutantEventName = "Event";

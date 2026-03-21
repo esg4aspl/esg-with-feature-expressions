@@ -19,8 +19,8 @@ import tr.edu.iyte.esgfx.productmodelgeneration.ProductESGFxGenerator;
 public class AutomaticProductConfigurationValidator extends CaseStudyUtilities {
 
 	public void validateProductConfigurations() throws Exception {
-		featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFilePath,
-				ESGFxFilePath);
+		featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFile,
+				ESGFxFile);
 		printFeatureExpressionMapFromFeatureModel(featureExpressionMapFromFeatureModel);
 
 		List<FeatureExpression> featureExpressionList = getFeatureExpressionList(featureExpressionMapFromFeatureModel);

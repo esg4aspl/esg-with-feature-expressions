@@ -11,7 +11,7 @@ public class MutationTesting_FeatureOmitter_SVM extends CaseStudyUtilities_SVM {
 
 		CaseStudyUtilities_SVM.initializeFilePaths();
 		
-		CaseStudyUtilities_SVM.featureESGSet = FeatureESGSetGenerator.createFeatureESGSet(CaseStudyUtilities_SVM.featureESGSetFolderPath_FeatureOmission);
+		CaseStudyUtilities_SVM.featureESGSet = FeatureESGSetGenerator.createFeatureESGSet(CaseStudyUtilities_SVM.featureESGSetFolder_FeatureOmission);
 		
 		MutantGeneratorFeatureOmitter mutantGeneratorFeatureOmitter = new MutantGeneratorFeatureOmitter();
 		mutantGeneratorFeatureOmitter.generateMutants();

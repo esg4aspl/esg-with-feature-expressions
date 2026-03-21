@@ -7,7 +7,7 @@ public class CaseStudyUtilities_Te extends CaseStudyUtilities {
 	public static void initializeFilePaths() {
 		
 		
-		caseStudyFolderPath = "files/Cases/Tesla/";
+		caseStudyFolder = "files/Cases/Tesla/";
 		SPLName = "Tesla";
 		
 		mutantEventName = "Event";

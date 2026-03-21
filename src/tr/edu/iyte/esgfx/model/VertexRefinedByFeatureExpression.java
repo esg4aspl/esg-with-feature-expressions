@@ -31,7 +31,7 @@ public class VertexRefinedByFeatureExpression extends Vertex {
 
 	@Override
 	public String getDotLanguageFormat() {
-		return super.toString();
+		return this.toString();
 	}
 
 	@Override

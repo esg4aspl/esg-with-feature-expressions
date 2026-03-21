@@ -1,114 +1,123 @@
 package tr.edu.iyte.esgfx.testgeneration.eventcoverage;
 
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Map;
-
 import java.util.Set;
 
 import tr.edu.iyte.esg.eventsequence.EventSequence;
 import tr.edu.iyte.esg.model.ESG;
-
 import tr.edu.iyte.esg.model.Vertex;
 import tr.edu.iyte.esgfx.model.VertexRefinedByFeatureExpression;
 import tr.edu.iyte.esgfx.model.featureexpression.FeatureExpression;
 
 public class EventCoverageAnalyser {
-	
-	public  void esgEventSequenceSetPrinter(Set<EventSequence> composedSequences) {
-		for (EventSequence es : composedSequences) {
-			System.out.println(/* es.length() + " - " + */es);
-		}
-		System.out.println();
-	}
 
-	public double analyseEventCoverage(ESG ESGFx, Set<EventSequence> CESsOfESGFx,
-			Map<String, FeatureExpression> featureExpressionMap) {
+    public void esgEventSequenceSetPrinter(Set<EventSequence> composedSequences) {
+        for (EventSequence es : composedSequences) {
+            System.out.println(es);
+        }
+        System.out.println();
+    }
 
-		List<String> mustCoveredEvents = detectMustCoveredEvents(ESGFx);
-//		System.out.println("mustCoveredEvents " + mustCoveredEvents);
-		
-		List<String> coveredEvents = detectCoveredEvents(CESsOfESGFx);
-//		System.out.println("coveredEvents " + coveredEvents);
-		
-		List<String> uncoveredEvents = detectUncoveredEvents(mustCoveredEvents, coveredEvents);
-//		System.out.println("uncoveredEvents " + uncoveredEvents);
-		
-		double coverage = percentageOfCoverage(coveredEvents, uncoveredEvents);
-//		System.out.println("coverage " + coverage);
-		
-		return coverage;
+    public double analyseEventCoverage(ESG ESGFx, Set<EventSequence> CESsOfESGFx,
+            Map<String, FeatureExpression> featureExpressionMap) {
 
-	}
-	
-	private List<String> detectUncoveredEvents(List<String> mustCoveredEvents, List<String> coveredEventList){
-		
-		List<String> uncoveredEventList = new LinkedList<String>();
-		if(mustCoveredEvents.size() > coveredEventList.size()) {
-			for(String event : mustCoveredEvents) {
-				if(!coveredEventList.contains(event)) {
-					uncoveredEventList.add(event);
-				}
-			}
-		}else if(mustCoveredEvents.size() == coveredEventList.size()) {
-			return uncoveredEventList;
-		}
-			
-		return uncoveredEventList;
-	}
+        Set<String> mustCoveredEvents = detectMustCoveredEvents(ESGFx);
+        Set<String> coveredEvents = detectCoveredEvents(CESsOfESGFx);
 
-	private List<String> detectMustCoveredEvents(ESG ESGFx) {
-//		System.out.println("detectMustCoveredEvents ");
-		List<String> mustCoveredEvents = new LinkedList<>();
-		Iterator<Vertex> vertexListItearator = ESGFx.getVertexList().iterator();
-//		System.out.println(eventListItearator.hasNext());
+        Set<String> uncoveredEvents = new LinkedHashSet<>(mustCoveredEvents);
+        uncoveredEvents.removeAll(coveredEvents);
 
-		while (vertexListItearator.hasNext()) {
-			Vertex vertex = vertexListItearator.next();
+        return percentageOfCoverage(mustCoveredEvents, uncoveredEvents);
+    }
 
-			if (!vertex.isPseudoStartVertex() && !vertex.isPseudoEndVertex()) {
-				VertexRefinedByFeatureExpression vertexRefinedByFeatureExpression = (VertexRefinedByFeatureExpression) vertex;
-				FeatureExpression featureExpression = vertexRefinedByFeatureExpression.getFeatureExpression();
+    // --- Normalization (same logic as EdgeCoverageAnalyser) ---
 
-				if (featureExpression.evaluate()) {
-					mustCoveredEvents.add(vertexRefinedByFeatureExpression.getEvent().getName().trim());
-				}
-//				System.out.println(vertexRefinedByFeatureExpression.getEvent().getName() + " " + featureExpression.evaluate());
-			}
-		}
-		return mustCoveredEvents;
-	}
+    private static String getCleanEventName(String rawName) {
+        String clean = rawName;
 
-	private List<String> detectCoveredEvents(Set<EventSequence> CESsOfESGFx) {
-		List<String> coveredEventList = new LinkedList<>();
+        int featureSlashIndex = clean.indexOf('/');
+        if (featureSlashIndex != -1) {
+            clean = clean.substring(0, featureSlashIndex);
+        }
 
-		Iterator<EventSequence> CESsOfESGFxIterator = CESsOfESGFx.iterator();
+        clean = clean.replaceAll("^\\[", "").replaceAll("\\]$", "");
+        clean = clean.replaceAll("\\s+", "");
 
-		while (CESsOfESGFxIterator.hasNext()) {
-			EventSequence eventSequence = CESsOfESGFxIterator.next();
-			List<Vertex> vertexList = eventSequence.getEventSequence();
+        int lastUnderscore = clean.lastIndexOf('_');
+        if (lastUnderscore != -1) {
+            String possibleNum = clean.substring(lastUnderscore + 1);
+            if (possibleNum.matches("\\d+")) {
+                clean = clean.substring(0, lastUnderscore);
+            }
+        }
 
-			Iterator<Vertex> vertexListItearator = vertexList.iterator();
-			while (vertexListItearator.hasNext()) {
-				Vertex vertex = vertexListItearator.next();
-				coveredEventList.add(vertex.getEvent().getName().trim());
-			}
-		}
-		return coveredEventList;
-	}
+        return clean;
+    }
 
-	private static double percentageOfCoverage(List<String> coveredEventList, List<String> uncoveredEventList) {
+    private static String normalizeCompositeName(String compositeName) {
+        String normalized = compositeName.replace(" -> ", ",");
+        normalized = normalized.replace(" AND ", ",");
+        normalized = normalized.replace(":", ",");
 
-		double coverage = ((double) uncoveredEventList.size()) / ((double) coveredEventList.size()) * 100.0;
+        String[] parts = normalized.split(",");
+        StringBuilder sb = new StringBuilder();
 
-		if (uncoveredEventList.size() == 0) {
-			return 100.0;
-		} else {
-//			System.out.printf("Coverage %.2f %s\n", 100.0 - coverage, "%");
-			return 100.0 - coverage;
-		}
+        for (int i = 0; i < parts.length; i++) {
+            sb.append(getCleanEventName(parts[i].trim()));
+            if (i < parts.length - 1) {
+                sb.append(",");
+            }
+        }
+        return sb.toString();
+    }
 
-	}
+    // --- Detection methods (now return Sets with normalized names) ---
 
+    private Set<String> detectMustCoveredEvents(ESG ESGFx) {
+        Set<String> mustCoveredEvents = new LinkedHashSet<>();
+        Iterator<Vertex> vertexIterator = ESGFx.getVertexList().iterator();
+
+        while (vertexIterator.hasNext()) {
+            Vertex vertex = vertexIterator.next();
+            if (!vertex.isPseudoStartVertex() && !vertex.isPseudoEndVertex()) {
+                VertexRefinedByFeatureExpression vRefined = (VertexRefinedByFeatureExpression) vertex;
+                FeatureExpression featureExpression = vRefined.getFeatureExpression();
+                if (featureExpression.evaluate()) {
+                    String cleanName = getCleanEventName(vRefined.getEvent().getName().trim());
+                    mustCoveredEvents.add(cleanName);
+                }
+            }
+        }
+        return mustCoveredEvents;
+    }
+
+    private Set<String> detectCoveredEvents(Set<EventSequence> CESsOfESGFx) {
+        Set<String> coveredEventSet = new LinkedHashSet<>();
+        if (CESsOfESGFx == null) return coveredEventSet;
+
+        for (EventSequence eventSequence : CESsOfESGFx) {
+            for (Vertex vertex : eventSequence.getEventSequence()) {
+                String normalized = normalizeCompositeName(vertex.getEvent().getName().trim());
+                // A composite name may expand to multiple individual event names
+                for (String part : normalized.split(",")) {
+                    if (!part.isEmpty()) {
+                        coveredEventSet.add(part);
+                    }
+                }
+            }
+        }
+        return coveredEventSet;
+    }
+
+    // --- Coverage calculation (fixed denominator) ---
+
+    private static double percentageOfCoverage(Set<String> mustCoveredEvents, Set<String> uncoveredEvents) {
+        if (mustCoveredEvents.isEmpty()) return 100.0;
+        if (uncoveredEvents.isEmpty()) return 100.0;
+
+        double coverage = ((double) uncoveredEvents.size()) / ((double) mustCoveredEvents.size()) * 100.0;
+        return 100.0 - coverage;
+    }
 }

@@ -6,7 +6,7 @@ public class CaseStudyUtilities_BAv2 extends CaseStudyUtilities {
 
 	public static void initializeFilePaths() {
 
-		caseStudyFolderPath = "files/Cases/BankAccountv2/";
+		caseStudyFolder = "files/Cases/BankAccountv2/";
 		SPLName = "BAv2";
 		
 		mutantEventName = "update credentials";

@@ -1,0 +1,15 @@
+package tr.edu.iyte.esgfx.cases.syngovia;
+
+import tr.edu.iyte.esgfx.cases.RQ1_ComparativeEfficiency_ESGFx_L1;
+
+public class RQ1_ComparativeEfficiency_ESGFx_L1_Svia extends CaseStudyUtilities_Svia {
+
+	public static void main(String[] args) throws Exception {
+		
+		CaseStudyUtilities_Svia.initializeFilePaths();
+		
+		RQ1_ComparativeEfficiency_ESGFx_L1 pipelineMeasurement = new RQ1_ComparativeEfficiency_ESGFx_L1();
+		pipelineMeasurement.measurePipelineForEventCoverage();
+	}
+
+}

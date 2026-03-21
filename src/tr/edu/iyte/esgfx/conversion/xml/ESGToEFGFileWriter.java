@@ -43,12 +43,12 @@ public class ESGToEFGFileWriter {
     /**
      * Public method to write the ESG to an EFG file.
      *
-     * @param esg             The input ESG model.
+     * @param ESGFx             The input ESG model.
      * @param productID       The name for the output file (e.g., "P01").
      * @param outputDirectory The directory to save the ".EFG" file.
      * @throws IOException If file writing fails.
      */
-    public static void writeESGToEFGFile(ESG esg, String productID, String outputDirectory) throws IOException {
+    public static void writeESGFxToEFGFile(ESG ESGFx, String productID, String outputDirectory) throws IOException {
         String filename = productID + ".EFG";
         
         File directory = new File(outputDirectory);
@@ -62,7 +62,7 @@ public class ESGToEFGFileWriter {
         file.getParentFile().mkdirs();
 
         try (FileWriter writer = new FileWriter(file)) {
-            writer.write(generateEFGContent(esg));
+            writer.write(generateEFGContent(ESGFx));
         }
     }
 
