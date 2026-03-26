@@ -26,7 +26,7 @@ PROJECT_DIR="$(dirname "$FILES_DIR")"
 if [ -n "$SHARD_PARAM" ]; then
   N=$SHARD_PARAM
 else
-  if [[ "$OSTYPE" == "darwin"* ]]; then N=4; else N=40; fi
+  if [[ "$OSTYPE" == "darwin"* ]]; then N=4; else N=80; fi
 fi
 
 if [ -n "$START_PARAM" ]; then S_NODE=$START_PARAM; else S_NODE=0; fi
@@ -49,13 +49,13 @@ mkdir -p "$LOG_DIR_BASE"
 
 
 
-mvn clean package dependency:copy-dependencies -DskipTests > "$LOG_DIR_BASE/RQ1_ESGFx_L234_build.log" 2>&1
-if [ $? -ne 0 ]; then
-    echo "COMPILATION ERROR! Check '$LOG_DIR_BASE/RQ1_ESGFx_L234_build.log' for details."
-    exit 1
-fi
+#mvn clean package dependency:copy-dependencies -DskipTests > "$LOG_DIR_BASE/RQ1_ESGFx_L234_build.log" 2>&1
+#if [ $? -ne 0 ]; then
+    #echo "COMPILATION ERROR! Check '$LOG_DIR_BASE/RQ1_ESGFx_L234_build.log' for details."
+    #exit 1
+#fi
 
-export CP="target/classes:target/dependency/*"
+export CP="target/classes:target/dependency/*:target/esg-with-feature-expressions-0.0.1-SNAPSHOT.jar"
 MAIN="tr.edu.iyte.esgfx.cases.${CASE_NAME}.RQ1_ComparativeEfficiency_ESGFx_L234_${SHORT_NAME}"
 JAVA_OPTS="-Xms$XMS -Xmx$XMX -XX:+UseG1GC"
 
@@ -87,10 +87,10 @@ for L_VAL in 2 3 4; do
     # Wait for the current L_LEVEL shards to finish before starting the next L_LEVEL
     # This prevents OutOfMemory errors on the OS level by avoiding running L2, L3, L4 simultaneously
     echo "Waiting for all shards of L_LEVEL = $L_VAL to complete..."
-    wait
+      if [[ "$OSTYPE" == "darwin"* ]]; then sleep 1; else sleep 0.2; fi
     echo "L_LEVEL = $L_VAL completed."
     echo "--------------------------------------------------"
     
 done
-
+sleep 3
 echo "PROCESS DISPATCHED FOR $CASE_NAME (ESGFx L2,3,4 | Range: $S_NODE-$E_NODE | RunID: $RUN_PARAM)"

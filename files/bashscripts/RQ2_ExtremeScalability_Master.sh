@@ -7,7 +7,7 @@
 if [[ "$OSTYPE" == "darwin"* ]]; then
   TARGET_SHARDS=4  
 else
-  TARGET_SHARDS=40 
+  TARGET_SHARDS=80 
 fi
 
 START_SHARD=${1:-0}                    
@@ -26,7 +26,8 @@ echo "🔄 Runs: Small/Medium=$SMALL_MEDIUM_RUNS, Large=$LARGE_RUNS"
 echo "--------------------------------------------------"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+FILES_DIR="$(dirname "$SCRIPT_DIR")"
+PROJECT_ROOT="$(dirname "$FILES_DIR")"
 echo "Project Root: $PROJECT_ROOT"
 
 # Case studies with short names
@@ -49,19 +50,43 @@ SCRIPTS=(
   "RQ2_ExtremeScalability_RandomWalk.sh"   # Random Walk L0 (BASELINE)
 )
 
+echo "=== COMPILING PROJECT ONCE FOR THIS MASTER RUN ==="
+cd "$PROJECT_ROOT" || { echo "CRITICAL ERROR: Project root not found!"; exit 1; }
+
+mvn clean package dependency:copy-dependencies -DskipTests > "${FILES_DIR}/logs/RQ2_Master_Build_$$.log" 2>&1
+if [ $? -ne 0 ]; then
+    echo "CRITICAL ERROR: Maven build FAILED! See logs/RQ2_Master_Build_$$.log"
+    exit 1
+fi
+echo "=== COMPILATION FINISHED SUCCESSFULLY ==="
+
 wait_and_monitor() {
   local case_name=$1
   local log_dir=$2
   local script_name=$3
+  local error_detected=false
 
-  echo "⏳ Monitoring $case_name ($script_name)..."
+  local tmp_file="error_snippet_${case_name}_$$.tmp"
+
+  echo "Monitoring logs in: $log_dir"
 
   while pgrep -f "java.*$case_name" > /dev/null; do
-    echo -ne "   ... Processing shards $START_SHARD-$END_SHARD ...\r"
-    sleep 30
+    if [ -d "$log_dir" ]; then
+        if find "$log_dir" -type f -name "*.log" -mmin -5 -exec grep -E "$ERROR_KEYWORDS" {} + 2>/dev/null | tail -n 1 > "$tmp_file"; then
+            if [ -s "$tmp_file" ] && [ "$error_detected" = false ]; then
+                local msg=$(cat "$tmp_file")
+                echo -e "\nCRITICAL ERROR detected in: $case_name \n$msg"
+                error_detected=true
+            fi
+        fi
+    fi
+    echo -ne "   ... Processing Shards $START_SHARD-$END_SHARD ... (Error Status: $error_detected)\r"
+    sleep 10
   done
   
-  echo -e "\n✅ FINISHED: $case_name ($script_name)"
+
+  rm -f "$tmp_file"
+  echo -e "\nPROCESS FINISHED: $case_name ($script_name)"
 }
 
 verify_results() {
@@ -74,12 +99,12 @@ verify_results() {
     if [ -d "$target_dir" ]; then
         local count=$(find "$target_dir" -type f -name "*.csv" | wc -l)
         if [ "$count" -gt 0 ]; then
-            echo "   ✅ VERIFIED: $count CSV files in $target_dir"
+            echo "✅ VERIFIED: $count CSV files in $target_dir"
         else
-            echo "   ⚠️  WARNING: No CSV files in $target_dir"
+            echo "⚠️  WARNING: No CSV files in $target_dir"
         fi
     else
-        echo "   ❌ ERROR: Output folder NOT created: $target_dir"
+        echo "❌ ERROR: Output folder NOT created: $target_dir"
     fi
 }
 
@@ -118,7 +143,7 @@ for RUN_ID in $(seq 1 $SMALL_MEDIUM_RUNS); do
                 fi
             fi
 
-            LOG_DIR="${PROJECT_ROOT}/logs/ExtremeScalability/${CASE_NAME}"
+            LOG_DIR="${FILES_DIR}/logs/${CASE_NAME}/RQ2"
             mkdir -p "$LOG_DIR"
 
             echo "🔷 CASE: $CASE_NAME | SCRIPT: $SCRIPT_NAME"
@@ -128,8 +153,9 @@ for RUN_ID in $(seq 1 $SMALL_MEDIUM_RUNS); do
             wait_and_monitor "$CASE_NAME" "$LOG_DIR" "$SCRIPT_NAME"
             verify_results "$CASE_NAME" "$SCRIPT_NAME" "$RUN_ID"
             
-            sleep 2
+            if [[ "$OSTYPE" == "darwin"* ]]; then sleep 1; else sleep 0.2; fi
         done
+        sleep 3
     done
 done
 
@@ -142,3 +168,4 @@ echo "📊 Next steps:"
 echo "   1. Run aggregation: python RQ2_aggregate_results.py <SPL_dir> <SPL_name>"
 echo "   2. Example: python RQ2_aggregate_results.py Cases/Tesla/extremeScalabilityTestPipeline Tesla"
 echo ""
+sleep 3

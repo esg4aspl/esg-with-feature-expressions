@@ -7,6 +7,7 @@
 # ============================================================
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+FILES_DIR="$(dirname "$(dirname "$SCRIPT_DIR")")"
 IPS_FILE="$SCRIPT_DIR/ips.txt"
 
 if [ ! -f "$IPS_FILE" ]; then
@@ -47,7 +48,8 @@ TESTSEQ_SUBDIRS=(
     "L4"
 )
 
-LOCAL_CASES_ROOT="/Users/dilekozturk/git/esg-with-feature-expressions/files/Cases"
+# Hardcoded yol kaldırıldı, dinamik yol eklendi
+LOCAL_CASES_ROOT="$FILES_DIR/Cases"
 
 echo "=== STARTING RQ1 DATA COLLECTION ==="
 

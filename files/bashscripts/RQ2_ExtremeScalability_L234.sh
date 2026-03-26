@@ -13,7 +13,6 @@ SHARD_PARAM=$4
 START_PARAM=$5
 END_PARAM=$6
 
-# DÜZELTME BURADA: FILES_DIR ve PROJECT_ROOT tanımlandı
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FILES_DIR="$(dirname "$SCRIPT_DIR")"
 PROJECT_ROOT="$(dirname "$FILES_DIR")"
@@ -21,7 +20,7 @@ PROJECT_ROOT="$(dirname "$FILES_DIR")"
 if [ -n "$SHARD_PARAM" ]; then
   N=$SHARD_PARAM
 else
-  if [[ "$OSTYPE" == "darwin"* ]]; then N=4; else N=40; fi
+  if [[ "$OSTYPE" == "darwin"* ]]; then N=4; else N=80; fi
 fi
 
 if [ -n "$START_PARAM" ]; then S_NODE=$START_PARAM; else S_NODE=0; fi
@@ -34,19 +33,19 @@ else
 fi
 
 if [[ "$CASE_NAME" == "HockertyShirts" ]] || [[ "$CASE_NAME" == "HS" ]]; then
-    MY_TIMEOUT_HOURS=12
+    MY_TIMEOUT_HOURS=6
 else
     MY_TIMEOUT_HOURS=0
 fi
 
-# DÜZELTME BURADA: Proje kök dizinine geçildi
+
 cd "$PROJECT_ROOT" || { echo "ERROR: Project root not found"; exit 1; }
 
-LOG_DIR_BASE="${FILES_DIR}/logs/${CASE_NAME}/RQ2"
+LOG_DIR_BASE="${FILES_DIR}/logs/${CASE_NAME}/RQ2/ESGFX/"
 mkdir -p "$LOG_DIR_BASE"
 
-mvn clean package dependency:copy-dependencies -DskipTests > "$LOG_DIR_BASE/RQ2_ESGFx_L234_build.log" 2>&1
-export CP="target/classes:target/dependency/*"
+#mvn clean package dependency:copy-dependencies -DskipTests > "$LOG_DIR_BASE/RQ2_ESGFx_L234_build.log" 2>&1
+export CP="target/classes:target/dependency/*:target/esg-with-feature-expressions-0.0.1-SNAPSHOT.jar"
 
 MAIN="tr.edu.iyte.esgfx.cases.${CASE_NAME}.RQ2_ExtremeScalability_L234_${SHORT_NAME}"
 JAVA_OPTS="-Xms$XMS -Xmx$XMX -XX:+UseG1GC"
@@ -56,7 +55,7 @@ echo "=== BENCHMARK START RQ2: SHARDS $S_NODE to $E_NODE | RunID: $RUN_PARAM ===
 for L_VAL in 2 3 4; do
     echo "--- Initiating Execution for L_LEVEL = $L_VAL ---"
     
-    LOG_DIR="${LOG_DIR_BASE}/ESGFx_L${L_VAL}"
+    LOG_DIR="${LOG_DIR_BASE}/L${L_VAL}"
     mkdir -p "$LOG_DIR"
 
     for i in $(seq $S_NODE $E_NODE); do
@@ -68,6 +67,6 @@ for L_VAL in 2 3 4; do
       echo "Shard $i dispatched -> $LOG"
       if [[ "$OSTYPE" == "darwin"* ]]; then sleep 1; else sleep 0.2; fi
     done
-    
-    wait
+    sleep 3
 done
+sleep 3

@@ -130,7 +130,7 @@ public class RQ3_DampingSensitivity_TestGenerator extends CaseStudyUtilities {
                         // Record summary
                         summaryWriter.println(SPLName + ";" + productName + ";" + dampingFactor + ";"
                                 + numTestCases + ";" + numTestEvents + ";"
-                                + String.format("%.2f", rwGenerator.getAchievedCoverage()) + ";"
+                                + String.format(java.util.Locale.ROOT,"%.2f", rwGenerator.getAchievedCoverage()) + ";"
                                 + rwGenerator.getStepsTaken() + ";" + rwGenerator.isSafetyLimitHit());
                         summaryWriter.flush();
                     }
@@ -157,6 +157,6 @@ public class RQ3_DampingSensitivity_TestGenerator extends CaseStudyUtilities {
      * Converts damping factor to folder name: 0.80 -> "080", 0.85 -> "085", 0.90 -> "090"
      */
     private static String formatDampingFolder(double dampingFactor) {
-        return String.format("%03d", (int) (dampingFactor * 100));
+        return String.format(java.util.Locale.ROOT,"%03d", (int) (dampingFactor * 100));
     }
 }

@@ -19,8 +19,12 @@ import tr.edu.iyte.esgfx.testgeneration.FileToTestSuiteConverter;
 /**
  * Event Omission fault detection with multi-seed Random Walk support.
  * 
- * Deterministic approaches (ESG-Fx L1-4, EFG L2-4): run once, same as original.
- * Random Walk (ESG-Fx_L0): iterated over 10 seeds to capture stochastic variation.
+ * Deterministic approaches (ESG-Fx L0-4, EFG L2-4): run once, same as original.
+ * Random Walk (ESG-Fx_L0): ALSO iterated over 10 seeds to capture stochastic variation.
+ * 
+ * IMPORTANT: ESG-Fx_L0 appears in BOTH deterministic and multi-seed loops:
+ * - Deterministic: Uses seed 42 from /L0/PXXXX_RandomWalk.txt
+ * - Multi-seed: Uses seeds 42-51 from /L0/seedYY/PXXXX_RandomWalk.txt
  */
 public class RQ3_FaultDetection_EventOmitter extends CaseStudyUtilities {
 
@@ -53,8 +57,9 @@ public class RQ3_FaultDetection_EventOmitter extends CaseStudyUtilities {
 
         EventOmitter eventOmitter = new EventOmitter();
 
+        // UPDATED: Now includes ESG-Fx_L0 for baseline Random Walk (seed 42)
         String[] deterministicApproaches = {
-            "ESG-Fx_L1", "ESG-Fx_L2", "ESG-Fx_L3", "ESG-Fx_L4",
+            "ESG-Fx_L0", "ESG-Fx_L1", "ESG-Fx_L2", "ESG-Fx_L3", "ESG-Fx_L4",
             "EFG_L2", "EFG_L3", "EFG_L4"
         };
 
@@ -82,6 +87,7 @@ public class RQ3_FaultDetection_EventOmitter extends CaseStudyUtilities {
             int totalMutants = productESGFxVertices.size();
 
             // --- Deterministic approaches ---
+            // This includes ESG-Fx_L0 which loads from /L0/PXXXX_RandomWalk.txt (seed 42)
             for (String approach : deterministicApproaches) {
 
                 Set<EventSequence> loadedTestSuites = FileToTestSuiteConverter
@@ -125,6 +131,7 @@ public class RQ3_FaultDetection_EventOmitter extends CaseStudyUtilities {
             }
 
             // --- Multi-seed Random Walk ---
+            // This loads from /L0/seedYY/PXXXX_RandomWalk.txt for each seed
             for (long seed : SEEDS) {
 
                 Set<EventSequence> loadedTestSuites = FileToTestSuiteConverter

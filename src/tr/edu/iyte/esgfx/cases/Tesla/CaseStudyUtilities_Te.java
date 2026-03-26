@@ -8,7 +8,7 @@ public class CaseStudyUtilities_Te extends CaseStudyUtilities {
 		
 		
 		caseStudyFolder = "files/Cases/Tesla/";
-		SPLName = "Tesla";
+		SPLName = "Te";
 		
 		mutantEventName = "Event";
 		mutantFeatureName = "Feature";

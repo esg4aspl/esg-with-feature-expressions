@@ -22,7 +22,7 @@ PROJECT_ROOT="$(dirname "$FILES_DIR")"
 if [ -n "$SHARD_PARAM" ]; then
   N=$SHARD_PARAM
 else
-  if [[ "$OSTYPE" == "darwin"* ]]; then N=4; else N=40; fi
+  if [[ "$OSTYPE" == "darwin"* ]]; then N=4; else N=80; fi
 fi
 
 if [ -n "$START_PARAM" ]; then S_NODE=$START_PARAM; else S_NODE=0; fi
@@ -34,20 +34,33 @@ else
   XMS=512m; XMX=2000m  # Random Walk may need more memory
 fi
 
-# Large SPLs get timeout for throughput measurement
-if [[ "$CASE_NAME" == "HockertyShirts" ]] || [[ "$CASE_NAME" == "HS" ]]; then
-    MY_TIMEOUT_HOURS=12
+# ============================================================
+# TIMEOUT CONFIGURATION - FOR 80 SHARDS
+# ============================================================
+if [[ "$CASE_NAME" == "HockertyShirts" ]] || [[ "$SHORT_NAME" == "HS" ]]; then
+    MY_TIMEOUT_HOURS=6
+    echo "⏱️  HockertyShirts detected: Setting 6-hour timeout for throughput measurement"
+elif [[ "$CASE_NAME" == "syngovia" ]] || [[ "$SHORT_NAME" == "Svia" ]]; then
+    if [ "$RUN_PARAM" -eq 1 ]; then
+        MY_TIMEOUT_HOURS=0
+        echo "⏱️  syngo.via Run #1: NO TIMEOUT (~3.5 hours with 80 shards)"
+    else
+        MY_TIMEOUT_HOURS=8
+        echo "⏱️  syngo.via Run #$RUN_PARAM: 8-hour timeout (Demonstrate ongoing execution)"
+    fi
 else
     MY_TIMEOUT_HOURS=0
+    echo "✓ No timeout (run to completion)"
 fi
 
 cd "$PROJECT_ROOT" || { echo "ERROR: Project root not found"; exit 1; }
 
-LOG_DIR="${FILES_DIR}/logs/${CASE_NAME}/RQ2_RandomWalk"
+LOG_DIR="${FILES_DIR}/logs/${CASE_NAME}/RQ2/RandomWalk"
 mkdir -p "$LOG_DIR"
 
-mvn clean package dependency:copy-dependencies -DskipTests > "$LOG_DIR/RQ2_RandomWalk_build.log" 2>&1
-export CP="target/classes:target/dependency/*"
+
+#mvn clean package dependency:copy-dependencies -DskipTests > "$LOG_DIR/RQ2_RandomWalk_build.log" 2>&1
+export CP="target/classes:target/dependency/*:target/esg-with-feature-expressions-0.0.1-SNAPSHOT.jar"
 
 MAIN="tr.edu.iyte.esgfx.cases.${CASE_NAME}.RQ2_ExtremeScalability_RandomWalk_${SHORT_NAME}"
 JAVA_OPTS="-Xms$XMS -Xmx$XMX -XX:+UseG1GC"
@@ -63,6 +76,6 @@ for i in $(seq $S_NODE $E_NODE); do
   echo "  Shard $i dispatched -> $LOG"
   if [[ "$OSTYPE" == "darwin"* ]]; then sleep 1; else sleep 0.2; fi
 done
+sleep 3
 
-wait
 echo "=== RANDOM WALK EXTREME SCALABILITY FINISHED ==="

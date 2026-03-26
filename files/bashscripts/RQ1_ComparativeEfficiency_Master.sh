@@ -10,7 +10,7 @@
 if [[ "$OSTYPE" == "darwin"* ]]; then
   TARGET_SHARDS=4  
 else
-  TARGET_SHARDS=40 
+  TARGET_SHARDS=80 
 fi
 
 START_SHARD=${1:-0}                    
@@ -47,6 +47,16 @@ SCRIPTS=(
 
 ERROR_KEYWORDS="Exception|Error|FAILURE|Java heap space|AccessDenied"
 
+echo "=== COMPILING PROJECT ONCE FOR THIS MASTER RUN ==="
+cd "$PROJECT_ROOT" || { echo "CRITICAL ERROR: Project root not found!"; exit 1; }
+
+mvn clean package dependency:copy-dependencies -DskipTests > "${FILES_DIR}/logs/RQ1_Master_Build_$$.log" 2>&1
+if [ $? -ne 0 ]; then
+    echo "CRITICAL ERROR: Maven build FAILED! See logs/RQ1_Master_Build_$$.log"
+    exit 1
+fi
+echo "=== COMPILATION FINISHED SUCCESSFULLY ==="
+
 verify_results() {
     local case_name=$1
     local script_name=$2
@@ -57,12 +67,12 @@ verify_results() {
     if [ -d "$target_dir" ]; then
         local count=$(find "$target_dir" -type f -name "*.csv" | wc -l)
         if [ "$count" -gt 0 ]; then
-            echo "   VERIFIED: Output CSV files found in $target_dir"
+            echo "✅ VERIFIED: Output CSV files found in $target_dir"
         else
-            echo "   WARNING: Folder exists but NO CSV files found in $target_dir"
+            echo "⚠️ WARNING: Folder exists but NO CSV files found in $target_dir"
         fi
     else
-        echo "   ERROR: Output folder NOT created: $target_dir"
+        echo "❌ ERROR: Output folder NOT created: $target_dir"
     fi
 }
 
@@ -72,13 +82,16 @@ wait_and_monitor() {
   local script_name=$3
   local error_detected=false
 
+  local tmp_file="error_snippet_${case_name}_$$.tmp"
+
   echo "Monitoring logs in: $log_dir"
+
 
   while pgrep -f "java.*$case_name" > /dev/null; do
     if [ -d "$log_dir" ]; then
-        if find "$log_dir" -type f -name "*.log" -mmin -5 -exec grep -E "$ERROR_KEYWORDS" {} + 2>/dev/null | tail -n 1 > error_snippet.tmp; then
-            if [ -s error_snippet.tmp ] && [ "$error_detected" = false ]; then
-                local msg=$(cat error_snippet.tmp)
+        if find "$log_dir" -type f -name "*.log" -mmin -5 -exec grep -E "$ERROR_KEYWORDS" {} + 2>/dev/null | tail -n 1 > "$tmp_file"; then
+            if [ -s "$tmp_file" ] && [ "$error_detected" = false ]; then
+                local msg=$(cat "$tmp_file")
                 echo -e "\nCRITICAL ERROR detected in: $case_name \n$msg"
                 error_detected=true
             fi
@@ -88,7 +101,7 @@ wait_and_monitor() {
     sleep 10
   done
   
-  rm -f error_snippet.tmp
+  rm -f "$tmp_file"
   echo -e "\nPROCESS FINISHED: $case_name ($script_name)"
 }
 
@@ -118,7 +131,7 @@ for RUN_ID in $(seq 1 $TOTAL_RUNS); do
             CASE_NAME=$1
             SHORT_NAME=$2
 
-            LOG_DIR="${FILES_DIR}/logs/${CASE_NAME}"
+            LOG_DIR="${FILES_DIR}/logs/${CASE_NAME}/RQ1"
             mkdir -p "$LOG_DIR"
 
             echo "PROCESSING CASE: $CASE_NAME"
@@ -128,9 +141,9 @@ for RUN_ID in $(seq 1 $TOTAL_RUNS); do
             
             wait_and_monitor "$CASE_NAME" "$LOG_DIR" "$SCRIPT_NAME"
             verify_results "$CASE_NAME" "$SCRIPT_NAME" "$RUN_ID"
-            
-            sleep 2
+            if [[ "$OSTYPE" == "darwin"* ]]; then sleep 1; else sleep 0.2; fi
         done
+        sleep 3
     done
 done
 
@@ -138,3 +151,4 @@ echo ""
 echo "=================================================="
 echo "ALL 11 RUNS COMPLETED SUCCESSFULLY ON THIS NODE ($START_SHARD-$END_SHARD)!"
 echo "=================================================="
+sleep 3

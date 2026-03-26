@@ -2,42 +2,57 @@
 """
 rq1_aggregate_shards.py — Aggregates shard-level CSV files for RQ1
 ====================================================================
-Each shard CSV contains per-run summaries for a subset of products.
-This script produces two outputs per case study:
-
-1. RQ1_rawData_{case}.xlsx  — Raw shard data concatenated (for traceability)
-2. RQ1_aggregated_{case}.xlsx — Shards merged by Run ID (for statistical analysis)
-
-The aggregated file has 11 rows per sheet (one per run) with metrics
-summed/maxed/averaged across shards, ready for median/IQR computation.
-
-Aggregation rules per column type:
-  - Time columns:    SUM (total CPU time across all shards)
-  - Peak Memory:     MAX (highest peak across shards)
-  - Counts:          SUM (vertices, edges, test cases, products, etc.)
-  - Coverage %:      WEIGHTED AVERAGE (weighted by Processed Products)
-  - Safety Limit Avg: WEIGHTED AVERAGE (weighted by Safety Limit Hit Count)
+FIXED VERSION: Handles SPL name mismatches between folder names and file prefixes.
 
 Usage:
-    python3 rq1_aggregate_shards.py [cases_root]
-    Default: /Users/dilekozturk/git/esg-with-feature-expressions/files/Cases
+    python3 rq1_aggragateshards.py
 """
 
 import os
 import sys
 import glob
 import pandas as pd
+from pathlib import Path
 from openpyxl import Workbook
 from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 
 # =============================================================================
-# CONFIGURATION
+# SPL NAME MAPPING
 # =============================================================================
 
-DEFAULT_CASES_ROOT = "/Users/dilekozturk/git/esg-with-feature-expressions/files/Cases"
+SPL_NAME_MAPPING = {
+    "SodaVendingMachine": "SVM",
+    "eMail": "eM",
+    "Elevator": "El",
+    "BankAccountv2": "BAv2",
+    "StudentAttendanceSystem": "SAS",
+    "Tesla": "Te",
+    "syngovia": "Svia",
+    "HockertyShirts": "HS"
+}
 
-# Column classification per approach
-# Keys: 'sum', 'max', 'weighted_avg', 'key', 'skip'
+# =============================================================================
+# PROJECT ROOT FINDER
+# =============================================================================
+
+def find_project_root():
+    """Find project root by looking for 'files/Cases' directory."""
+    current = Path.cwd()
+    
+    if (current / "files" / "Cases").exists():
+        return current
+    if (current.parent / "files" / "Cases").exists():
+        return current.parent
+    if (current.parent.parent / "files" / "Cases").exists():
+        return current.parent.parent
+    if current.name == "scripts" and current.parent.name == "files":
+        return current.parent.parent
+    
+    return None
+
+# =============================================================================
+# COLUMN CLASSIFICATION
+# =============================================================================
 
 EFG_RULES = {
     'key':  ['Run ID', 'SPL Name', 'Coverage Type'],
@@ -64,7 +79,7 @@ ESGFX_RULES = {
              'Test Execution Time(ms)', 'ESGFx Model Load Time(ms)',
              'Processed Products', 'Failed Products'],
     'max':  ['Test Generation Peak Memory(MB)', 'Test Execution Peak Memory(MB)'],
-    'weighted_avg': {},  # Coverage column name varies by L level, handled dynamically
+    'weighted_avg': {},  # Handled dynamically
 }
 
 RW_RULES = {
@@ -89,7 +104,7 @@ RW_RULES = {
 
 
 def detect_approach(columns):
-    """Detect which approach a CSV belongs to based on its columns."""
+    """Detect which approach a CSV belongs to."""
     col_set = set(c.strip() for c in columns)
     if 'Total NumberOfEFGVertices' in col_set or 'Total NumberOfEFGTestCases' in col_set:
         return 'EFG', EFG_RULES
@@ -98,280 +113,270 @@ def detect_approach(columns):
     elif 'Aborted Sequences' in col_set or 'Safety Limit Hit Count' in col_set:
         return 'RandomWalk', RW_RULES
     else:
-        return 'Unknown', None
-
-
-def find_coverage_pct_columns(columns):
-    """Find coverage percentage columns dynamically (ESG-Fx uses L2 Percent(%), L3 Percent(%), etc.)."""
-    pct_cols = {}
-    for col in columns:
-        col_stripped = col.strip()
-        if 'Percent(%)' in col_stripped or 'Coverage(%)' in col_stripped:
-            pct_cols[col_stripped] = 'Processed Products'
-    return pct_cols
+        return 'Unknown', {}
 
 
 # =============================================================================
-# AGGREGATION ENGINE
+# AGGREGATION LOGIC
 # =============================================================================
 
-def aggregate_shards(shard_dfs, rules, all_columns):
-    """
-    Aggregates multiple shard DataFrames into one summary by Run ID.
+def aggregate_by_run_id(df, rules):
+    """Aggregate shards by Run ID according to rules."""
+    if df.empty or 'Run ID' not in df.columns:
+        return df
     
-    Returns: DataFrame with one row per Run ID.
+    grouped = df.groupby('Run ID', sort=False)
+    aggregated_rows = []
+    
+    for run_id, group in grouped:
+        row = {'Run ID': run_id}
+        
+        # Keep first value for key columns
+        for col in rules.get('key', []):
+            if col in group.columns and col != 'Run ID':
+                row[col] = group[col].iloc[0]
+        
+        # Sum columns
+        for col in rules.get('sum', []):
+            if col in group.columns:
+                row[col] = group[col].sum()
+        
+        # Max columns
+        for col in rules.get('max', []):
+            if col in group.columns:
+                row[col] = group[col].max()
+        
+        # Weighted averages
+        for col, weight_col in rules.get('weighted_avg', {}).items():
+            if col in group.columns and weight_col in group.columns:
+                weights = group[weight_col]
+                values = group[col]
+                total_weight = weights.sum()
+                if total_weight > 0:
+                    row[col] = (values * weights).sum() / total_weight
+                else:
+                    row[col] = 0.0
+        
+        # Handle ESG-Fx coverage columns dynamically
+        if 'approach' in locals() and approach == 'ESG-Fx':
+            for col in group.columns:
+                if col.startswith('L') and 'Coverage(%)' in col and col not in row:
+                    weight_col = 'Processed Products'
+                    if weight_col in group.columns:
+                        weights = group[weight_col]
+                        values = group[col]
+                        total_weight = weights.sum()
+                        if total_weight > 0:
+                            row[col] = (values * weights).sum() / total_weight
+        
+        aggregated_rows.append(row)
+    
+    result = pd.DataFrame(aggregated_rows)
+    
+    # Preserve column order from original
+    ordered_cols = [c for c in df.columns if c in result.columns]
+    return result[ordered_cols]
+
+
+# =============================================================================
+# FILE DISCOVERY WITH SPL NAME MAPPING
+# =============================================================================
+
+def discover_shard_files(base_dir, spl_folder_name):
     """
-    combined = pd.concat(shard_dfs, ignore_index=True)
-
-    # Clean column names
-    combined.columns = [c.strip() for c in combined.columns]
-
-    key_cols = [c for c in rules['key'] if c in combined.columns]
-    if not key_cols:
-        return combined  # Can't aggregate without keys
-
-    # Detect dynamic coverage columns for ESG-Fx
-    weighted_avg_cols = dict(rules.get('weighted_avg', {}))
-    for col in combined.columns:
-        if 'Percent(%)' in col or 'Coverage(%)' in col:
-            if col not in weighted_avg_cols and col not in rules.get('sum', []):
-                weighted_avg_cols[col] = 'Processed Products'
-
-    # Build aggregation dict
-    agg_dict = {}
-    sum_cols = [c for c in rules.get('sum', []) if c in combined.columns]
-    max_cols = [c for c in rules.get('max', []) if c in combined.columns]
-
-    for col in sum_cols:
-        agg_dict[col] = 'sum'
-    for col in max_cols:
-        agg_dict[col] = 'max'
-
-    # Weighted average columns need custom handling
-    wavg_cols_present = {k: v for k, v in weighted_avg_cols.items()
-                         if k in combined.columns and v in combined.columns}
-
-    # For weighted avg cols, we first compute weight * value, then divide by sum of weights
-    # Add them to sum temporarily so groupby doesn't drop them
-    temp_weighted_cols = {}
-    for val_col, weight_col in wavg_cols_present.items():
-        temp_name = f'_wavg_numerator_{val_col}'
-        combined[temp_name] = combined[val_col] * combined[weight_col]
-        agg_dict[temp_name] = 'sum'
-        temp_weighted_cols[val_col] = (temp_name, weight_col)
-        # Don't aggregate the original — we'll recalculate
-        if val_col in agg_dict:
-            del agg_dict[val_col]
-
-    # Any remaining numeric columns not classified
-    for col in combined.columns:
-        if col in key_cols or col in agg_dict or col in wavg_cols_present:
-            continue
-        if col.startswith('_wavg_'):
-            continue
-        if combined[col].dtype in ['float64', 'int64', 'float32', 'int32']:
-            agg_dict[col] = 'sum'  # Default: sum
-
-    # Group and aggregate
-    result = combined.groupby(key_cols, as_index=False).agg(agg_dict)
-
-    # Compute weighted averages
-    for val_col, (num_col, weight_col) in temp_weighted_cols.items():
-        weight_sum = combined.groupby(key_cols, as_index=False)[weight_col].sum()
-        result = result.merge(weight_sum, on=key_cols, suffixes=('', '_total_weight'))
-
-        weight_total_col = f'{weight_col}_total_weight' if f'{weight_col}_total_weight' in result.columns else weight_col
-        result[val_col] = result[num_col] / result[weight_total_col].replace(0, 1)
-
-        # Cleanup temp columns
-        result.drop(columns=[num_col], inplace=True, errors='ignore')
-        if weight_total_col != weight_col:
-            result.drop(columns=[weight_total_col], inplace=True, errors='ignore')
-
-    # Reorder columns to match original
-    final_cols = [c for c in all_columns if c in result.columns]
-    remaining = [c for c in result.columns if c not in final_cols and not c.startswith('_')]
-    result = result[final_cols + remaining]
-
-    return result.sort_values(by=key_cols).reset_index(drop=True)
-
-
-# =============================================================================
-# EXCEL STYLING
-# =============================================================================
-
-HEADER_FONT = Font(name='Arial', bold=True, size=11, color='FFFFFF')
-HEADER_FILL = PatternFill(start_color='4472C4', end_color='4472C4', fill_type='solid')
-CELL_FONT = Font(name='Arial', size=10)
-THIN_BORDER = Border(
-    left=Side(style='thin'), right=Side(style='thin'),
-    top=Side(style='thin'), bottom=Side(style='thin')
-)
-
-
-def style_sheet(ws, df):
-    """Apply professional styling."""
-    for col_idx in range(1, len(df.columns) + 1):
-        cell = ws.cell(row=1, column=col_idx)
-        cell.font = HEADER_FONT
-        cell.fill = HEADER_FILL
-        cell.alignment = Alignment(horizontal='center', wrap_text=True)
-        cell.border = THIN_BORDER
-
-    for row_idx in range(2, len(df) + 2):
-        for col_idx in range(1, len(df.columns) + 1):
-            cell = ws.cell(row=row_idx, column=col_idx)
-            cell.font = CELL_FONT
-            cell.border = THIN_BORDER
-            if isinstance(cell.value, float):
-                cell.number_format = '0.00'
-
-    for col_idx in range(1, len(df.columns) + 1):
-        header = str(df.columns[col_idx - 1])
-        max_len = min(max(len(header), 10), 30)
-        ws.column_dimensions[ws.cell(row=1, column=col_idx).column_letter].width = max_len + 3
-
-    ws.freeze_panes = 'A2'
-
-
-# =============================================================================
-# MAIN PIPELINE
-# =============================================================================
-
-def process_cases(cases_root):
-    """Main pipeline: discovers, concatenates, aggregates, writes Excel."""
-    search_pattern = os.path.join(cases_root, "*", "comparativeEfficiencyTestPipeline", "*", "*", "*.csv")
-    all_files = glob.glob(search_pattern)
-
-    if not all_files:
-        print("No CSV files found.")
-        return
-
-    print(f"Found {len(all_files)} CSV files.")
-
-    # Organize: case -> sheet_name -> list of (filepath, df)
-    cases_data = {}
-
-    for filepath in sorted(all_files):
-        try:
-            path_parts = filepath.split(os.sep)
-            pipeline_idx = path_parts.index("comparativeEfficiencyTestPipeline")
-            case_name = path_parts[pipeline_idx - 1]
-            approach_dir = path_parts[pipeline_idx + 1]
-            level_dir = path_parts[pipeline_idx + 2]
-
-            sheet_name = f"{approach_dir}_{level_dir}"[:31]
-
-            df = pd.read_csv(filepath, sep=';', decimal=',')
-            df.columns = [str(c).strip() for c in df.columns]
-
-            if case_name not in cases_data:
-                cases_data[case_name] = {}
-            if sheet_name not in cases_data[case_name]:
-                cases_data[case_name][sheet_name] = []
-
-            cases_data[case_name][sheet_name].append(df)
-
-        except Exception as e:
-            print(f"  Error reading {filepath}: {e}")
-
-    # Process each case
-    for case_name in sorted(cases_data.keys()):
-        sheets_dict = cases_data[case_name]
-        output_dir = os.path.join(cases_root, case_name, "comparativeEfficiencyTestPipeline")
-        os.makedirs(output_dir, exist_ok=True)
-
-        raw_path = os.path.join(output_dir, f"RQ1_rawData_{case_name}.xlsx")
-        agg_path = os.path.join(output_dir, f"RQ1_aggregated_{case_name}.xlsx")
-
-        print(f"\n{'─' * 50}")
-        print(f"Case: {case_name}")
-        print(f"  Sheets: {sorted(sheets_dict.keys())}")
-
-        # === RAW DATA (concat only) ===
-        with pd.ExcelWriter(raw_path, engine='openpyxl') as writer:
-            for sheet_name in sorted(sheets_dict.keys()):
-                combined = pd.concat(sheets_dict[sheet_name], ignore_index=True)
-
-                # Sort by Run ID + shard order
-                sort_cols = []
-                for col in combined.columns:
-                    if col.strip().lower().replace(' ', '') == 'runid':
-                        sort_cols.append(col)
-                        break
-
-                if sort_cols:
-                    combined = combined.sort_values(by=sort_cols).reset_index(drop=True)
-
-                combined.to_excel(writer, sheet_name=sheet_name, index=False, float_format="%.2f")
-                print(f"  Raw {sheet_name}: {len(combined)} rows ({len(sheets_dict[sheet_name])} shards)")
-
-        # Style raw file
-        from openpyxl import load_workbook
-        wb = load_workbook(raw_path)
-        for ws_name in wb.sheetnames:
-            ws = wb[ws_name]
-            # Just style headers
-            for col_idx in range(1, ws.max_column + 1):
-                cell = ws.cell(row=1, column=col_idx)
-                cell.font = HEADER_FONT
-                cell.fill = HEADER_FILL
-                cell.alignment = Alignment(horizontal='center', wrap_text=True)
-            ws.freeze_panes = 'A2'
-        wb.save(raw_path)
-        print(f"  Saved: {raw_path}")
-
-        # === AGGREGATED DATA (merged by Run ID) ===
-        with pd.ExcelWriter(agg_path, engine='openpyxl') as writer:
-            for sheet_name in sorted(sheets_dict.keys()):
-                shard_dfs = sheets_dict[sheet_name]
-                all_columns = list(shard_dfs[0].columns)
-
-                # Detect approach from columns
-                approach_type, rules = detect_approach(all_columns)
-
-                if rules is None:
-                    print(f"  WARNING: Could not detect approach for {sheet_name}. Falling back to sum.")
-                    combined = pd.concat(shard_dfs, ignore_index=True)
-                    combined.to_excel(writer, sheet_name=sheet_name, index=False, float_format="%.2f")
+    Discover shard CSV files for a given SPL.
+    Handles name mismatch between folder name and file prefix.
+    """
+    spl_file_prefix = SPL_NAME_MAPPING.get(spl_folder_name, spl_folder_name)
+    
+    shard_files = {}
+    
+    # Try both folder name and file prefix patterns
+    patterns = [
+        f"{spl_file_prefix}_*.csv",
+        f"{spl_folder_name}_*.csv"
+    ]
+    
+    for pattern in patterns:
+        files = list(base_dir.glob(pattern))
+        if files:
+            for f in files:
+                # Extract approach from filename
+                fname = f.name
+                if '_EFG_' in fname:
+                    approach = 'EFG'
+                elif '_ESG-Fx_' in fname or '_RandomWalk_' in fname:
+                    approach = 'ESG-Fx' if '_ESG-Fx_' in fname else 'RandomWalk'
+                else:
                     continue
+                
+                if approach not in shard_files:
+                    shard_files[approach] = []
+                shard_files[approach].append(f)
+    
+    return shard_files
 
-                agg_df = aggregate_shards(shard_dfs, rules, all_columns)
 
-                agg_df.to_excel(writer, sheet_name=sheet_name, index=False, float_format="%.2f")
-                print(f"  Agg {sheet_name} ({approach_type}): {len(agg_df)} rows "
-                      f"(from {len(shard_dfs)} shards × {len(shard_dfs[0])} runs)")
+# =============================================================================
+# PROCESS SINGLE SPL
+# =============================================================================
 
-        # Style aggregated file
-        wb = load_workbook(agg_path)
-        for ws_name in wb.sheetnames:
-            ws = wb[ws_name]
-            for col_idx in range(1, ws.max_column + 1):
-                cell = ws.cell(row=1, column=col_idx)
-                cell.font = HEADER_FONT
-                cell.fill = HEADER_FILL
-                cell.alignment = Alignment(horizontal='center', wrap_text=True)
-                cell.border = THIN_BORDER
-            for row_idx in range(2, ws.max_row + 1):
-                for col_idx in range(1, ws.max_column + 1):
-                    cell = ws.cell(row=row_idx, column=col_idx)
-                    cell.font = CELL_FONT
-                    cell.border = THIN_BORDER
-                    if isinstance(cell.value, float):
-                        cell.number_format = '0.00'
-            ws.freeze_panes = 'A2'
-        wb.save(agg_path)
-        print(f"  Saved: {agg_path}")
+def process_spl(spl_folder_name, base_dir, output_dir):
+    """Process all shard files for a single SPL."""
+    
+    print(f"\n{'='*80}")
+    print(f"📊 PROCESSING: {spl_folder_name}")
+    spl_file_prefix = SPL_NAME_MAPPING.get(spl_folder_name, spl_folder_name)
+    if spl_file_prefix != spl_folder_name:
+        print(f"   File prefix: {spl_file_prefix}")
+    print(f"{'='*80}")
+    print(f"Input:  {base_dir}")
+    print(f"Output: {output_dir}")
+    
+    shard_files = discover_shard_files(base_dir, spl_folder_name)
+    
+    if not shard_files:
+        print("  ⚠️  No shard files found")
+        return False
+    
+    all_raw_data = []
+    all_agg_data = []
+    
+    for approach, files in sorted(shard_files.items()):
+        print(f"\n  🔸 {approach}: {len(files)} shard files")
+        
+        # Read all shards
+        dfs = []
+        for f in sorted(files):
+            try:
+                df = pd.read_csv(f, sep=';', decimal=',')
+                dfs.append(df)
+            except Exception as e:
+                print(f"     ❌ Error reading {f.name}: {e}")
+                continue
+        
+        if not dfs:
+            continue
+        
+        # Concatenate
+        raw_data = pd.concat(dfs, ignore_index=True)
+        print(f"     Combined: {len(raw_data)} rows")
+        
+        # Detect approach and aggregate
+        detected_approach, rules = detect_approach(raw_data.columns)
+        
+        if rules:
+            agg_data = aggregate_by_run_id(raw_data, rules)
+            print(f"     Aggregated: {len(agg_data)} runs")
+            
+            raw_data['Approach'] = approach
+            agg_data['Approach'] = approach
+            
+            all_raw_data.append(raw_data)
+            all_agg_data.append(agg_data)
+        else:
+            print(f"     ⚠️  Unknown format, skipping aggregation")
+    
+    if not all_raw_data:
+        return False
+    
+    # Save combined Excel files
+    print(f"\n  💾 Saving files...")
+    
+    raw_combined = pd.concat(all_raw_data, ignore_index=True)
+    agg_combined = pd.concat(all_agg_data, ignore_index=True)
+    
+    raw_path = output_dir / f"RQ1_rawData_{spl_folder_name}.xlsx"
+    agg_path = output_dir / f"RQ1_aggregated_{spl_folder_name}.xlsx"
+    
+    try:
+        raw_combined.to_excel(raw_path, index=False, engine='openpyxl')
+        print(f"     ✅ Raw: {raw_path.name} ({len(raw_combined)} rows)")
+    except Exception as e:
+        print(f"     ❌ Failed to save raw: {e}")
+    
+    try:
+        agg_combined.to_excel(agg_path, index=False, engine='openpyxl')
+        print(f"     ✅ Aggregated: {agg_path.name} ({len(agg_combined)} rows)")
+    except Exception as e:
+        print(f"     ❌ Failed to save aggregated: {e}")
+    
+    return True
 
+
+# =============================================================================
+# MAIN
+# =============================================================================
 
 def main():
-    cases_root = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_CASES_ROOT
-    print(f"Cases root: {cases_root}")
-    print(f"{'=' * 50}")
-    process_cases(cases_root)
-    print(f"\n{'=' * 50}")
-    print("All cases processed.")
+    print("="*80)
+    print("RQ1 SHARD AGGREGATION - AUTOMATIC")
+    print("="*80)
+    
+    project_root = find_project_root()
+    
+    if not project_root:
+        print("❌ ERROR: Could not find project root!")
+        sys.exit(1)
+    
+    cases_dir = project_root / "files" / "Cases"
+    print(f"Project root: {project_root}")
+    print(f"Cases dir:    {cases_dir}")
+    
+    # Discover SPLs
+    print("\n🔍 Discovering SPLs...")
+    spls = [d for d in sorted(cases_dir.iterdir()) if d.is_dir()]
+    
+    if not spls:
+        print("❌ No SPL directories found!")
+        sys.exit(1)
+    
+    print(f"✅ Found {len(spls)} SPLs:")
+    for spl_dir in spls:
+        file_prefix = SPL_NAME_MAPPING.get(spl_dir.name, spl_dir.name)
+        if file_prefix != spl_dir.name:
+            print(f"   - {spl_dir.name:25s} (files: {file_prefix}_*.csv)")
+        else:
+            print(f"   - {spl_dir.name}")
+    
+    print("\n" + "="*80)
+    print("PROCESSING SPLs")
+    print("="*80)
+    
+    processed_count = 0
+    failed_count = 0
+    
+    for spl_dir in spls:
+        base_dir = spl_dir / "rq1_shardfiles"
+        output_dir = spl_dir / "rq1_shardfiles"
+        
+        if not base_dir.exists():
+            print(f"\n⚠️  Skipping {spl_dir.name}: no rq1_shardfiles directory")
+            continue
+        
+        try:
+            success = process_spl(spl_dir.name, base_dir, output_dir)
+            if success:
+                processed_count += 1
+            else:
+                failed_count += 1
+        except Exception as e:
+            print(f"\n❌ ERROR processing {spl_dir.name}: {e}")
+            import traceback
+            traceback.print_exc()
+            failed_count += 1
+    
+    print("\n" + "="*80)
+    print("SUMMARY")
+    print("="*80)
+    print(f"✅ Successfully processed: {processed_count} SPLs")
+    if failed_count > 0:
+        print(f"❌ Failed: {failed_count} SPLs")
+    print("\nOutput files in each SPL's rq1_shardfiles/ directory:")
+    print("  - RQ1_rawData_<SPL>.xlsx")
+    print("  - RQ1_aggregated_<SPL>.xlsx")
+    print("="*80)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

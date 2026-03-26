@@ -9,13 +9,18 @@ import java.util.Locale;
 import java.text.DecimalFormatSymbols;
 
 /**
- * Writer for RQ2 Extreme Scalability - EFG Baseline
+ * Writer for RQ2 Extreme Scalability - EFG Baseline (UPDATED)
+ * 
+ * CHANGES FROM ORIGINAL:
+ * 1. Added parseTimeMs parameter (GUITAR output → EventSequence parsing)
+ * 2. Already had numberOfEFGVertices and numberOfEFGEdges (correct!)
+ * 
  * Records throughput, failures, and coverage degradation on large SPLs
  */
 public class TestPipelineMeasurementWriter_EFG_ExtremeScalability {
 
     /**
-     * Write EFG L=2,3,4 measurements with transformation and coverage tracking
+     * Write EFG L=2,3,4 measurements with transformation, parsing, and coverage tracking
      * Matches ESG-Fx L234 column structure for direct comparison
      */
     public static void writeDetailedPipelineMeasurementForEFG_L234(
@@ -23,21 +28,22 @@ public class TestPipelineMeasurementWriter_EFG_ExtremeScalability {
             double totalElapsedTimeMs, 
             double satTimeMs,
             double prodGenTimeMs, 
-            double efgTransformationTimeMs,  // EFG generation from ESGFx
-            double testGenTimeMs,            // GUITAR test generation
+            double efgTransformationTimeMs,  // ESGFx → EFG XML writing
+            double testGenTimeMs,             // GUITAR test generation  
+            double parseTimeMs,               // GUITAR output parsing (ADDED)
             double testGenPeakMemoryMB,
-            int numberOfEFGVertices, 
-            int numberOfEFGEdges, 
+            int numberOfEFGVertices,          // EFG vertex count (already there!)
+            int numberOfEFGEdges,             // EFG edge count (already there!)
             long numberOfEFGTestCases, 
             long numberOfEFGTestEvents,
             double eventCoveragePercent,
             double eventCoverageAnalysisTimeMs,
-            double edgeCoveragePercent,      // CRITICAL: Track coverage degradation
+            double edgeCoveragePercent,       // CRITICAL: Track coverage degradation
             double edgeCoverageAnalysisTimeMs,
             double testExecTimeMs, 
             double testExecPeakMemoryMB, 
             int processedProductCount, 
-            int failedProductCount,          // OOM, timeout, GUITAR crashes
+            int failedProductCount,           // OOM, timeout, GUITAR crashes
             String folderName, 
             String SPLName, 
             String coverageType) {
@@ -62,9 +68,10 @@ public class TestPipelineMeasurementWriter_EFG_ExtremeScalability {
                     + df.format(satTimeMs) + ";" 
                     + df.format(prodGenTimeMs) + ";" 
                     + df.format(efgTransformationTimeMs) + ";"  // ESGFx → EFG
-                    + df.format(testGenTimeMs) + ";"            // GUITAR
+                    + df.format(testGenTimeMs) + ";"            // GUITAR generation
+                    + df.format(parseTimeMs) + ";"              // GUITAR output parsing (ADDED)
                     + df.format(testGenPeakMemoryMB) + ";" 
-                    + numberOfEFGVertices + ";"
+                    + numberOfEFGVertices + ";"                 // EFG metrics
                     + numberOfEFGEdges + ";" 
                     + numberOfEFGTestCases + ";" 
                     + numberOfEFGTestEvents + ";"
@@ -80,11 +87,13 @@ public class TestPipelineMeasurementWriter_EFG_ExtremeScalability {
 
             if (file.length() == 0) {
                 writer.write("RunID;SPL Name;Coverage Type;Total Elapsed Time(ms);SAT Time(ms);"
-                        + "Product Gen Time(ms);EFG Transformation Time(ms);Test Generation Time(ms);" 
-                        + "Test Generation Peak Memory(MB);Number of EFG Vertices;" 
-                        + "Number of EFG Edges;Number of EFG Test Cases;Number of EFG Test Events;"
+                        + "Product Gen Time(ms);EFG Transformation Time(ms);"
+                        + "Test Generation Time(ms);Parse Time(ms);"  // ADDED Parse Time
+                        + "Test Generation Peak Memory(MB);"
+                        + "Number of EFG Vertices;Number of EFG Edges;"  // EFG metrics
+                        + "Number of EFG Test Cases;Number of EFG Test Events;"
                         + "Event Coverage(%);Event Coverage Analysis Time(ms);"
-                        + "Edge Coverage(%);Edge Coverage Analysis Time(ms);"  // ADDED
+                        + "Edge Coverage(%);Edge Coverage Analysis Time(ms);"
                         + "Test Execution Time(ms);Test Execution Peak Memory(MB);"
                         + "Processed Products;Failed Products\n");
             }

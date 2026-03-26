@@ -21,7 +21,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FILES_DIR="$(dirname "$SCRIPT_DIR")"
 PROJECT_ROOT="$(dirname "$FILES_DIR")"
 
-if [ -n "$SHARD_PARAM" ]; then N=$SHARD_PARAM; else N=$([[ "$OSTYPE" == "darwin"* ]] && echo 4 || echo 40); fi
+if [ -n "$SHARD_PARAM" ]; then N=$SHARD_PARAM; else N=$([[ "$OSTYPE" == "darwin"* ]] && echo 4 || echo 80); fi
 if [ -n "$START_PARAM" ]; then S_NODE=$START_PARAM; else S_NODE=0; fi
 if [ -n "$END_PARAM" ]; then E_NODE=$END_PARAM; else E_NODE=$((N-1)); fi
 
@@ -51,7 +51,7 @@ for i in $(seq $S_NODE $E_NODE); do
   nohup java $JAVA_OPTS -cp "$CP" "$MAIN" > "$LOG" 2>&1 &
   
   echo "Shard $i dispatched -> $LOG"
-  sleep 0.2
+  if [[ "$OSTYPE" == "darwin"* ]]; then sleep 1; else sleep 0.2; fi
 done
-
+sleep 3
 echo "EVENT OMISSION DISPATCHED FOR $CASE_NAME"

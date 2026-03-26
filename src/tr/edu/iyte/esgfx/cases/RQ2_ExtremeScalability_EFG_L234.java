@@ -1,5 +1,6 @@
 package tr.edu.iyte.esgfx.cases;
 
+import java.io.File;
 import java.util.List;
 import java.util.Set;
 import java.util.Locale;
@@ -12,17 +13,27 @@ import tr.edu.iyte.esg.eventsequence.EventSequence;
 import tr.edu.iyte.esg.model.ESG;
 
 import tr.edu.iyte.esgfx.cases.resultrecordingutilities.TestPipelineMeasurementWriter_EFG_ExtremeScalability;
+import tr.edu.iyte.esgfx.conversion.xml.ESGToEFGFileWriter;
+import tr.edu.iyte.esgfx.model.ESGFx;
 import tr.edu.iyte.esgfx.model.featureexpression.FeatureExpression;
 import tr.edu.iyte.esgfx.productconfigurationgeneration.SATSolverGenerationFromFeatureModel;
 import tr.edu.iyte.esgfx.productmodelgeneration.ProductESGFxGenerator;
-import tr.edu.iyte.esgfx.conversion.mxe.EFGConversionFacade;
-import tr.edu.iyte.esgfx.testgeneration.guitartestgeneration.GUITARTestGeneratorFacade;
 import tr.edu.iyte.esgfx.testgeneration.edgecoverage.EdgeCoverageAnalyser;
 import tr.edu.iyte.esgfx.testgeneration.eventcoverage.EventCoverageAnalyser;
+import tr.edu.iyte.esgfx.testgeneration.guitar.EFGMetricsExtractor;
+import tr.edu.iyte.esgfx.testgeneration.guitar.EFGMetricsExtractor.EFGMetrics;
+import tr.edu.iyte.esgfx.testgeneration.guitar.GuitarExecutionWrapper;
+import tr.edu.iyte.esgfx.testgeneration.guitar.GuitarOutputToEventSequenceParser;
 import tr.edu.iyte.esgfx.testexecution.TestExecutor;
 
 /**
- * RQ2 Extreme Scalability: EFG Baseline
+ * RQ2 Extreme Scalability: EFG Baseline (CORRECTED)
+ * 
+ * CRITICAL FIXES:
+ * 1. Proper test sequence parsing (was missing!)
+ * 2. Disk cleanup after each product (streaming pipeline)
+ * 3. Parse time tracking added
+ * 4. EFG vertices/edges tracking added
  * 
  * PURPOSE: Demonstrate EFG's scalability limitations on large SPLs
  * 
@@ -31,9 +42,9 @@ import tr.edu.iyte.esgfx.testexecution.TestExecutor;
  * 2. Time cost (2-5 minutes per 400 products)
  * 3. Failure modes (OOM, GUITAR crashes)
  * 
- * IMPLEMENTATION NOTES:
+ * IMPLEMENTATION NOTES (from skill Design Decision #2):
  * - Streaming pipeline: SAT → ESGFx in memory → temp EFG → GUITAR → measure → delete
- * - No DOT files generated (disk-efficient)
+ * - Disk usage stays constant (~50 MB per shard)
  * - Crash recovery via CSV last-row check
  * - Edge coverage tracking is CRITICAL for validity assessment
  */
@@ -48,6 +59,7 @@ public class RQ2_ExtremeScalability_EFG_L234 extends CaseStudyUtilities {
         int timeoutHours = Integer.parseInt(System.getenv().getOrDefault("TIMEOUT_HOURS", "0"));
         long maxDurationNanos = timeoutHours > 0 ? timeoutHours * 60L * 60L * 1_000_000_000L : Long.MAX_VALUE;
         
+        String EFGCoverageType = "L" + L_LEVEL;
         coverageLength = L_LEVEL;
         setCoverageType();
 
@@ -55,8 +67,9 @@ public class RQ2_ExtremeScalability_EFG_L234 extends CaseStudyUtilities {
         
         long totalSatTimeNanos = 0;
         long totalProdGenTimeNanos = 0;
-        long totalEFGTransformationTimeNanos = 0;  // ESGFx → EFG conversion
+        long totalEFGTransformationTimeNanos = 0;  // ESGFx → EFG XML writing
         long totalTestGenTimeNanos = 0;            // GUITAR test generation
+        long totalParseTimeNanos = 0;              // GUITAR output → EventSequence parsing
         long totalTestExecTimeNanos = 0;
         
         long globalPeakMemoryGenBytes = 0;
@@ -87,8 +100,6 @@ public class RQ2_ExtremeScalability_EFG_L234 extends CaseStudyUtilities {
         int failedProducts = 0;
 
         ProductESGFxGenerator productESGFxGenerator = new ProductESGFxGenerator();
-        EFGConversionFacade efgConverter = new EFGConversionFacade();
-        GUITARTestGeneratorFacade guitarGenerator = new GUITARTestGeneratorFacade(coverageLength);
 
         long satStart = System.nanoTime();
 
@@ -131,9 +142,14 @@ public class RQ2_ExtremeScalability_EFG_L234 extends CaseStudyUtilities {
 
             handledProducts++;
             String productName = ProductIDUtil.format(productID);
+            
+            // Temporary files (will be deleted after measurement)
+            String efgFilePath = EFGFolder + productName + ".EFG";
+            String EFGTestSequencesFolderPerProduct = efg_testsequencesFolder + productName + "/" + EFGCoverageType + "/";
+            
+            int efgVertices = 0, efgEdges = 0;
 
             ESG productESGFx = null;
-            ESG productEFG = null;
             Set<EventSequence> testSequences = null;
             TestExecutor testExecutor = null;
             EventCoverageAnalyser eventCoverageAnalyser = null;
@@ -145,23 +161,36 @@ public class RQ2_ExtremeScalability_EFG_L234 extends CaseStudyUtilities {
                 productESGFx = productESGFxGenerator.generateProductESGFx(productID, productName, ESGFx);
                 totalProdGenTimeNanos += (System.nanoTime() - prodGenStart);
 
-                // 2. EFG TRANSFORMATION (ESGFx → EFG)
+                // 2. EFG TRANSFORMATION (ESGFx → EFG XML)
                 resetPeakMemoryCounters();
+                
                 long efgTransformStart = System.nanoTime();
-                productEFG = efgConverter.convertToEFG(productESGFx, coverageLength);
+                ESGToEFGFileWriter.writeESGFxToEFGFile(productESGFx, productName, EFGFolder);
                 long efgTransformEnd = System.nanoTime();
                 totalEFGTransformationTimeNanos += (efgTransformEnd - efgTransformStart);
 
-                if (productEFG != null) {
-                    globalTotalEFGVertices += productEFG.getVertexList().size();
-                    globalTotalEFGEdges += productEFG.getEdgeList().size();
-                }
+                // Extract EFG metrics (vertices/edges count)
+                EFGMetrics efgMetrics = EFGMetricsExtractor.getMetrics(efgFilePath);
+                efgVertices = efgMetrics.vertices;
+                efgEdges = efgMetrics.edges;
+                globalTotalEFGVertices += efgVertices;
+                globalTotalEFGEdges += efgEdges;
 
                 // 3. GUITAR TEST GENERATION
                 long testGenStart = System.nanoTime();
-                testSequences = guitarGenerator.generateTests(productEFG);
+                GuitarExecutionWrapper.generateTestsFromEFG(efgFilePath, EFGTestSequencesFolderPerProduct, L_LEVEL);
                 totalTestGenTimeNanos += (System.nanoTime() - testGenStart);
 
+                // 4. PARSE GUITAR OUTPUT TO EVENT SEQUENCES (CRITICAL FIX!)
+                long parseStart = System.nanoTime();
+                testSequences = GuitarOutputToEventSequenceParser.parseGuitarTests(
+                        EFGTestSequencesFolderPerProduct, 
+                        efgFilePath, 
+                        (ESGFx) productESGFx);
+                long parseEnd = System.nanoTime();
+                totalParseTimeNanos += (parseEnd - parseStart);
+
+                // Count test cases and events
                 if (testSequences != null) {
                     globalTotalTestCases += testSequences.size();
                     for (EventSequence seq : testSequences) {
@@ -177,12 +206,12 @@ public class RQ2_ExtremeScalability_EFG_L234 extends CaseStudyUtilities {
                 // ISOLATION BARRIER
                 System.gc();
 
-                // 4. TEST EXECUTION
+                // 5. TEST EXECUTION
                 resetPeakMemoryCounters();
                 long testExecStart = System.nanoTime();
                 if (testSequences != null && !testSequences.isEmpty()) {
                     testExecutor = new TestExecutor(testSequences);
-                    testExecutor.executeAllTests(productESGFx);  // Execute on ESGFx
+                    testExecutor.executeAllTests(productESGFx);
                 }
                 totalTestExecTimeNanos += (System.nanoTime() - testExecStart);
 
@@ -191,8 +220,7 @@ public class RQ2_ExtremeScalability_EFG_L234 extends CaseStudyUtilities {
                     globalPeakMemoryExecBytes = currentPeakExecBytes;
                 }
 
-                // 5. COVERAGE ANALYSIS - BOTH EVENT AND EDGE
-                // Event coverage
+                // 6. COVERAGE ANALYSIS - BOTH EVENT AND EDGE
                 long eventCovAnalysisStart = System.nanoTime();
                 eventCoverageAnalyser = new EventCoverageAnalyser();
                 double currentEventCoverage = eventCoverageAnalyser.analyseEventCoverage(
@@ -218,11 +246,13 @@ public class RQ2_ExtremeScalability_EFG_L234 extends CaseStudyUtilities {
                 failedProducts++;
                 System.err.println("GUITAR/EFG failure on product " + productID + ": " + e.getMessage());
             } finally {
-                // Cleanup
+                // 7. CLEANUP - DELETE TEMPORARY FILES (STREAMING PIPELINE!)
+                deleteEFGTemporaryFiles(efgFilePath, EFGTestSequencesFolderPerProduct);
+                
+                // Memory cleanup
                 testSequences = null;
                 testExecutor = null;
                 productESGFx = null;
-                productEFG = null;
                 eventCoverageAnalyser = null;
                 edgeCoverageAnalyser = null;
 
@@ -240,12 +270,14 @@ public class RQ2_ExtremeScalability_EFG_L234 extends CaseStudyUtilities {
         double prodGenTimeMs = totalProdGenTimeNanos / 1_000_000.0;
         double efgTransformationTimeMs = totalEFGTransformationTimeNanos / 1_000_000.0;
         double testGenTimeMs = totalTestGenTimeNanos / 1_000_000.0;
+        double parseTimeMs = totalParseTimeNanos / 1_000_000.0;
         double testExecTimeMs = totalTestExecTimeNanos / 1_000_000.0;
         double eventCoverageAnalysisTimeMs = globalTotalEventCoverageAnalysisTimeNanos / 1_000_000.0;
         double edgeCoverageAnalysisTimeMs = globalTotalEdgeCoverageAnalysisTimeNanos / 1_000_000.0;
         
         double timeElapsedTotalMs = satTimeMs + prodGenTimeMs + efgTransformationTimeMs 
-                + testGenTimeMs + testExecTimeMs + eventCoverageAnalysisTimeMs + edgeCoverageAnalysisTimeMs;
+                + testGenTimeMs + parseTimeMs + testExecTimeMs 
+                + eventCoverageAnalysisTimeMs + edgeCoverageAnalysisTimeMs;
         
         double avgEventCoverage = handledProducts > 0 ? globalTotalEventCoverage / handledProducts : 0.0;
         double avgEdgeCoverage = handledProducts > 0 ? globalTotalEdgeCoverage / handledProducts : 0.0;
@@ -260,11 +292,13 @@ public class RQ2_ExtremeScalability_EFG_L234 extends CaseStudyUtilities {
                         extremeScalabilityTestPipelineMeasurementFolder, coverageType, SPLName, coverageLength);
 
         TestPipelineMeasurementWriter_EFG_ExtremeScalability.writeDetailedPipelineMeasurementForEFG_L234(
-                runID, timeElapsedTotalMs, satTimeMs, prodGenTimeMs, efgTransformationTimeMs, 
-                testGenTimeMs, peakGenMemoryMB, 
-                globalTotalEFGVertices, globalTotalEFGEdges, globalTotalTestCases, globalTotalTestEvents,
+                runID, timeElapsedTotalMs, satTimeMs, prodGenTimeMs, 
+                efgTransformationTimeMs, testGenTimeMs, parseTimeMs,  // ADDED parseTimeMs
+                peakGenMemoryMB, 
+                globalTotalEFGVertices, globalTotalEFGEdges,  // ADDED EFG metrics
+                globalTotalTestCases, globalTotalTestEvents,
                 avgEventCoverage, eventCoverageAnalysisTimeMs,
-                avgEdgeCoverage, edgeCoverageAnalysisTimeMs,  // CRITICAL
+                avgEdgeCoverage, edgeCoverageAnalysisTimeMs,
                 testExecTimeMs, peakExecMemoryMB, 
                 handledProducts, failedProducts, 
                 summaryResultPath, SPLName, coverageType);
@@ -273,5 +307,47 @@ public class RQ2_ExtremeScalability_EFG_L234 extends CaseStudyUtilities {
                 "EFG L=%d %s FINISHED. Processed: %d, Failed: %d, Avg Edge Coverage: %.2f%%, Peak Memory: %.2fMB",
                 coverageLength, SPLName, handledProducts, failedProducts, avgEdgeCoverage, 
                 Math.max(peakGenMemoryMB, peakExecMemoryMB)));
+    }
+    
+    /**
+     * Delete EFG temporary files to keep disk usage constant
+     * 
+     * CRITICAL: This implements the streaming pipeline from skill Design Decision #2:
+     * "SAT solver → ESGFx in memory → write temp EFG → GUITAR → measure → delete"
+     */
+    private void deleteEFGTemporaryFiles(String efgFilePath, String testSequencesFolder) {
+        try {
+            // Delete EFG XML file
+            File efgFile = new File(efgFilePath);
+            if (efgFile.exists()) {
+                efgFile.delete();
+            }
+            
+            // Delete GUITAR test output folder recursively
+            File testSeqDir = new File(testSequencesFolder);
+            if (testSeqDir.exists()) {
+                deleteDirectory(testSeqDir);
+            }
+        } catch (Exception e) {
+            // Log but don't fail - cleanup is optional for correctness
+            System.err.println("Warning: Could not delete temp files: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Recursively delete directory
+     */
+    private void deleteDirectory(File dir) {
+        File[] files = dir.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    deleteDirectory(file);
+                } else {
+                    file.delete();
+                }
+            }
+        }
+        dir.delete();
     }
 }

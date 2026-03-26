@@ -27,7 +27,7 @@ PROJECT_DIR="$(dirname "$FILES_DIR")"
 if [ -n "$SHARD_PARAM" ]; then
   N=$SHARD_PARAM
 else
-  if [[ "$OSTYPE" == "darwin"* ]]; then N=4; else N=40; fi
+  if [[ "$OSTYPE" == "darwin"* ]]; then N=4; else N=80; fi
 fi
 
 # Configure Execution Range for this Node
@@ -51,14 +51,14 @@ mkdir -p "$LOG_DIR"
 
 # --- 4. COMPILE & DEPENDENCIES ---
 echo "🔨 Compiling project and gathering dependencies..."
-mvn clean package dependency:copy-dependencies -DskipTests > "$LOG_DIR/RQ1_ESGFx_L1_build.log" 2>&1
-if [ $? -ne 0 ]; then
-    echo "❌ COMPILATION ERROR! Check '$LOG_DIR/RQ1_ESGFx_L1_build.log' for details."
-    exit 1
-fi
+#mvn clean package dependency:copy-dependencies -DskipTests > "$LOG_DIR/RQ1_ESGFx_L1_build.log" 2>&1
+#if [ $? -ne 0 ]; then
+    #echo "❌ COMPILATION ERROR! Check '$LOG_DIR/RQ1_ESGFx_L1_build.log' for details."
+    #exit 1
+#fi
 
 # Set Classpath securely
-export CP="target/classes:target/dependency/*"
+export CP="target/classes:target/dependency/*:target/esg-with-feature-expressions-0.0.1-SNAPSHOT.jar"
 
 # Target Java Class
 MAIN="tr.edu.iyte.esgfx.cases.${CASE_NAME}.RQ1_ComparativeEfficiency_ESGFx_L1_${SHORT_NAME}"
@@ -84,6 +84,6 @@ for i in $(seq $S_NODE $E_NODE); do
   # Stagger start to prevent OS-level thread spawning spikes
   if [[ "$OSTYPE" == "darwin"* ]]; then sleep 1; else sleep 0.2; fi
 done
-
+sleep 3
 echo "--------------------------------------------------"
 echo "🎉 PROCESS DISPATCHED FOR $CASE_NAME (ESGFx L1 | Range: $S_NODE-$E_NODE | RunID: $RUN_PARAM)"

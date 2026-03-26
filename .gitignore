@@ -34,10 +34,14 @@ files/logs/
 files/Cases/*/comparativeEfficiencyTestPipeline/
 files/Cases/*/DOTs/
 files/Cases/*/EFGs/
+files/Cases/*/extremeScalabilityTestPipeline
 files/Cases/*/faultdetection/
 files/Cases/*/productConfigurations/
-files/Cases/*/testsequences/
 files/Cases/*/testsequenceanalysis/
+files/Cases/*/testsequences/
+
+files/bashscripts/digitalocean
+
 
 # Ignore the generated configurations text file for every case
 files/Cases/*/*_ProductConfigurations.txt

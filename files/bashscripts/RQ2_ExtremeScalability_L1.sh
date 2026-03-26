@@ -18,7 +18,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FILES_DIR="$(dirname "$SCRIPT_DIR")"
 PROJECT_ROOT="$(dirname "$FILES_DIR")"
 
-if [ -n "$SHARD_PARAM" ]; then N=$SHARD_PARAM; else N=$([[ "$OSTYPE" == "darwin"* ]] && echo 4 || echo 40); fi
+if [ -n "$SHARD_PARAM" ]; then N=$SHARD_PARAM; else N=$([[ "$OSTYPE" == "darwin"* ]] && echo 4 || echo 80); fi
 if [ -n "$START_PARAM" ]; then S_NODE=$START_PARAM; else S_NODE=0; fi
 if [ -n "$END_PARAM" ]; then E_NODE=$END_PARAM; else E_NODE=$((N-1)); fi
 
@@ -29,7 +29,7 @@ else
 fi
 
 if [[ "$CASE_NAME" == "HockertyShirts" ]] || [[ "$CASE_NAME" == "HS" ]]; then
-    MY_TIMEOUT_HOURS=12
+    MY_TIMEOUT_HOURS=6
 else
     MY_TIMEOUT_HOURS=0
 fi
@@ -37,11 +37,11 @@ fi
 # DÜZELTME BURADA: Proje kök dizinine geçildi
 cd "$PROJECT_ROOT" || { echo "ERROR: Project root not found"; exit 1; }
 
-LOG_DIR="${FILES_DIR}/logs/${CASE_NAME}/RQ2/ESGFx_L1"
+LOG_DIR="${FILES_DIR}/logs/${CASE_NAME}/RQ2/ESGFx/L1"
 mkdir -p "$LOG_DIR"
 
-mvn clean package dependency:copy-dependencies -DskipTests > "$LOG_DIR/RQ2_ESGFx_L1_build.log" 2>&1
-export CP="target/classes:target/dependency/*"
+#mvn clean package dependency:copy-dependencies -DskipTests > "$LOG_DIR/RQ2_ESGFx_L1_build.log" 2>&1
+export CP="target/classes:target/dependency/*:target/esg-with-feature-expressions-0.0.1-SNAPSHOT.jar"
 
 MAIN="tr.edu.iyte.esgfx.cases.${CASE_NAME}.RQ2_ExtremeScalability_L1_${SHORT_NAME}"
 JAVA_OPTS="-Xms$XMS -Xmx$XMX -XX:+UseG1GC"
@@ -55,5 +55,6 @@ for i in $(seq $S_NODE $E_NODE); do
   nohup java $JAVA_OPTS -cp "$CP" "$MAIN" > "$LOG" 2>&1 &
   
   echo "✅ Shard $i dispatched -> $LOG"
-  sleep 0.2
+  if [[ "$OSTYPE" == "darwin"* ]]; then sleep 1; else sleep 0.2; fi
 done
+sleep 3

@@ -1,8 +1,11 @@
 #!/bin/bash
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+FILES_DIR="$(dirname "$(dirname "$SCRIPT_DIR")")"
 IPS_FILE="$SCRIPT_DIR/ips.txt"
-LOCAL_DEST="$SCRIPT_DIR/Cluster_Logs"
+
+# Logları bashscripts klasörü yerine ana logs klasörü içine indiriyoruz
+LOCAL_DEST="$FILES_DIR/logs/Cluster_Logs"
 
 tr -d '\r' < "$IPS_FILE" > "${IPS_FILE}_clean" && mv "${IPS_FILE}_clean" "$IPS_FILE"
 IFS=$'\n' read -d '' -r -a IP_LIST < "$IPS_FILE"
@@ -23,6 +26,9 @@ for i in "${!IP_LIST[@]}"; do
     echo "Downloading from Node $NODE_ID ($IP)..."
     
     scp -r -o StrictHostKeyChecking=no -o ConnectTimeout=10 root@$IP:/root/esg-with-feature-expressions/files/logs/* "$NODE_DIR/" 2>/dev/null
+    
+    # Cases klasöründeki her şeyi çekmek çok büyük olabilir (gigabaytlarca veri), sadece log klasörünü çekmek genelde yeterlidir. 
+    # Eğer Cases içindeki her şeyi istiyorsan alttaki satır kalabilir.
     scp -r -o StrictHostKeyChecking=no -o ConnectTimeout=10 root@$IP:/root/esg-with-feature-expressions/files/Cases/* "$NODE_DIR/" 2>/dev/null
     
     if [ $? -eq 0 ]; then
@@ -32,4 +38,4 @@ for i in "${!IP_LIST[@]}"; do
     fi
 done
 echo "=================================================="
-echo "All available logs and CSVs downloaded to: $LOCAL_DEST"
+echo "LOG COLLECTION COMPLETE! Saved to $LOCAL_DEST"

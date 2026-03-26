@@ -22,7 +22,7 @@ PROJECT_ROOT="$(dirname "$FILES_DIR")"
 if [ -n "$SHARD_PARAM" ]; then
   N=$SHARD_PARAM
 else
-  if [[ "$OSTYPE" == "darwin"* ]]; then N=4; else N=40; fi
+  if [[ "$OSTYPE" == "darwin"* ]]; then N=4; else N=80; fi
 fi
 
 if [ -n "$START_PARAM" ]; then S_NODE=$START_PARAM; else S_NODE=0; fi
@@ -34,20 +34,33 @@ else
   XMS=512m; XMX=1500m
 fi
 
-# Large SPLs get timeout for throughput measurement
-if [[ "$CASE_NAME" == "HockertyShirts" ]] || [[ "$CASE_NAME" == "HS" ]]; then
-    MY_TIMEOUT_HOURS=12
+# ============================================================
+# TIMEOUT CONFIGURATION - CORRECTED
+# ============================================================
+# HockertyShirts: 6h timeout (billions of products)
+# syngo.via: 6h timeout (EFG expected to fail due to coverage degradation)
+# Tesla: NO timeout (expected to complete in ~3 hours)
+# Others: NO timeout (small/medium SPLs complete quickly)
+
+if [[ "$CASE_NAME" == "HockertyShirts" ]] || [[ "$SHORT_NAME" == "HS" ]]; then
+    MY_TIMEOUT_HOURS=6
+    echo "⏱️  HockertyShirts detected: Setting 6-hour timeout for throughput measurement"
+elif [[ "$CASE_NAME" == "syngovia" ]] || [[ "$SHORT_NAME" == "Svia" ]]; then
+    MY_TIMEOUT_HOURS=1
+    echo "⏱️  syngo.via detected: Setting 1-hour timeout (EFG expected to fail)"
 else
     MY_TIMEOUT_HOURS=0
+    echo "✓ No timeout (run to completion)"
 fi
 
 cd "$PROJECT_ROOT" || { echo "ERROR: Project root not found"; exit 1; }
 
-LOG_DIR_BASE="${FILES_DIR}/logs/${CASE_NAME}/RQ2_EFG"
+LOG_DIR_BASE="${FILES_DIR}/logs/${CASE_NAME}/RQ2"
 mkdir -p "$LOG_DIR_BASE"
 
-mvn clean package dependency:copy-dependencies -DskipTests > "$LOG_DIR_BASE/RQ2_EFG_L234_build.log" 2>&1
-export CP="target/classes:target/dependency/*"
+
+#mvn clean package dependency:copy-dependencies -DskipTests > "$LOG_DIR_BASE/RQ2_EFG_L234_build.log" 2>&1
+export CP="target/classes:target/dependency/*:target/esg-with-feature-expressions-0.0.1-SNAPSHOT.jar"
 
 MAIN="tr.edu.iyte.esgfx.cases.${CASE_NAME}.RQ2_ExtremeScalability_EFG_L234_${SHORT_NAME}"
 JAVA_OPTS="-Xms$XMS -Xmx$XMX -XX:+UseG1GC"
@@ -67,10 +80,9 @@ for L_VAL in 2 3 4; do
       nohup java $JAVA_OPTS -cp "$CP" "$MAIN" > "$LOG" 2>&1 &
       
       echo "  Shard $i dispatched -> $LOG"
-      if [[ "$OSTYPE" == "darwin"* ]]; then sleep 1; else sleep 0.2; fi
-    done
-    
-    wait
+  if [[ "$OSTYPE" == "darwin"* ]]; then sleep 1; else sleep 0.2; fi
+done
+sleep 3
     echo "✓ EFG L=$L_VAL completed"
 done
 

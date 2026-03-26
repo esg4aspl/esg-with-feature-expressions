@@ -28,7 +28,7 @@ public class RQ1_ComparativeEfficiency_EFG_L234 extends CaseStudyUtilities {
 
         int N_SHARDS = Integer.parseInt(System.getenv().getOrDefault("N_SHARDS", "1"));
         int CURRENT_SHARD = Integer.parseInt(System.getenv().getOrDefault("SHARD", "0"));
-        int L_LEVEL = Integer.parseInt(System.getenv().getOrDefault("L_LEVEL", "2"));
+        int L_LEVEL = Integer.parseInt(System.getenv().getOrDefault("L_LEVEL", "3"));
         int runID = Integer.parseInt(System.getenv().getOrDefault("runID", "1"));
         String EFGCoverageType = "L" + L_LEVEL;
         coverageLength = L_LEVEL;

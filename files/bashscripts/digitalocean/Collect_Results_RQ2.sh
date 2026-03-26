@@ -7,6 +7,8 @@
 # ============================================================
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# İki üst klasöre çıkıp "files" dizinini buluyoruz
+FILES_DIR="$(dirname "$(dirname "$SCRIPT_DIR")")"
 IPS_FILE="$SCRIPT_DIR/ips.txt"
 
 if [ ! -f "$IPS_FILE" ]; then
@@ -33,9 +35,14 @@ PIPELINE_SUBDIRS=(
     "ESG-Fx/L2"
     "ESG-Fx/L3"
     "ESG-Fx/L4"
+    "EFG/L2"
+    "EFG/L3"
+    "EFG/L4"
+    "RandomWalk/L0"
 )
 
-LOCAL_CASES_ROOT="/Users/dilekozturk/git/esg-with-feature-expressions/files/Cases"
+# Dinamik yol
+LOCAL_CASES_ROOT="$FILES_DIR/Cases"
 
 echo "=== STARTING RQ2 DATA COLLECTION ==="
 
@@ -59,12 +66,13 @@ for IP in "${IPS[@]}"; do
                 root@$IP:"$REMOTE_PATH" "$LOCAL_TARGET_DIR/" 2>/dev/null
 
             if [ $? -eq 0 ]; then
-                echo "      [Pipeline: $SUBDIR] Downloaded."
+                count=$(ls -1 "$LOCAL_TARGET_DIR" 2>/dev/null | wc -l | xargs)
+                echo "      [✓] $SUBDIR -> Local total: $count files"
             fi
         done
     done
 done
 
 echo "=================================================="
-echo "RQ2 Data Collection Completed."
-echo "All files saved to: $LOCAL_CASES_ROOT"
+echo "RQ2 DATA COLLECTION COMPLETE!"
+echo "=================================================="

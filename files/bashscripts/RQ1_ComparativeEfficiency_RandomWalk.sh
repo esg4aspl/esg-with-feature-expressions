@@ -21,7 +21,7 @@ PROJECT_ROOT="$(dirname "$FILES_DIR")"
 if [ -n "$SHARD_PARAM" ]; then
   N=$SHARD_PARAM
 else
-  if [[ "$OSTYPE" == "darwin"* ]]; then N=4; else N=40; fi
+  if [[ "$OSTYPE" == "darwin"* ]]; then N=4; else N=80; fi
 fi
 
 if [ -n "$START_PARAM" ]; then S_NODE=$START_PARAM; else S_NODE=0; fi
@@ -38,14 +38,14 @@ cd "$PROJECT_ROOT" || { echo "ERROR: Project root not found: $PROJECT_ROOT"; exi
 LOG_DIR="${FILES_DIR}/logs/${CASE_NAME}/RQ1/ESGFx_L0"
 mkdir -p "$LOG_DIR"
 
-echo "Compiling project and gathering dependencies..."
-mvn clean package dependency:copy-dependencies -DskipTests > "$LOG_DIR/$LOG_DIR_BASE/RQ1_ESGFx_L0_build.log" 2>&1
-if [ $? -ne 0 ]; then
-    echo "COMPILATION ERROR! Check '$LOG_DIR/RQ1_ESGFx_L0_build.log' for details."
-    exit 1
-fi
+#echo "Compiling project and gathering dependencies..."
+#mvn clean package dependency:copy-dependencies -DskipTests > "$LOG_DIR/$LOG_DIR_BASE/RQ1_ESGFx_L0_build.log" 2>&1
+#if [ $? -ne 0 ]; then
+    #echo "COMPILATION ERROR! Check '$LOG_DIR/RQ1_ESGFx_L0_build.log' for details."
+    #exit 1
+#fi
 
-export CP="target/classes:target/dependency/*"
+export CP="target/classes:target/dependency/*:target/esg-with-feature-expressions-0.0.1-SNAPSHOT.jar"
 
 # IMPORTANT: Using CASE_NAME directly to prevent NoClassDefFoundError
 MAIN="tr.edu.iyte.esgfx.cases.${CASE_NAME}.RQ1_ComparativeEfficiency_RandomWalk_${SHORT_NAME}"
@@ -65,6 +65,6 @@ for i in $(seq $S_NODE $E_NODE); do
   
   if [[ "$OSTYPE" == "darwin"* ]]; then sleep 1; else sleep 0.2; fi
 done
-
+sleep 3
 echo "--------------------------------------------------"
 echo "PROCESS DISPATCHED FOR $CASE_NAME (RandomWalk | Range: $S_NODE-$E_NODE | RunID: $RUN_PARAM)"

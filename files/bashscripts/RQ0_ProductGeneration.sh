@@ -26,15 +26,14 @@ LOG_DIR="${FILES_DIR}/logs/${CASE_NAME}/RQ0_Generation"
 mkdir -p "$LOG_DIR"
 
 echo "Compiling project for Generation phase..."
-mvn clean package dependency:copy-dependencies -DskipTests > "$LOG_DIR/RQ0_build.log" 2>&1
+#mvn clean package dependency:copy-dependencies -DskipTests > "$LOG_DIR/RQ0_build.log" 2>&1
 
 if [ $? -ne 0 ]; then
     echo "COMPILATION ERROR! Check '$LOG_DIR/RQ0_build.log' for details."
     exit 1
 fi
 
-export CP="target/classes:target/dependency/*"
-
+export CP="target/classes:target/dependency/*:target/esg-with-feature-expressions-0.0.1-SNAPSHOT.jar"
 MAIN="tr.edu.iyte.esgfx.cases.${CASE_NAME}.ProductESGFxToEFGAndDOTFileWriter_${SHORT_NAME}"
 
 JAVA_OPTS="-Xms$XMS -Xmx$XMX -XX:+UseG1GC"
@@ -44,5 +43,6 @@ echo "=== PRODUCT GENERATION START (ALL PRODUCTS) ==="
 
 nohup java $JAVA_OPTS -cp "$CP" "$MAIN" > "$LOG" 2>&1 &
 
+sleep 3
 echo "Generation dispatched -> $LOG"
 echo "GENERATION DISPATCHED FOR $CASE_NAME"

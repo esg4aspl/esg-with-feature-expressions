@@ -7,7 +7,9 @@ import java.io.InputStreamReader;
 public class GuitarExecutionWrapper {
 
     public static void generateTestsFromEFG(String efgFilePath, String outputDirectory, int sequenceLength) throws Exception {
-        
+    	File efgFileAbsolute = new File(efgFilePath);
+    	File outDirAbsolute = new File(outputDirectory);
+    	
         File outDir = new File(outputDirectory);
         if (!outDir.exists()) {
             outDir.mkdirs();
@@ -57,11 +59,12 @@ public class GuitarExecutionWrapper {
                 "-cp", guitarLibPath,
                 "edu.umd.cs.guitar.testcase.TestCaseGenerator", 
                 "-p", "SequenceLengthCoverage",
-                "-e", efgFilePath,
+                "-e", efgFileAbsolute.getAbsolutePath(),
                 "-l", String.valueOf(sequenceLength),
-                "-d", outputDirectory
+                "-d", outDirAbsolute.getAbsolutePath()
         );
-
+        processBuilder.directory(outDir);
+        
         processBuilder.redirectErrorStream(true);
         Process process = processBuilder.start();
 

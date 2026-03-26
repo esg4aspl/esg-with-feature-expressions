@@ -13,10 +13,11 @@ import tr.edu.iyte.esg.eventsequence.EventSequence;
 import tr.edu.iyte.esg.model.ESG;
 
 import tr.edu.iyte.esgfx.cases.resultrecordingutilities.TestPipelineMeasurementWriter_RandomWalk_ExtremeScalability;
+import tr.edu.iyte.esgfx.model.ESGFx;
 import tr.edu.iyte.esgfx.model.featureexpression.FeatureExpression;
 import tr.edu.iyte.esgfx.productconfigurationgeneration.SATSolverGenerationFromFeatureModel;
 import tr.edu.iyte.esgfx.productmodelgeneration.ProductESGFxGenerator;
-import tr.edu.iyte.esgfx.testgeneration.randomwalk.RandomWalkTestGenerator;
+import tr.edu.iyte.esgfx.testgeneration.randomwalktesting.RandomWalkTestGenerator;
 import tr.edu.iyte.esgfx.testgeneration.edgecoverage.EdgeCoverageAnalyser;
 import tr.edu.iyte.esgfx.testgeneration.eventcoverage.EventCoverageAnalyser;
 import tr.edu.iyte.esgfx.testexecution.TestExecutor;
@@ -41,11 +42,13 @@ import tr.edu.iyte.esgfx.testexecution.TestExecutor;
  * - Fixed seed 42 (RQ2 focuses on time, not stochasticity)
  * - Damping factor 0.85 (PageRank standard)
  * - Track time/coverage when safety limit hit
+ * - Per-product generator (no reset() needed)
  */
 public class RQ2_ExtremeScalability_RandomWalk extends CaseStudyUtilities {
 
     private static final int RANDOM_WALK_SEED = 42;  // Fixed for RQ2
     private static final double DAMPING_FACTOR = 0.85;
+    private static final double TARGET_EDGE_COVERAGE = 100.0;  // Aim for 100%
 
     public void measureRandomWalkScalability() throws Exception {
         
@@ -55,7 +58,7 @@ public class RQ2_ExtremeScalability_RandomWalk extends CaseStudyUtilities {
         int timeoutHours = Integer.parseInt(System.getenv().getOrDefault("TIMEOUT_HOURS", "0"));
         long maxDurationNanos = timeoutHours > 0 ? timeoutHours * 60L * 60L * 1_000_000_000L : Long.MAX_VALUE;
         
-        coverageLength = 0;  // L0 = event coverage
+        coverageLength = 0;  
         setCoverageType();
 
         System.out.println("Random Walk Extreme Scalability Pipeline " + SPLName + " STARTED");
@@ -100,8 +103,6 @@ public class RQ2_ExtremeScalability_RandomWalk extends CaseStudyUtilities {
         int failedProducts = 0;
 
         ProductESGFxGenerator productESGFxGenerator = new ProductESGFxGenerator();
-        RandomWalkTestGenerator randomWalkGenerator = new RandomWalkTestGenerator(
-                RANDOM_WALK_SEED, DAMPING_FACTOR, featureExpressionMapFromFeatureModel);
 
         long satStart = System.nanoTime();
 
@@ -150,6 +151,7 @@ public class RQ2_ExtremeScalability_RandomWalk extends CaseStudyUtilities {
             TestExecutor testExecutor = null;
             EventCoverageAnalyser eventCoverageAnalyser = null;
             EdgeCoverageAnalyser edgeCoverageAnalyser = null;
+            RandomWalkTestGenerator randomWalkGenerator = null;
 
             try {
                 // 1. PRODUCT GENERATION
@@ -164,20 +166,33 @@ public class RQ2_ExtremeScalability_RandomWalk extends CaseStudyUtilities {
 
                 // 2. RANDOM WALK TEST GENERATION
                 resetPeakMemoryCounters();
+                
+                // FIX: Instantiate generator per product (stateless)
+                randomWalkGenerator = new RandomWalkTestGenerator(
+                        (ESGFx) productESGFx,  // Correct type casting
+                        DAMPING_FACTOR, 
+                        RANDOM_WALK_SEED);
+                
+                // Calculate safety limit: 5|V|³
+                int vertexCount = productESGFx.getVertexList().size();
+                int safetyLimit = calculateSafetyLimit(vertexCount);
+                
                 long testGenStart = System.nanoTime();
                 
-                randomWalkGenerator.generateTests(productESGFx);
-                testSequences = randomWalkGenerator.getTestSequences();
+                // FIX: Use correct API
+                testSequences = randomWalkGenerator.generateWalkUntilEdgeCoverage(
+                        TARGET_EDGE_COVERAGE,  // 100% edge coverage target
+                        safetyLimit);
                 
                 long testGenEnd = System.nanoTime();
                 totalTestGenTimeNanos += (testGenEnd - testGenStart);
 
-                // Track safety limit hits
-                if (randomWalkGenerator.hitSafetyLimit()) {
+                // FIX: Track safety limit hits with CORRECT API
+                if (randomWalkGenerator.isSafetyLimitHit()) {
                     safetyLimitHitCount++;
-                    safetyLimitTimes.add(testGenEnd - testGenStart);
-                    safetyLimitSteps.add(randomWalkGenerator.getStepsAtSafetyLimit());
-                    safetyLimitCoverages.add(randomWalkGenerator.getCoverageAtSafetyLimit());
+                    safetyLimitTimes.add(randomWalkGenerator.getExecutionTimeMs() * 1_000_000L); // ms → ns
+                    safetyLimitSteps.add((long) randomWalkGenerator.getStepsTaken());
+                    safetyLimitCoverages.add(randomWalkGenerator.getAchievedCoverage());
                 }
 
                 if (testSequences != null) {
@@ -234,8 +249,10 @@ public class RQ2_ExtremeScalability_RandomWalk extends CaseStudyUtilities {
             } catch (Exception e) {
                 failedProducts++;
                 System.err.println("Random Walk failure on product " + productID + ": " + e.getMessage());
+                e.printStackTrace();
             } finally {
-                randomWalkGenerator.reset();
+                // FIX: No reset() needed - generator is per-product
+                randomWalkGenerator = null;
                 testSequences = null;
                 testExecutor = null;
                 productESGFx = null;
@@ -302,5 +319,23 @@ public class RQ2_ExtremeScalability_RandomWalk extends CaseStudyUtilities {
                 "Avg Edge Coverage: %.2f%%, Peak Memory: %.2fMB, Total Time: %.2f min",
                 SPLName, handledProducts, failedProducts, safetyLimitHitCount, avgEdgeCoverage,
                 Math.max(peakGenMemoryMB, peakExecMemoryMB), timeElapsedTotalMs / 60000.0));
+    }
+    
+    /**
+     * Calculate safety limit: 5|V|³
+     * 
+     * Based on Feige (1995) cover time bound for random walks.
+     * ESG-Fx graphs are directed, so we use a conservative 5× multiplier.
+     */
+    private int calculateSafetyLimit(int vertexCount) {
+        // Safety limit = 5 × |V|³
+        long limit = 5L * vertexCount * vertexCount * vertexCount;
+        
+        // Cap at Integer.MAX_VALUE to prevent overflow
+        if (limit > Integer.MAX_VALUE) {
+            return Integer.MAX_VALUE;
+        }
+        
+        return (int) limit;
     }
 }

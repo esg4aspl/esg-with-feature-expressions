@@ -55,7 +55,7 @@ public class TestPipelineMeasurementWriter_ExtremeScalability {
             if (file.length() > 0) {
                 writer.append(dataRow);
             } else {
-                writer.write("Run ID;" + "SPL Name;" + "Coverage Type;" + "Total Elapsed Time(ms);" + "SAT Time(ms);"
+                writer.write("RunID;" + "SPL Name;" + "Coverage Type;" + "Total Elapsed Time(ms);" + "SAT Time(ms);"
                         + "Product Gen Time(ms);" + "Test Generation Time(ms);" 
                         + "Test Generation Peak Memory(MB);" + "Number of ESGFx Vertices;" 
                         + "Number of ESGFx Edges;" + "Number of ESGFx Test Cases;" + "Number of ESGFx Test Events;"
