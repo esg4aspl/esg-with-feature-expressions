@@ -35,6 +35,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FILES_DIR="$(dirname "$SCRIPT_DIR")"
 PROJECT_ROOT="$(dirname "$FILES_DIR")"
 
+cd "$PROJECT_ROOT" || { echo "CRITICAL ERROR: Project root not found!"; exit 1; }
+
 CASES=(
   "Elevator El"
   "BankAccountv2 BAv2"
