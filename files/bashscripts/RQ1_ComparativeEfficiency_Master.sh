@@ -54,7 +54,7 @@ ERROR_KEYWORDS="Exception|Error|FAILURE|Java heap space|AccessDenied"
 echo "=== COMPILING PROJECT ONCE FOR THIS MASTER RUN ==="
 cd "$PROJECT_ROOT" || { echo "CRITICAL ERROR: Project root not found!"; exit 1; }
 
-mvn clean package dependency:copy-dependencies -DskipTests > "${FILES_DIR}/logs/RQ1_Master_Build_$$.log" 2>&1
+mvn clean package dependency:copy-dependencies -DskipTests -Dfile.encoding=UTF-8 > "${FILES_DIR}/logs/RQ1_Master_Build_$$.log" 2>&1
 if [ $? -ne 0 ]; then
     echo "CRITICAL ERROR: Maven build FAILED! See logs/RQ1_Master_Build_$$.log"
     exit 1

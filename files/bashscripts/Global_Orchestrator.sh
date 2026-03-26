@@ -34,7 +34,7 @@ sleep 10
 
 # --- PHASE 3: RQ3 (FAULT DETECTION - DAMPING SENSITIVITY) ---
 echo ">>> PHASE 3: EXECUTING RQ3 (FAULT DETECTION - DAMPING SENSITIVITY) <<<"
-bash ./RQ3_RandomWalkMultiSeed_TestGenerator.sh "$START_SHARD" "$END_SHARD"
+bash ./RQ3_RandomWalk_DampingSensivityAnalysis.sh "$START_SHARD" "$END_SHARD"
 sleep 10
 
 # --- PHASE 4: RQ2 (EXTREME SCALABILITY) ---
