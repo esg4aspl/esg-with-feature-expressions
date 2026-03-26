@@ -17,6 +17,7 @@ echo "--------------------------------------------------"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 FILES_DIR="$(dirname "$SCRIPT_DIR")"
+PROJECT_ROOT="$(dirname "$FILES_DIR")"
 
 CASES=(
   "SodaVendingMachine SVM"
@@ -39,6 +40,7 @@ fi
 
 echo "=== COMPILING PROJECT ONCE FOR THIS MASTER RUN ==="
 cd "$PROJECT_ROOT" || { echo "CRITICAL ERROR: Project root not found!"; exit 1; }
+mkdir -p "${FILES_DIR}/logs"
 
 mvn clean package dependency:copy-dependencies -DskipTests > "${FILES_DIR}/logs/RQ0_Master_Build_$$.log" 2>&1
 if [ $? -ne 0 ]; then

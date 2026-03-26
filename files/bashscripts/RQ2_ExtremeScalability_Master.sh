@@ -33,13 +33,13 @@ echo "Project Root: $PROJECT_ROOT"
 # Case studies with short names
 CASES=(
   "SodaVendingMachine SVM"
-  "eMail eM"
-  "Elevator El"
-  "BankAccountv2 BAv2"
-  "StudentAttendanceSystem SAS"
-  "Tesla Te"
-  "syngovia Svia"
-  "HockertyShirts HS"
+  #"eMail eM"
+  #"Elevator El"
+  #"BankAccountv2 BAv2"
+  #"StudentAttendanceSystem SAS"
+  #"Tesla Te"
+  #"syngovia Svia"
+  #"HockertyShirts HS"
 )
 
 # RQ2 scripts - ALL THREE APPROACHES
