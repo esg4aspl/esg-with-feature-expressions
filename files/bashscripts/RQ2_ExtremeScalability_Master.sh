@@ -45,10 +45,10 @@ CASES=(
 
 # RQ2 scripts - ALL THREE APPROACHES
 SCRIPTS=(
-  "RQ2_ExtremeScalability_L1.sh"           # ESG-Fx L1
+  #"RQ2_ExtremeScalability_L1.sh"           # ESG-Fx L1
   "RQ2_ExtremeScalability_L234.sh"         # ESG-Fx L2,3,4
   "RQ2_ExtremeScalability_EFG_L234.sh"     # EFG L2,3,4 (BASELINE)
-  "RQ2_ExtremeScalability_RandomWalk.sh"   # Random Walk L0 (BASELINE)
+  #"RQ2_ExtremeScalability_RandomWalk.sh"   # Random Walk L0 (BASELINE)
 )
 
 echo "=== COMPILING PROJECT ONCE FOR THIS MASTER RUN ==="
@@ -85,7 +85,6 @@ wait_and_monitor() {
     sleep 10
   done
   
-
   rm -f "$tmp_file"
   echo -e "\nPROCESS FINISHED: $case_name ($script_name)"
 }
@@ -111,12 +110,22 @@ verify_results() {
 
 echo "=== RQ2 EXTREME SCALABILITY STARTED ==="
 
-for RUN_ID in $(seq 1 $SMALL_MEDIUM_RUNS); do
-    
+for entry in "${CASES[@]}"; do
+    set -- $entry
+    CASE_NAME=$1
+    SHORT_NAME=$2
+
+    # Determine max runs for this case
+    if [[ "$CASE_NAME" == "Tesla" || "$CASE_NAME" == "syngovia" || "$CASE_NAME" == "HockertyShirts" ]]; then
+        MAX_RUNS=$LARGE_RUNS
+    else
+        MAX_RUNS=$SMALL_MEDIUM_RUNS
+    fi
+
     echo ""
-    echo "##################################################"
-    echo "🏁 GLOBAL RUN: $RUN_ID / $SMALL_MEDIUM_RUNS"
-    echo "##################################################"
+    echo "############################################################"
+    echo "  CASE: $CASE_NAME ($MAX_RUNS runs)"
+    echo "############################################################"
 
     for SCRIPT_NAME in "${SCRIPTS[@]}"; do
         TARGET_SCRIPT="${SCRIPT_DIR}/${SCRIPT_NAME}"
@@ -125,29 +134,16 @@ for RUN_ID in $(seq 1 $SMALL_MEDIUM_RUNS); do
           echo "⚠️  Warning: Script not found: $TARGET_SCRIPT"
           continue
         fi
-        
-        echo "=================================================="
-        echo "🚀 BATCH: $SCRIPT_NAME (Run: $RUN_ID)"
-        echo "=================================================="
 
-        for entry in "${CASES[@]}"; do
-            set -- $entry
-            CASE_NAME=$1
-            SHORT_NAME=$2
+        echo ""
+        echo "  === $SCRIPT_NAME ==="
 
-            # --- DYNAMIC RUN LIMITER ---
-            # Large SPLs capped at 3 runs
-            if [[ "$CASE_NAME" == "Tesla" || "$CASE_NAME" == "syngovia" || "$CASE_NAME" == "HockertyShirts" ]]; then
-                if [ "$RUN_ID" -gt $LARGE_RUNS ]; then
-                    echo "⏭️  SKIPPING: $CASE_NAME (Large SPL, cap=$LARGE_RUNS, current=$RUN_ID)"
-                    continue
-                fi
-            fi
+        for RUN_ID in $(seq 1 $MAX_RUNS); do
 
             LOG_DIR="${FILES_DIR}/logs/${CASE_NAME}/RQ2"
             mkdir -p "$LOG_DIR"
 
-            echo "🔷 CASE: $CASE_NAME | SCRIPT: $SCRIPT_NAME"
+            echo "    Run $RUN_ID/$MAX_RUNS"
             
             bash "$TARGET_SCRIPT" "$CASE_NAME" "$SHORT_NAME" "$RUN_ID" "$TARGET_SHARDS" "$START_SHARD" "$END_SHARD" > /dev/null 2>&1
             
@@ -156,8 +152,9 @@ for RUN_ID in $(seq 1 $SMALL_MEDIUM_RUNS); do
             
             if [[ "$OSTYPE" == "darwin"* ]]; then sleep 1; else sleep 0.2; fi
         done
-        sleep 3
     done
+
+    echo "  $CASE_NAME COMPLETE"
 done
 
 echo ""

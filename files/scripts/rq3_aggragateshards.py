@@ -1,24 +1,17 @@
 #!/usr/bin/env python3
 """
-RQ3 Fault Detection Data Aggregation Script - 4-SHEET VERSION
+RQ3 Fault Detection Data Aggregation Script - RAW SHARD MERGER
 
-Each SPL gets 2 Excel files with 4 sheets each:
-  RQ3_rawData_<SPL>.xlsx:
-    - EdgeOmission (deterministic: ESG-Fx L0-4, EFG L2-4)
-    - EventOmission (deterministic: ESG-Fx L0-4, EFG L2-4)
-    - EdgeOmission_MultiSeed (Random Walk: seeds 42-51)
-    - EventOmission_MultiSeed (Random Walk: seeds 42-51)
-  
-  RQ3_aggregated_<SPL>.xlsx:
-    - EdgeOmission (aggregated by L-level)
-    - EventOmission (aggregated by L-level)
-    - EdgeOmission_MultiSeed (aggregated by product across seeds)
-    - EventOmission_MultiSeed (aggregated by product across seeds)
+Description:
+Reads all shard CSV files from 'perProduct' and 'sensitivity' directories,
+concatenates them, sorts them logically, and outputs a single comprehensive 
+Excel file per SPL named 'RQ3_perProduct.xlsx'.
+
+Each Excel file contains one sheet per fault detection category.
 """
 
 import pandas as pd
 import sys
-import os
 import glob
 from pathlib import Path
 
@@ -34,383 +27,148 @@ SPL_NAME_MAPPING = {
     "HockertyShirts": "HS"
 }
 
-# Expected product counts for validation
-EXPECTED_PRODUCTS = {
-    "Elevator": 42,
-    "eMail": 23,
-    "SodaVendingMachine": 12,
-    "BankAccountv2": 498,
-    "StudentAttendanceSystem": 2664,
-    "Tesla": 400,  # Sample
-    "syngovia": 400,  # Sample
-    "HockertyShirts": 400  # Sample
-}
-
 def find_project_root():
     """Find project root by looking for 'files/Cases' directory."""
     current = Path.cwd()
+    if (current / "files" / "Cases").exists(): return current
+    if (current.parent / "files" / "Cases").exists(): return current.parent
+    if (current.parent.parent / "files" / "Cases").exists(): return current.parent.parent
     
-    if (current / "files" / "Cases").exists():
-        return current
-    if (current.parent / "files" / "Cases").exists():
-        return current.parent
-    if (current.parent.parent / "files" / "Cases").exists():
-        return current.parent.parent
-    if current.name == "scripts" and current.parent.name == "files":
-        return current.parent.parent
+    # Fallback to hardcoded path provided by user if dynamic search fails
+    hardcoded_path = Path("/Users/dilekozturk/git/esg-with-feature-expressions")
+    if (hardcoded_path / "files" / "Cases").exists(): return hardcoded_path
     
     return None
 
-def discover_spls_with_fault_detection(project_root):
-    """Discover all SPLs that have fault detection data."""
-    cases_dir = project_root / "files" / "Cases"
-    
-    if not cases_dir.exists():
-        print(f"❌ ERROR: Cases directory not found: {cases_dir}")
-        return []
-    
-    spls = []
-    
-    for spl_dir in sorted(cases_dir.iterdir()):
-        if not spl_dir.is_dir():
-            continue
-        
-        fd_dir = spl_dir / "faultdetection" / "perProduct"
-        
-        if fd_dir.exists() and fd_dir.is_dir():
-            csv_files = list(fd_dir.glob("*.csv"))
-            if csv_files:
-                spls.append((spl_dir.name, spl_dir / "faultdetection"))
-    
-    return spls
-
-def load_operator_data(per_product_dir, spl_folder_name, spl_file_prefix, operator, is_multiseed=False):
+def load_shards(directory, file_pattern):
     """
-    Load data for a specific operator (EdgeOmission or EventOmission).
-    
-    Returns:
-        DataFrame or None if no data found
+    Finds all shard files matching the pattern, reads them, and concatenates into a single DataFrame.
     """
-    suffix = "_MultiSeedRW" if is_multiseed else ""
-    
-    # Try with file prefix first, then folder name
-    pattern1 = f"{spl_file_prefix}_{operator}{suffix}_shard*.csv"
-    pattern2 = f"{spl_folder_name}_{operator}{suffix}_shard*.csv"
-    
-    shard_files = sorted(glob.glob(str(per_product_dir / pattern1)))
-    
-    if not shard_files:
-        shard_files = sorted(glob.glob(str(per_product_dir / pattern2)))
+    search_path = directory / file_pattern
+    shard_files = sorted(glob.glob(str(search_path)))
     
     if not shard_files:
         return None
-    
-    # Read and concatenate all shards
+        
     dfs = []
-    
     for f in shard_files:
         try:
+            # Important: Use sep=';' and decimal=',' for European number format in CSVs
             df = pd.read_csv(f, sep=';', decimal=',')
             dfs.append(df)
         except Exception as e:
-            print(f"        ⚠️  Error reading {Path(f).name}: {e}")
-            continue
-    
+            print(f"        [!] Error reading {Path(f).name}: {e}")
+            
     if not dfs:
         return None
-    
-    # Combine all shards
-    combined = pd.concat(dfs, ignore_index=True)
-    
-    # Sort by ProductID for consistency
-    if 'ProductID' in combined.columns:
-        combined = combined.sort_values('ProductID').reset_index(drop=True)
-    
-    return combined
-
-def generate_deterministic_aggregation(df, operator):
-    """Aggregate deterministic ESG-Fx results by L-level and approach."""
-    grouped = df.groupby(['TestingApproach'])
-    
-    agg_stats = grouped.agg({
-        'TotalMutants': ['median', 'mean'],
-        'DetectedMutants': ['median', 'mean', 'std'],
-        'MutationScore(%)': ['median', 'mean', 'std', 'min', 'max'],
-        'TotalEventsInSuite': ['median', 'mean', 'std'],
-        'EventsToDetect': ['median', 'mean', 'std'],
-        'PercentageOfSuiteToDetect(%)': ['median', 'mean', 'std']
-    }).reset_index()
-    
-    agg_stats.columns = ['_'.join(col).strip('_') if col[1] else col[0] 
-                         for col in agg_stats.columns.values]
-    
-    product_counts = df.groupby(['TestingApproach']).size().reset_index(name='ProductCount')
-    agg_stats = agg_stats.merge(product_counts, on=['TestingApproach'])
-    
-    return agg_stats
-
-def generate_multiseed_aggregation(df, operator):
-    """Aggregate multi-seed Random Walk results per product."""
-    grouped = df.groupby(['ProductID'])
-    
-    agg_stats = grouped.agg({
-        'TotalMutants': 'first',
-        'DetectedMutants': ['median', 'mean', 'std', 'min', 'max'],
-        'MutationScore(%)': ['median', 'mean', 'std', 'min', 'max'],
-        'TotalEventsInSuite': ['median', 'mean', 'std'],
-        'MedianEventsToDetect': ['median', 'mean', 'std'],
-        'MedianPercentageOfSuiteToDetect(%)': ['median', 'mean', 'std']
-    }).reset_index()
-    
-    agg_stats.columns = ['_'.join(col).strip('_') if col[1] else col[0] 
-                         for col in agg_stats.columns.values]
-    
-    return agg_stats
-
-def validate_data_completeness(df, spl_name, operator, is_multiseed):
-    """
-    Validate that the data is complete and reasonable.
-    Returns list of warning messages.
-    """
-    warnings = []
-    
-    # Check product count
-    unique_products = df['ProductID'].nunique()
-    
-    if spl_name in EXPECTED_PRODUCTS:
-        expected = EXPECTED_PRODUCTS[spl_name]
-        pct = (unique_products / expected) * 100
         
-        if pct < 90:
-            warnings.append(f"⚠️  Only {unique_products}/{expected} products ({pct:.1f}%) - INCOMPLETE DATA")
-        elif pct < 100:
-            warnings.append(f"ℹ️  {unique_products}/{expected} products ({pct:.1f}%)")
+    combined_df = pd.concat(dfs, ignore_index=True)
     
-    # For multi-seed, check that we have 10 seeds per product
-    if is_multiseed:
-        seed_counts = df.groupby('ProductID')['Seed'].nunique()
-        incomplete_products = seed_counts[seed_counts < 10]
+    # Sort logically to make the resulting Excel file human-readable
+    sort_columns = []
+    for col in ['ProductID', 'TestingApproach', 'Seed', 'DampingFactor']:
+        if col in combined_df.columns:
+            sort_columns.append(col)
+            
+    if sort_columns:
+        combined_df = combined_df.sort_values(by=sort_columns).reset_index(drop=True)
         
-        if len(incomplete_products) > 0:
-            warnings.append(f"⚠️  {len(incomplete_products)} products have < 10 seeds")
-        
-        # Check for zero variation (bug indicator)
-        if len(df) > 0:
-            sample_product = df['ProductID'].iloc[0]
-            sample_data = df[df['ProductID'] == sample_product]
-            if len(sample_data) >= 10:
-                ms_std = sample_data['MutationScore(%)'].std()
-                if ms_std == 0:
-                    warnings.append(f"🔴 CRITICAL: Zero variation across seeds - FileToTestSuiteConverter bug detected!")
-    
-    return warnings
+    return combined_df
 
-def aggregate_fault_detection(spl_folder_name, base_dir, output_dir):
-    """
-    Aggregate fault detection results for a given SPL.
-    Creates 2 Excel files with 4 sheets each.
-    """
+def process_spl(spl_folder_name, cases_dir):
+    """Processes a single SPL and generates its combined Excel file."""
+    spl_dir = cases_dir / spl_folder_name
+    fd_dir = spl_dir / "faultdetection"
     
-    per_product_dir = base_dir / "perProduct"
+    per_product_dir = fd_dir / "perProduct"
+    sensitivity_dir = fd_dir / "sensitivity"
     
-    if not per_product_dir.exists():
-        print(f"⚠️  Skipping {spl_folder_name}: perProduct directory not found")
-        return False
-    
-    spl_file_prefix = SPL_NAME_MAPPING.get(spl_folder_name, spl_folder_name)
+    file_prefix = SPL_NAME_MAPPING.get(spl_folder_name, spl_folder_name)
     
     print(f"\n{'='*80}")
-    print(f"📊 PROCESSING: {spl_folder_name}")
-    if spl_file_prefix != spl_folder_name:
-        print(f"   File prefix: {spl_file_prefix}")
+    print(f"📊 MERGING SHARDS FOR: {spl_folder_name}")
     print(f"{'='*80}")
-    print(f"Input:  {per_product_dir}")
-    print(f"Output: {output_dir}")
     
-    operators = ["EdgeOmission", "EventOmission"]
+    sheets_data = {}
     
-    # Collect data for each sheet
-    raw_sheets = {}
-    agg_sheets = {}
-    
-    all_warnings = []
-    
-    for operator in operators:
-        print(f"\n  🔸 {operator}")
+    # 1. Process 'perProduct' categories (For ALL SPLs)
+    if per_product_dir.exists():
+        per_product_categories = [
+            ("EdgeOmission", f"{file_prefix}_EdgeOmission_shard*.csv"),
+            ("EventOmission", f"{file_prefix}_EventOmission_shard*.csv"),
+            ("EdgeOmission_MultiSeed", f"{file_prefix}_EdgeOmission_MultiSeedRW_shard*.csv"),
+            ("EventOmission_MultiSeed", f"{file_prefix}_EventOmission_MultiSeedRW_shard*.csv")
+        ]
         
-        # Deterministic approaches (ESG-Fx L0-4, EFG L2-4)
-        det_data = load_operator_data(per_product_dir, spl_folder_name, spl_file_prefix, operator, is_multiseed=False)
-        
-        if det_data is not None:
-            print(f"     ✅ Deterministic: {len(det_data)} rows, {det_data['ProductID'].nunique()} products")
+        for sheet_name, pattern in per_product_categories:
+            df = load_shards(per_product_dir, pattern)
+            if df is not None:
+                sheets_data[sheet_name] = df
+                print(f"  [✓] {sheet_name:25s}: {len(df)} rows combined.")
+    else:
+        print(f"  [!] Directory not found: {per_product_dir}")
+
+    # 2. Process 'sensitivity' categories (ONLY for Elevator, BankAccountv2, Tesla)
+    if spl_folder_name in ["Elevator", "BankAccountv2", "Tesla"]:
+        if sensitivity_dir.exists():
+            sensitivity_categories = [
+                ("Sens_EdgeOmission", f"{file_prefix}_DampingSensitivity_EdgeOmission_shard*.csv"),
+                ("Sens_EventOmission", f"{file_prefix}_DampingSensitivity_EventOmission_shard*.csv"),
+                ("Sens_TestGen", f"{file_prefix}_DampingSensitivity_TestGen_shard*.csv")
+            ]
             
-            # Validate
-            warnings = validate_data_completeness(det_data, spl_folder_name, operator, is_multiseed=False)
-            for w in warnings:
-                print(f"        {w}")
-                all_warnings.append(f"{operator}: {w}")
-            
-            # Store for raw data (as separate sheet)
-            raw_sheets[operator] = det_data
-            
-            # Generate aggregated stats
-            try:
-                agg_stats = generate_deterministic_aggregation(det_data, operator)
-                agg_sheets[operator] = agg_stats
-                print(f"     ✅ Aggregated: {len(agg_stats)} rows")
-            except Exception as e:
-                print(f"     ❌ Aggregation failed: {e}")
+            print(f"  --- Sensitivity Data (Exclusive for {spl_folder_name}) ---")
+            for sheet_name, pattern in sensitivity_categories:
+                df = load_shards(sensitivity_dir, pattern)
+                if df is not None:
+                    sheets_data[sheet_name] = df
+                    print(f"  [✓] {sheet_name:25s}: {len(df)} rows combined.")
         else:
-            print(f"     ⚠️  No data files found")
-        
-        # Multi-seed Random Walk
-        ms_data = load_operator_data(per_product_dir, spl_folder_name, spl_file_prefix, operator, is_multiseed=True)
-        
-        if ms_data is not None:
-            print(f"     ✅ Multi-seed: {len(ms_data)} rows, {ms_data['ProductID'].nunique()} products")
+            print(f"  [!] Sensitivity directory missing for {spl_folder_name}, skipping.")
             
-            # Validate
-            warnings = validate_data_completeness(ms_data, spl_folder_name, operator, is_multiseed=True)
-            for w in warnings:
-                print(f"        {w}")
-                all_warnings.append(f"{operator}_MultiSeed: {w}")
-            
-            # Store for raw data (as separate sheet)
-            raw_sheets[f"{operator}_MultiSeed"] = ms_data
-            
-            # Generate aggregated stats
-            try:
-                agg_stats = generate_multiseed_aggregation(ms_data, operator)
-                agg_sheets[f"{operator}_MultiSeed"] = agg_stats
-                print(f"     ✅ Aggregated: {len(agg_stats)} rows")
-            except Exception as e:
-                print(f"     ❌ Aggregation failed: {e}")
-        else:
-            print(f"     ⚠️  No multi-seed data files found")
-    
-    if not raw_sheets and not agg_sheets:
-        print(f"\n  ❌ No data collected for {spl_folder_name}")
-        return False
-    
-    # Save to Excel files with multiple sheets
-    print(f"\n  💾 Saving Excel files...")
-    
-    # Save raw data
-    if raw_sheets:
-        raw_filename = f"RQ3_rawData_{spl_folder_name}.xlsx"
-        raw_path = output_dir / raw_filename
+    # 3. Save to Excel
+    if sheets_data:
+        output_excel = spl_dir / "RQ3_perProduct.xlsx"
         
         try:
-            with pd.ExcelWriter(raw_path, engine='openpyxl') as writer:
-                for sheet_name, df in raw_sheets.items():
+            with pd.ExcelWriter(output_excel, engine='openpyxl') as writer:
+                for sheet_name, df in sheets_data.items():
                     df.to_excel(writer, sheet_name=sheet_name, index=False)
             
-            sheet_list = ', '.join(raw_sheets.keys())
-            print(f"     ✅ Raw data: {raw_filename}")
-            print(f"        Sheets: {sheet_list}")
+            print(f"\n  💾 SUCCESS: Saved -> {output_excel}")
         except Exception as e:
-            print(f"     ❌ Failed to save raw data: {e}")
-    
-    # Save aggregated data
-    if agg_sheets:
-        agg_filename = f"RQ3_aggregated_{spl_folder_name}.xlsx"
-        agg_path = output_dir / agg_filename
-        
-        try:
-            with pd.ExcelWriter(agg_path, engine='openpyxl') as writer:
-                for sheet_name, df in agg_sheets.items():
-                    df.to_excel(writer, sheet_name=sheet_name, index=False)
-            
-            sheet_list = ', '.join(agg_sheets.keys())
-            print(f"     ✅ Aggregated: {agg_filename}")
-            print(f"        Sheets: {sheet_list}")
-        except Exception as e:
-            print(f"     ❌ Failed to save aggregated data: {e}")
-    
-    # Print summary of warnings
-    if all_warnings:
-        print(f"\n  ⚠️  VALIDATION WARNINGS:")
-        for w in all_warnings:
-            print(f"     {w}")
-    
-    return True
+            print(f"\n  ❌ ERROR saving Excel: {e}")
+    else:
+        print(f"\n  ⚠️ NO DATA FOUND to merge for {spl_folder_name}.")
 
 def main():
     print("="*80)
-    print("RQ3 FAULT DETECTION AGGREGATION - 4-SHEET VERSION")
+    print("RQ3 SHARD MERGER (RAW DATA COMPILATION)")
     print("="*80)
-    print("\nOutput format:")
-    print("  Each SPL gets 2 Excel files (raw + aggregated)")
-    print("  Each file has 4 sheets:")
-    print("    • EdgeOmission (deterministic: ESG-Fx L0-4, EFG L2-4)")
-    print("    • EventOmission (deterministic: ESG-Fx L0-4, EFG L2-4)")
-    print("    • EdgeOmission_MultiSeed (Random Walk: seeds 42-51)")
-    print("    • EventOmission_MultiSeed (Random Walk: seeds 42-51)")
-    print()
     
     project_root = find_project_root()
-    
-    if project_root is None:
-        print("❌ ERROR: Could not find project root!")
-        print(f"Current directory: {Path.cwd()}")
+    if not project_root:
+        print("❌ ERROR: Could not find project root (esg-with-feature-expressions).")
         sys.exit(1)
+        
+    cases_dir = project_root / "files" / "Cases"
     
-    print(f"Project root: {project_root}")
-    print(f"Cases directory: {project_root / 'files' / 'Cases'}")
-    print()
-    
-    print("🔍 Discovering SPLs with fault detection data...")
-    spls = discover_spls_with_fault_detection(project_root)
+    if not cases_dir.exists():
+        print(f"❌ ERROR: Cases directory not found at {cases_dir}")
+        sys.exit(1)
+        
+    spls = [d.name for d in cases_dir.iterdir() if d.is_dir() and d.name in SPL_NAME_MAPPING.keys()]
     
     if not spls:
-        print("❌ No SPLs with fault detection data found!")
+        print("❌ No valid SPL directories found!")
         sys.exit(1)
-    
-    print(f"✅ Found {len(spls)} SPLs with fault detection data:")
-    for spl_name, _ in spls:
-        file_prefix = SPL_NAME_MAPPING.get(spl_name, spl_name)
-        if file_prefix != spl_name:
-            print(f"   - {spl_name:25s} (files: {file_prefix}_*.csv)")
-        else:
-            print(f"   - {spl_name}")
-    
+        
+    for spl_name in sorted(spls):
+        process_spl(spl_name, cases_dir)
+        
     print("\n" + "="*80)
-    print("PROCESSING SPLs")
+    print("ALL DONE! You can now analyze the RQ3_perProduct.xlsx files.")
     print("="*80)
-    
-    processed_count = 0
-    failed_count = 0
-    
-    for spl_name, fd_dir in spls:
-        try:
-            success = aggregate_fault_detection(spl_name, fd_dir, fd_dir)
-            if success:
-                processed_count += 1
-            else:
-                failed_count += 1
-        except Exception as e:
-            print(f"\n❌ ERROR processing {spl_name}: {e}")
-            import traceback
-            traceback.print_exc()
-            failed_count += 1
-    
-    print("\n" + "="*80)
-    print("SUMMARY")
-    print("="*80)
-    print(f"✅ Successfully processed: {processed_count} SPLs")
-    if failed_count > 0:
-        print(f"❌ Failed: {failed_count} SPLs")
-    print()
-    print("Output format:")
-    print("  RQ3_rawData_<SPL>.xlsx:")
-    print("    - EdgeOmission (deterministic)")
-    print("    - EventOmission (deterministic)")
-    print("    - EdgeOmission_MultiSeed (Random Walk)")
-    print("    - EventOmission_MultiSeed (Random Walk)")
-    print()
-    print("  RQ3_aggregated_<SPL>.xlsx:")
-    print("    - Same 4 sheets with aggregated statistics")
-    print("\n" + "="*80)
 
 if __name__ == "__main__":
     main()

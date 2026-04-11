@@ -80,10 +80,13 @@ for L_VAL in 2 3 4; do
       nohup java $JAVA_OPTS -cp "$CP" "$MAIN" > "$LOG" 2>&1 &
       
       echo "  Shard $i dispatched -> $LOG"
-  if [[ "$OSTYPE" == "darwin"* ]]; then sleep 1; else sleep 0.2; fi
-done
-sleep 3
+      if [[ "$OSTYPE" == "darwin"* ]]; then sleep 1; else sleep 0.2; fi
+    done
+    
+    # FIX: Wait for all shards of this L level to finish before starting next L
+    echo "  Waiting for EFG L=$L_VAL to finish..."
+    wait
     echo "✓ EFG L=$L_VAL completed"
 done
-
-echo "=== EFG EXTREME SCALABILITY FINISHED ==="
+ 
+echo "=== EFG EXTREME SCALABILITY FINISHED: $CASE_NAME ==="

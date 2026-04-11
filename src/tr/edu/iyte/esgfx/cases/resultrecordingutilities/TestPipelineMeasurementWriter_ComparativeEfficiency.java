@@ -86,8 +86,8 @@ public class TestPipelineMeasurementWriter_ComparativeEfficiency {
                 writer.write("Run ID;"+ "SPL Name;" + "Coverage Type;" + "Total Elapsed Time(ms);" + "Test Generation Time(ms);"
                         + "Test Generation Peak Memory(MB);" + "Number of ESGFx Vertices;" + "Number of ESGFx Edges;"
                         + "Number of ESGFx Test Cases;" + "Number of ESGFx Test Events;"
-                        + "Test Case Recording Time(ms);" +  "Edge Coverage(%);"
-                        + "Edge Coverage Analysis Time(ms);" + "Test Execution Time(ms);" + "Test Execution Peak Memory(MB);"
+                        + "Test Case Recording Time(ms);" +  "Event Coverage(%);"
+                        + "Event Coverage Analysis Time(ms);" + "Test Execution Time(ms);" + "Test Execution Peak Memory(MB);"
                         + "ESGFx Model Load Time(ms);" + "Processed Products; Failed Products\n");
                 // Write Data
                 writer.write(dataRow);
@@ -127,7 +127,7 @@ public class TestPipelineMeasurementWriter_ComparativeEfficiency {
      * @param failedProductCount
      * @param folderName
      * @param SPLName
-     * @param coverageType L2-> event couple; L3->event triple; L4->event quadruple coverage
+     * @param coverageType edge coverage
      */
     public static void writeDetailedPipelineMeasurementForESGFx_L234(int runID, double totalElapsedTimeMs, double testGenTimeMs,
             double transformationTimeMs, double testGenPeakMemoryMB, int numberOfESGFxVertices, int numberOfESGFxEdges, 
@@ -183,7 +183,7 @@ public class TestPipelineMeasurementWriter_ComparativeEfficiency {
                 writer.write("Run ID;" + "SPL Name;" + "Coverage Type;" + "Total Elapsed Time(ms);" + "Test Generation Time(ms);"
                         + "Transformation Time(ms);" + "Test Generation Peak Memory(MB);" + "Number of ESGFx Vertices;" 
                         + "Number of ESGFx Edges;" + "Number of ESGFx Test Cases;" + "Number of ESGFx Test Events;"
-                        + "Test Case Recording Time(ms);" + coverageType + " Percent(%);"
+                        + "Test Case Recording Time(ms);" + "Edge Coverage(%);" 
                         + "Coverage Analysis Time(ms);" + "Test Execution Time(ms);" + "Test Execution Peak Memory(MB);"
                         + "ESGFx Model Load Time(ms);" + "Processed Products;" + "Failed Products\n");
                 // Write Data

@@ -62,19 +62,13 @@ public class Feature implements Implicant, Comparable<Feature> {
 		this.priority = priority;
 	}
 
-	@Override
-	public boolean equals(Object feature) {
-
-		if (feature == this) {
-			return true;
-		}
-		if (!(feature instanceof Feature)) {
-			return false;
-		}
-
-		return this.name == ((Feature) feature).getName();
-
-	}
+@Override
+public boolean equals(Object feature) {
+    if (feature == this) return true;
+    if (!(feature instanceof Feature)) return false;
+    Feature other = (Feature) feature;
+    return this.name != null && this.name.equals(other.getName());
+}
 
 	@Override
 	public String toString() {
@@ -114,9 +108,9 @@ public class Feature implements Implicant, Comparable<Feature> {
 			return 1;
 	}
 	
-	@Override
-	public int hashCode() {
-		return name.hashCode();
-	}
+@Override
+public int hashCode() {
+    return name != null ? name.hashCode() : 0;
+}
 
 }

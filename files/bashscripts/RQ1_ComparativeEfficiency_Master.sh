@@ -43,10 +43,10 @@ CASES=(
 )
 
 SCRIPTS=(
-  "RQ1_ComparativeEfficiency_ESGFx_L1.sh"
+  #"RQ1_ComparativeEfficiency_ESGFx_L1.sh"
   "RQ1_ComparativeEfficiency_ESGFx_L234.sh"
   "RQ1_ComparativeEfficiency_EFG_L234.sh"
-  "RQ1_ComparativeEfficiency_RandomWalk.sh"
+  #"RQ1_ComparativeEfficiency_RandomWalk.sh"
 )
 
 ERROR_KEYWORDS="Exception|Error|FAILURE|Java heap space|AccessDenied"
@@ -90,7 +90,6 @@ wait_and_monitor() {
 
   echo "Monitoring logs in: $log_dir"
 
-
   while pgrep -f "java.*$case_name" > /dev/null; do
     if [ -d "$log_dir" ]; then
         if find "$log_dir" -type f -name "*.log" -mmin -5 -exec grep -E "$ERROR_KEYWORDS" {} + 2>/dev/null | tail -n 1 > "$tmp_file"; then
@@ -111,12 +110,15 @@ wait_and_monitor() {
 
 echo "=== STARTING MASTER RUNNER ==="
 
-for RUN_ID in $(seq 1 $TOTAL_RUNS); do
-    
+for entry in "${CASES[@]}"; do
+    set -- $entry
+    CASE_NAME=$1
+    SHORT_NAME=$2
+
     echo ""
-    echo "##################################################"
-    echo "INITIATING GLOBAL RUN: $RUN_ID / $TOTAL_RUNS"
-    echo "##################################################"
+    echo "############################################################"
+    echo "  CASE: $CASE_NAME ($TOTAL_RUNS runs)"
+    echo "############################################################"
 
     for SCRIPT_NAME in "${SCRIPTS[@]}"; do
         TARGET_SCRIPT="${SCRIPT_DIR}/${SCRIPT_NAME}"
@@ -125,21 +127,16 @@ for RUN_ID in $(seq 1 $TOTAL_RUNS); do
           echo "Warning: Script not found: $TARGET_SCRIPT"
           continue
         fi
-        
-        echo "=================================================="
-        echo "STARTING BATCH TASK: $SCRIPT_NAME (Run: $RUN_ID)"
-        echo "=================================================="
 
-        for entry in "${CASES[@]}"; do
-            set -- $entry
-            CASE_NAME=$1
-            SHORT_NAME=$2
+        echo ""
+        echo "  === $SCRIPT_NAME ==="
+
+        for RUN_ID in $(seq 1 $TOTAL_RUNS); do
 
             LOG_DIR="${FILES_DIR}/logs/${CASE_NAME}/RQ1"
             mkdir -p "$LOG_DIR"
 
-            echo "PROCESSING CASE: $CASE_NAME"
-            echo "EXECUTING: $SCRIPT_NAME (Range: $START_SHARD - $END_SHARD)"
+            echo "    Run $RUN_ID/$TOTAL_RUNS"
             
             bash "$TARGET_SCRIPT" "$CASE_NAME" "$SHORT_NAME" "$RUN_ID" "$TARGET_SHARDS" "$START_SHARD" "$END_SHARD" > /dev/null 2>&1
             
@@ -147,12 +144,13 @@ for RUN_ID in $(seq 1 $TOTAL_RUNS); do
             verify_results "$CASE_NAME" "$SCRIPT_NAME" "$RUN_ID"
             if [[ "$OSTYPE" == "darwin"* ]]; then sleep 1; else sleep 0.2; fi
         done
-        sleep 3
     done
+
+    echo "  $CASE_NAME COMPLETE"
 done
 
 echo ""
 echo "=================================================="
-echo "ALL 11 RUNS COMPLETED SUCCESSFULLY ON THIS NODE ($START_SHARD-$END_SHARD)!"
+echo "ALL RUNS COMPLETED SUCCESSFULLY ON THIS NODE ($START_SHARD-$END_SHARD)!"
 echo "=================================================="
 sleep 3

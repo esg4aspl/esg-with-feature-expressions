@@ -84,12 +84,12 @@ for L_VAL in 2 3 4; do
       if [[ "$OSTYPE" == "darwin"* ]]; then sleep 1; else sleep 0.2; fi
     done
     
-    # Wait for the current L_LEVEL shards to finish before starting the next L_LEVEL
+    # FIX: Wait for all shards of this L level to finish before starting next L
     echo "Waiting for all shards of L_LEVEL = $L_VAL to complete..."
-    sleep 3
+    wait
     echo "L_LEVEL = $L_VAL completed."
     echo "--------------------------------------------------"
     
 done
-
+ 
 echo "PROCESS DISPATCHED FOR $CASE_NAME (EFG L2,3,4 | Range: $S_NODE-$E_NODE | RunID: $RUN_PARAM)"

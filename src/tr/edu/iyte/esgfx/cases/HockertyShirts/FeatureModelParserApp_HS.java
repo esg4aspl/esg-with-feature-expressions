@@ -1,5 +1,6 @@
 package tr.edu.iyte.esgfx.cases.HockertyShirts;
 
+import tr.edu.iyte.esg.model.ESG;
 import tr.edu.iyte.esgfx.conversion.mxe.MXEFileToESGFxConverter;
 import tr.edu.iyte.esgfx.model.featuremodel.FeatureModel;
 
@@ -9,13 +10,17 @@ public class FeatureModelParserApp_HS extends CaseStudyUtilities_HS {
 		CaseStudyUtilities_HS.initializeFilePaths();
 		MXEFileToESGFxConverter MXEFileToESGFxConverter = new MXEFileToESGFxConverter();
 		FeatureModel featureModel = new FeatureModel();
+		ESG HS = null;
 		try {
 			featureModel = MXEFileToESGFxConverter.parseFeatureModel(CaseStudyUtilities_HS.featureModelFile);
+		HS = MXEFileToESGFxConverter.parseMXEFileForESGFxCreation(ESGFxFile);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		System.out.println(featureModel.toString());
+		System.out.println(HS.getRealVertexList().size());
+		System.out.println(HS.getRealEdgeList().size());
 		
 //		System.out.println("Root: " + featureModel.getRoot().getName());
 //		

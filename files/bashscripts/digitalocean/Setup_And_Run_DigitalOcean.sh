@@ -5,8 +5,7 @@
 # ============================================================
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-# SCRIPT_DIR = .../files/bashscripts/digitalocean
-# İki üst dizine çıkarak "files" klasörünü buluyoruz
+
 FILES_DIR="$(dirname "$(dirname "$SCRIPT_DIR")")"
 
 IPS_FILE="$SCRIPT_DIR/ips.txt"

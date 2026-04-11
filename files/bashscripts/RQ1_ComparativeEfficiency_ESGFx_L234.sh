@@ -80,14 +80,15 @@ for L_VAL in 2 3 4; do
       
       echo "Shard $i dispatched -> $LOG"
       
+      echo "Shard $i dispatched -> $LOG"
+      
       # Stagger start
       if [[ "$OSTYPE" == "darwin"* ]]; then sleep 1; else sleep 0.2; fi
     done
     
-    # Wait for the current L_LEVEL shards to finish before starting the next L_LEVEL
-    # This prevents OutOfMemory errors on the OS level by avoiding running L2, L3, L4 simultaneously
+    # FIX: Wait for all shards of this L level to finish before starting next L
     echo "Waiting for all shards of L_LEVEL = $L_VAL to complete..."
-      if [[ "$OSTYPE" == "darwin"* ]]; then sleep 1; else sleep 0.2; fi
+    wait
     echo "L_LEVEL = $L_VAL completed."
     echo "--------------------------------------------------"
     

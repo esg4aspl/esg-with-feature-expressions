@@ -7,7 +7,6 @@
 # ============================================================
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-FILES_DIR="$(dirname "$(dirname "$SCRIPT_DIR")")"
 IPS_FILE="$SCRIPT_DIR/ips.txt"
 
 if [ ! -f "$IPS_FILE" ]; then
@@ -29,8 +28,8 @@ CASES=(
     "HockertyShirts"
 )
 
-# Dinamik yol
-LOCAL_CASES_ROOT="$FILES_DIR/Cases"
+# Set the exact local path as requested
+LOCAL_CASES_ROOT="/Users/dilekozturk/git/esg-with-feature-expressions/files/Cases"
 
 echo "=== STARTING RQ3 DATA COLLECTION ==="
 
@@ -42,32 +41,40 @@ for IP in "${IPS[@]}"; do
     echo "--------------------------------------------------"
 
     for CASE in "${CASES[@]}"; do
-        echo "   📂 Checking Case: $CASE"
+        echo "   [Directory] Checking Case: $CASE"
 
-        # 1. Ana Fault Detection özet CSV'lerini topla
+        # 1. Collect base fault detection CSVs (if any)
         REMOTE_BASE="/root/esg-with-feature-expressions/files/Cases/$CASE/faultdetection/*.csv"
         LOCAL_BASE="$LOCAL_CASES_ROOT/$CASE/faultdetection"
         mkdir -p "$LOCAL_BASE"
         scp -o StrictHostKeyChecking=no -o ConnectTimeout=10 root@$IP:"$REMOTE_BASE" "$LOCAL_BASE/" 2>/dev/null
 
-        # 2. perProduct verilerini topla
-        REMOTE_PER_PRODUCT="/root/esg-with-feature-expressions/files/Cases/$CASE/faultdetection/perProduct/*"
+        # 2. Collect perProduct CSVs
+        REMOTE_PER_PRODUCT="/root/esg-with-feature-expressions/files/Cases/$CASE/faultdetection/perProduct/*.csv"
         LOCAL_PER_PRODUCT="$LOCAL_CASES_ROOT/$CASE/faultdetection/perProduct"
         mkdir -p "$LOCAL_PER_PRODUCT"
         scp -o StrictHostKeyChecking=no -o ConnectTimeout=10 root@$IP:"$REMOTE_PER_PRODUCT" "$LOCAL_PER_PRODUCT/" 2>/dev/null
+        
         if [ $? -eq 0 ]; then
-            count=$(ls -1 "$LOCAL_PER_PRODUCT" 2>/dev/null | wc -l | xargs)
-            echo "      [✓] perProduct -> Local total: $count files"
+            count=$(ls -1 "$LOCAL_PER_PRODUCT"/*.csv 2>/dev/null | wc -l | xargs)
+            if [ "$count" -gt 0 ]; then
+                echo "      [✓] perProduct -> Local total: $count CSV files"
+            fi
         fi
 
-        # 3. Damping Sensitivity verilerini topla
-        REMOTE_SENSITIVITY="/root/esg-with-feature-expressions/files/Cases/$CASE/faultdetection/sensitivity/*"
-        LOCAL_SENSITIVITY="$LOCAL_CASES_ROOT/$CASE/faultdetection/sensitivity"
-        mkdir -p "$LOCAL_SENSITIVITY"
-        scp -o StrictHostKeyChecking=no -o ConnectTimeout=10 root@$IP:"$REMOTE_SENSITIVITY" "$LOCAL_SENSITIVITY/" 2>/dev/null
-        if [ $? -eq 0 ] && [ "$(ls -A "$LOCAL_SENSITIVITY" 2>/dev/null)" ]; then
-            count=$(ls -1 "$LOCAL_SENSITIVITY" 2>/dev/null | wc -l | xargs)
-            echo "      [✓] sensitivity -> Local total: $count files"
+        # 3. Collect sensitivity CSVs ONLY for specific cases
+        if [[ "$CASE" == "Elevator" || "$CASE" == "BankAccountv2" || "$CASE" == "Tesla" ]]; then
+            REMOTE_SENSITIVITY="/root/esg-with-feature-expressions/files/Cases/$CASE/faultdetection/sensitivity/*.csv"
+            LOCAL_SENSITIVITY="$LOCAL_CASES_ROOT/$CASE/faultdetection/sensitivity"
+            mkdir -p "$LOCAL_SENSITIVITY"
+            scp -o StrictHostKeyChecking=no -o ConnectTimeout=10 root@$IP:"$REMOTE_SENSITIVITY" "$LOCAL_SENSITIVITY/" 2>/dev/null
+            
+            if [ $? -eq 0 ]; then
+                count=$(ls -1 "$LOCAL_SENSITIVITY"/*.csv 2>/dev/null | wc -l | xargs)
+                if [ "$count" -gt 0 ]; then
+                    echo "      [✓] sensitivity -> Local total: $count CSV files"
+                fi
+            fi
         fi
     done
 done

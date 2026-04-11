@@ -67,6 +67,12 @@ for L_VAL in 2 3 4; do
       echo "Shard $i dispatched -> $LOG"
       if [[ "$OSTYPE" == "darwin"* ]]; then sleep 1; else sleep 0.2; fi
     done
-    sleep 3
+    
+    # FIX: Wait for all shards of this L level to finish before starting next L
+    echo "  Waiting for L=$L_VAL to finish..."
+    wait
+    echo "  L=$L_VAL DONE"
 done
-sleep 3
+ 
+echo "=== BENCHMARK FINISHED: $CASE_NAME ==="
+

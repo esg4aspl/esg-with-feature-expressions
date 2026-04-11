@@ -1,13 +1,11 @@
 #!/bin/bash
 
 # ============================================================
-# RQ1 DATA COLLECTION AUTOMATION
-# Description: Downloads comparativeEfficiencyTestPipeline and 
-#              testsequences CSV/TXT files from remote servers.
+# RQ1 DATA COLLECTION AUTOMATION 
+# Download .csv files. Skip (.txt) and (.EFG, .DOT).
 # ============================================================
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-FILES_DIR="$(dirname "$(dirname "$SCRIPT_DIR")")"
 IPS_FILE="$SCRIPT_DIR/ips.txt"
 
 if [ ! -f "$IPS_FILE" ]; then
@@ -29,73 +27,62 @@ CASES=(
     "HockertyShirts"
 )
 
-PIPELINE_SUBDIRS=(
-    "EFG/L2"
-    "EFG/L3"
-    "EFG/L4"
-    "ESG-Fx/L1"
-    "ESG-Fx/L2"
-    "ESG-Fx/L3"
-    "ESG-Fx/L4"
-    "RandomWalk/L0"
+# LOKAL PATH - Senin bilgisayarındaki tam yol
+LOCAL_CASES_ROOT="/Users/dilekozturk/git/esg-with-feature-expressions/files/Cases"
+
+# Sadece CSV'lerini çekeceğimiz alt dizinler
+SUBDIRS_TO_CHECK=(
+    "comparativeEfficiencyTestPipeline/EFG/L2"
+    "comparativeEfficiencyTestPipeline/EFG/L3"
+    "comparativeEfficiencyTestPipeline/EFG/L4"
+    "comparativeEfficiencyTestPipeline/ESG-Fx/L1"
+    "comparativeEfficiencyTestPipeline/ESG-Fx/L2"
+    "comparativeEfficiencyTestPipeline/ESG-Fx/L3"
+    "comparativeEfficiencyTestPipeline/ESG-Fx/L4"
+    "comparativeEfficiencyTestPipeline/RandomWalk/L0"
+    "DOTs"
+    "EFGs"
+    "EFGs/efg_results/L2"
+    "EFGs/efg_results/L3"
+    "EFGs/efg_results/L4"
+    "testsequences/L0"
+    "testsequences/L1"
+    "testsequences/L2"
+    "testsequences/L3"
+    "testsequences/L4"
 )
 
-TESTSEQ_SUBDIRS=(
-    "L0"
-    "L1"
-    "L2"
-    "L3"
-    "L4"
-)
-
-# Hardcoded yol kaldırıldı, dinamik yol eklendi
-LOCAL_CASES_ROOT="$FILES_DIR/Cases"
-
-echo "=== STARTING RQ1 DATA COLLECTION ==="
+echo "=== STARTING RQ1 DATA COLLECTION (ONLY CSVs) ==="
 
 for IP in "${IPS[@]}"; do
     if [ -z "$IP" ]; then continue; fi
 
     echo "--------------------------------------------------"
-    echo "📡 Processing Server: $IP"
+    echo "Processing Server: $IP"
     echo "--------------------------------------------------"
 
     for CASE in "${CASES[@]}"; do
         echo "   📂 Checking Case: $CASE"
 
-        # 1. Collect comparativeEfficiencyTestPipeline Data
-        for SUBDIR in "${PIPELINE_SUBDIRS[@]}"; do
-            REMOTE_PATH="/root/esg-with-feature-expressions/files/Cases/$CASE/comparativeEfficiencyTestPipeline/$SUBDIR/*"
-            LOCAL_TARGET_DIR="$LOCAL_CASES_ROOT/$CASE/comparativeEfficiencyTestPipeline/$SUBDIR"
+        for SUBDIR in "${SUBDIRS_TO_CHECK[@]}"; do
+            
+            REMOTE_PATH="/root/esg-with-feature-expressions/files/Cases/$CASE/$SUBDIR/*.csv"
+            LOCAL_TARGET_DIR="$LOCAL_CASES_ROOT/$CASE/$SUBDIR"
             
             mkdir -p "$LOCAL_TARGET_DIR"
 
             scp -o StrictHostKeyChecking=no -o ConnectTimeout=10 \
                 root@$IP:"$REMOTE_PATH" "$LOCAL_TARGET_DIR/" 2>/dev/null
 
-            if [ $? -eq 0 ]; then
-                echo "      ✅ [Pipeline: $SUBDIR] Downloaded."
-            fi
-        done
-
-        # 2. Collect testsequences Data (TXT and CSV)
-        for SUBDIR in "${TESTSEQ_SUBDIRS[@]}"; do
-            REMOTE_PATH="/root/esg-with-feature-expressions/files/Cases/$CASE/testsequences/$SUBDIR/*"
-            LOCAL_TARGET_DIR="$LOCAL_CASES_ROOT/$CASE/testsequences/$SUBDIR"
             
-            mkdir -p "$LOCAL_TARGET_DIR"
-
-            scp -o StrictHostKeyChecking=no -o ConnectTimeout=10 \
-                root@$IP:"$REMOTE_PATH" "$LOCAL_TARGET_DIR/" 2>/dev/null
-
             if [ $? -eq 0 ]; then
-                echo "      ✅ [TestSeq: $SUBDIR] Downloaded."
+                count=$(ls -1q "$LOCAL_TARGET_DIR"/*.csv 2>/dev/null | wc -l | xargs)
+                if [ "$count" -gt 0 ]; then
+                    echo "      ✅ [$SUBDIR] $count CSV downloaded."
+                fi
             fi
         done
-        
     done
 done
 
-echo "=================================================="
-echo "🎉 RQ1 Data Collection Completed."
-echo "All files saved to: $LOCAL_CASES_ROOT"
+echo "=== DATA COLLECTION COMPLETE ==="

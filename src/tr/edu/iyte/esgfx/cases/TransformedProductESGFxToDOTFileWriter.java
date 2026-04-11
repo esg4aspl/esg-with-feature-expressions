@@ -3,17 +3,16 @@ package tr.edu.iyte.esgfx.cases;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.List;
 
-import org.sat4j.core.VecInt;
 import org.sat4j.minisat.SolverFactory;
 import org.sat4j.specs.ISolver;
 import org.sat4j.tools.ModelIterator;
 
 import tr.edu.iyte.esg.model.ESG;
-import tr.edu.iyte.esgfx.cases.Elevator.CaseStudyUtilities_El;
-import tr.edu.iyte.esgfx.conversion.dot.ESGFxToDOTFileConverter;
-import tr.edu.iyte.esgfx.conversion.xml.ESGToEFGFileWriter;
+
+
 import tr.edu.iyte.esgfx.model.featureexpression.FeatureExpression;
 import tr.edu.iyte.esgfx.productconfigurationgeneration.SATSolverGenerationFromFeatureModel;
 import tr.edu.iyte.esgfx.productmodelgeneration.ProductESGFxGenerator;
@@ -23,97 +22,94 @@ public class TransformedProductESGFxToDOTFileWriter extends CaseStudyUtilities {
 
 	public void writeTransformedProductESGFxToFile() throws Exception {
 
-    	coverageLength = 3;
-    	setCoverageType();
-        featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFile,
-                ESGFxFile);
+		featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFile,
+				ESGFxFile);
 
-        List<FeatureExpression> featureExpressionList = getFeatureExpressionList(featureExpressionMapFromFeatureModel);
+		List<FeatureExpression> featureExpressionList = getFeatureExpressionList(featureExpressionMapFromFeatureModel);
 
-        SATSolverGenerationFromFeatureModel satSolverGenerationFromFeatureModel = new SATSolverGenerationFromFeatureModel();
-        ISolver solver = new ModelIterator(SolverFactory.newDefault());
+		SATSolverGenerationFromFeatureModel satSolverGenerationFromFeatureModel = new SATSolverGenerationFromFeatureModel();
+		ISolver solver = new ModelIterator(SolverFactory.newDefault());
 
-        System.out.println("Transformed product ESG-Fx DOT FILE WRITER " + SPLName + " STARTED");
+		System.out.println("Transformed product ESG-Fx  " + SPLName + " STARTED");
 
-        satSolverGenerationFromFeatureModel.addSATClauses(solver, featureModel, featureExpressionMapFromFeatureModel,
-                featureExpressionList);
-        ProductESGFxGenerator productESGFxGenerator = new ProductESGFxGenerator();
-        TransformedESGFxGenerator transformedESGFxGenerator = new TransformedESGFxGenerator();
+		satSolverGenerationFromFeatureModel.addSATClauses(solver, featureModel, featureExpressionMapFromFeatureModel,
+				featureExpressionList);
+		ProductESGFxGenerator productESGFxGenerator = new ProductESGFxGenerator();
+		TransformedESGFxGenerator transformedESGFxGenerator = new TransformedESGFxGenerator();
 
-        int productID = 0;
+		String dotDirectoryPath = DOTFolder + "L2/";
+		File dotDirectory = new File(dotDirectoryPath);
+
+		if (!dotDirectory.exists() || !dotDirectory.isDirectory()) {
+			throw new Exception("DOT directory does not exist: " + dotDirectoryPath);
+		}
+
+		File[] dotFiles = dotDirectory.listFiles((dir, name) -> name.toLowerCase().endsWith(".dot"));
+		if (dotFiles == null || dotFiles.length == 0) {
+			System.out.println("No DOT files found in directory.");
+			return;
+		}
+
+		Arrays.sort(dotFiles, (f1, f2) -> f1.getName().compareTo(f2.getName()));
+
+		String ESGFxPerProductLog = caseStudyFolder  + "/" + SPLName + "_TransformedESG-FxPerProductLog"
+				 + ".csv";
+		
+		File logFile = new File(ESGFxPerProductLog);
+		boolean writeHeader = !logFile.exists() || logFile.length() == 0;
+
+		if (logFile.getParentFile() != null) {
+			logFile.getParentFile().mkdirs();
+		}
+
+		featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFile,
+				ESGFxFile);
+
+		try (PrintWriter ESGFxPerProductLogWriter = new PrintWriter(new FileWriter(logFile, true))) {
+
+			if (writeHeader) {
+				ESGFxPerProductLogWriter.println("ProductID;" + "L=3;V_3;E_3;L=4;V_4;E_4;");
+			}
+
+			int productID = 0;
+			for (int i = 0; i < dotFiles.length; i++) {
+
+				
+				File dotFile = dotFiles[i];
+				String productName = dotFile.getName().replaceAll("(?i)\\.dot", "");
+				productID++;
+
+				String configFilePath = productConfigurationFolder + productName + ".config";
+				updateFeatureExpressionMapFromConfigFile(configFilePath);
+				ESG productESGFx = productESGFxGenerator.generateProductESGFx(productID, productName, ESGFx);
+
+				//System.out.println("Processing product: " + productName + " (Product ID: " + productID + ")" + productESGFx.getRealVertexList().size() + " vertices, " + productESGFx.getRealEdgeList().size() + " edges");
+				ESG transformedProductESGFx_1 = transformedESGFxGenerator.generateTransformedESGFx(3,
+						productESGFx);
+
+						productESGFx = null; // Help GC by dereferencing the original product ESG-Fx if it's no longer needed
+
+						productESGFx = productESGFxGenerator.generateProductESGFx(productID, productName, ESGFx);
+				ESG transformedProductESGFx_2 = transformedESGFxGenerator.generateTransformedESGFx(4,
+						productESGFx);
+
+				ESGFxPerProductLogWriter.println(
+					productID + ";L=3;" + transformedProductESGFx_1.getRealVertexList().size()+ ";" 
+									+ transformedProductESGFx_1.getRealEdgeList().size() + ";L=4;" 
+									+ transformedProductESGFx_2.getRealVertexList().size() + ";" 
+									+ transformedProductESGFx_2.getRealEdgeList().size() + ";");
+				productESGFx = null;
 
 
-            while (solver.isSatisfiable()) {
+			}
 
-                productID++;
-
-                int[] model = solver.model();
-                for (int i = 0; i < model.length; i++) {
-                    FeatureExpression featureExpression = featureExpressionList.get(i);
-                    if (model[i] > 0) {
-                        featureExpression.setTruthValue(true);
-                    } else {
-                        featureExpression.setTruthValue(false);
-                    }
-                }
-
-                VecInt blockingClause = new VecInt();
-                for (int i = 0; i < model.length; i++) {
-                    blockingClause.push(-model[i]);
-                }
-                solver.addClause(blockingClause);
-
-                boolean isProductConfigurationValid = isProductConfigurationValid(featureModel,
-                        featureExpressionMapFromFeatureModel);
-
-                if (isProductConfigurationValid) {
-                    
-                    String productName = ProductIDUtil.format(productID, 4);
-                    
-                    int numberOfFeatures = 0;
-                    StringBuilder productConfiguration = new StringBuilder(productName + ": <");
-                    StringBuilder individualConfigFileContent = new StringBuilder();
-                    
-                    for (int i = 0; i < model.length; i++) {
-                        FeatureExpression fe = featureExpressionList.get(i);
-                        String fname = fe.getFeature().getName();
-                        
-                        if (model[i] > 0) {
-                            fe.setTruthValue(true);
-                            productConfiguration.append(fname).append(", ");
-                            individualConfigFileContent.append(fname).append("=true\n");
-                            numberOfFeatures++;
-                        } else {
-                            fe.setTruthValue(false);
-                            individualConfigFileContent.append(fname).append("=false\n");
-                        }
-                    }
-                    
-                    if (numberOfFeatures > 0)
-                        productConfiguration.setLength(productConfiguration.length() - 2);
-                    productConfiguration.append(">:").append(numberOfFeatures).append(" features");
-
-                    
-                    ESG productESGFx = productESGFxGenerator.generateProductESGFx(productID, productName, ESGFx);
-                    
-                    ESG transformedProductESGFx = transformedESGFxGenerator.generateTransformedESGFx(coverageLength, productESGFx);
-
-                    ESGFxToDOTFileConverter.buildDOTFileFromESGFx(transformedProductESGFx, DOTFolder + coverageType + "/",
-                            productName);
-
-                    
-                    productESGFx = null;
-                    if (productID % 100 == 0) {
-                        System.gc();
-                    }
-
-                } else {
-                    productID--;
-                }
-
-                System.out.println("EFG, DOT & CONFIG FILE WRITER " + SPLName + " FINISHED " + productID + " products");
-        }
-
-	}
-
+		} catch (Exception e) {
+			System.err.println("Error processing DOT files: " + e.getMessage());
+			e.printStackTrace();
+		}
+		System.out.println("Transformed product ESG-Fx DOT FILE WRITER " + SPLName + " FINISHED");
+	}	
 }
+
+		
+

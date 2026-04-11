@@ -28,14 +28,14 @@ bash ./RQ1_ComparativeEfficiency_Master.sh "$START_SHARD" "$END_SHARD"
 sleep 10
 
 # --- PHASE 3: RQ3 (FAULT DETECTION) ---
-echo ">>> PHASE 3: EXECUTING RQ3 (FAULT DETECTION) <<<"
-bash ./RQ3_FaultDetection_Master.sh "$START_SHARD" "$END_SHARD"
-sleep 10
+#echo ">>> PHASE 3: EXECUTING RQ3 (FAULT DETECTION) <<<"
+#bash ./RQ3_FaultDetection_Master.sh "$START_SHARD" "$END_SHARD"
+#sleep 10
 
 # --- PHASE 3: RQ3 (FAULT DETECTION - DAMPING SENSITIVITY) ---
-echo ">>> PHASE 3: EXECUTING RQ3 (FAULT DETECTION - DAMPING SENSITIVITY) <<<"
-bash ./RQ3_RandomWalk_DampingSensivityAnalysis.sh "$START_SHARD" "$END_SHARD"
-sleep 10
+#echo ">>> PHASE 3: EXECUTING RQ3 (FAULT DETECTION - DAMPING SENSITIVITY) <<<"
+#bash ./RQ3_RandomWalk_DampingSensivityAnalysis.sh "$START_SHARD" "$END_SHARD"
+#sleep 10
 
 # --- PHASE 4: RQ2 (EXTREME SCALABILITY) ---
 # NOTE: Commented out for local MacBook testing. 

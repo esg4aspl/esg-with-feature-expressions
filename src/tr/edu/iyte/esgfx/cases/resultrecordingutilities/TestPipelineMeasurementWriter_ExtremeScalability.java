@@ -59,7 +59,7 @@ public class TestPipelineMeasurementWriter_ExtremeScalability {
                         + "Product Gen Time(ms);" + "Test Generation Time(ms);" 
                         + "Test Generation Peak Memory(MB);" + "Number of ESGFx Vertices;" 
                         + "Number of ESGFx Edges;" + "Number of ESGFx Test Cases;" + "Number of ESGFx Test Events;"
-                        + coverageType + " Coverage(%);" + "Coverage Analysis Time(ms);" + "Test Execution Time(ms);" 
+                        +  "Event Coverage(%);" + "Coverage Analysis Time(ms);" + "Test Execution Time(ms);" 
                         + "Test Execution Peak Memory(MB);" + "Processed Products;" + "Failed Products\n");
                 writer.write(dataRow);
             }
@@ -127,7 +127,7 @@ public class TestPipelineMeasurementWriter_ExtremeScalability {
                         + "Product Gen Time(ms);" + "Transformation Time(ms);" + "Test Generation Time(ms);" 
                         + "Test Generation Peak Memory(MB);" + "Number of ESGFx Vertices;" 
                         + "Number of ESGFx Edges;" + "Number of ESGFx Test Cases;" + "Number of ESGFx Test Events;"
-                        + coverageType + " Coverage(%);" + "Coverage Analysis Time(ms);" + "Test Execution Time(ms);" 
+                        + "Edge Coverage(%);" + "Coverage Analysis Time(ms);" + "Test Execution Time(ms);" 
                         + "Test Execution Peak Memory(MB);" + "Processed Products;" + "Failed Products\n");
                 writer.write(dataRow);
             }
