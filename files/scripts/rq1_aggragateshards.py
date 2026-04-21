@@ -1,25 +1,32 @@
 #!/usr/bin/env python3
 """
-rq1_aggregate_shards.py — Aggregates shard-level CSV files for RQ1
-====================================================================
-UPDATED: 
-- Raw Data: Keeps Shard ID and Run ID as separate columns.
-- Aggregated Data: Groups across ALL shards by Run ID. Results in exactly 
-  1 row per run (e.g., 11 rows total), eliminating Shard ID and summing up 
-  Processed Products to represent the entire SPL.
-- Master Summary: Calculates the median of the 11 runs for each SPL 
-  and writes a single comprehensive Excel file under files/Cases/ with 
-  1 row per SPL per approach.
+rq1_aggregate_shards.py — Aggregates 80 shard-level CSV files for RQ1
+======================================================================
+Pipeline:
+  1. Per SPL: Read all shard CSVs → combine into raw data (Shard ID + Run ID kept)
+  2. Aggregate across shards per Run ID → 11 rows per approach×level
+  3. Compute median of 11 runs → 1 row per approach×level (SPL summary)
+  4. Master summary: All SPLs combined into one Excel
+
+Outputs per SPL:
+  - RQ1_{CaseName}_perShard.xlsx    (raw shard data, one sheet per approach×level)
+  - RQ1_{CaseName}_perRun.xlsx      (aggregated per run, 11 rows per sheet)
+
+Global output:
+  - RQ1_SPLSummary_medians.xlsx     (1 row per SPL×approach×level, median of 11 runs)
+  - RQ1_SPLSummary_ForPhDThesis.xlsx (same but includes L1 data)
 
 Usage:
-    python rq1_aggragateshards.py
+    python rq1_aggregate_shards.py
 """
 
 import os
-import sys
 import re
+import numpy as np
 import pandas as pd
 from pathlib import Path
+
+# ─── Configuration ──────────────────────────────────────────────────────────
 
 SPL_NAME_MAPPING = {
     "SodaVendingMachine": "SVM",
@@ -34,10 +41,17 @@ SPL_NAME_MAPPING = {
 
 def find_project_root():
     current = Path.cwd()
-    if (current / "files" / "Cases").exists(): return current
-    if (current.parent / "files" / "Cases").exists(): return current.parent
-    if (current.parent.parent / "files" / "Cases").exists(): return current.parent.parent
+    for p in [current, current.parent, current.parent.parent]:
+        if (p / "files" / "Cases").exists():
+            return p
     return None
+
+# ─── Aggregation Rules ──────────────────────────────────────────────────────
+# key:  kept as-is (groupby columns)
+# sum:  summed across shards
+# max:  max across shards
+# weighted_avg: weighted average across shards (value_col: weight_col)
+# safety_weighted_avg: like weighted_avg but returns NaN when total weight is 0
 
 EFG_RULES = {
     'key':  ['Run ID', 'SPL Name', 'Coverage Type'],
@@ -51,6 +65,20 @@ EFG_RULES = {
     'max':  ['Total TestGenPeakMemory(MB)', 'Total TestExecPeakMemory(MB)'],
     'weighted_avg': {
         'Event Coverage(%)': 'Processed Products',
+        'Edge Coverage(%)': 'Processed Products',
+    },
+}
+
+ESGFX_L1_RULES = {
+    'key':  ['Run ID', 'SPL Name', 'Coverage Type'],
+    'sum':  ['Total Elapsed Time(ms)', 'Test Generation Time(ms)',
+             'Number of ESGFx Vertices', 'Number of ESGFx Edges',
+             'Number of ESGFx Test Cases', 'Number of ESGFx Test Events',
+             'Test Case Recording Time(ms)', 'Edge Coverage Analysis Time(ms)',
+             'Test Execution Time(ms)', 'ESGFx Model Load Time(ms)',
+             'Processed Products', ' Failed Products'],
+    'max':  ['Test Generation Peak Memory(MB)', 'Test Execution Peak Memory(MB)'],
+    'weighted_avg': {
         'Edge Coverage(%)': 'Processed Products',
     },
 }
@@ -83,183 +111,234 @@ RW_RULES = {
     'weighted_avg': {
         'Event Coverage(%)': 'Processed Products',
         'Edge Coverage(%)': 'Processed Products',
+    },
+    'safety_weighted_avg': {
         'Avg Time on Safety Limit(ms)': 'Safety Limit Hit Count',
         'Avg Steps on Safety Limit': 'Safety Limit Hit Count',
         'Avg Edge Coverage on Safety Limit(%)': 'Safety Limit Hit Count',
     },
 }
 
-APPROACH_RULES_MAP = {
-    'EFG': EFG_RULES,
-    'ESG-Fx': ESGFX_RULES,
-    'RandomWalk': RW_RULES
-}
+def get_rules(approach, coverage_type):
+    if approach == 'EFG':
+        return EFG_RULES
+    elif approach == 'ESG-Fx':
+        return ESGFX_L1_RULES if coverage_type == 'L1' else ESGFX_RULES
+    elif approach == 'RandomWalk':
+        return RW_RULES
+    return {}
 
-def aggregate_entire_spl(raw_df):
-    if raw_df.empty: return raw_df
-    
-    aggregated_rows = []
-    
+# ─── Core Functions ─────────────────────────────────────────────────────────
+
+def read_shard_csv(filepath):
+    try:
+        df = pd.read_csv(filepath, sep=';', decimal=',')
+        if len(df.columns) == 1:
+            df = pd.read_csv(filepath, sep=',', decimal='.')
+        # Strip whitespace from column names
+        df.columns = [c.strip() if not c.startswith(' ') else c for c in df.columns]
+        # Clean Run ID
+        if 'Run ID' in df.columns:
+            cleaned = df['Run ID'].astype(str).str.replace(r'\.0$', '', regex=True)
+            df['Run ID'] = pd.to_numeric(cleaned, errors='coerce').fillna(df['Run ID'])
+        return df
+    except Exception as e:
+        print(f"  ERROR reading {filepath}: {e}")
+        return None
+
+
+def aggregate_shards_per_run(raw_df):
+    """Aggregate shard rows into one row per Run ID per approach×coverage_type."""
+    if raw_df.empty:
+        return raw_df
+
+    rows = []
     for (approach, cov_type), group_df in raw_df.groupby(['Approach', 'Coverage Type']):
-        rules = APPROACH_RULES_MAP.get(approach, {})
-        if not rules: continue
-        
+        rules = get_rules(approach, cov_type)
+        if not rules:
+            continue
+
         for run_id, run_group in group_df.groupby('Run ID'):
             row = {'Approach': approach, 'Coverage Type': cov_type, 'Run ID': run_id}
-            
+
             for col in rules.get('key', []):
                 if col in run_group.columns and col not in row:
                     row[col] = run_group[col].iloc[0]
-                    
+
             for col in rules.get('sum', []):
                 if col in run_group.columns:
                     row[col] = run_group[col].sum()
-                    
+
             for col in rules.get('max', []):
                 if col in run_group.columns:
                     row[col] = run_group[col].max()
-                    
+
             for col, weight_col in rules.get('weighted_avg', {}).items():
                 if col in run_group.columns and weight_col in run_group.columns:
-                    weights = run_group[weight_col]
-                    values = run_group[col]
-                    total_weight = weights.sum()
-                    row[col] = (values * weights).sum() / total_weight if total_weight > 0 else 0.0
-                    
-            aggregated_rows.append(row)
-            
-    result = pd.DataFrame(aggregated_rows)
-    ordered_cols = [c for c in raw_df.columns if c in result.columns and c != 'Shard ID']
-    return result[ordered_cols]
+                    w = run_group[weight_col]
+                    v = run_group[col]
+                    tw = w.sum()
+                    row[col] = (v * w).sum() / tw if tw > 0 else np.nan
 
-def get_spl_median_summary(agg_df, spl_name):
-    """
-    Takes the aggregated 11-run dataframe of a single SPL, 
-    calculates the median for all numeric columns, 
-    and returns a 1-row-per-approach summary dataframe.
-    """
-    if agg_df.empty: return pd.DataFrame()
-    
+            # Safety limit metrics: NaN when no hits at all
+            for col, weight_col in rules.get('safety_weighted_avg', {}).items():
+                if col in run_group.columns and weight_col in run_group.columns:
+                    w = run_group[weight_col]
+                    v = run_group[col]
+                    tw = w.sum()
+                    if tw > 0:
+                        row[col] = (v * w).sum() / tw
+                    else:
+                        row[col] = np.nan  # No safety limit hits → NaN, not 0
+
+            rows.append(row)
+
+    result = pd.DataFrame(rows)
+    # Reorder columns to match raw_df order (minus Shard ID)
+    ordered = [c for c in raw_df.columns if c in result.columns and c != 'Shard ID']
+    extra = [c for c in result.columns if c not in ordered]
+    return result[[c for c in ordered + extra if c in result.columns]]
+
+
+def compute_median_summary(agg_df, spl_name):
+    """From 11-run aggregated data, compute median → 1 row per approach×level."""
+    if agg_df.empty:
+        return pd.DataFrame()
+
     summaries = []
-    # Kapsama ve Yaklaşıma göre grupla (örn: ESG-Fx ve EdgeCoverage)
     for (approach, cov_type), group in agg_df.groupby(['Approach', 'Coverage Type']):
-        # Yalnızca matematiksel ortalaması alınabilecek sayısal sütunları seç
         numeric_cols = group.select_dtypes(include='number').columns
         cols_to_median = [c for c in numeric_cols if c != 'Run ID']
-        
-        # Orijinal tablo yapısını korumak için anahtar sütunları ayarla
+
         row = {
-            'SPL Name': SPL_NAME_MAPPING.get(spl_name, spl_name), # Kısaltma varsa kullan
+            'SPL Name': SPL_NAME_MAPPING.get(spl_name, spl_name),
             'Approach': approach,
             'Coverage Type': cov_type
         }
-        
-        # Her bir sütun için median değerini hesapla
         for c in cols_to_median:
             row[c] = group[c].median()
-            
+
         summaries.append(row)
-        
+
     return pd.DataFrame(summaries)
 
+
 def save_to_sheets(df, output_path):
+    """Save DataFrame to Excel with one sheet per Approach×Coverage Type."""
     with pd.ExcelWriter(output_path, engine='openpyxl') as writer:
         if df.empty:
             df.to_excel(writer, sheet_name='No_Data', index=False)
             return
-            
-        for (approach, level), group_df in df.groupby(['Approach', 'Coverage Type']):
-            sheet_name = f"{approach}_{level}"
-            clean_group_df = group_df.dropna(axis=1, how='all')
-            clean_group_df.to_excel(writer, sheet_name=sheet_name, index=False)
 
-def process_spl(spl_folder_name, base_dir, output_dir):
-    print(f"\n[SUMMARY] PROCESSING: {spl_folder_name}")
-    
+        for (approach, level), group_df in df.groupby(['Approach', 'Coverage Type']):
+            sheet_name = f"{approach}_{level}"[:31]  # Excel sheet name limit
+            clean = group_df.dropna(axis=1, how='all')
+            clean.to_excel(writer, sheet_name=sheet_name, index=False)
+
+
+def save_to_sheets_split(df, output_path_article, output_path_thesis):
+    """Save to two files: article (L2-L4 only) and thesis (all including L1)."""
+    # Thesis: everything
+    save_to_sheets(df, output_path_thesis)
+
+    # Article: exclude L1
+    article_df = df[df['Coverage Type'] != 'L1']
+    save_to_sheets(article_df, output_path_article)
+
+
+# ─── Per-SPL Processing ────────────────────────────────────────────────────
+
+def process_spl(spl_folder_name, base_dir):
+    print(f"\n{'='*60}")
+    print(f"PROCESSING: {spl_folder_name}")
+    print(f"{'='*60}")
+
     pipeline_dir = base_dir / "comparativeEfficiencyTestPipeline"
     if not pipeline_dir.exists():
-        print("  WARNING: comparativeEfficiencyTestPipeline directory not found.")
+        print("  WARNING: comparativeEfficiencyTestPipeline not found.")
         return None
 
-    all_raw_data = []
-    
-    for csv_file in pipeline_dir.rglob("*.csv"):
+    all_raw = []
+
+    for csv_file in sorted(pipeline_dir.rglob("*.csv")):
         fname = csv_file.name
-        if '_EFG_' in fname: approach = 'EFG'
-        elif '_ESG-Fx_' in fname: approach = 'ESG-Fx'
-        elif '_RandomWalk_' in fname: approach = 'RandomWalk'
-        else: continue
+        if '_EFG_' in fname:
+            approach = 'EFG'
+        elif '_ESG-Fx_' in fname:
+            approach = 'ESG-Fx'
+        elif '_RandomWalk_' in fname:
+            approach = 'RandomWalk'
+        else:
+            continue
 
         shard_match = re.search(r'(shard_?\d+)', str(csv_file), re.IGNORECASE)
         shard_name = shard_match.group(1).lower() if shard_match else "shard0"
 
-        try:
-            df = pd.read_csv(csv_file, sep=';', decimal=',')
-            if len(df.columns) == 1:
-                df = pd.read_csv(csv_file, sep=',', decimal='.')
-            
-            rename_dict = {}
-            for col in df.columns:
-                if col.strip() in ['L2 Percent(%)', 'L3 Percent(%)', 'L4 Percent(%)']:
-                    rename_dict[col] = 'Edge Coverage(%)'
-            if rename_dict:
-                df.rename(columns=rename_dict, inplace=True)
-            
-            df['Approach'] = approach
-            df.insert(0, 'Shard ID', shard_name)
-            
-            if 'Run ID' in df.columns:
-                cleaned_run_id = df['Run ID'].astype(str).str.replace(r'\.0$', '', regex=True)
-                df['Run ID'] = pd.to_numeric(cleaned_run_id, errors='ignore')
-            
-            all_raw_data.append(df)
-                
-        except Exception as e:
-            print(f"  ERROR: {csv_file.name} - {e}")
+        df = read_shard_csv(csv_file)
+        if df is None or df.empty:
+            continue
 
-    if not all_raw_data: return None
+        df['Approach'] = approach
+        df.insert(0, 'Shard ID', shard_name)
+        all_raw.append(df)
 
-    raw_combined = pd.concat(all_raw_data, ignore_index=True)
-    agg_combined = aggregate_entire_spl(raw_combined)
-    
-    raw_path = output_dir / f"RQ1_Summary_rawData_{spl_folder_name}.xlsx"
-    agg_path = output_dir / f"RQ1_Summary_aggregated_{spl_folder_name}.xlsx"
-    
+    if not all_raw:
+        print("  No CSV files found.")
+        return None
+
+    raw_combined = pd.concat(all_raw, ignore_index=True)
+    agg_combined = aggregate_shards_per_run(raw_combined)
+
+    # Save per-shard raw data
+    raw_path = base_dir / f"RQ1_{spl_folder_name}_perShard.xlsx"
     save_to_sheets(raw_combined, raw_path)
+    print(f"  Saved: {raw_path.name}")
+
+    # Save per-run aggregated data
+    agg_path = base_dir / f"RQ1_{spl_folder_name}_perRun.xlsx"
     save_to_sheets(agg_combined, agg_path)
-    
-    print(f"  DONE: Generated summary excels for {spl_folder_name}.")
-    
-    # Döngüde master dosyaya eklenmek üzere aggregated veriyi döndürüyoruz
+    print(f"  Saved: {agg_path.name}")
+
     return agg_combined
+
+
+# ─── Main ───────────────────────────────────────────────────────────────────
 
 def main():
     root = find_project_root()
-    if not root: return
+    if not root:
+        print("ERROR: Project root (files/Cases) not found.")
+        return
+
     cases_dir = root / "files" / "Cases"
-    spls = [d for d in sorted(cases_dir.iterdir()) if d.is_dir()]
-    
-    all_master_summaries = []
-    
+    spls = [d for d in sorted(cases_dir.iterdir()) if d.is_dir() and not d.name.startswith('_')]
+
+    all_summaries = []
+
     for spl_dir in spls:
-        # 1. Her SPL'i işle ve o SPL'e ait 11 run'lık veriyi al
-        agg_df = process_spl(spl_dir.name, spl_dir, spl_dir)
-        
-        # 2. Eğer veri başarıyla geldiyse medyan alıp ana listeye ekle
+        agg_df = process_spl(spl_dir.name, spl_dir)
         if agg_df is not None and not agg_df.empty:
-            spl_median_summary = get_spl_median_summary(agg_df, spl_dir.name)
-            all_master_summaries.append(spl_median_summary)
-            
-    # 3. Tüm SPL'ler bittiğinde tek bir master (ana) Excel dosyası oluştur
-    if all_master_summaries:
-        master_combined = pd.concat(all_master_summaries, ignore_index=True)
-        master_path = cases_dir / "Master_RQ1_Summary.xlsx"
-        
-        save_to_sheets(master_combined, master_path)
-        print(f"\n=======================================================")
-        print(f"[MASTER SUMMARY] Bütün SPL verileri medyanlanıp birleştirildi.")
-        print(f"Dosya şuraya kaydedildi: {master_path}")
-        print(f"=======================================================")
+            median_df = compute_median_summary(agg_df, spl_dir.name)
+            all_summaries.append(median_df)
+
+    if all_summaries:
+        master = pd.concat(all_summaries, ignore_index=True)
+
+        # Article version: L2-L4 only
+        article_path = cases_dir / "RQ1_SPLSummary_medians.xlsx"
+        article_df = master[master['Coverage Type'] != 'L1']
+        save_to_sheets(article_df, article_path)
+        print(f"\n  Master (Article): {article_path.name}")
+
+        # PhD Thesis version: includes L1
+        thesis_path = cases_dir / "RQ1_SPLSummary_ForPhDThesis.xlsx"
+        save_to_sheets(master, thesis_path)
+        print(f"  Master (Thesis):  {thesis_path.name}")
+
+        print(f"\n{'='*60}")
+        print("ALL DONE.")
+        print(f"{'='*60}")
+
 
 if __name__ == "__main__":
     main()

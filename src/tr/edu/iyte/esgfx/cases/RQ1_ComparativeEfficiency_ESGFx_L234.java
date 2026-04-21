@@ -28,7 +28,7 @@ public class RQ1_ComparativeEfficiency_ESGFx_L234 extends CaseStudyUtilities {
 	public void measurePipelineForEdgeCoverage() throws Exception {
 		int N_SHARDS = Integer.parseInt(System.getenv().getOrDefault("N_SHARDS", "1"));
 		int CURRENT_SHARD = Integer.parseInt(System.getenv().getOrDefault("SHARD", "0"));
-		int L_LEVEL = Integer.parseInt(System.getenv().getOrDefault("L_LEVEL", "2"));
+		int L_LEVEL = Integer.parseInt(System.getenv().getOrDefault("L_LEVEL", "4"));
 		int runID = Integer.parseInt(System.getenv().getOrDefault("runID", "1"));
 
 		coverageLength = L_LEVEL;

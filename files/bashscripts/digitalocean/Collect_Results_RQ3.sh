@@ -62,18 +62,16 @@ for IP in "${IPS[@]}"; do
             fi
         fi
 
-        # 3. Collect sensitivity CSVs ONLY for specific cases
-        if [[ "$CASE" == "Elevator" || "$CASE" == "BankAccountv2" || "$CASE" == "Tesla" ]]; then
-            REMOTE_SENSITIVITY="/root/esg-with-feature-expressions/files/Cases/$CASE/faultdetection/sensitivity/*.csv"
-            LOCAL_SENSITIVITY="$LOCAL_CASES_ROOT/$CASE/faultdetection/sensitivity"
-            mkdir -p "$LOCAL_SENSITIVITY"
-            scp -o StrictHostKeyChecking=no -o ConnectTimeout=10 root@$IP:"$REMOTE_SENSITIVITY" "$LOCAL_SENSITIVITY/" 2>/dev/null
-            
-            if [ $? -eq 0 ]; then
-                count=$(ls -1 "$LOCAL_SENSITIVITY"/*.csv 2>/dev/null | wc -l | xargs)
-                if [ "$count" -gt 0 ]; then
-                    echo "      [✓] sensitivity -> Local total: $count CSV files"
-                fi
+        # 3. Collect sensitivity CSVs for ALL cases
+        REMOTE_SENSITIVITY="/root/esg-with-feature-expressions/files/Cases/$CASE/faultdetection/sensitivity/*.csv"
+        LOCAL_SENSITIVITY="$LOCAL_CASES_ROOT/$CASE/faultdetection/sensitivity"
+        mkdir -p "$LOCAL_SENSITIVITY"
+        scp -o StrictHostKeyChecking=no -o ConnectTimeout=10 root@$IP:"$REMOTE_SENSITIVITY" "$LOCAL_SENSITIVITY/" 2>/dev/null
+        
+        if [ $? -eq 0 ]; then
+            count=$(ls -1 "$LOCAL_SENSITIVITY"/*.csv 2>/dev/null | wc -l | xargs)
+            if [ "$count" -gt 0 ]; then
+                echo "      [✓] sensitivity -> Local total: $count CSV files"
             fi
         fi
     done

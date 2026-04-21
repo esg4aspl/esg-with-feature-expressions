@@ -108,23 +108,22 @@ def process_spl(spl_folder_name, cases_dir):
     else:
         print(f"  [!] Directory not found: {per_product_dir}")
 
-    # 2. Process 'sensitivity' categories (ONLY for Elevator, BankAccountv2, Tesla)
-    if spl_folder_name in ["Elevator", "BankAccountv2", "Tesla"]:
-        if sensitivity_dir.exists():
-            sensitivity_categories = [
-                ("Sens_EdgeOmission", f"{file_prefix}_DampingSensitivity_EdgeOmission_shard*.csv"),
-                ("Sens_EventOmission", f"{file_prefix}_DampingSensitivity_EventOmission_shard*.csv"),
-                ("Sens_TestGen", f"{file_prefix}_DampingSensitivity_TestGen_shard*.csv")
-            ]
-            
-            print(f"  --- Sensitivity Data (Exclusive for {spl_folder_name}) ---")
-            for sheet_name, pattern in sensitivity_categories:
-                df = load_shards(sensitivity_dir, pattern)
-                if df is not None:
-                    sheets_data[sheet_name] = df
-                    print(f"  [✓] {sheet_name:25s}: {len(df)} rows combined.")
-        else:
-            print(f"  [!] Sensitivity directory missing for {spl_folder_name}, skipping.")
+    # 2. Process 'sensitivity' categories (For ALL SPLs)
+    if sensitivity_dir.exists():
+        sensitivity_categories = [
+            ("Sens_EdgeOmission", f"{file_prefix}_DampingSensitivity_EdgeOmission_shard*.csv"),
+            ("Sens_EventOmission", f"{file_prefix}_DampingSensitivity_EventOmission_shard*.csv"),
+            ("Sens_TestGen", f"{file_prefix}_DampingSensitivity_TestGen_shard*.csv")
+        ]
+        
+        print(f"  --- Sensitivity Data ---")
+        for sheet_name, pattern in sensitivity_categories:
+            df = load_shards(sensitivity_dir, pattern)
+            if df is not None:
+                sheets_data[sheet_name] = df
+                print(f"  [✓] {sheet_name:25s}: {len(df)} rows combined.")
+    else:
+        print(f"  [!] Sensitivity directory missing for {spl_folder_name}, skipping.")
             
     # 3. Save to Excel
     if sheets_data:

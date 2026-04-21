@@ -38,9 +38,14 @@ PROJECT_ROOT="$(dirname "$FILES_DIR")"
 cd "$PROJECT_ROOT" || { echo "CRITICAL ERROR: Project root not found!"; exit 1; }
 
 CASES=(
+  "SodaVendingMachine SVM"
+  "eMail eM"
   "Elevator El"
   "BankAccountv2 BAv2"
+  "StudentAttendanceSystem SAS"
   "Tesla Te"
+  "syngovia Svia"
+  "HockertyShirts HS"   
 )
 
 ERROR_KEYWORDS="Exception|Error|FAILURE|Java heap space|AccessDenied"

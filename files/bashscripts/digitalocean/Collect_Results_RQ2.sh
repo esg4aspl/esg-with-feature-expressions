@@ -34,14 +34,14 @@ CASES=(
 )
 
 PIPELINE_SUBDIRS=(
-    "ESG-Fx/L1"
+    #"ESG-Fx/L1"
     "ESG-Fx/L2"
     "ESG-Fx/L3"
     "ESG-Fx/L4"
     "EFG/L2"
     "EFG/L3"
     "EFG/L4"
-    "RandomWalk/L0"
+    #"RandomWalk/L0"
 )
 
 # Base path for local storage

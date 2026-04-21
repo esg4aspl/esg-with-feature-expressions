@@ -12,6 +12,7 @@ import java.nio.file.StandardOpenOption;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -19,10 +20,22 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.Map;
 
+import tr.edu.iyte.esg.model.Vertex;
+import tr.edu.iyte.esgfx.model.VertexRefinedByFeatureExpression;
+import tr.edu.iyte.esgfx.model.featureexpression.Conjunction;
+import tr.edu.iyte.esgfx.model.featureexpression.Disjunction;
+import tr.edu.iyte.esgfx.model.featureexpression.ExclusiveDisjunction;
+import tr.edu.iyte.esgfx.model.featureexpression.FeatureExpression;
+import tr.edu.iyte.esgfx.model.featureexpression.Implication;
+import tr.edu.iyte.esgfx.model.featureexpression.Negation;
+
 public class FaultDetectionResultRecorder {
 
 	private static final Object LOCK = new Object();
 	private static final String NL = System.lineSeparator();
+
+	// Sentinel used when a vertex has no feature expression
+	public static final String NO_FEATURE_EXPRESSION = "NO_FE";
 
 	// Headers
 	private static final String[] detailedFaultDetectionResults = { "Product ID", "Features", "Coverage Type",
@@ -52,41 +65,180 @@ public class FaultDetectionResultRecorder {
 			"FaultDetectionPercentange L=4", "Total Number of Mutants", "Total Number of Detected Faults",
 			"Total FaultDetectionPercentange" };
 
-	// ---------- Existing public writers (kept) ----------
-
-	
-	public static void writeRQ3PerProductLog(String filePath, String splName, String productName, String mutationOperator, 
-            String testingApproach, int totalMutants, int detectedMutants, double mutationScore, 
-            int totalEventsInSuite, double medianEventsToDetect, double medianPercentageOfSuiteToDetect) {
-
-        Path path = Path.of(filePath);
-        ensureParent(path);
-
-        boolean exists = Files.exists(path);
-        boolean empty = !exists || getFileSize(path) == 0;
-
-        try (PrintWriter pw = new PrintWriter(new FileWriter(path.toFile(), true))) {
-            if (empty) {
-                pw.println("SPL;ProductID;Operator;TestingApproach;TotalMutants;DetectedMutants;MutationScore(%);TotalEventsInSuite;EventsToDetect;PercentageOfSuiteToDetect(%)");
-            }
-            pw.println(splName + ";" + productName + ";" + mutationOperator + ";" + testingApproach + ";" 
-                    + totalMutants + ";" + detectedMutants + ";" + formatDouble_2(mutationScore) + ";" 
-                    + totalEventsInSuite + ";" + formatDouble_2(medianEventsToDetect) + ";" + formatDouble_2(medianPercentageOfSuiteToDetect));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-	// ---------- NEW: Multi-seed Random Walk per-product writer ----------
+	// =====================================================================
+	// A4: Feature-expression utilities
+	// =====================================================================
 
 	/**
-	 * Records fault detection results for a specific Random Walk seed.
-	 * Same metrics as writeRQ3PerProductLog but with an additional Seed column
-	 * to distinguish results across different random seeds.
+	 * Returns a stable, parseable textual key for a vertex's feature expression.
+	 * If the vertex is not a VertexRefinedByFeatureExpression, or its
+	 * featureExpression is null, returns NO_FEATURE_EXPRESSION.
+	 *
+	 * Uses featureExpressionToString(...) which handles composite expressions
+	 * (Conjunction, Disjunction, ExclusiveDisjunction, Implication, Negation)
+	 * so the output is independent of the (partially missing) toString()
+	 * methods on those classes.
+	 */
+	public static String extractFeatureExpressionKey(Vertex vertex) {
+		if (vertex == null) return NO_FEATURE_EXPRESSION;
+		if (!(vertex instanceof VertexRefinedByFeatureExpression)) return NO_FEATURE_EXPRESSION;
+		FeatureExpression fe = ((VertexRefinedByFeatureExpression) vertex).getFeatureExpression();
+		if (fe == null) return NO_FEATURE_EXPRESSION;
+		String s = featureExpressionToString(fe);
+		if (s == null || s.isEmpty()) return NO_FEATURE_EXPRESSION;
+		// Sanitize: the histogram encoding uses '|' as field separator and
+		// ',' as record separator, so we must guarantee neither appears.
+		s = s.replace('|', '/').replace(',', '+');
+		return s;
+	}
+
+	/**
+	 * Recursively serializes a FeatureExpression to a canonical string form.
+	 * Parentheses are always added around composite expressions so the
+	 * structure is unambiguous when parsed downstream (e.g. by Python).
+	 */
+	private static String featureExpressionToString(FeatureExpression fe) {
+		if (fe == null) return NO_FEATURE_EXPRESSION;
+
+		if (fe instanceof Conjunction) {
+			Conjunction c = (Conjunction) fe;
+			return "(" + joinOperands(c.getOperands().iterator(), " AND ") + ")";
+		}
+		if (fe instanceof Disjunction) {
+			Disjunction d = (Disjunction) fe;
+			return "(" + joinOperands(d.getOperands().iterator(), " OR ") + ")";
+		}
+		if (fe instanceof ExclusiveDisjunction) {
+			ExclusiveDisjunction x = (ExclusiveDisjunction) fe;
+			return "(" + joinOperands(x.getOperands().iterator(), " XOR ") + ")";
+		}
+		if (fe instanceof Implication) {
+			Implication i = (Implication) fe;
+			return "(" + featureExpressionToString(i.getLeftOperand())
+					+ " => " + featureExpressionToString(i.getRightOperand()) + ")";
+		}
+		if (fe instanceof Negation) {
+			Negation n = (Negation) fe;
+			return "!" + featureExpressionToString(n.getFeatureExpression());
+		}
+		// Atomic feature expression: fall back to toString (which returns feature name)
+		if (fe.getFeature() != null) {
+			return fe.getFeature().getName();
+		}
+		return NO_FEATURE_EXPRESSION;
+	}
+
+	private static String joinOperands(Iterator<FeatureExpression> it, String sep) {
+		StringBuilder sb = new StringBuilder();
+		boolean first = true;
+		while (it.hasNext()) {
+			if (!first) sb.append(sep);
+			sb.append(featureExpressionToString(it.next()));
+			first = false;
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * Encodes a kill/total histogram as "KEY|kills|total,KEY|kills|total,..."
+	 * keyed by feature-expression string. Keys are sorted alphabetically for
+	 * deterministic output. The returned string is wrapped in double quotes
+	 * so it is safe to append directly to a ';'-separated CSV row.
+	 */
+	public static String encodeFeatureHistogram(Map<String, int[]> histogram) {
+		if (histogram == null || histogram.isEmpty()) return "\"\"";
+		List<String> keys = new ArrayList<>(histogram.keySet());
+		java.util.Collections.sort(keys);
+		StringBuilder sb = new StringBuilder();
+		sb.append('"');
+		boolean first = true;
+		for (String key : keys) {
+			int[] kt = histogram.get(key);
+			int kills = kt[0];
+			int total = kt[1];
+			if (!first) sb.append(',');
+			sb.append(key).append('|').append(kills).append('|').append(total);
+			first = false;
+		}
+		sb.append('"');
+		return sb.toString();
+	}
+
+	// =====================================================================
+	// RQ3 writers (A2 + A3 + A4 instrumentation)
+	// =====================================================================
+
+	/**
+	 * Per-product deterministic-approach log. Extended with:
+	 *  A2: PenalizedPercentageOfSuiteToDetect(%): median over ALL mutants
+	 *      (missed mutants contribute 100% — i.e. full suite walked, no kill).
+	 *      This avoids the selection bias of the adjacent conditional median.
+	 *  A3: KillsByEdgeMissing / KillsByVertexMissing: breakdown of
+	 *      DetectedMutants by which kill branch fired in FaultDetector.
+	 *  A4: DistinctFeatureExpressions + Kills_FeatureHistogram: per-feature
+	 *      kill/total breakdown so downstream analysis can isolate mandatory
+	 *      vs optional feature behavior. Histogram format is
+	 *      "KEY|kills|total,KEY|kills|total,...".
+	 *  A5: AffectedEdgesTotal: sum across mutants of the number of edges the
+	 *      mutation actually removed. For EdgeOmission this equals TotalMutants
+	 *      (every mutant removes exactly one edge). For EventOmission it is
+	 *      strictly >= TotalMutants because vertex removal also removes every
+	 *      incident edge. This column makes the structural asymmetry between
+	 *      the two operators explicit.
+	 *
+	 * Invariants (sanity check for analysis scripts):
+	 *     DetectedMutants == KillsByEdgeMissing + KillsByVertexMissing
+	 *     sum of histogram 'kills' over keys == DetectedMutants
+	 *     sum of histogram 'total' over keys == TotalMutants
+	 */
+	public static void writeRQ3PerProductLog(String filePath, String splName, String productName,
+			String mutationOperator, String testingApproach,
+			int totalMutants, int detectedMutants, double mutationScore,
+			int totalEventsInSuite,
+			double medianEventsToDetect, double medianPercentageOfSuiteToDetect,
+			double penalizedMedianPercentageOfSuiteToDetect,
+			int killsByEdgeMissing, int killsByVertexMissing,
+			int distinctFeatureExpressions, String killsFeatureHistogram,
+			int affectedEdgesTotal) {
+
+		Path path = Path.of(filePath);
+		ensureParent(path);
+
+		boolean exists = Files.exists(path);
+		boolean empty = !exists || getFileSize(path) == 0;
+
+		try (PrintWriter pw = new PrintWriter(new FileWriter(path.toFile(), true))) {
+			if (empty) {
+				pw.println("SPL;ProductID;Operator;TestingApproach;TotalMutants;DetectedMutants;MutationScore(%);"
+						+ "TotalEventsInSuite;EventsToDetect;PercentageOfSuiteToDetect(%);"
+						+ "PenalizedPercentageOfSuiteToDetect(%);KillsByEdgeMissing;KillsByVertexMissing;"
+						+ "DistinctFeatureExpressions;Kills_FeatureHistogram;AffectedEdgesTotal");
+			}
+			pw.println(splName + ";" + productName + ";" + mutationOperator + ";" + testingApproach + ";"
+					+ totalMutants + ";" + detectedMutants + ";" + formatDouble_2(mutationScore) + ";"
+					+ totalEventsInSuite + ";" + formatDouble_2(medianEventsToDetect) + ";"
+					+ formatDouble_2(medianPercentageOfSuiteToDetect) + ";"
+					+ formatDouble_2(penalizedMedianPercentageOfSuiteToDetect) + ";"
+					+ killsByEdgeMissing + ";" + killsByVertexMissing + ";"
+					+ distinctFeatureExpressions + ";" + killsFeatureHistogram + ";"
+					+ affectedEdgesTotal);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Per-product multi-seed Random Walk log. Same A2 + A3 + A4 + A5 extensions.
 	 */
 	public static void writeRQ3MultiSeedPerProductLog(String filePath, String splName, String productName,
-			String mutationOperator, long seed, int totalMutants, int detectedMutants, double mutationScore,
-			int totalEventsInSuite, double medianEventsToDetect, double medianPercentageOfSuiteToDetect) {
+			String mutationOperator, long seed,
+			int totalMutants, int detectedMutants, double mutationScore,
+			int totalEventsInSuite,
+			double medianEventsToDetect, double medianPercentageOfSuiteToDetect,
+			double penalizedMedianPercentageOfSuiteToDetect,
+			int killsByEdgeMissing, int killsByVertexMissing,
+			int distinctFeatureExpressions, String killsFeatureHistogram,
+			int affectedEdgesTotal) {
 
 		Path path = Path.of(filePath);
 		ensureParent(path);
@@ -97,21 +249,25 @@ public class FaultDetectionResultRecorder {
 		try (PrintWriter pw = new PrintWriter(new FileWriter(path.toFile(), true))) {
 			if (empty) {
 				pw.println("SPL;ProductID;Operator;Seed;TotalMutants;DetectedMutants;MutationScore(%);"
-						+ "TotalEventsInSuite;MedianEventsToDetect;MedianPercentageOfSuiteToDetect(%)");
+						+ "TotalEventsInSuite;MedianEventsToDetect;MedianPercentageOfSuiteToDetect(%);"
+						+ "PenalizedMedianPercentageOfSuiteToDetect(%);KillsByEdgeMissing;KillsByVertexMissing;"
+						+ "DistinctFeatureExpressions;Kills_FeatureHistogram;AffectedEdgesTotal");
 			}
 			pw.println(splName + ";" + productName + ";" + mutationOperator + ";" + seed + ";"
 					+ totalMutants + ";" + detectedMutants + ";" + formatDouble_2(mutationScore) + ";"
 					+ totalEventsInSuite + ";" + formatDouble_2(medianEventsToDetect) + ";"
-					+ formatDouble_2(medianPercentageOfSuiteToDetect));
+					+ formatDouble_2(medianPercentageOfSuiteToDetect) + ";"
+					+ formatDouble_2(penalizedMedianPercentageOfSuiteToDetect) + ";"
+					+ killsByEdgeMissing + ";" + killsByVertexMissing + ";"
+					+ distinctFeatureExpressions + ";" + killsFeatureHistogram + ";"
+					+ affectedEdgesTotal);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	// ---------- NEW: Multi-seed Random Walk SPL summary writer ----------
-
 	/**
-	 * Records SPL-level summary for a specific Random Walk seed.
+	 * Multi-seed Random Walk SPL summary writer (unchanged).
 	 */
 	public static void writeRQ3MultiSeedSPLSummaryLog(String filePath, String splName, String mutationOperator,
 			long seed, long totalMutants, long detectedMutants, double mutationScore,
@@ -136,15 +292,18 @@ public class FaultDetectionResultRecorder {
 		}
 	}
 
-	// ---------- NEW: Damping factor sensitivity analysis writer ----------
-
 	/**
-	 * Records fault detection results for a specific damping factor.
-	 * Used in sensitivity analysis to show stability across damping values.
+	 * Damping factor sensitivity per-product log. Same A2 + A3 + A4 + A5 extensions.
 	 */
 	public static void writeRQ3DampingSensitivityLog(String filePath, String splName, String productName,
-			String mutationOperator, double dampingFactor, int totalMutants, int detectedMutants, double mutationScore,
-			int totalEventsInSuite, double medianEventsToDetect, double medianPercentageOfSuiteToDetect) {
+			String mutationOperator, double dampingFactor,
+			int totalMutants, int detectedMutants, double mutationScore,
+			int totalEventsInSuite,
+			double medianEventsToDetect, double medianPercentageOfSuiteToDetect,
+			double penalizedMedianPercentageOfSuiteToDetect,
+			int killsByEdgeMissing, int killsByVertexMissing,
+			int distinctFeatureExpressions, String killsFeatureHistogram,
+			int affectedEdgesTotal) {
 
 		Path path = Path.of(filePath);
 		ensureParent(path);
@@ -155,12 +314,18 @@ public class FaultDetectionResultRecorder {
 		try (PrintWriter pw = new PrintWriter(new FileWriter(path.toFile(), true))) {
 			if (empty) {
 				pw.println("SPL;ProductID;Operator;DampingFactor;TotalMutants;DetectedMutants;MutationScore(%);"
-						+ "TotalEventsInSuite;MedianEventsToDetect;MedianPercentageOfSuiteToDetect(%)");
+						+ "TotalEventsInSuite;MedianEventsToDetect;MedianPercentageOfSuiteToDetect(%);"
+						+ "PenalizedMedianPercentageOfSuiteToDetect(%);KillsByEdgeMissing;KillsByVertexMissing;"
+						+ "DistinctFeatureExpressions;Kills_FeatureHistogram;AffectedEdgesTotal");
 			}
 			pw.println(splName + ";" + productName + ";" + mutationOperator + ";" + dampingFactor + ";"
 					+ totalMutants + ";" + detectedMutants + ";" + formatDouble_2(mutationScore) + ";"
 					+ totalEventsInSuite + ";" + formatDouble_2(medianEventsToDetect) + ";"
-					+ formatDouble_2(medianPercentageOfSuiteToDetect));
+					+ formatDouble_2(medianPercentageOfSuiteToDetect) + ";"
+					+ formatDouble_2(penalizedMedianPercentageOfSuiteToDetect) + ";"
+					+ killsByEdgeMissing + ";" + killsByVertexMissing + ";"
+					+ distinctFeatureExpressions + ";" + killsFeatureHistogram + ";"
+					+ affectedEdgesTotal);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -168,35 +333,35 @@ public class FaultDetectionResultRecorder {
 
 	// ---------- Existing writers (unchanged) ----------
 
-	public static void writeRQ3SPLSummaryLog(String filePath, String splName, String mutationOperator, 
-            String testingApproach, long totalMutants, long detectedMutants, double mutationScore, 
-            double medianEventsToDetect, double medianPercentageOfSuiteToDetect) {
+	public static void writeRQ3SPLSummaryLog(String filePath, String splName, String mutationOperator,
+			String testingApproach, long totalMutants, long detectedMutants, double mutationScore,
+			double medianEventsToDetect, double medianPercentageOfSuiteToDetect) {
 
-        Path path = Path.of(filePath);
-        ensureParent(path);
+		Path path = Path.of(filePath);
+		ensureParent(path);
 
-        boolean exists = Files.exists(path);
-        boolean empty = !exists || getFileSize(path) == 0;
+		boolean exists = Files.exists(path);
+		boolean empty = !exists || getFileSize(path) == 0;
 
-        try (PrintWriter pw = new PrintWriter(new FileWriter(path.toFile(), true))) {
-            if (empty) {
-                pw.println("SPL;Operator;TestingApproach;TotalMutantsSPL;DetectedMutantsSPL;OverallMutationScore(%);GlobalMedianEventsToDetect;GlobalMedianPercentageOfSuiteToDetect(%)");
-            }
-            pw.println(splName + ";" + mutationOperator + ";" + testingApproach + ";" 
-                    + totalMutants + ";" + detectedMutants + ";" + formatDouble_2(mutationScore) + ";" 
-                    + formatDouble_2(medianEventsToDetect) + ";" + formatDouble_2(medianPercentageOfSuiteToDetect));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-    
-    private static long getFileSize(Path path) {
-    	try {
+		try (PrintWriter pw = new PrintWriter(new FileWriter(path.toFile(), true))) {
+			if (empty) {
+				pw.println("SPL;Operator;TestingApproach;TotalMutantsSPL;DetectedMutantsSPL;OverallMutationScore(%);GlobalMedianEventsToDetect;GlobalMedianPercentageOfSuiteToDetect(%)");
+			}
+			pw.println(splName + ";" + mutationOperator + ";" + testingApproach + ";"
+					+ totalMutants + ";" + detectedMutants + ";" + formatDouble_2(mutationScore) + ";"
+					+ formatDouble_2(medianEventsToDetect) + ";" + formatDouble_2(medianPercentageOfSuiteToDetect));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static long getFileSize(Path path) {
+		try {
 			return Files.size(path);
 		} catch (IOException e) {
 			return 0;
 		}
-    }
+	}
 
 	public static void writeDetailedFaultDetectionResultL234(String fileNameBase, int productId, String features,
 			String mutationOperator, String mutationElement, int mutantId, boolean isMutantValid, String isDetectedL2,
@@ -244,8 +409,8 @@ public class FaultDetectionResultRecorder {
 						+ "Detected Invalid Mutants L=4;" + "Fault Detection Percentange L=4");
 			}
 			pw.println(mutationOperator + ";" + productId + ";" + numValidMutants + ";" + numInvalidMutants + ";"
-					+ detValidL2 + ";" + detInvalidL2 + ";" + formatDouble_2(perL2) + ";" 
-					+ detValidL3 + ";" + detInvalidL3 + ";" + formatDouble_2(perL3) + ";" 
+					+ detValidL2 + ";" + detInvalidL2 + ";" + formatDouble_2(perL2) + ";"
+					+ detValidL3 + ";" + detInvalidL3 + ";" + formatDouble_2(perL3) + ";"
 					+ detValidL4 + ";" + detInvalidL4 + ";" + formatDouble_2(perL4));
 		}
 	}
@@ -265,28 +430,28 @@ public class FaultDetectionResultRecorder {
 		try (PrintWriter pw = new PrintWriter(new FileWriter(filePath, true))) {
 			if (empty) {
 				pw.println("SPL;" + "Operator;" + "Number of Mutants;"
-			
-							+ "Number of Detected  Mutants RandomWalk; "
-							+ "Fault Detection Percentange RandomWalk;" 
-							+ "Detected Mutants Per Second RandomWalk;"
-							
-							+ "Number of Detected  Mutants L=1; "
-							+ "Fault Detection Percentange L=1;" 
-							+ "Detected Mutants Per Second L=1;"
-							
-							+ "Number of Detected  Mutants L=2; "
-							+ "Fault Detection Percentange L=2;" 
-							+ "Detected Mutants Per Second L=2;"
-							
-							+ "Number of Detected  Mutants L=3; " 
-							+ "Fault Detection Percentange L=3;"
-							+ "Detected Mutants Per Second L=3;" 
-							
-							+ "Number of Detected  Mutants L=4; "
-							+ "Fault Detection Percentange L=4;" 
-							+ "Detected Mutants Per Second L=4");
+
+						+ "Number of Detected  Mutants RandomWalk; "
+						+ "Fault Detection Percentange RandomWalk;"
+						+ "Detected Mutants Per Second RandomWalk;"
+
+						+ "Number of Detected  Mutants L=1; "
+						+ "Fault Detection Percentange L=1;"
+						+ "Detected Mutants Per Second L=1;"
+
+						+ "Number of Detected  Mutants L=2; "
+						+ "Fault Detection Percentange L=2;"
+						+ "Detected Mutants Per Second L=2;"
+
+						+ "Number of Detected  Mutants L=3; "
+						+ "Fault Detection Percentange L=3;"
+						+ "Detected Mutants Per Second L=3;"
+
+						+ "Number of Detected  Mutants L=4; "
+						+ "Fault Detection Percentange L=4;"
+						+ "Detected Mutants Per Second L=4");
 			}
-			pw.println(SPLName + ";" + mutationOperator + ";" + numMutants + ";" 
+			pw.println(SPLName + ";" + mutationOperator + ";" + numMutants + ";"
 					+ detMutL0 + ";" + formatDouble_2(perL0) + ";" + formatDouble_2(killedPerSecondL0) + ";"
 					+ detMutL1 + ";" + formatDouble_2(perL1) + ";" + formatDouble_2(killedPerSecondL1) + ";"
 					+ detMutL2 + ";" + formatDouble_2(perL2) + ";" + formatDouble_2(killedPerSecondL2) + ";"

@@ -23,48 +23,68 @@ TAGS=(
     "s72-79"
 )
 
-FIRST_IP="${IP_LIST[0]}"
-WORKLOAD_CMD=$(ssh -o StrictHostKeyChecking=no -o ConnectTimeout=5 root@$FIRST_IP 'ps -eo cmd | grep java | grep -v grep | head -n 1' 2>/dev/null)
-
-if [[ -z "$WORKLOAD_CMD" ]]; then
-    WORKLOAD_NAME="Idle / Finished"
-else
-    WORKLOAD_NAME=$(echo "$WORKLOAD_CMD" | grep -o 'tr\.edu\.iyte[^ ]*' | awk -F'.' '{print $NF}')
-    if [[ -z "$WORKLOAD_NAME" ]]; then WORKLOAD_NAME="Unknown Java Process"; fi
-fi
-
 clear
-echo "===================================================================================================="
-echo "📊 CLUSTER MONITORING - $(date '+%d/%m/%Y %H:%M:%S')"
-echo "🛠️  CURRENT TASK: $WORKLOAD_NAME"
-echo "===================================================================================================="
+echo "========================================================================================================================="
+echo "  CLUSTER MONITORING - $(date '+%d/%m/%Y %H:%M:%S')"
+echo "========================================================================================================================="
 
-printf "%-3s | %-8s | %-15s | %-14s | %-11s | %-8s | %-10s\n" "#" "SHARDS" "IP ADDRESS" "JAVA PROCESSES" "RAM" "CPU LOAD" "STATUS"
-echo "----------------------------------------------------------------------------------------------------"
+printf "%-3s | %-6s | %-15s | %-4s | %-10s | %-6s | %-42s | %-10s\n" "#" "SHARDS" "IP" "JAVA" "RAM" "CPU" "CURRENT TASK" "RUN"
+echo "------------------------------------------------------------------------------------------------------------------------------"
 
 for i in "${!IP_LIST[@]}"; do
     index=$((i + 1))
     ip="${IP_LIST[$i]}"
-    tag="${TAGS[$i]}" 
-    
-    if [[ -z "$tag" ]]; then tag="???"; fi
+    tag="${TAGS[$i]:-???}"
 
-    DATA=$(ssh -o StrictHostKeyChecking=no -o ConnectTimeout=5 root@$ip 'echo $(pgrep -c java || echo 0) "|" $(free -h | grep Mem | awk "{print \$3 \"/\" \$2}") "|" $(uptime | awk -F"load average:" "{ print \$2 }" | awk -F, "{print \$1}")' 2>/dev/null)
-    
-    JAVA_COUNT_RAW=$(echo "$DATA" | cut -d'|' -f1 | xargs)
-    JAVA_COUNT=$(echo "$JAVA_COUNT_RAW" | awk '{print $1}') 
-    
-    RAM_USAGE=$(echo "$DATA" | cut -d'|' -f2 | xargs)
-    CPU_LOAD=$(echo "$DATA" | cut -d'|' -f3 | xargs)
-    
-    if [[ -z "$JAVA_COUNT" ]]; then JAVA_COUNT=0; fi
+    DATA=$(ssh -o StrictHostKeyChecking=no -o ConnectTimeout=5 root@$ip bash << 'REMOTE_EOF' 2>/dev/null
+        # Java count
+        JCOUNT=$(pgrep -c java 2>/dev/null || echo 0)
+        
+        # RAM
+        RAM=$(free -h | grep Mem | awk '{print $3"/"$2}')
+        
+        # CPU load
+        CPU=$(uptime | awk -F'load average:' '{print $2}' | awk -F, '{print $1}' | xargs)
+        
+        # Current task from java process
+        TASK=$(ps -eo cmd | grep java | grep -v grep | head -1 | grep -o 'RQ[0-9]_[^ ]*' | head -1)
+        if [ -z "$TASK" ]; then
+            TASK="Idle"
+        fi
+        
+        # Current run number from log file
+        RUNINFO=""
+        for LOGFILE in /root/main_run.log /root/rerun.log; do
+            if [ -f "$LOGFILE" ]; then
+                RUNINFO=$(grep -oE 'Run [0-9]+/[0-9]+' "$LOGFILE" | tail -1)
+                if [ -n "$RUNINFO" ]; then break; fi
+            fi
+        done
+        if [ -n "$RUNINFO" ]; then
+            echo "${JCOUNT}|${RAM}|${CPU}|${TASK}|${RUNINFO}"
+        else
+            echo "${JCOUNT}|${RAM}|${CPU}|${TASK}|"
+        fi
+REMOTE_EOF
+    )
+
+    if [ -z "$DATA" ]; then
+        printf "%-3s | %-6s | %-15s | %-4s | %-10s | %-6s | %-42s | %-10s\n" "$index" "$tag" "$ip" "?" "?" "?" "UNREACHABLE" ""
+        continue
+    fi
+
+    JAVA_COUNT=$(echo "$DATA" | cut -d'|' -f1)
+    RAM_USAGE=$(echo "$DATA" | cut -d'|' -f2)
+    CPU_LOAD=$(echo "$DATA" | cut -d'|' -f3)
+    TASK=$(echo "$DATA" | cut -d'|' -f4)
+    RUNINFO=$(echo "$DATA" | cut -d'|' -f5)
 
     if [ "$JAVA_COUNT" -gt 0 ]; then
-        STATUS="🟢 RUNNING" 
+        STATUS="🟢"
     else
-        STATUS="🔴 STOPPED" 
+        STATUS="🔴"
     fi
-    
-    printf "%-3s | %-8s | %-15s | %-14s | %-11s | %-8s | %-10s\n" "$index" "$tag" "$ip" "$JAVA_COUNT" "$RAM_USAGE" "$CPU_LOAD" "$STATUS"
+
+    printf "%-3s | %-6s | %-15s | %s%-3s | %-10s | %-6s | %-42s | %-10s\n" "$index" "$tag" "$ip" "$STATUS" "$JAVA_COUNT" "$RAM_USAGE" "$CPU_LOAD" "$TASK" "$RUNINFO"
 done
-echo "===================================================================================================="
+echo "========================================================================================================================="
