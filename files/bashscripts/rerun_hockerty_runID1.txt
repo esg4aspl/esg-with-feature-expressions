@@ -1,0 +1,13 @@
+# Hockerty RandomWalk — Node for Run ID 1
+# 10 shards, all share same runID (matches original parallel pattern)
+
+HockertyShirts HS randomwalk 0 1
+HockertyShirts HS randomwalk 15 1
+HockertyShirts HS randomwalk 16 1
+HockertyShirts HS randomwalk 31 1
+HockertyShirts HS randomwalk 37 1
+HockertyShirts HS randomwalk 43 1
+HockertyShirts HS randomwalk 51 1
+HockertyShirts HS randomwalk 62 1
+HockertyShirts HS randomwalk 68 1
+HockertyShirts HS randomwalk 74 1

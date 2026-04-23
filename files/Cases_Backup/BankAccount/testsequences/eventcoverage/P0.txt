@@ -1,0 +1,3 @@
+4 : get_balance, select_deposit, enter_deposit_amount, put_money
+3 : select_withdraw, enter_withdraw_amount, take_money
+Event coverage is 100.0%
