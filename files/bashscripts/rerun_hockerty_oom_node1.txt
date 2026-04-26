@@ -1,0 +1,3 @@
+# Hockerty RW — OOM recovery Node 1
+# 1 shard, max_concurrent=1 → solo, ~15GB RAM available
+HockertyShirts HS randomwalk 16 1

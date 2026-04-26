@@ -1,46 +1,75 @@
 #!/bin/bash
 # ============================================================
-# RERUN ORCHESTRATOR — runs RQ2 targeted reruns using v4 master
+# RERUN ORCHESTRATOR — MULTI-SPEC (sequential on one node)
 # ============================================================
-# USAGE: ./Rerun_Orchestrator.sh <spec_file_name> [max_concurrent]
+# USAGE: ./Rerun_Orchestrator.sh <max_concurrent> <spec1> [spec2] [spec3] ...
 #
 # Arguments:
-#   spec_file_name     name of spec file in files/bashscripts/
-#                      (e.g. rerun_hockerty_runID1.txt)
-#   max_concurrent     optional (default 8). Matches original 8-shard-per-node.
+#   max_concurrent     concurrency cap (e.g. 8 for an 8-core node)
+#   spec1, spec2, ...  one or more spec file names in files/bashscripts/
 #
-# Called from Provision_And_Deploy_Rerun.sh after node setup.
-# Runs ONLY the v4 master with the given spec file. Does NOT run
-# RQ1/RQ3/damping/orig RQ2 — orig Global_Orchestrator does those.
+# Runs each spec SEQUENTIALLY through master runner v5. The master
+# runner builds the project once at the start of EACH spec invocation
+# (mvn clean package), so two specs = two builds (~30-60s overhead each).
+# This is intentional to keep the master runner unchanged and reusable.
+#
+# Sequential (not parallel) execution is deliberate: an 8-core node
+# cannot productively run 16 parallel JVMs, so running RW and L1
+# back-to-back is faster than racing them.
 # ============================================================
 
-SPEC_FILE_NAME="${1:-}"
-MAX_CONCURRENT="${2:-8}"
+MAX_CONCURRENT="${1:-8}"
+shift
+SPEC_FILES=("$@")
 
-if [ -z "$SPEC_FILE_NAME" ]; then
-    echo "USAGE: $0 <spec_file_name> [max_concurrent]"
+if [ ${#SPEC_FILES[@]} -eq 0 ]; then
+    echo "USAGE: $0 <max_concurrent> <spec1> [spec2] ..."
     exit 1
 fi
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR" || exit 1
 
-SPEC_FILE_PATH="$SCRIPT_DIR/$SPEC_FILE_NAME"
-
-if [ ! -f "$SPEC_FILE_PATH" ]; then
-    echo "ERROR: Spec file not found: $SPEC_FILE_PATH"
-    exit 1
-fi
-
 echo "=================================================="
-echo "🎯 RERUN ORCHESTRATOR STARTED"
-echo "   Spec: $SPEC_FILE_NAME"
+echo "🎯 MULTI-SPEC RERUN ORCHESTRATOR"
 echo "   Max concurrent: $MAX_CONCURRENT"
+echo "   Spec files (run in order):"
+for s in "${SPEC_FILES[@]}"; do
+    echo "     - $s"
+done
 echo "=================================================="
 
-# Run v5 master (SPL + runID batched) with the spec
-bash ./RQ2_ExtremeScalability_Master_Runner_v5.sh "$SPEC_FILE_PATH" "$MAX_CONCURRENT"
+GLOBAL_START=$(date +%s)
 
+for SPEC_FILE_NAME in "${SPEC_FILES[@]}"; do
+    SPEC_FILE_PATH="$SCRIPT_DIR/$SPEC_FILE_NAME"
+
+    if [ ! -f "$SPEC_FILE_PATH" ]; then
+        echo "❌ ERROR: Spec file not found: $SPEC_FILE_PATH — skipping"
+        continue
+    fi
+
+    echo ""
+    echo "=================================================="
+    echo "▶  STARTING SPEC: $SPEC_FILE_NAME"
+    echo "=================================================="
+
+    bash ./RQ2_ExtremeScalability_Master_Runner_v5.sh "$SPEC_FILE_PATH" "$MAX_CONCURRENT"
+    rc=$?
+
+    if [ "$rc" -eq 0 ]; then
+        echo "✅ SPEC COMPLETE: $SPEC_FILE_NAME"
+    else
+        echo "⚠️  SPEC FINISHED WITH NON-ZERO EXIT ($rc): $SPEC_FILE_NAME"
+        echo "   Continuing to next spec anyway."
+    fi
+done
+
+GLOBAL_END=$(date +%s)
+ELAPSED=$((GLOBAL_END - GLOBAL_START))
+
+echo ""
 echo "=================================================="
-echo "🏆 RERUN ORCHESTRATOR COMPLETE ON THIS NODE"
+echo "🏆 ALL SPECS COMPLETE"
+echo "   Total wall-clock: $(( ELAPSED / 3600 ))h $(( (ELAPSED % 3600) / 60 ))m $(( ELAPSED % 60 ))s"
 echo "=================================================="

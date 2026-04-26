@@ -1,0 +1,4 @@
+# Hockerty RW — OOM recovery Node 3
+# 2 shards, max_concurrent=2 → each ~7.5GB RAM, safe
+HockertyShirts HS randomwalk 15 3
+HockertyShirts HS randomwalk 39 3
