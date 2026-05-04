@@ -19,7 +19,7 @@ The full study uses a 10-node, 80-core distributed cluster on DigitalOcean to ev
 9. [Phase 4 — Result Collection](#9-phase-4--result-collection)
 10. [Phase 5 — Aggregation and Statistical Analysis](#10-phase-5--aggregation-and-statistical-analysis)
 11. [Wall-clock and Cost Estimate](#11-wall-clock-and-cost-estimate)
-12. [Reproducibility Data Archive](#12-reproducibility-data-archive)
+12. [Data Archive](#12-data-archive)
 13. [Re-running on Different Infrastructure](#13-re-running-on-different-infrastructure)
 14. [Troubleshooting](#14-troubleshooting)
 15. [Acknowledgements](#15-acknowledgements)
@@ -486,56 +486,29 @@ A reasonable budget envelope for a careful single reproduction with safety margi
 
 ---
 
-## 12. Reproducibility Data Archive
+## 12. Data Archive
 
-The full result tree (raw shard CSV files through aggregated tables) for the manuscript spans several gigabytes in total. GitHub's per-file 100 MB hard limit makes shipping all of it directly inside the repository impractical. The recommended approach for users who want to inspect or re-analyse the original results without re-running the cluster is layered:
+This repository commits files in three categories:
 
-1. **Small and medium per-product CSV files** — committed directly to this repository under `files/Cases/<SPL>/.../`, gzip-compressed where space permits. Files with the `.csv.gz` extension are read transparently by `pandas.read_csv`.
-2. **Large per-shard CSV files (Tesla, syngo.via, Hockerty Shirts)** — archived on Zenodo with a Digital Object Identifier and downloadable as a single archive.
-3. **Aggregated tables and figures** — committed under `files/scripts/statistical_test_scripts/rq{1,2,3}_result/` so reviewers can read the headline numbers without any local processing.
+1. **Code** — Java sources, bash scripts, and Python analysis scripts; all version-controlled normally.
+2. **Small data** — per-product CSV files for the five small and medium Software Product Lines, plus all aggregated tables and figures. Committed under `files/Cases/<SPL>/.../` and `files/scripts/statistical_test_scripts/rq{1,2,3}_result/`. Files are gzip-compressed where space permits; `pandas.read_csv` reads `.csv.gz` transparently.
+3. **Large data** — per-shard CSV files for the three industrial Software Product Lines (Tesla, syngo.via, Hockerty Shirts). These exceed GitHub's per-file 100 MB limit and are archived separately on Zenodo at <https://doi.org/10.5281/zenodo.NNNNNNN>.
 
-If the goal is to re-execute rather than re-analyse, only this repository is required — the cluster will regenerate every CSV file from scratch.
+To make the large files available locally, download the Zenodo archive and extract it on top of the repository's `files/Cases/` directory:
 
-### 12.1 Zenodo workflow for the large CSV files
+```bash
+# Download from Zenodo (replace NNNNNNN with the DOI suffix shown above)
+curl -L -o esg-fx-large-csvs.tar.gz \
+     https://zenodo.org/record/NNNNNNN/files/esg-fx-large-csvs.tar.gz
 
-Zenodo is the recommended option for academic data because it is free, archival, citable, and mints a permanent Digital Object Identifier on the first upload. The complete workflow is:
+# Extract under files/Cases/, preserving the original directory structure
+cd /path/to/repo/files/Cases
+tar -xzf /path/to/esg-fx-large-csvs.tar.gz
+```
 
-1. **Prepare the archive locally.** From the local repository, package the directories that exceed the 100 MB GitHub limit into a single compressed archive. The natural unit is the per-Software-Product-Line `Cases/<SPL>/` tree for the three industrial Software Product Lines:
+After extraction the repository contains the same directory tree the cluster would have produced. The Phase 5 analysis pipeline (§10) then runs unchanged.
 
-    ```bash
-    cd files/Cases
-    tar -czf esg-fx-large-csvs.tar.gz \
-        Tesla/comparativeEfficiencyTestPipeline \
-        Tesla/extremeScalabilityTestPipeline \
-        Tesla/faultdetection \
-        syngovia/comparativeEfficiencyTestPipeline \
-        syngovia/extremeScalabilityTestPipeline \
-        syngovia/faultdetection \
-        HockertyShirts/comparativeEfficiencyTestPipeline \
-        HockertyShirts/extremeScalabilityTestPipeline \
-        HockertyShirts/faultdetection
-    ```
-
-    Adjust the directory list to match what does not fit in the repository.
-
-2. **Create a Zenodo deposit.** Go to <https://zenodo.org>, sign in, and create a *New Upload*. Upload the archive produced in step 1. Set the resource type to *Dataset*, link it to this repository's URL, and add the manuscript title as the dataset title. Zenodo accepts files up to 50 GB per deposit at no charge.
-
-3. **Publish and copy the Digital Object Identifier.** Once the deposit is published, Zenodo issues a permanent Digital Object Identifier of the form `10.5281/zenodo.NNNNNNN`. Copy it.
-
-4. **Reference the Digital Object Identifier from this repository.** Add the Digital Object Identifier to the very top of this file (`REPRODUCIBILITY.md`), to the data-availability statement of the manuscript, and to the `README.md`. A typical reference reads:
-
-    > *Raw per-shard CSV files for the industrial Software Product Lines (Tesla, syngo.via, Hockerty Shirts) are archived at <https://doi.org/10.5281/zenodo.NNNNNNN>. Place the extracted contents under `files/Cases/` to reproduce the aggregated tables in §10.*
-
-5. **Optional: link the GitHub repository to Zenodo for automatic versioning.** Zenodo offers a GitHub integration that creates a new versioned deposit (and a new Digital Object Identifier) every time a release is tagged on GitHub. The setup is described at <https://docs.github.com/en/repositories/archiving-a-github-repository/referencing-and-citing-content>. This is recommended for long-lived artefacts because each manuscript revision can have its own citable Digital Object Identifier.
-
-### 12.2 Alternative storage options
-
-Two other options exist if Zenodo is not suitable:
-
-- **Git Large File Storage** — supports files up to 2 GB, transparent to git, but the GitHub free tier limits storage and bandwidth to 1 GB each per month. Suitable for medium-sized files (10 MB to 100 MB) that should remain inside the repository's version history.
-- **GitHub Releases** — supports binary assets up to 2 GB each at no charge, with no version control on the binaries. Suitable for one-shot reproducibility snapshots but does not yield a Digital Object Identifier.
-
-For most academic artefacts, Zenodo is preferred over both because it grants a citable Digital Object Identifier and is preserved by CERN.
+If the goal is to re-execute the experiments rather than re-analyse existing data, this archive is not needed — Phase 1 through Phase 4 regenerate every CSV file from scratch.
 
 ---
 
