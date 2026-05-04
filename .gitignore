@@ -39,6 +39,7 @@ files/Cases/*/faultdetection/
 files/Cases/*/productConfigurations/
 files/Cases/*/testsequenceanalysis/
 files/Cases/*/testsequences/
+files/Cases/SodaVendingMachinev2/
 
 # Ignore the generated configurations text file for every case
 files/Cases/*/*_ProductConfigurations.txt
