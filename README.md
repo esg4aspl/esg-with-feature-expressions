@@ -20,7 +20,7 @@ Follow File -> Import -> Maven -> Existing Maven Projects and select the cloned 
 
 This repository contains materials and reproducibility packages for multiple studies.
 
-### 1. Variability-Aware Event Sequence Graphs for Scalable SPL Testing (Current Work)
+### 1. Variability-Aware Event Sequence Graphs for Scalable Software Product Line Testing 
 This study presents the "Model Once, Generate Any" approach and evaluates it on 8 SPLs at an industrial scale using a distributed infrastructure.
 * **[Reproducibility Guide](REPRODUCIBILITY.md):** Step-by-step instructions for setting up the 80-core DigitalOcean cluster, compiling the project, running the shard-based generation scripts, and executing the Python evaluation scripts.
 
