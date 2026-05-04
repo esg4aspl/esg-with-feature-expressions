@@ -12,17 +12,18 @@ The full study uses a 10-node, 80-core distributed cluster on DigitalOcean to ev
 2. [Hardware and Environment](#2-hardware-and-environment)
 3. [Software Prerequisites](#3-software-prerequisites)
 4. [Repository Layout](#4-repository-layout)
-5. [Phase 1 — Cluster Provisioning](#5-phase-1--cluster-provisioning)
-6. [Phase 2 — Orchestrated Execution](#6-phase-2--orchestrated-execution)
-7. [Phase 3 — Live Monitoring](#7-phase-3--live-monitoring)
-8. [Phase 4 — Result Collection](#8-phase-4--result-collection)
-9. [Phase 5 — Aggregation and Statistical Analysis](#9-phase-5--aggregation-and-statistical-analysis)
-10. [Wall-clock and Cost Estimate](#10-wall-clock-and-cost-estimate)
-11. [Reproducibility Data Archive](#11-reproducibility-data-archive)
-12. [Re-running on Different Infrastructure](#12-re-running-on-different-infrastructure)
-13. [Troubleshooting](#13-troubleshooting)
-14. [Acknowledgements](#14-acknowledgements)
-15. [Citation](#15-citation)
+5. [Feature-Model Encoding and Product Sampling](#5-feature-model-encoding-and-product-sampling)
+6. [Phase 1 — Cluster Provisioning](#6-phase-1--cluster-provisioning)
+7. [Phase 2 — Orchestrated Execution](#7-phase-2--orchestrated-execution)
+8. [Phase 3 — Live Monitoring](#8-phase-3--live-monitoring)
+9. [Phase 4 — Result Collection](#9-phase-4--result-collection)
+10. [Phase 5 — Aggregation and Statistical Analysis](#10-phase-5--aggregation-and-statistical-analysis)
+11. [Wall-clock and Cost Estimate](#11-wall-clock-and-cost-estimate)
+12. [Reproducibility Data Archive](#12-reproducibility-data-archive)
+13. [Re-running on Different Infrastructure](#13-re-running-on-different-infrastructure)
+14. [Troubleshooting](#14-troubleshooting)
+15. [Acknowledgements](#15-acknowledgements)
+16. [Citation](#16-citation)
 
 ---
 
@@ -72,7 +73,7 @@ Phases 1–4 involve the cluster; Phase 5 runs entirely on the local machine.
 
 ### 3.1 Cluster nodes — installed automatically
 
-The provisioning script (`Setup_And_Run_DigitalOcean.sh`, see §6.2) installs the following on every node, so no manual setup is required after the droplet is created:
+The provisioning script (`Setup_And_Run_DigitalOcean.sh`, see §7.2) installs the following on every node, so no manual setup is required after the droplet is created:
 
 - OpenJDK 11 (default; runs the Model Once, Generate Any framework)
 - OpenJDK 8 (required by GUITAR-based Structural Baseline)
@@ -158,7 +159,77 @@ esg-with-feature-expressions/
 
 ---
 
-## 5. Phase 1 — Cluster Provisioning
+## 5. Feature-Model Encoding and Product Sampling
+
+This phase is a **one-time preparation step performed on the local machine before any cluster work**. It produces the configuration files that RQ0 reads on every cluster node to derive the per-product DOT and Event Flow Graph models.
+
+The five small and medium Software Product Lines (Soda Vending Machine, eMail, Elevator, Bank Account, Student Attendance System) are small enough to enumerate exhaustively and therefore require no sampling. The three industrial Software Product Lines (Tesla, syngo.via, Hockerty Shirts) range from approximately 48 thousand to 124 billion valid configurations and must be subsampled. The procedure described in this section applies only to those three.
+
+### 5.1 Sampling tool
+
+Sampling is performed with **UniGen3**, a near-uniform sampler over the satisfying assignments of a Boolean formula in conjunctive normal form. UniGen3 is part of the [meelgroup/unigen](https://github.com/meelgroup/unigen) repository on GitHub; clone or download it and follow that project's build instructions to obtain the `unigen` binary. The original experiments used the binary produced from the official sources on macOS, but any platform with a C++ toolchain is supported.
+
+### 5.2 Per-Software-Product-Line input files
+
+For each of the three industrial Software Product Lines, two configuration files are committed under `files/Cases/<SPL>/configs/`:
+
+1. **`<SPL_short>.dimacs`** — the feature model encoded in DIMACS conjunctive normal form, where every feature becomes a Boolean variable and every cross-tree constraint is rendered as a clause. This is the input to UniGen3.
+2. **`<SPL_short>_dimacsmapping.txt`** — a plain-text map from DIMACS variable indices to feature names. UniGen3 outputs samples in DIMACS variable form, and this mapping file lets the downstream RQ0 pipeline reconstruct named feature configurations.
+
+Concrete example for syngo.via:
+
+- `files/Cases/syngovia/configs/Svia.dimacs`
+- `files/Cases/syngovia/configs/Svia_dimacsmapping.txt`
+
+### 5.3 Sample sizes and justification
+
+The number of samples drawn for each industrial Software Product Line is fixed at study-design time so that the 95 % confidence interval has a margin of error not exceeding 5 % under simple random sampling assumptions (Cochran 1977; Israel 1992, *Determining Sample Size*, IFAS PEOD-6):
+
+| Software Product Line | Population (valid products) | Samples drawn |
+|-----------------------|-----------------------------|---------------|
+| syngo.via | 47,970 | 400 |
+| Tesla | 426,672 | 400 |
+| Hockerty Shirts | 124,201,479,600 | 416 |
+
+The 416-sample size for Hockerty Shirts adds a buffer above the analytical minimum (approximately 385) given the vastly larger population.
+
+### 5.4 Running UniGen3
+
+For each industrial Software Product Line, run UniGen3 once with the `--samples` flag set to the value in §5.3 above and the `--sampleout` flag pointing to a file under `files/Cases/<SPL>/configs/`:
+
+```bash
+# syngo.via, 400 samples
+./unigen --samples 400 \
+         --sampleout /path/to/repo/files/Cases/syngovia/configs/Svia_400.samples \
+         /path/to/repo/files/Cases/syngovia/configs/Svia.dimacs
+
+# Tesla, 400 samples
+./unigen --samples 400 \
+         --sampleout /path/to/repo/files/Cases/Tesla/configs/Te_400.samples \
+         /path/to/repo/files/Cases/Tesla/configs/Te.dimacs
+
+# Hockerty Shirts, 416 samples
+./unigen --samples 416 \
+         --sampleout /path/to/repo/files/Cases/HockertyShirts/configs/HS_416.samples \
+         /path/to/repo/files/Cases/HockertyShirts/configs/HS.dimacs
+```
+
+UniGen3 writes one product configuration per line to `<SPL_short>_<N>.samples`. The `.samples` files are committed to this repository so that **any later reproduction uses the same products as the original study by default**.
+
+The `.samples` and `_dimacsmapping.txt` files together drive `RQ0_ProductGeneration_Master.sh` on the cluster (see §7.4): RQ0 reads each sampled configuration, applies the mapping to recover named features, and writes one DOT file and one Event Flow Graph file per sampled product into `files/Cases/<SPL>/DOTs/` and `files/Cases/<SPL>/EFGs/`.
+
+### 5.5 Deterministic reproduction versus independent re-sampling
+
+Two reproduction modes are available:
+
+- **Deterministic reproduction** (default): the existing `.samples` files in this repository are reused. The same products are evaluated as in the manuscript, so RQ1, RQ2, and RQ3 produce numerically identical results up to Java Virtual Machine noise and Random Walk seed effects. Reviewers comparing against the manuscript's tables should use this mode.
+- **Independent re-sampling**: UniGen3 is invoked again, producing fresh samples from the same configuration space. Results will be statistically equivalent (UniGen3 is near-uniform) but not numerically identical. This mode is useful for arguing that the study's conclusions are not artefacts of one particular sample.
+
+For most reviewers, deterministic reproduction is preferred. Independent re-sampling is a defensible follow-up experiment that strengthens the empirical claims at the cost of additional compute time.
+
+---
+
+## 6. Phase 1 — Cluster Provisioning
 
 This phase is **manual** and was performed through the DigitalOcean web console in the original experiments. There is no Terraform / `doctl` automation in this artefact.
 
@@ -185,13 +256,13 @@ This phase is **manual** and was performed through the DigitalOcean web console 
 <YOUR_IP_10>    #s72-79
 ```
 
-The shard tag encodes the deterministic partitioning of work across nodes (see §6.1).
+The shard tag encodes the deterministic partitioning of work across nodes (see §7.1).
 
 > **Note on the IPs in the template.** The original experiments used a specific set of public IPs that have since been released back to the DigitalOcean address pool. Re-using those exact addresses is neither possible nor meaningful. The tags `s00-07 … s72-79`, on the other hand, are an integral part of the partitioning scheme and are referenced by the analysis scripts.
 
 ---
 
-## 6. Phase 2 — Orchestrated Execution
+## 7. Phase 2 — Orchestrated Execution
 
 ### 6.1 Sharding scheme
 
@@ -245,7 +316,7 @@ The order is significant. RQ0 produces the DOT and Event Flow Graph models that 
 Every Master script, on each node, compiles the Java project once (`mvn clean package dependency:copy-dependencies -DskipTests`) and then iterates over the eight Software Product Lines.
 
 **`RQ0_ProductGeneration_Master.sh` — Model and Product Enumeration.**
-Generates the variability-aware Event Sequence Graph with Feature Expressions (ESG-Fx) and derives the per-product DOT and Event Flow Graph (EFG) representations consumed by every downstream Research Question. Runs once because the procedure is deterministic. For small and medium Software Product Lines the script enumerates every valid product; for the three industrial Software Product Lines (Tesla, syngo.via, Hockerty Shirts) it draws a UniGen3 uniform sample of 400–416 products to keep the downstream comparison feasible.
+Generates the variability-aware Event Sequence Graph with Feature Expressions (ESG-Fx) and derives the per-product DOT and Event Flow Graph (EFG) representations consumed by every downstream Research Question. Runs once because the procedure is deterministic. For small and medium Software Product Lines the script enumerates every valid product; for the three industrial Software Product Lines (Tesla, syngo.via, Hockerty Shirts) it reads the UniGen3 sample files prepared in §5 (`<SPL>_<N>.samples` and the corresponding `<SPL>_dimacsmapping.txt`) and emits one DOT and one Event Flow Graph file per sampled product.
 
 **`RQ1_ComparativeEfficiency_Master.sh` — RQ1 (Efficiency).**
 Measures test generation time, test execution time, and peak generation and execution memory of the Model Once, Generate Any approach at L = 1, 2, 3, 4, the Structural Baseline (Event Flow Graph via GUITAR) at L = 2, 3, 4, and the Stochastic Baseline (Random Walk) at L = 0. Repeats every measurement **11 times** per product per approach per coverage level. The odd repetition count yields a clean median without interpolation, and the resulting power lets the design detect effect sizes ≥ 1.5 × standard deviation at α = 0.05 and β = 0.20. Random Walk seeds follow the per-product strategy `seed = 42 + productID`.
@@ -272,7 +343,7 @@ This runs every RQ on a 4-shard partition. The same CSV files are produced; only
 
 ---
 
-## 7. Phase 3 — Live Monitoring
+## 8. Phase 3 — Live Monitoring
 
 While the cluster runs, two scripts give live status from the local machine:
 
@@ -290,7 +361,7 @@ bash files/bashscripts/digitalocean/Cluster_Error_Scanner.sh
 
 ---
 
-## 8. Phase 4 — Result Collection
+## 9. Phase 4 — Result Collection
 
 When all nodes have finished, run the collection scripts from the local machine. Each one downloads the CSV outputs of one RQ from every node, recreating the cluster's directory structure inside the local `files/Cases/` tree:
 
@@ -315,7 +386,7 @@ After this phase the local repository contains every artefact reported in the ma
 
 ---
 
-## 9. Phase 5 — Aggregation and Statistical Analysis
+## 10. Phase 5 — Aggregation and Statistical Analysis
 
 All analysis runs locally. Scripts are numbered by execution order: a script with the prefix `_01_` runs before `_02_`, `_03_`, and so on, within each RQ.
 
@@ -395,7 +466,7 @@ python statistical_test_scripts/rq3_09_make_tables.py
 
 ---
 
-## 10. Wall-clock and Cost Estimate
+## 11. Wall-clock and Cost Estimate
 
 The original experiments produced the manuscript results across two billing periods (March and April 2026). The DigitalOcean list price for the s-8vcpu-16gb plan in Amsterdam 3 is **96.00 USD per month, equivalently 0.143 USD per hour**, which agrees with the per-droplet rate observed in the invoices ($18.82 / 131 hours = $0.1437 per hour). Total expenditure on the 10-node cluster was:
 
@@ -415,7 +486,7 @@ A reasonable budget envelope for a careful single reproduction with safety margi
 
 ---
 
-## 11. Reproducibility Data Archive
+## 12. Reproducibility Data Archive
 
 The full result tree (raw shard CSV files through aggregated tables) for the manuscript spans several gigabytes in total. GitHub's per-file 100 MB hard limit makes shipping all of it directly inside the repository impractical. The recommended approach for users who want to inspect or re-analyse the original results without re-running the cluster is layered:
 
@@ -425,7 +496,7 @@ The full result tree (raw shard CSV files through aggregated tables) for the man
 
 If the goal is to re-execute rather than re-analyse, only this repository is required — the cluster will regenerate every CSV file from scratch.
 
-### 11.1 Zenodo workflow for the large CSV files
+### 12.1 Zenodo workflow for the large CSV files
 
 Zenodo is the recommended option for academic data because it is free, archival, citable, and mints a permanent Digital Object Identifier on the first upload. The complete workflow is:
 
@@ -453,11 +524,11 @@ Zenodo is the recommended option for academic data because it is free, archival,
 
 4. **Reference the Digital Object Identifier from this repository.** Add the Digital Object Identifier to the very top of this file (`REPRODUCIBILITY.md`), to the data-availability statement of the manuscript, and to the `README.md`. A typical reference reads:
 
-    > *Raw per-shard CSV files for the industrial Software Product Lines (Tesla, syngo.via, Hockerty Shirts) are archived at <https://doi.org/10.5281/zenodo.NNNNNNN>. Place the extracted contents under `files/Cases/` to reproduce the aggregated tables in §9.*
+    > *Raw per-shard CSV files for the industrial Software Product Lines (Tesla, syngo.via, Hockerty Shirts) are archived at <https://doi.org/10.5281/zenodo.NNNNNNN>. Place the extracted contents under `files/Cases/` to reproduce the aggregated tables in §10.*
 
 5. **Optional: link the GitHub repository to Zenodo for automatic versioning.** Zenodo offers a GitHub integration that creates a new versioned deposit (and a new Digital Object Identifier) every time a release is tagged on GitHub. The setup is described at <https://docs.github.com/en/repositories/archiving-a-github-repository/referencing-and-citing-content>. This is recommended for long-lived artefacts because each manuscript revision can have its own citable Digital Object Identifier.
 
-### 11.2 Alternative storage options
+### 12.2 Alternative storage options
 
 Two other options exist if Zenodo is not suitable:
 
@@ -468,20 +539,20 @@ For most academic artefacts, Zenodo is preferred over both because it grants a c
 
 ---
 
-## 12. Re-running on Different Infrastructure
+## 13. Re-running on Different Infrastructure
 
 The pipeline is not hard-coded to DigitalOcean. To run on another cloud provider or an on-premise cluster:
 
 1. Provision *N* nodes that meet §2.1 (Ubuntu 22.04 LTS, ≥ 8 vCPUs, ≥ 16 GB RAM, passwordless SSH as root from the local machine).
 2. Place their IPs in `ips.txt`.
 3. Adjust the `SHARDS_PER_NODE` constant inside `Setup_And_Run_DigitalOcean.sh` so that `N × SHARDS_PER_NODE = 80`. Examples: 5 nodes × 16 shards/node, 20 nodes × 4 shards/node. The total of 80 shards is referenced in several scripts and analysis aggregations and **should not be changed**.
-4. Run `Setup_And_Run_DigitalOcean.sh` exactly as in §6.2.
+4. Run `Setup_And_Run_DigitalOcean.sh` exactly as in §7.2.
 
-For a complete laptop-only reproduction at reduced scale, see §6.5.
+For a complete laptop-only reproduction at reduced scale, see §7.5.
 
 ---
 
-## 13. Troubleshooting
+## 14. Troubleshooting
 
 **Symptom:** `Setup_And_Run_DigitalOcean.sh` reports `dpkg: locked` on a fresh node.
 **Cause:** `cloud-init` is still finishing on the freshly booted droplet.
@@ -505,14 +576,14 @@ For a complete laptop-only reproduction at reduced scale, see §6.5.
 
 ---
 
-## 14. Acknowledgements
+## 15. Acknowledgements
 
-The DigitalOcean cluster used to produce the experimental results in this artifact was funded by **Prof. Dr. Serge Demeyer** (AnSyMo/LoRe research group, Department of Computer Science, University of Antwerp), joint PhD supervisor of Dilek Öztürk.
+The DigitalOcean cluster used to produce the experimental results in this artefact was funded by **Prof. Dr. Serge Demeyer** (AnSyMo/LoRe research group, Department of Computer Science, University of Antwerp), joint PhD supervisor of D. Ö. Kaya.
 
 ---
 
-## 15. Citation
+## 16. Citation
 
-If you use this artifact, please cite the accompanying manuscript (forthcoming). For the precursor work introducing the ESG-Fx model itself, please cite:
+If you use this artefact, please cite the accompanying manuscript (forthcoming). For the precursor work introducing the ESG-Fx model itself, please cite:
 
 > D. Ö. Kaya, T. Tuglular and F. Belli, "Software Product Line Testing based on Event Sequence Graphs with Feature Expressions," *2023 8th International Conference on Computer Science and Engineering (UBMK)*, Burdur, Turkiye, 2023, pp. 175–180, doi: [10.1109/UBMK59864.2023.10286660](https://doi.org/10.1109/UBMK59864.2023.10286660).
