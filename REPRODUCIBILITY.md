@@ -507,12 +507,12 @@ For a complete laptop-only reproduction at reduced scale, see §6.5.
 
 ## 14. Acknowledgements
 
-The DigitalOcean cluster used to produce the experimental results in this artefact was funded by **Prof. Dr. Serge Demeyer** (AnSyMo/LoRe research group, Department of Computer Science, University of Antwerp), joint PhD supervisor of D. Ö. Kaya.
+The DigitalOcean cluster used to produce the experimental results in this artifact was funded by **Prof. Dr. Serge Demeyer** (AnSyMo/LoRe research group, Department of Computer Science, University of Antwerp), joint PhD supervisor of Dilek Öztürk.
 
 ---
 
 ## 15. Citation
 
-If you use this artefact, please cite the accompanying manuscript (forthcoming). For the precursor work introducing the ESG-Fx model itself, please cite:
+If you use this artifact, please cite the accompanying manuscript (forthcoming). For the precursor work introducing the ESG-Fx model itself, please cite:
 
 > D. Ö. Kaya, T. Tuglular and F. Belli, "Software Product Line Testing based on Event Sequence Graphs with Feature Expressions," *2023 8th International Conference on Computer Science and Engineering (UBMK)*, Burdur, Turkiye, 2023, pp. 175–180, doi: [10.1109/UBMK59864.2023.10286660](https://doi.org/10.1109/UBMK59864.2023.10286660).
