@@ -15,9 +15,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$SCRIPT_DIR" || exit 1
 
 # --- PHASE 1: RQ0 (MODEL GENERATION) ---
-#echo ">>> PHASE 1: EXECUTING RQ0 (MODEL GENERATION) <<<"
+echo ">>> PHASE 1: EXECUTING RQ0 (MODEL GENERATION) <<<"
 # Does not take shard parameters. It generates all files natively.
-#bash ./RQ0_ProductGeneration_Master.sh
+bash ./RQ0_ProductGeneration_Master.sh
 
 #echo "⏳ Phase 1 Completed. Waiting 10 seconds for OS file indexing..."
 #sleep 10
@@ -44,8 +44,8 @@ sleep 10
 # NOTE: Commented out for local MacBook testing. 
 # Uncomment the line below when deploying to the actual cluster.
 
-#echo ">>> PHASE 4: EXECUTING RQ2 (EXTREME SCALABILITY) <<<"
-#bash ./RQ2_ExtremeScalability_Master.sh "$START_SHARD" "$END_SHARD"
+echo ">>> PHASE 4: EXECUTING RQ2 (EXTREME SCALABILITY) <<<"
+bash ./RQ2_ExtremeScalability_Master.sh "$START_SHARD" "$END_SHARD"
 
 echo "=================================================="
 echo "🏆 ALL SCHEDULED RESEARCH QUESTIONS COMPLETED ON THIS MACHINE!"

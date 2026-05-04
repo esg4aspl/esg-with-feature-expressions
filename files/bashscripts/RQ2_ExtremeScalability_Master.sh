@@ -38,8 +38,8 @@ CASES=(
   "Elevator El"
   "BankAccountv2 BAv2"
   "StudentAttendanceSystem SAS"
-  #"Tesla Te"
-  #"syngovia Svia"
+  "Tesla Te"
+  "syngovia Svia"
   "HockertyShirts HS"
 )
 
@@ -47,8 +47,8 @@ CASES=(
 SCRIPTS=(
   "RQ2_ExtremeScalability_RandomWalk.sh"   # Random Walk L0 (BASELINE)
   "RQ2_ExtremeScalability_L1.sh"           # ESG-Fx L1
-  #"RQ2_ExtremeScalability_L234.sh"         # ESG-Fx L2,3,4
-  #"RQ2_ExtremeScalability_EFG_L234.sh"     # EFG L2,3,4 (BASELINE)
+  "RQ2_ExtremeScalability_L234.sh"         # ESG-Fx L2,3,4
+  "RQ2_ExtremeScalability_EFG_L234.sh"     # EFG L2,3,4 (BASELINE)
 )
 
 echo "=== COMPILING PROJECT ONCE FOR THIS MASTER RUN ==="

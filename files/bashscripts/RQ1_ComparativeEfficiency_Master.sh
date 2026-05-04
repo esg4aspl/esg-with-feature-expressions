@@ -44,8 +44,8 @@ CASES=(
 
 SCRIPTS=(
   "RQ1_ComparativeEfficiency_ESGFx_L1.sh"
-  #"RQ1_ComparativeEfficiency_ESGFx_L234.sh"
-  #"RQ1_ComparativeEfficiency_EFG_L234.sh"
+  "RQ1_ComparativeEfficiency_ESGFx_L234.sh"
+  "RQ1_ComparativeEfficiency_EFG_L234.sh"
   "RQ1_ComparativeEfficiency_RandomWalk.sh"
 )
 

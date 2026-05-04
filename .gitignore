@@ -40,9 +40,6 @@ files/Cases/*/productConfigurations/
 files/Cases/*/testsequenceanalysis/
 files/Cases/*/testsequences/
 
-files/bashscripts/digitalocean
-
-
 # Ignore the generated configurations text file for every case
 files/Cases/*/*_ProductConfigurations.txt
 *.zip
