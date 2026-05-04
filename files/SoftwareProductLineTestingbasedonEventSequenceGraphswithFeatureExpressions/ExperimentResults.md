@@ -5,7 +5,7 @@ This paper is presented at the 8th International Conference on Computer Science 
 
 The feature model of the Soda Vending Machine SPL is given below. There are 4 features and 12 product configurations.  The vending machine, in its simplest form, accepts a coin, provides change, serves beverages, and eventually unlocks a compartment for the customer to retrieve their soda, after which it closes the compartment once more. 
 
-![Feature Model_SVM](files/SoftwareProductLineTestingbasedonEventSequenceGraphswithFeatureExpressions/SPL_Figures/SVM_FeatureModel.png)
+![Feature Model_SVM](SPL_Figures/SVM_FeatureModel.png)
 
 The ESG-Fx model of the Soda Vending Machine SPL is given below. There are 15 vertices and 21 edges in this model. 
 
