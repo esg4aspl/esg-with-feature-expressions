@@ -29,7 +29,7 @@ The experiment results of SVM SPL are given below. The test sequences of each pr
 | P12 | soda, tea, free, cancel | 4                  | 7 : pay, change, soda, serveSoda, open, take, close<br>4 : free, tea, serveTea, take<br>3 : free, cancel, return                            | 3                        | 14               | 100%                      | 14,86                              |
 |     |                         |                    |                                                                                                                                             |                          |                  |                           | **15,58**                              |
 
-[Click for downloading the PDF version of the table](files/SoftwareProductLineTestingbasedonEventSequenceGraphswithFeatureExpressions/SVM_ExperimentResults.pdf)
+[Click for downloading the PDF version of the table](files/SoftwareProductLineTestingbasedonEventSequenceGraphswithFeatureExpressions/Experiment_Results/SVM_ExperimentResults.pdf)
 
 # e-Mail SPL
 
@@ -71,7 +71,7 @@ The experiment results of e-Mail SPL are given below. The test sequences of each
 | P23 | addressbook, autoresponder, encrypt, sign | 4                  | 9 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email<br>2 : open_mailbox, select_email<br>3 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval<br>3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver<br>4 : compose_new_email, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email<br>5 : compose_new_email, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email<br>4 : compose_new_email, enter_receiver's_email_address, sign_mail, send_email | 7                        | 30               | 100%                      | 21,18                              |
 |     |                                           |                    |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |                          |                  |                           |**20,07**                              |
 
-[Click for downloading the PDF version of the table](files/SoftwareProductLineTestingbasedonEventSequenceGraphswithFeatureExpressions/eM_ExperimentResults.pdf)
+[Click for downloading the PDF version of the table](files/SoftwareProductLineTestingbasedonEventSequenceGraphswithFeatureExpressions/Experiment_Results/eM_ExperimentResults.pdf)
 
 # Bank Account SPL
 
@@ -132,7 +132,7 @@ The ESG-Fx model of the Bank Account SPL is given below. There are 23 vertices a
 |     |                                                                                                       |                    |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |                          |                  |                           | **21,72**                              |
 
 
-[Click for downloading the PDF version of the table](files/SoftwareProductLineTestingbasedonEventSequenceGraphswithFeatureExpressions/BA_ExperimentResults.pdf)
+[Click for downloading the PDF version of the table](files/SoftwareProductLineTestingbasedonEventSequenceGraphswithFeatureExpressions/Experiment_Results/BA_ExperimentResults.pdf)
 
-[Click for downloading the ESG-Fx models of SPLs](SPL_ESGFxs/SPL_ESGFxs.zip)
+[Click for downloading the ESG-Fx models of SPLs](files/SoftwareProductLineTestingbasedonEventSequenceGraphswithFeatureExpressions/SPL_ESGFxs.zip)
 
