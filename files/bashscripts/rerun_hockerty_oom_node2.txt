@@ -1,4 +1,0 @@
-# Hockerty RW — OOM recovery Node 2
-# 2 shards, max_concurrent=2
-HockertyShirts HS randomwalk 21 2
-HockertyShirts HS randomwalk 27 2

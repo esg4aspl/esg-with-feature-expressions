@@ -1,40 +1,53 @@
 #!/usr/bin/env python3
 """
-rq2_06_time_breakdown.py
+rq2_06_time_breakdown.py  (RQ2 Step 6 — KEY ANALYSIS)
 
-Step 6 of the RQ2 pipeline — end-to-end time breakdown and SAT share.
+Decomposes the end-to-end RQ2 pipeline cost for each (SPL x approach)
+into its component phases and reports two share metrics that drive the
+manuscript narrative:
 
-Decomposes the total elapsed time for each (SPL x approach) into its
-component phases:
+  SATShare(%)      -- share of T_pipeline spent in SAT solving.
+  OwnCostShare(%)  -- share of T_pipeline that is NOT SAT or
+                      ProductGen, i.e. the per-product overhead each
+                      approach adds on top of the shared infrastructure.
 
-  - SAT Time              : configuration-space solving
-  - Product Gen Time      : product instantiation from the feature model
-  - (Transformation Time) : ESG-Fx only
-  - Test Generation Time  : the core approach-specific cost
-  - Coverage / Execution Time
-  - Other / overhead
+Why these two matter
+--------------------
+At small/medium SPLs, ProductGen + the approach-specific phases
+(Transformation + TestGen + TestExec) dominate the pipeline; throughput
+gaps between approaches are large. At industrial SPLs (Tesla,
+HockertyShirts), SAT solving consumes 99%+ of T_pipeline -- all three
+approaches pay the same SAT bill, so end-to-end throughput converges.
+"OwnCost" isolates the part of the pipeline that the approach actually
+controls and supports the manuscript's claim:
+"Model Once, Generate Any reduces per-product overhead on top of the
+shared SAT cost".
 
-KEY ANALYSIS:  "Own Cost" = Total - SAT - Product Gen
-  - Measures how much overhead the approach itself adds on top of the
-    shared SAT / product-enumeration infrastructure
-  - Reviewer argument: "On large SPLs, SAT dominates; our contribution
-    is avoiding the per-product overhead that the Structural Baseline
-    adds on top of SAT"
+Inputs
+------
+Reads the canonical per-shard schema produced by Step 1:
+    files/Cases/<SPL>/RQ2_perShard_<SPL>.xlsx
+Aggregation: per-shard median across runs, then sum across the 80
+shards. This is the same SERIAL aggregation used in
+RQ2_SPLSummary_medians.xlsx so the numbers reconcile.
 
-Outputs:
-  - rq2_time_breakdown.xlsx  — detailed tables
-  - plots/rq2_time_breakdown.pdf  — stacked-bar chart (one bar per
-                                    SPL x approach x level)
+Pipeline definition: T_pipeline = SatTime + ProdGenTime + TestGenTime
+                                  + TestExecTime
+                                  ( + EFGTransformationTime + ParsingTime for EFG )
+EXCLUDES: TransformationTime for ESG-Fx (already inside TestGenTime --
+          a Java instrumentation bug); coverage-analysis times
+          (validation observers, not deployment cost). The audit-only
+          'Java_T_total_buggy(ms)' is NOT used.
 
-Paths:
-    Script: files/scripts/statistical_test_scripts/rq2_06_time_breakdown.py
-    Data  : files/Cases/<SPL>/RQ2_perShard_<SPL>.xlsx
-    Out   : files/scripts/statistical_test_scripts/rq2_result/
+Output
+------
+files/scripts/statistical_test_scripts/rq2_result/rq2_time_breakdown.xlsx
 
-Usage:
-    python rq2_06_time_breakdown.py
+  - 'breakdown'           : full per-(SPL x approach x level) table
+  - 'sat_share_pivot'     : SPL rows x Approach cols, SatShare(%)
+  - 'own_cost_share_pivot': SPL rows x Approach cols, OwnCostShare(%)
 
-Dependencies: pandas, numpy, matplotlib, openpyxl
+Plus stacked-bar PDF in plots/rq2_time_breakdown.pdf.
 """
 from __future__ import annotations
 
@@ -47,292 +60,338 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from openpyxl import load_workbook
+from openpyxl.styles import Font, Alignment, Border, Side, PatternFill
+from openpyxl.utils import get_column_letter
 
 warnings.filterwarnings("ignore")
 
 
-# ─── Paths ─────────────────────────────────────────────────────────────────
-SCRIPT_DIR = Path(__file__).resolve().parent
-SCRIPTS_DIR = SCRIPT_DIR.parent
-FILES_DIR = SCRIPTS_DIR.parent
-DATA_DIR = FILES_DIR / "Cases"
-OUTPUT_DIR = SCRIPT_DIR / "rq2_result"
-PLOTS_DIR = OUTPUT_DIR / "plots"
-
-
-# ─── Configuration ─────────────────────────────────────────────────────────
+# ─── Configuration ─────────────────────────────────────────────────────
 SPL_MAPPING = {
-    "SodaVendingMachine": "SVM",
-    "eMail": "eM",
-    "Elevator": "El",
-    "BankAccountv2": "BAv2",
+    "SodaVendingMachine":      "SVM",
+    "eMail":                   "eM",
+    "Elevator":                "El",
+    "BankAccountv2":           "BAv2",
     "StudentAttendanceSystem": "SAS",
-    "Tesla": "Te",
-    "syngovia": "Svia",
-    "HockertyShirts": "HS",
+    "syngovia":                "Svia",
+    "Tesla":                   "Te",
+    "HockertyShirts":          "HS",
 }
+SPL_ORDER = ["SVM", "eM", "El", "BAv2", "SAS", "Svia", "Te", "HS"]
 
-SPL_ORDER = ["SVM", "eM", "El", "BAv2", "SAS", "Te", "Svia", "HS"]
-
-# Level selection per approach for the breakdown display
-# (L=2 is the manuscript main column; L1 is thesis-only, L=0 for RW)
+# Article-relevant cells (L=2 main; thesis can extend to other levels by
+# editing this dict). Manuscript labels are used for the output.
 APPROACH_CONFIG = {
     "ESG-Fx_L2":     "Model Once, Generate Any (L=2)",
     "EFG_L2":        "Structural Baseline (L=2)",
     "RandomWalk_L0": "Stochastic Baseline",
 }
 
-# Phase columns (may not all be present per approach)
-PHASE_COLS = {
-    "SAT Time(ms)":                    "SAT",
-    "Product Gen Time(ms)":            "Product Gen",
-    "Transformation Time(ms)":         "Transformation (Model Once)",
-    "EFG Transformation Time(ms)":     "Transformation (Structural)",
-    "Test Generation Time(ms)":        "Test Generation",
-    "Coverage Analysis Time(ms)":      "Coverage Analysis",
-    "Event Coverage Analysis Time(ms)": "Coverage Analysis (Event)",
-    "Edge Coverage Analysis Time(ms)": "Coverage Analysis (Edge)",
-    "Parse Time(ms)":                  "Parse (Structural)",
-    "Test Execution Time(ms)":         "Test Execution",
-}
-
-# For stacked-bar: coarser 5-phase breakdown
-COARSE_PHASES = ["SAT", "Product Gen", "Transformation", "Test Generation", "Other"]
+COARSE_PHASES = ["SAT", "ProductGen", "Transformation", "TestGen", "TestExec", "Parsing", "Other"]
 PHASE_COLORS = {
-    "SAT":             "#d95f02",
-    "Product Gen":     "#1b9e77",
-    "Transformation":  "#7570b3",
-    "Test Generation": "#e7298a",
-    "Other":           "#a6761d",
+    "SAT":            "#d95f02",
+    "ProductGen":     "#1b9e77",
+    "Transformation": "#7570b3",
+    "TestGen":        "#e7298a",
+    "TestExec":       "#66a61e",
+    "Parsing":        "#a6761d",
+    "Other":          "#999999",
 }
 
 
-def aggregate_spl_sheet(spl_folder, sheet_name):
-    """
-    Compute shard-summed totals (median across runs per shard, then sum)
-    for one (SPL, approach, level) cell.
-    Returns dict with per-phase totals and total_elapsed.
-    """
-    excel_path = DATA_DIR / spl_folder / f"RQ2_perShard_{spl_folder}.xlsx"
-    if not excel_path.exists():
-        return None
+# ─── Path discovery (no absolute paths) ────────────────────────────────
+def find_project_root():
+    candidates = [Path.cwd()]
+    candidates.extend(Path.cwd().parents)
+    candidates.append(Path(__file__).resolve().parent)
+    candidates.extend(Path(__file__).resolve().parents)
+    seen = set()
+    for c in candidates:
+        c = c.resolve()
+        if c in seen:
+            continue
+        seen.add(c)
+        if (c / "files" / "Cases").exists():
+            return c
+    return None
 
+
+# ─── Per-cell aggregation ──────────────────────────────────────────────
+def aggregate_one_cell(perShard_path, sheet_name):
+    """Read one (SPL, approach x level) sheet from a per-shard Excel,
+    take per-shard median across runs, then sum across shards.
+
+    Returns a dict of phase totals (in ms) and total HandledProducts,
+    or None if the sheet doesn't exist or has no data.
+    """
     try:
-        df = pd.read_excel(excel_path, sheet_name=sheet_name)
+        df = pd.read_excel(perShard_path, sheet_name=sheet_name)
     except Exception:
         return None
-
     if df.empty or "Shard" not in df.columns:
         return None
 
-    # Sum per-shard medians for relevant phase columns
-    result = {"SPL": SPL_MAPPING.get(spl_folder, spl_folder),
-              "Approach_Level": sheet_name}
+    # Per-shard median across runs (the standard RQ2 aggregation step;
+    # done in rq2_02 normally but recomputed here so this script can
+    # operate directly on perShard data without depending on Step 2's
+    # output existing).
+    numeric = df.select_dtypes(include=[np.number])
+    per_shard = df.groupby("Shard")[list(numeric.columns)].median()
 
-    # Identify products-per-shard column
-    prod_col = None
-    for cand in ["Processed Products", " Processed Products"]:
-        if cand in df.columns:
-            prod_col = cand
-            break
-
-    # Start per-shard medians
-    per_shard = df.groupby("Shard").median(numeric_only=True).reset_index()
-
-    # Exclude empty shards
-    if prod_col and prod_col in per_shard.columns:
-        per_shard = per_shard[per_shard[prod_col] > 0]
+    # Skip shards where no products were processed (incomplete runs)
+    if "HandledProducts" in per_shard.columns:
+        per_shard = per_shard[per_shard["HandledProducts"] > 0]
     if per_shard.empty:
         return None
 
-    # Total elapsed (reference)
-    result["Total Elapsed Time(ms)"] = float(per_shard["Total Elapsed Time(ms)"].sum()) \
-        if "Total Elapsed Time(ms)" in per_shard.columns else np.nan
+    out = {
+        "T_pipeline(ms)":             float(per_shard.get("T_pipeline(ms)", pd.Series(dtype=float)).sum()),
+        "SatTime(ms)":                float(per_shard.get("SatTime(ms)", pd.Series(dtype=float)).sum()),
+        "ProdGenTime(ms)":            float(per_shard.get("ProdGenTime(ms)", pd.Series(dtype=float)).sum()),
+        "TransformationTime(ms)":     float(per_shard.get("TransformationTime(ms)", pd.Series(dtype=float)).sum()),
+        "EFGTransformationTime(ms)":  float(per_shard.get("EFGTransformationTime(ms)", pd.Series(dtype=float)).sum()),
+        "TestGenTime(ms)":            float(per_shard.get("TestGenTime(ms)", pd.Series(dtype=float)).sum()),
+        "ParsingTime(ms)":            float(per_shard.get("ParsingTime(ms)", pd.Series(dtype=float)).sum()),
+        "TestExecTime(ms)":           float(per_shard.get("TestExecTime(ms)", pd.Series(dtype=float)).sum()),
+        "HandledProducts":            int(per_shard.get("HandledProducts", pd.Series(dtype=float)).sum()),
+    }
+    return out
 
-    # Sum each phase column present
-    for col in PHASE_COLS:
-        if col in per_shard.columns:
-            result[col] = float(per_shard[col].sum())
-        else:
-            result[col] = np.nan
 
-    # Processed products
-    if prod_col and prod_col in per_shard.columns:
-        result["Total Processed Products"] = int(per_shard[prod_col].sum())
+def coarse_phases(totals, approach_label):
+    """Map fine-grained columns to the 7 coarse phases for plotting.
+
+    Note that for ESG-Fx the TransformationTime is intentionally
+    excluded from T_pipeline (it is double-counted inside TestGenTime
+    in the Java instrumentation, so adding it again would inflate the
+    pipeline). It IS reported in the breakdown table as 'Transformation'
+    for transparency, but T_pipeline = SAT + ProductGen + TestGen +
+    TestExec only -- so the 'Transformation' value here is for
+    informational display, NOT a separate share of pipeline time.
+    """
+    sat = totals["SatTime(ms)"]
+    prod = totals["ProdGenTime(ms)"]
+    tg = totals["TestGenTime(ms)"]
+    te = totals["TestExecTime(ms)"]
+    if approach_label.startswith("EFG"):
+        # EFG has its own transformation step that IS part of T_pipeline
+        # (the conversion from product .EFG to internal representation).
+        trans = totals["EFGTransformationTime(ms)"]
+        parsing = totals["ParsingTime(ms)"]
     else:
-        result["Total Processed Products"] = np.nan
-
-    return result
-
-
-def build_coarse_phases(row, approach):
-    """
-    Map the fine-grained phase columns to the 5-phase coarse breakdown
-    for stacked-bar plotting.
-    """
-    sat = row.get("SAT Time(ms)", 0.0) or 0.0
-    prod = row.get("Product Gen Time(ms)", 0.0) or 0.0
-
-    # Transformation: different column per approach
-    if approach == "ESG-Fx":
-        trans = row.get("Transformation Time(ms)", 0.0) or 0.0
-    elif approach == "EFG":
-        trans = row.get("EFG Transformation Time(ms)", 0.0) or 0.0
-    else:  # RandomWalk has no transformation
         trans = 0.0
-
-    test_gen = row.get("Test Generation Time(ms)", 0.0) or 0.0
-
-    # "Other" = total - (sat + prod + trans + test_gen)
-    total = row.get("Total Elapsed Time(ms)", 0.0) or 0.0
-    accounted = sat + prod + trans + test_gen
-    other = max(0.0, total - accounted)
-
+        parsing = 0.0
     return {
-        "SAT":             sat,
-        "Product Gen":     prod,
-        "Transformation":  trans,
-        "Test Generation": test_gen,
-        "Other":           other,
-        "Total":           total,
+        "SAT":            sat,
+        "ProductGen":     prod,
+        "Transformation": trans,
+        "TestGen":        tg,
+        "TestExec":       te,
+        "Parsing":        parsing,
     }
 
 
+def build_breakdown_row(spl_short, sheet_name, approach_label, totals):
+    """Compute breakdown + share columns for one cell."""
+    t_pipe = totals["T_pipeline(ms)"]
+    if t_pipe <= 0:
+        return None
+
+    phases = coarse_phases(totals, sheet_name)
+    sat = phases["SAT"]
+    prod = phases["ProductGen"]
+
+    # Sum of named phases excluding 'Other'
+    named = phases["SAT"] + phases["ProductGen"] + phases["Transformation"] + \
+            phases["TestGen"] + phases["TestExec"] + phases["Parsing"]
+    other = max(0.0, t_pipe - named)
+
+    own_cost = max(0.0, t_pipe - sat - prod)
+
+    return {
+        "SPL":                       spl_short,
+        "Sheet":                     sheet_name,
+        "Approach":                  approach_label,
+        "HandledProducts":           totals["HandledProducts"],
+        "T_pipeline(ms)":            round(t_pipe, 2),
+        "T_pipeline(hours)":         round(t_pipe / 1000 / 3600, 3),
+        "SatTime(ms)":               round(sat, 2),
+        "SATShare(%)":               round(100 * sat / t_pipe, 2),
+        "ProdGenTime(ms)":           round(prod, 2),
+        "ProdGenShare(%)":           round(100 * prod / t_pipe, 2),
+        "TransformationTime(ms)":    round(phases["Transformation"], 2),
+        "TestGenTime(ms)":           round(phases["TestGen"], 2),
+        "TestGenShare(%)":           round(100 * phases["TestGen"] / t_pipe, 2),
+        "ParsingTime(ms)":           round(phases["Parsing"], 2),
+        "TestExecTime(ms)":          round(phases["TestExec"], 2),
+        "Other(ms)":                 round(other, 2),
+        "OwnCost(ms)":               round(own_cost, 2),
+        "OwnCostShare(%)":           round(100 * own_cost / t_pipe, 2),
+        # Keep the raw phase values for the stacked-bar plot
+        "_phases":                   phases,
+        "_other":                    other,
+    }
+
+
+# ─── openpyxl post-processing: auto-fit + nice headers ─────────────────
+THIN = Border(left=Side(style='thin'), right=Side(style='thin'),
+              top=Side(style='thin'), bottom=Side(style='thin'))
+HEADER_FONT = Font(bold=True, name='Calibri', size=11)
+HEADER_FILL = PatternFill('solid', fgColor='E0E0E0')
+
+
+def auto_fit_workbook(path, max_width=42):
+    """Open an .xlsx written by pandas, autosize columns to header
+    width (with a sensible cap), and apply a header style. The cap
+    avoids comically wide columns when one cell happens to hold a
+    long string."""
+    wb = load_workbook(path)
+    for ws in wb.worksheets:
+        if ws.max_row == 0:
+            continue
+        # First row = header (pandas writes one). Style it.
+        for col_idx in range(1, ws.max_column + 1):
+            c = ws.cell(1, col_idx)
+            c.font = HEADER_FONT
+            c.fill = HEADER_FILL
+            c.border = THIN
+            c.alignment = Alignment(horizontal='left', vertical='center')
+        # Width: take the MAX of header length and longest data value
+        # in the column (capped). Header alone often beats data, since
+        # 'TestGenPeakMemory(MB)' > '128.0'.
+        for col_idx in range(1, ws.max_column + 1):
+            header_val = ws.cell(1, col_idx).value
+            best = len(str(header_val)) if header_val else 8
+            for r in range(2, ws.max_row + 1):
+                v = ws.cell(r, col_idx).value
+                if v is not None:
+                    best = max(best, len(str(v)))
+            width = min(best * 1.1 + 2, max_width)
+            ws.column_dimensions[get_column_letter(col_idx)].width = width
+    wb.save(path)
+
+
+# ─── Main ──────────────────────────────────────────────────────────────
 def main():
-    print("=" * 70)
-    print("rq2_06: Time Breakdown and SAT Share Analysis")
-    print("=" * 70)
-    print(f"Data directory   : {DATA_DIR}")
-    print(f"Output directory : {OUTPUT_DIR}")
-    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    PLOTS_DIR.mkdir(parents=True, exist_ok=True)
+    print("=" * 72)
+    print("rq2_06 -- Time Breakdown / SATShare / OwnCostShare")
+    print("=" * 72)
 
-    # ── Aggregate across all (SPL, approach, level) cells ──
-    all_rows = []
-    for spl_folder, spl_short in SPL_MAPPING.items():
-        for sheet in APPROACH_CONFIG:
-            row = aggregate_spl_sheet(spl_folder, sheet)
-            if row is None:
-                print(f"  [SKIP] {spl_short} {sheet}")
-                continue
-            all_rows.append(row)
-
-    if not all_rows:
-        print("\nERROR: no data loaded.")
+    project_root = find_project_root()
+    if not project_root:
+        print("ERROR: could not find project root containing files/Cases/.")
         sys.exit(1)
 
-    # ── Derive coarse-phase breakdown and SAT share ──
-    breakdown_rows = []
-    for row in all_rows:
-        sheet = row["Approach_Level"]
-        if sheet.startswith("ESG-Fx"):
-            approach = "ESG-Fx"
-        elif sheet.startswith("EFG"):
-            approach = "EFG"
-        else:
-            approach = "RandomWalk"
+    cases_dir = project_root / "files" / "Cases"
+    out_dir = project_root / "files" / "scripts" / "statistical_test_scripts" / "rq2_result"
+    plots_dir = out_dir / "plots"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    plots_dir.mkdir(parents=True, exist_ok=True)
+    print(f"Project root: {project_root}")
+    print(f"Output dir  : {out_dir}\n")
 
-        phases = build_coarse_phases(row, approach)
-        total = phases["Total"]
-        if total <= 0:
+    # Aggregate every (SPL x approach x level) cell that exists.
+    rows = []
+    for spl_folder, spl_short in SPL_MAPPING.items():
+        per_shard_path = cases_dir / spl_folder / f"RQ2_perShard_{spl_folder}.xlsx"
+        if not per_shard_path.exists():
+            print(f"  [SKIP] {spl_short}: {per_shard_path.name} not found")
             continue
+        for sheet_name, approach_label in APPROACH_CONFIG.items():
+            totals = aggregate_one_cell(per_shard_path, sheet_name)
+            if totals is None:
+                print(f"  [SKIP] {spl_short} {sheet_name}")
+                continue
+            row = build_breakdown_row(spl_short, sheet_name, approach_label, totals)
+            if row is None:
+                continue
+            rows.append(row)
+            print(f"  [OK]  {spl_short:5s} {sheet_name:15s}  "
+                  f"T_pipe={row['T_pipeline(hours)']:>7.2f}h  "
+                  f"SAT={row['SATShare(%)']:5.1f}%  "
+                  f"Own={row['OwnCostShare(%)']:5.1f}%")
 
-        breakdown = {
-            "SPL": row["SPL"],
-            "Approach_Level": sheet,
-            "Approach_Label": APPROACH_CONFIG[sheet],
-            "Total Elapsed Time (ms)": round(total, 2),
-            "Total Elapsed Time (hours)": round(total / 1000 / 3600, 3),
-            "SAT (ms)": round(phases["SAT"], 2),
-            "SAT (% of total)": round(100.0 * phases["SAT"] / total, 2),
-            "Product Gen (ms)": round(phases["Product Gen"], 2),
-            "Product Gen (% of total)": round(100.0 * phases["Product Gen"] / total, 2),
-            "Transformation (ms)": round(phases["Transformation"], 2),
-            "Transformation (% of total)": round(100.0 * phases["Transformation"] / total, 2),
-            "Test Generation (ms)": round(phases["Test Generation"], 2),
-            "Test Generation (% of total)": round(100.0 * phases["Test Generation"] / total, 2),
-            "Other (ms)": round(phases["Other"], 2),
-            "Other (% of total)": round(100.0 * phases["Other"] / total, 2),
-            "Own Cost (Total - SAT - Product Gen) (ms)":
-                round(total - phases["SAT"] - phases["Product Gen"], 2),
-            "Own Cost (% of total)":
-                round(100.0 * (total - phases["SAT"] - phases["Product Gen"]) / total, 2),
-        }
-        breakdown_rows.append(breakdown)
+    if not rows:
+        print("\nERROR: no data aggregated.")
+        sys.exit(1)
 
-    breakdown_df = pd.DataFrame(breakdown_rows)
+    df = pd.DataFrame(rows)
+    df_display = df.drop(columns=["_phases", "_other"])
 
-    # ── Save Excel ──
-    output_file = OUTPUT_DIR / "rq2_time_breakdown.xlsx"
-    with pd.ExcelWriter(output_file, engine="openpyxl") as writer:
-        breakdown_df.to_excel(writer, sheet_name="breakdown", index=False)
+    # SPL row order
+    df_display["_spl_order"] = df_display["SPL"].map(
+        {s: i for i, s in enumerate(SPL_ORDER)})
+    approach_order = {a: i for i, a in enumerate(APPROACH_CONFIG.values())}
+    df_display["_app_order"] = df_display["Approach"].map(approach_order)
+    df_display = (df_display.sort_values(["_spl_order", "_app_order"])
+                            .drop(columns=["_spl_order", "_app_order"])
+                            .reset_index(drop=True))
 
-        # Separate sheet: SAT share comparison across approaches
-        sat_pivot = breakdown_df.pivot_table(
-            index="SPL", columns="Approach_Label",
-            values="SAT (% of total)", aggfunc="first")
-        sat_pivot = sat_pivot.reindex([s for s in SPL_ORDER
-                                       if s in sat_pivot.index])
+    # Pivot tables
+    sat_pivot = df_display.pivot_table(
+        index="SPL", columns="Approach", values="SATShare(%)", aggfunc="first")
+    sat_pivot = sat_pivot.reindex([s for s in SPL_ORDER if s in sat_pivot.index])
+    sat_pivot = sat_pivot[[c for c in APPROACH_CONFIG.values() if c in sat_pivot.columns]]
+
+    own_pivot = df_display.pivot_table(
+        index="SPL", columns="Approach", values="OwnCostShare(%)", aggfunc="first")
+    own_pivot = own_pivot.reindex([s for s in SPL_ORDER if s in own_pivot.index])
+    own_pivot = own_pivot[[c for c in APPROACH_CONFIG.values() if c in own_pivot.columns]]
+
+    # ── Excel output ──
+    out_xlsx = out_dir / "rq2_time_breakdown.xlsx"
+    with pd.ExcelWriter(out_xlsx, engine="openpyxl") as writer:
+        df_display.to_excel(writer, sheet_name="breakdown", index=False)
         sat_pivot.to_excel(writer, sheet_name="sat_share_pivot")
-
-        # Own-cost pivot
-        own_pivot = breakdown_df.pivot_table(
-            index="SPL", columns="Approach_Label",
-            values="Own Cost (% of total)", aggfunc="first")
-        own_pivot = own_pivot.reindex([s for s in SPL_ORDER
-                                       if s in own_pivot.index])
         own_pivot.to_excel(writer, sheet_name="own_cost_share_pivot")
+    auto_fit_workbook(out_xlsx)
+    print(f"\nSaved: {out_xlsx.relative_to(project_root)}")
 
-    print(f"\nSaved: {output_file.name}")
+    # ── PDF stacked-bar ──
+    print("Generating stacked-bar PDF ...")
+    plot_df = pd.DataFrame(rows)
+    plot_df["_spl_order"] = plot_df["SPL"].map({s: i for i, s in enumerate(SPL_ORDER)})
+    plot_df["_app_order"] = plot_df["Approach"].map(approach_order)
+    plot_df = plot_df.sort_values(["_spl_order", "_app_order"]).reset_index(drop=True)
 
-    # ── Stacked-bar PDF plot ──
-    print("\nGenerating stacked-bar PDF...")
+    fig, ax = plt.subplots(figsize=(max(12, 0.55 * len(plot_df)), 7))
+    n = len(plot_df)
+    x = np.arange(n)
+    bottoms = np.zeros(n)
 
-    # Order: SPL (manuscript order) x approach
-    plot_df = breakdown_df.copy()
-    plot_df["SPL_order"] = plot_df["SPL"].map({s: i for i, s in enumerate(SPL_ORDER)})
-    approach_order_map = {a: i for i, a in enumerate(APPROACH_CONFIG.values())}
-    plot_df["Approach_order"] = plot_df["Approach_Label"].map(approach_order_map)
-    plot_df = plot_df.sort_values(by=["SPL_order", "Approach_order"]).reset_index(drop=True)
-
-    # x labels: "SPL\napproach"
-    x_labels = [f"{r['SPL']}\n{r['Approach_Label'].split(' (')[0]}"
-                for _, r in plot_df.iterrows()]
-
-    n_bars = len(plot_df)
-    x = np.arange(n_bars)
-
-    fig, ax = plt.subplots(figsize=(max(12, 0.6 * n_bars), 7))
-
-    bottoms = np.zeros(n_bars)
     for phase in COARSE_PHASES:
-        heights = plot_df[f"{phase} (ms)"].values / 1000.0 / 3600.0  # convert to hours
-        ax.bar(x, heights, bottom=bottoms, color=PHASE_COLORS[phase],
-               label=phase, edgecolor="white", linewidth=0.4)
-        bottoms += heights
+        if phase == "Other":
+            heights = np.array([r["_other"] for r in plot_df.to_dict("records")]) / 1000 / 3600
+        else:
+            heights = np.array([r["_phases"][phase] for r in plot_df.to_dict("records")]) / 1000 / 3600
+        if heights.sum() > 0:
+            ax.bar(x, heights, bottom=bottoms, color=PHASE_COLORS[phase],
+                   label=phase, edgecolor="white", linewidth=0.4)
+            bottoms += heights
 
+    x_labels = [f"{r['SPL']}\n{r['Approach'].split(' (')[0]}"
+                for _, r in plot_df.iterrows()]
     ax.set_xticks(x)
     ax.set_xticklabels(x_labels, rotation=45, ha="right", fontsize=9)
-    ax.set_ylabel("Cumulative CPU Time (hours)", fontsize=11)
-    ax.set_title("RQ2: End-to-End Time Breakdown per SPL × Approach\n"
-                 "(Cumulative across 80 shards, per-shard median over runs)",
-                 fontsize=12)
-    ax.legend(loc="upper left", fontsize=10)
-    ax.grid(True, axis="y", alpha=0.3)
+    ax.set_ylabel("Cumulative SERIAL CPU time (hours)\n[80-shard sum of per-shard medians]", fontsize=10)
     ax.set_yscale("log")
-
+    ax.set_title("RQ2: End-to-end pipeline time breakdown\n"
+                 "(T_pipeline excludes Java's double-counted Transformation and validation-only coverage analysis)",
+                 fontsize=11)
+    ax.legend(loc="upper left", fontsize=9, framealpha=0.95)
+    ax.grid(True, axis="y", alpha=0.3, which="both")
     plt.tight_layout()
-    plot_file = PLOTS_DIR / "rq2_time_breakdown.pdf"
-    fig.savefig(plot_file, format="pdf", bbox_inches="tight")
+    pdf_path = plots_dir / "rq2_time_breakdown.pdf"
+    fig.savefig(pdf_path, format="pdf", bbox_inches="tight")
     plt.close(fig)
-    print(f"Saved: {plot_file.name}")
+    print(f"Saved: {pdf_path.relative_to(project_root)}")
 
-    # Console summary
-    print("\n=== SAT share summary ===")
-    for _, row in breakdown_df.iterrows():
-        print(f"  {row['SPL']:5s} {row['Approach_Label']:40s}  "
-              f"SAT={row['SAT (% of total)']:5.1f}%  "
-              f"OwnCost={row['Own Cost (% of total)']:5.1f}%")
+    # ── Console summary (most important RQ2 numbers) ──
+    print("\n--- SATShare(%) by SPL x approach ---")
+    print(sat_pivot.round(1).to_string())
+    print("\n--- OwnCostShare(%) by SPL x approach ---")
+    print(own_pivot.round(1).to_string())
 
     print("\nrq2_06 DONE.")
 

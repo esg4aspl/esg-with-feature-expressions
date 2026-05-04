@@ -15,9 +15,9 @@ main efficiency metrics per SPL x level:
 Paired structure: each of the 11 Run IDs is a paired observation across
 approaches (same seed, same infrastructure). For each (SPL, level) cell,
 the following comparisons run:
-    ESG-Fx vs EFG
-    ESG-Fx vs RandomWalk  (only at L = 0 for RW; compared at L = 2 for ESG-Fx)
-    EFG    vs RandomWalk
+    ESG-Fx vs EFG                  (paired at L = 2, 3, 4)
+    ESG-Fx vs RandomWalk           (ESG-Fx at L = 2; RandomWalk has no L)
+    EFG    vs RandomWalk           (EFG    at L = 2; RandomWalk has no L)
 
 Effect size: Vargha-Delaney A12 (distribution-free).
 Multiple testing: Benjamini-Hochberg per metric across all cells.
@@ -28,10 +28,11 @@ Paths (relative to this script):
     Out   : files/scripts/statistical_test_scripts/rq1_result/
             rq1_pairwise_wilcoxon.xlsx
 
-Note on RandomWalk: RW runs only at L = 0 (edge coverage target). When
-comparing to a deterministic approach at L = k, we compare at the level
-each approach is designed for, treating the result as a holistic
-"best-configuration" comparison rather than a level-matched one.
+Note on RandomWalk: RandomWalk targets edge coverage by random traversal
+and is not parameterized by an L level. When comparing it to a
+deterministic approach at L = k, the same RandomWalk run is paired with
+each level. The 'Level' column in the output uses 'L2_vs_RW' to mark
+these cross-approach rows.
 
 Usage (from any directory):
     python rq1_05_pairwise_wilcoxon.py
@@ -68,22 +69,45 @@ SPL_MAPPING = {
     "HockertyShirts": "HS",
 }
 
+# Full display names — added as 'SPLName' / 'ApproachLabel' columns in the
+# output Excel for human readability. Short codes ('SPL', 'Approach',
+# 'ApproachA', 'ApproachB') are retained for stable filtering.
+SPL_FULL_NAME = {
+    "SVM":  "Soda Vending Machine",
+    "eM":   "eMail",
+    "El":   "Elevator",
+    "BAv2": "Bank Account",
+    "SAS":  "Student Attendance System",
+    "Te":   "Tesla Web Configurator",
+    "Svia": "syngo.via",
+    "HS":   "Hockerty Shirts Web Configurator",
+}
+
+APPROACH_LABEL = {
+    "ESG-Fx":     "Model Once, Generate Any",
+    "EFG":        "Structural Baseline",
+    "RandomWalk": "Stochastic Baseline",
+}
+
 # Metric columns differ per approach. (Time, Memory, Coverage)
+# T_gen scope-symmetric: ESG-Fx and RandomWalk both use TotalTestGenTime(ms)
+# (alg + model load + recording); EFG uses GuitarGenTime(ms) which is already
+# the disk-to-disk total inside its Java 8 sub-process.
 APPROACH_METRICS = {
     "EFG": {
-        "time":     "Total TestGenTime(ms)",
-        "memory":   "Total TestGenPeakMemory(MB)",
-        "coverage": "Edge Coverage(%)",
+        "time":     "GuitarGenTime(ms)",
+        "memory":   "TestGenPeakMemory(MB)",
+        "coverage": "EdgeCoverage(%)",
     },
     "ESG-Fx": {
-        "time":     "Test Generation Time(ms)",
-        "memory":   "Test Generation Peak Memory(MB)",
-        "coverage": "Edge Coverage(%)",
+        "time":     "TotalTestGenTime(ms)",
+        "memory":   "TestGenPeakMemory(MB)",
+        "coverage": "EdgeCoverage(%)",
     },
     "RandomWalk": {
-        "time":     "Test Gen Time(ms)",
-        "memory":   "Test Gen Peak Memory(MB)",
-        "coverage": "Edge Coverage(%)",
+        "time":     "TotalTestGenTime(ms)",
+        "memory":   "TestGenPeakMemory(MB)",
+        "coverage": "EdgeCoverage(%)",
     },
 }
 
@@ -215,9 +239,14 @@ def compare_cell(perrun_data, spl_short, level, approach_a, approach_b):
         xa, yb, common = paired_vectors(da, db)
 
         row = {
-            "SPL": spl_short, "Level": level,
+            "SPL": spl_short,
+            "SPLName": SPL_FULL_NAME.get(spl_short, spl_short),
+            "Level": level,
             "Metric": METRIC_SHORT[mk],
-            "ApproachA": approach_a, "ApproachB": approach_b,
+            "ApproachA": approach_a,
+            "ApproachALabel": APPROACH_LABEL.get(approach_a, approach_a),
+            "ApproachB": approach_b,
+            "ApproachBLabel": APPROACH_LABEL.get(approach_b, approach_b),
             "N_pairs": len(common),
             "median_A": float(np.median(xa)) if len(xa) else np.nan,
             "median_B": float(np.median(yb)) if len(yb) else np.nan,
@@ -299,9 +328,14 @@ def main():
             W, p, note = paired_wilcoxon(xa, yb)
             a12 = vargha_delaney_a12(xa, yb)
             all_rows.append({
-                "SPL": spl_short, "Level": "L2_vs_L0",
+                "SPL": spl_short,
+                "SPLName": SPL_FULL_NAME.get(spl_short, spl_short),
+                "Level": "L2_vs_RW",
                 "Metric": METRIC_SHORT[mk],
-                "ApproachA": "ESG-Fx", "ApproachB": "RandomWalk",
+                "ApproachA": "ESG-Fx",
+                "ApproachALabel": APPROACH_LABEL["ESG-Fx"],
+                "ApproachB": "RandomWalk",
+                "ApproachBLabel": APPROACH_LABEL["RandomWalk"],
                 "N_pairs": len(common),
                 "median_A": float(np.median(xa)) if len(xa) else np.nan,
                 "median_B": float(np.median(yb)) if len(yb) else np.nan,
@@ -329,9 +363,14 @@ def main():
             W, p, note = paired_wilcoxon(xa, yb)
             a12 = vargha_delaney_a12(xa, yb)
             all_rows.append({
-                "SPL": spl_short, "Level": "L2_vs_L0",
+                "SPL": spl_short,
+                "SPLName": SPL_FULL_NAME.get(spl_short, spl_short),
+                "Level": "L2_vs_RW",
                 "Metric": METRIC_SHORT[mk],
-                "ApproachA": "EFG", "ApproachB": "RandomWalk",
+                "ApproachA": "EFG",
+                "ApproachALabel": APPROACH_LABEL["EFG"],
+                "ApproachB": "RandomWalk",
+                "ApproachBLabel": APPROACH_LABEL["RandomWalk"],
                 "N_pairs": len(common),
                 "median_A": float(np.median(xa)) if len(xa) else np.nan,
                 "median_B": float(np.median(yb)) if len(yb) else np.nan,
@@ -361,7 +400,8 @@ def main():
 
     # Column order
     col_order = [
-        "SPL", "Level", "Metric", "ApproachA", "ApproachB",
+        "SPL", "SPLName", "Level", "Metric",
+        "ApproachA", "ApproachALabel", "ApproachB", "ApproachBLabel",
         "N_pairs", "median_A", "median_B", "delta_A_minus_B",
         "W", "p", "p_BH", "significant_BH",
         "A12_A_vs_B", "magnitude", "winner_lower", "note",

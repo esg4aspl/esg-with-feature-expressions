@@ -34,6 +34,7 @@ Usage:
 
 import sys
 import warnings
+import textwrap
 import numpy as np
 import pandas as pd
 import matplotlib
@@ -43,6 +44,33 @@ from scipy import stats
 from pathlib import Path
 
 warnings.filterwarnings('ignore')
+
+
+# ─── Figure save helper (PDF + PNG) ─────────────────────────────────────────
+# Embed fonts in PDFs as TrueType (Type 42) instead of Type 3 outlines.
+# This is required by virtually all journals and keeps PDF text searchable.
+plt.rcParams['pdf.fonttype'] = 42
+plt.rcParams['ps.fonttype']  = 42
+
+
+def save_figure(fig, output_path, png_dpi=300):
+    """Save a matplotlib figure as both PDF (vector, primary output) and
+    PNG (raster, for preview / non-LaTeX use).
+
+    Parameters
+    ----------
+    fig : matplotlib.figure.Figure
+        The figure to save.
+    output_path : str or Path
+        The output path with or without an extension. The extension will
+        be replaced with ``.pdf`` and ``.png`` respectively.
+    png_dpi : int
+        DPI for the PNG output. PDF is vector and ignores DPI.
+    """
+    output_path = Path(output_path)
+    stem = output_path.with_suffix('')
+    fig.savefig(stem.with_suffix('.pdf'), bbox_inches='tight')
+    fig.savefig(stem.with_suffix('.png'), dpi=png_dpi, bbox_inches='tight')
 
 
 # ─── Paths (match rq1_04/05/06 convention) ─────────────────────────────────
@@ -67,6 +95,19 @@ SPL_NAME_MAPPING = {
 }
 
 SPL_ORDER = ["SVM", "eM", "El", "BAv2", "SAS", "Te", "Svia", "HS"]
+
+# Full SPL display names — used in per-SPL plot titles where there is room.
+# In legends across many SPLs we keep the short codes for compactness.
+SPL_FULL_NAME = {
+    "SVM":  "Soda Vending Machine",
+    "eM":   "eMail",
+    "El":   "Elevator",
+    "BAv2": "Bank Account",
+    "SAS":  "Student Attendance System",
+    "Te":   "Tesla Web Configurator",
+    "Svia": "syngo.via",
+    "HS":   "Hockerty Shirts Web Configurator",
+}
 SPL_SCALE = {
     "SVM": "Small", "eM": "Small", "El": "Small",
     "BAv2": "Medium", "SAS": "Medium",
@@ -74,7 +115,7 @@ SPL_SCALE = {
 }
 
 SPL_COLORS = {
-    "SVM": "#1b9e77", "eM": "#d95f02", "El": "#7570b3",
+    "SVM": "#1b9e77", "eM": "#d95f02", "El": "#2115c9",
     "BAv2": "#e7298a", "SAS": "#66a61e",
     "Te": "#e6ab02", "Svia": "#a6761d", "HS": "#666666",
 }
@@ -86,10 +127,23 @@ APPROACH_LABEL = {
 }
 
 
+# Used when the legend/title would be too long; legend goes outside the
+# plotting area in this script, so the long labels are kept verbatim.
+APPROACH_LABEL_SHORT = {
+    "ESG-Fx":     "Model Once, Generate Any",
+    "EFG":        "Structural Baseline",
+    "RandomWalk": "Stochastic Baseline",
+}
+
+
 def approach_title(approach, level):
     label = APPROACH_LABEL.get(approach, approach)
-    lv = level.replace("L0", "Edge Coverage").replace("L", "L = ")
-    return f'$\\it{{{label.replace(" ", "\\ ")}}}$ — ${lv}$'
+    # RandomWalk has no coverage-level parameter; show the approach name
+    # alone rather than a meaningless "L = 0".
+    if approach == "RandomWalk":
+        return label
+    lv = level.replace("L", "L = ")
+    return f"{label} — {lv}"
 
 
 SHEETS_ESGFX_THESIS = ["ESG-Fx_L1", "ESG-Fx_L2", "ESG-Fx_L3", "ESG-Fx_L4"]
@@ -122,7 +176,8 @@ def read_sheet_safe(excel_path, sheet_name):
     try:
         df = pd.read_excel(excel_path, sheet_name=sheet_name, engine='openpyxl')
         skip_cols = {'ProductID', 'Status', 'ErrorReason', 'Approach',
-                     'Coverage Type', 'Coverage Level', 'SafetyLimitHit'}
+                     'Coverage Type', 'Coverage Level', 'SafetyLimitHit',
+                     'RunID', 'Run ID'}
         for col in df.columns:
             if col not in skip_cols:
                 df[col] = df[col].apply(parse_european_number)
@@ -160,30 +215,33 @@ def find_column(df, candidates):
 
 
 def get_time_col(df, approach):
+    # T_gen scope-symmetric. ESG-Fx and RandomWalk both expose
+    # TotalTestGenTime(ms); EFG exposes GuitarGenTime(ms) which is already
+    # disk-to-disk inside its Java 8 sub-process.
     mapping = {
         "ESG-Fx":     ["TotalTestGenTime(ms)"],
         "EFG":        ["GuitarGenTime(ms)"],
-        "RandomWalk": ["TestGenTime(ms)"],
+        "RandomWalk": ["TotalTestGenTime(ms)"],
     }
-    return find_column(df, mapping.get(approach, ["TestGenTime(ms)"]))
+    return find_column(df, mapping.get(approach, ["TotalTestGenTime(ms)"]))
 
 
 def get_vertices_col(df, approach):
     mapping = {
         "ESG-Fx":     ["NumberOfESGFxVertices"],
         "EFG":        ["NumberOfEFGVertices"],
-        "RandomWalk": ["Vertices"],
+        "RandomWalk": ["NumberOfESGFxVertices"],
     }
-    return find_column(df, mapping.get(approach, ["Vertices"]))
+    return find_column(df, mapping.get(approach, ["NumberOfESGFxVertices"]))
 
 
 def get_edges_col(df, approach):
     mapping = {
         "ESG-Fx":     ["NumberOfESGFxEdges"],
         "EFG":        ["NumberOfEFGEdges"],
-        "RandomWalk": ["Edges"],
+        "RandomWalk": ["NumberOfESGFxEdges"],
     }
-    return find_column(df, mapping.get(approach, ["Edges"]))
+    return find_column(df, mapping.get(approach, ["NumberOfESGFxEdges"]))
 
 
 def get_product_id_col(df):
@@ -206,12 +264,12 @@ def compute_per_product_medians(df, approach):
         agg_dict[edge_col] = 'median'
 
     extra_candidates = [
-        (["NumberOfESGFxTestCases", "NumberOfEFGTestCases", "TestCases"], "test_cases"),
-        (["NumberOfESGFxTestEvents", "NumberOfEFGTestEvents", "TestEvents"], "test_events"),
-        (["TestExecTimeMs", "TestExecTime(ms)"], "exec_time"),
-        (["TestGenPeakMemory(MB)", "ParentPeakMemory(MB)"], "memory"),
+        (["NumberOfESGFxTestCases", "NumberOfEFGTestCases"], "test_cases"),
+        (["NumberOfESGFxTestEvents", "NumberOfEFGTestEvents"], "test_events"),
+        (["TestExecTime(ms)"], "exec_time"),
+        (["TestGenPeakMemory(MB)"], "memory"),
         (["TransformationTime(ms)"], "transform_time"),
-        (["EdgeCoverage(%)", "EdgeCoverage"], "edge_cov"),
+        (["EdgeCoverage(%)"], "edge_cov"),
     ]
     extra_map = {}
     for cands, label in extra_candidates:
@@ -339,19 +397,28 @@ def plot_scatter(data, scope_dir):
             if subset.empty or 'Edges' not in subset or subset['Edges'].isna().all():
                 continue
 
-            fig, ax = plt.subplots(figsize=(10, 7))
+            fig, ax = plt.subplots(figsize=(11, 6.5))
             for spl in SPL_ORDER:
                 s = subset[subset['SPL'] == spl]
                 if s.empty:
                     continue
+                
+                # Genişliği artırdık ki legend içinde metin alt satıra taşmasın
+                full_name = textwrap.fill(SPL_FULL_NAME.get(spl, spl), width=40)
+                
                 ax.scatter(s['Edges'], s['TestGenTime_ms'],
-                           c=SPL_COLORS[spl], label=f"{spl} ({SPL_SCALE[spl]})",
+                           c=SPL_COLORS[spl],
+                           label=f"{full_name} ({SPL_SCALE[spl]})",
                            alpha=0.6, s=30, edgecolors='white', linewidth=0.3)
 
             ax.set_xlabel('Edges per product', fontsize=12)
             ax.set_ylabel('Test Generation Time (ms)', fontsize=12)
             ax.set_title(approach_title(approach, level), fontsize=13)
-            ax.legend(fontsize=9, loc='upper left')
+            
+            # Sığması için ncol=3 yapıldı
+            ax.legend(fontsize=9, loc='upper center', ncol=3,
+                      bbox_to_anchor=(0.5, -0.12),
+                      frameon=True, borderaxespad=0.0)
             ax.set_xscale('log')
             ax.set_yscale('log')
             ax.grid(True, alpha=0.3)
@@ -359,16 +426,148 @@ def plot_scatter(data, scope_dir):
             valid = subset.dropna(subset=['Edges', 'TestGenTime_ms'])
             if len(valid) > 3:
                 rho, p = stats.spearmanr(valid['Edges'], valid['TestGenTime_ms'])
-                ax.text(0.98, 0.02, f"Spearman ρ = {rho:.3f} (p = {p:.2e})",
+                ax.text(0.98, 0.02,
+                        f"Spearman $\\rho$ = {rho:.3f} (p = {p:.2e})",
                         transform=ax.transAxes, ha='right', va='bottom', fontsize=10,
-                        bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.8))
+                        bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.85))
 
             plt.tight_layout()
-            fig.savefig(out / f"scatter_{approach}_{level}.png",
-                        dpi=150, bbox_inches='tight')
+            save_figure(fig, out / f"scatter_{approach}_{level}", png_dpi=150)
             plt.close(fig)
 
 
+def plot_fig5(data, plots_dir):
+    fig, axes = plt.subplots(1, 2, figsize=(15, 6.5))
+    panels = [("ESG-Fx", "L2"), ("EFG", "L2")]
+    panel_labels = ["(a)", "(b)"]
+
+    for idx, ((approach, level), ax) in enumerate(zip(panels, axes)):
+        subset = data[(data['Approach'] == approach) & (data['Level'] == level)]
+
+        for spl in SPL_ORDER:
+            s = subset[subset['SPL'] == spl]
+            if s.empty:
+                continue
+                
+            # Genişliği artırdık ki legend içinde metin alt satıra taşmasın
+            full_name = textwrap.fill(SPL_FULL_NAME.get(spl, spl), width=40)
+            
+            ax.scatter(s['Edges'], s['TestGenTime_ms'],
+                       c=SPL_COLORS[spl],
+                       label=f"{full_name} ({SPL_SCALE[spl]})",
+                       alpha=0.6, s=30, edgecolors='white', linewidth=0.3)
+
+        ax.set_xlabel('Edges per product', fontsize=12)
+        ax.set_ylabel('Test Generation Time (ms)', fontsize=12)
+        ax.set_title(f'{panel_labels[idx]} {approach_title(approach, "L2")}',
+                     fontsize=13)
+        ax.set_xscale('log')
+        ax.set_yscale('log')
+        ax.grid(True, alpha=0.3)
+
+        valid = subset.dropna(subset=['Edges', 'TestGenTime_ms'])
+        if len(valid) > 3:
+            rho, p = stats.spearmanr(valid['Edges'], valid['TestGenTime_ms'])
+            ax.text(0.98, 0.02,
+                    f"Spearman $\\rho$ = {rho:.3f} (p = {p:.2e})",
+                    transform=ax.transAxes, ha='right', va='bottom', fontsize=10,
+                    bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.85))
+
+    handles, labels = axes[0].get_legend_handles_labels()
+    # Fig5 geniş olduğu için ncol=4 sorun yaratmaz
+    fig.legend(handles, labels, loc='lower center', ncol=4,
+               fontsize=10, frameon=True, bbox_to_anchor=(0.5, -0.04))
+    plt.tight_layout(rect=[0, 0.10, 1, 1])
+    save_figure(fig, plots_dir / "fig5", png_dpi=200)
+    plt.close(fig)
+
+def plot_fig_scaling_grid(data, plots_dir):
+    """
+    Manuscript figure: 7-panel grid showing per-product scaling for all
+    three approaches across all coverage levels.
+
+    Layout (3 rows x 3 cols, with last row containing only 1 panel centered):
+        Row 1: Model Once L=2, L=3, L=4
+        Row 2: Structural  L=2, L=3, L=4
+        Row 3: Stochastic (centered, single panel)
+
+    A single legend at the bottom serves all panels.
+    """
+    from matplotlib.gridspec import GridSpec
+    from matplotlib.ticker import LogFormatterMathtext, NullFormatter
+
+    fig = plt.figure(figsize=(17, 14))
+    gs = GridSpec(3, 6, figure=fig, hspace=0.42, wspace=0.55,
+                  bottom=0.10, top=0.96, left=0.06, right=0.98)
+
+    panel_specs = [
+        (0, slice(0, 2), "ESG-Fx",     "L2", "(a) Model Once, Generate Any — L = 2"),
+        (0, slice(2, 4), "ESG-Fx",     "L3", "(b) Model Once, Generate Any — L = 3"),
+        (0, slice(4, 6), "ESG-Fx",     "L4", "(c) Model Once, Generate Any — L = 4"),
+        (1, slice(0, 2), "EFG",        "L2", "(d) Structural Baseline — L = 2"),
+        (1, slice(2, 4), "EFG",        "L3", "(e) Structural Baseline — L = 3"),
+        (1, slice(4, 6), "EFG",        "L4", "(f) Structural Baseline — L = 4"),
+        (2, slice(2, 4), "RandomWalk", "L0", "(g) Stochastic Baseline"),
+    ]
+
+    last_legend_handles = None
+    last_legend_labels  = None
+
+    for (row, col, approach, level, label) in panel_specs:
+        ax = fig.add_subplot(gs[row, col])
+        subset = data[(data['Approach'] == approach) & (data['Level'] == level)]
+
+        for spl in SPL_ORDER:
+            s = subset[subset['SPL'] == spl]
+            if s.empty:
+                continue
+            full_name = SPL_FULL_NAME.get(spl, spl)
+            ax.scatter(s['Edges'], s['TestGenTime_ms'],
+                       c=SPL_COLORS[spl],
+                       label=f"{full_name} ({SPL_SCALE[spl]})",
+                       alpha=0.55, s=22, edgecolors='white', linewidth=0.3)
+
+        ax.set_xlabel('Edges per product', fontsize=10)
+        ax.set_ylabel('Test Generation Time (ms)', fontsize=10)
+        ax.set_title(label, fontsize=11)
+        ax.set_xscale('log')
+        ax.set_yscale('log')
+        ax.grid(True, alpha=0.3)
+        ax.tick_params(axis='both', labelsize=9)
+
+        # Compact tick formatting on log axes.
+        # The default LogFormatter renders intermediate ticks like
+        # "3 × 10^3" which expands the gutter and pushes the ylabel
+        # of the next panel off-axis.  We keep only base-10 ticks
+        # ("10^3") on both axes and suppress minor labels.
+        ax.yaxis.set_major_formatter(
+            LogFormatterMathtext(base=10.0, labelOnlyBase=True))
+        ax.xaxis.set_major_formatter(
+            LogFormatterMathtext(base=10.0, labelOnlyBase=True))
+        ax.yaxis.set_minor_formatter(NullFormatter())
+        ax.xaxis.set_minor_formatter(NullFormatter())
+
+        valid = subset.dropna(subset=['Edges', 'TestGenTime_ms'])
+        if len(valid) > 3:
+            rho, p = stats.spearmanr(valid['Edges'], valid['TestGenTime_ms'])
+            ax.text(0.97, 0.03,
+                    f"$\\rho$ = {rho:.3f}\n(p = {p:.1e})",
+                    transform=ax.transAxes, ha='right', va='bottom', fontsize=9,
+                    bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.85))
+
+        h, l = ax.get_legend_handles_labels()
+        if h:
+            last_legend_handles = h
+            last_legend_labels  = l
+
+    if last_legend_handles is not None:
+        fig.legend(last_legend_handles, last_legend_labels,
+                   loc='lower center', ncol=4, fontsize=10, frameon=True,
+                   bbox_to_anchor=(0.5, 0.005))
+
+    save_figure(fig, plots_dir / "fig_scaling_grid", png_dpi=200)
+    plt.close(fig)
+    
 def plot_boxplots(data, scope_dir):
     out = scope_dir / "boxplot"
     out.mkdir(parents=True, exist_ok=True)
@@ -386,7 +585,15 @@ def plot_boxplots(data, scope_dir):
                 if vals.empty:
                     continue
                 plot_data.append(vals.values)
-                labels.append(f"{spl}\n({len(vals)} prod)")
+                
+                # Wrap long x-axis labels
+                full_name = textwrap.fill(SPL_FULL_NAME.get(spl, spl), width=12)
+                
+                if spl in ["Te", "Svia", "HS"]:
+                    labels.append(f"{full_name}\n({len(vals)} samples)")
+                else:
+                    labels.append(f"{full_name}\n({len(vals)} products)")
+                    
                 colors.append(SPL_COLORS[spl])
 
             if not plot_data:
@@ -405,10 +612,8 @@ def plot_boxplots(data, scope_dir):
             ax.set_yscale('log')
             ax.grid(True, alpha=0.3, axis='y')
             plt.tight_layout()
-            fig.savefig(out / f"boxplot_{approach}_{level}.png",
-                        dpi=150, bbox_inches='tight')
+            save_figure(fig, out / f"boxplot_{approach}_{level}", png_dpi=150)
             plt.close(fig)
-
 
 def plot_per_spl(data, plots_dir):
     """Per-SPL scatter plots go to plots/perSPL/<SPL>/"""
@@ -434,7 +639,10 @@ def plot_per_spl(data, plots_dir):
                            edgecolors='white', linewidth=0.3)
                 ax.set_xlabel('Edges per product', fontsize=11)
                 ax.set_ylabel('Test Generation Time (ms)', fontsize=11)
-                ax.set_title(f'{short}: {approach_title(approach, level)}', fontsize=12)
+                
+                # Başlık çok uzun olmasın diye \n ile iki satıra böldüm
+                full_name = SPL_FULL_NAME.get(short, short)
+                ax.set_title(f'{full_name}:\n{approach_title(approach, level)}', fontsize=12)
 
                 v = s.dropna(subset=['Edges', 'TestGenTime_ms'])
                 if len(v) > 3 and v['Edges'].std() > 0:
@@ -452,47 +660,9 @@ def plot_per_spl(data, plots_dir):
                     ax.set_yscale('log')
 
                 plt.tight_layout()
-                fig.savefig(out / f"scatter_{approach}_{level}.png",
-                            dpi=150, bbox_inches='tight')
+                save_figure(fig, out / f"scatter_{approach}_{level}", png_dpi=150)
                 plt.close(fig)
 
-
-def plot_fig5(data, plots_dir):
-    """Manuscript figure 5: two-panel Proposed vs Structural at L=2."""
-    fig, axes = plt.subplots(1, 2, figsize=(16, 7))
-    panels = [("ESG-Fx", "L2"), ("EFG", "L2")]
-    panel_labels = ["(a)", "(b)"]
-
-    for idx, ((approach, level), ax) in enumerate(zip(panels, axes)):
-        subset = data[(data['Approach'] == approach) & (data['Level'] == level)]
-
-        for spl in SPL_ORDER:
-            s = subset[subset['SPL'] == spl]
-            if s.empty:
-                continue
-            ax.scatter(s['Edges'], s['TestGenTime_ms'],
-                       c=SPL_COLORS[spl], label=f"{spl} ({SPL_SCALE[spl]})",
-                       alpha=0.6, s=30, edgecolors='white', linewidth=0.3)
-
-        ax.set_xlabel('Edges per product', fontsize=12)
-        ax.set_ylabel('Test Generation Time (ms)', fontsize=12)
-        ax.set_title(f'{panel_labels[idx]} {approach_title(approach, "L2")}', fontsize=13)
-
-        ax.legend(fontsize=8, loc='upper left')
-        ax.set_xscale('log')
-        ax.set_yscale('log')
-        ax.grid(True, alpha=0.3)
-
-        valid = subset.dropna(subset=['Edges', 'TestGenTime_ms'])
-        if len(valid) > 3:
-            rho, p = stats.spearmanr(valid['Edges'], valid['TestGenTime_ms'])
-            ax.text(0.98, 0.02, f"Spearman ρ = {rho:.3f} (p = {p:.2e})",
-                    transform=ax.transAxes, ha='right', va='bottom', fontsize=10,
-                    bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.8))
-
-    plt.tight_layout()
-    fig.savefig(plots_dir / "fig5.png", dpi=200, bbox_inches='tight')
-    plt.close(fig)
 
 
 # ─── Main ────────────────────────────────────────────────────────────────────
@@ -603,6 +773,9 @@ def main():
 
     print("  manuscript figure 5...")
     plot_fig5(article_data, PLOTS_DIR)
+
+    print("  manuscript figure (scaling grid)...")
+    plot_fig_scaling_grid(data, PLOTS_DIR)
 
     print(f"\nPlots under: {PLOTS_DIR}")
     print("\nrq1_03 DONE.")

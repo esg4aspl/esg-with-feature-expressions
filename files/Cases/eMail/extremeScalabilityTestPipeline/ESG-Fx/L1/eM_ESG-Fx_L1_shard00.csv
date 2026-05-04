@@ -1,2 +1,12 @@
 RunID;SPL Name;Coverage Type;Total Elapsed Time(ms);SAT Time(ms);Product Gen Time(ms);Test Generation Time(ms);Test Generation Peak Memory(MB);Number of ESGFx Vertices;Number of ESGFx Edges;Number of ESGFx Test Cases;Number of ESGFx Test Events;L1 Coverage(%);Coverage Analysis Time(ms);Test Execution Time(ms);Test Execution Peak Memory(MB);Processed Products;Failed Products
 1;eM;L1;65,57;9,71;1,11;50,66;11;77;145;25;120;100;3,75;0,34;1,96;6;0
+2;eM;L1;109,38;45,56;1,09;57,99;9;11;22;3;14;100;3,97;0,77;2,24;1;0
+3;eM;L1;210,15;92,15;1,01;112,32;9;11;22;3;14;100;3,94;0,72;2,24;1;0
+4;eM;L1;111,94;45,68;0,99;60,55;9;11;22;3;14;100;3,94;0,78;2,24;1;0
+5;eM;L1;128,24;47,46;0,88;73,4;9;11;22;3;14;100;5,74;0,76;2,24;1;0
+6;eM;L1;351,39;146,81;1,04;197,17;9;11;22;3;14;100;5,64;0,74;2,24;1;0
+7;eM;L1;370,55;189,01;17,5;159,52;9;11;22;3;14;100;3,81;0,71;2,24;1;0
+8;eM;L1;377,17;230,91;13,06;119,83;9;11;22;3;14;100;12,68;0,69;2,24;1;0
+9;eM;L1;477,68;264,22;1,29;207,17;9;11;22;3;14;100;4,25;0,75;2,24;1;0
+10;eM;L1;345,4;169,14;1,21;170,67;9;11;22;3;14;100;3,66;0,72;2,24;1;0
+11;eM;L1;408,69;254,36;1,0;147,59;9;11;22;3;14;100;4,44;1,31;2,24;1;0

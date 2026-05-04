@@ -1,26 +1,42 @@
 #!/usr/bin/env python3
 """
-rq3_effectsize_bh.py
+rq3_05_effectsize_bh.py
 
-Extends the Mann-Whitney U results from rq3_mannwhitneyu.py with:
-  (1) Vargha-Delaney A12 effect size
-  (2) Magnitude label (negligible / small / medium / large)
-      using Vargha-Delaney (2000) thresholds on |0.5 - A12|
-  (3) Benjamini-Hochberg adjusted p-values (per-metric family)
-  (4) Final significance flag at alpha = 0.05 after correction
+Step 5 of the RQ3 analysis pipeline.
 
-This closes the two main statistical-rigor gaps reviewers will flag:
-  - Raw p-values alone are uninformative at large n.
-  - Running 72 tests per metric without FDR control inflates false positives.
+Reads the paired-Wilcoxon output from rq3_04 and adds:
+  (1) Benjamini--Hochberg adjusted p-values (per-metric family)
+  (2) Significance flag at alpha = 0.05 after correction
+  (3) Metric-aware winner column
+
+The "winner" column resolves the practical question: in this (SPL, pair),
+which approach is better given that this metric is interpreted as
+higher-is-better or lower-is-better?
+
+  - MutationScore           is higher-is-better
+  - DetectionCost_Penalized is lower-is-better
+  - DetectionCost_Conditional is lower-is-better
+
+For higher-is-better metrics:
+    A12 > 0.5  -> ApproachA wins
+    A12 < 0.5  -> ApproachB wins
+For lower-is-better metrics the directions flip.
+
+Pairs that are "all ties" (every paired difference is zero) are reported
+as winner = "tie", regardless of metric direction. Pairs with insufficient
+sample (n_pairs < 6) get winner = "n/a".
+
+A12 effect-size magnitude is preserved from rq3_04 (computed there directly
+from the paired vectors). This script does NOT recompute A12.
 
 Paths (relative to this script's location):
-    Input  : ./rq3_result/rq3_mannwhitneyu_<operator>.xlsx
-    Output : ./rq3_result/rq3_effectsize_bh_<operator>.xlsx
+    Input  : ./rq3_result/rq3_pairwise_wilcoxon_<operator>.xlsx
+    Output : ./rq3_result/rq3_pairwise_wilcoxon_<operator>_bh.xlsx
 
-Usage (from any directory):
-    python files/scripts/statistical_test_scripts/rq3_effectsize_bh.py --operator edge
-    python files/scripts/statistical_test_scripts/rq3_effectsize_bh.py --operator event
-    python files/scripts/statistical_test_scripts/rq3_effectsize_bh.py --operator both
+Usage:
+    python rq3_05_effectsize_bh.py --operator edge       # primary
+    python rq3_05_effectsize_bh.py --operator event      # supporting
+    python rq3_05_effectsize_bh.py --operator both       # default
 
 Dependencies: pandas, numpy, openpyxl
 """
@@ -31,6 +47,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+from openpyxl.utils import get_column_letter
 
 
 # --------------------------------------------------------------------------
@@ -39,74 +56,28 @@ import pandas as pd
 SCRIPT_DIR = Path(__file__).resolve().parent
 RESULT_DIR = SCRIPT_DIR / "rq3_result"
 
+ALPHA = 0.05
 
-# --------------------------------------------------------------------------
-# Vargha-Delaney A12
-# --------------------------------------------------------------------------
-def a12_from_U(U: float, n_A: int, n_B: int) -> float:
-    """
-    Vargha-Delaney A12 derived directly from the Mann-Whitney U statistic:
-        A12 = U_A / (n_A * n_B)
-
-    Interpretation:
-        A12 = 0.5  -> no effect (groups stochastically equal)
-        A12 > 0.5  -> group A values tend to be larger
-        A12 < 0.5  -> group B values tend to be larger
-
-    For ceiling cases (U is NaN because both groups are constant and equal)
-    we return 0.5, which is the correct effect size: the distributions are
-    identical, so there is no effect.
-    """
-    if pd.isna(U):
-        return 0.5
-    if n_A == 0 or n_B == 0:
-        return np.nan
-    return float(U) / (n_A * n_B)
-
-
-def a12_magnitude(a12: float) -> str:
-    """
-    Vargha-Delaney (2000) magnitude thresholds on the absolute deviation
-    from 0.5:
-        |0.5 - A12| < 0.06  -> negligible
-        |0.5 - A12| < 0.14  -> small
-        |0.5 - A12| < 0.21  -> medium
-        |0.5 - A12| >= 0.21 -> large
-    """
-    if pd.isna(a12):
-        return ""
-    d = abs(0.5 - a12)
-    if d < 0.06:
-        return "negligible"
-    if d < 0.14:
-        return "small"
-    if d < 0.21:
-        return "medium"
-    return "large"
+# Metric direction map. Keys must match the "Metric" column written by rq3_04.
+METRIC_HIGHER_IS_BETTER = {
+    "MutationScore":             True,
+    "DetectionCost_Penalized":   False,
+    "DetectionCost_Conditional": False,
+}
 
 
 # --------------------------------------------------------------------------
-# Benjamini-Hochberg FDR correction
+# Benjamini--Hochberg FDR correction (linear step-up)
 # --------------------------------------------------------------------------
 def bh_correct(p_values: np.ndarray) -> np.ndarray:
     """
-    Benjamini-Hochberg adjusted p-values (linear step-up).
-
-    Implementation steps:
-      1. Sort p-values ascending (keep track of original positions).
-      2. For rank i (1-indexed), tentative adjusted p = p_(i) * n / i.
-      3. Enforce monotonicity: each adjusted p must be <= the next larger
-         one. Achieved with a reverse cumulative minimum.
-      4. Clip to [0, 1] and map back to original order.
-
-    NaN p-values pass through untouched (ceiling cases without a valid U).
+    Linear step-up BH adjusted p-values. NaN inputs pass through.
     """
     p = np.asarray(p_values, dtype=float)
     mask = ~np.isnan(p)
     adj = np.full_like(p, np.nan, dtype=float)
     if mask.sum() == 0:
         return adj
-
     valid = p[mask]
     n = len(valid)
     order = np.argsort(valid)
@@ -121,29 +92,57 @@ def bh_correct(p_values: np.ndarray) -> np.ndarray:
 
 
 # --------------------------------------------------------------------------
-# Enhancement pipeline
+# Winner derivation
 # --------------------------------------------------------------------------
-def enhance(df: pd.DataFrame) -> pd.DataFrame:
-    """Add A12, magnitude, BH-adjusted p-values, and significance flag."""
-    out = df.copy()
+def derive_winner(row: pd.Series, higher_is_better: bool) -> str:
+    """
+    Return one of: "ApproachA", "ApproachB", "tie", "n/a".
 
-    out["A12"] = [
-        a12_from_U(u, na, nb)
-        for u, na, nb in zip(out["U_statistic"], out["n_A"], out["n_B"])
-    ]
-    out["A12_magnitude"] = out["A12"].apply(a12_magnitude)
+    Uses A12 to decide direction. Tie threshold: A12 == 0.5 exactly OR
+    explicit "all ties" note from rq3_04.
+    """
+    note = str(row.get("note", "") or "")
+    if "n<6" in note or "length mismatch" in note or note.startswith("wilcoxon error"):
+        return "n/a"
+    if "all ties" in note:
+        return "tie"
+
+    a12 = row.get("A12", np.nan)
+    if pd.isna(a12):
+        return "n/a"
+    if a12 == 0.5:
+        return "tie"
+    if higher_is_better:
+        return "ApproachA" if a12 > 0.5 else "ApproachB"
+    else:
+        return "ApproachB" if a12 > 0.5 else "ApproachA"
+
+
+# --------------------------------------------------------------------------
+# Per-sheet enhancement
+# --------------------------------------------------------------------------
+def enhance(df: pd.DataFrame, metric_label: str) -> pd.DataFrame:
+    """Add p_value_BH, significant_BH, winner. Preserve column order."""
+    if metric_label not in METRIC_HIGHER_IS_BETTER:
+        raise ValueError(
+            f"Unknown metric '{metric_label}'. "
+            f"Add it to METRIC_HIGHER_IS_BETTER in rq3_05."
+        )
+    higher_is_better = METRIC_HIGHER_IS_BETTER[metric_label]
+
+    out = df.copy()
     out["p_value_BH"] = bh_correct(out["p_value"].values)
-    note_is_ceiling = out["note"].fillna("").str.contains("constant and equal")
-    out["significant_BH"] = (out["p_value_BH"] < 0.05) & (~note_is_ceiling)
+    out["significant_BH"] = out["p_value_BH"] < ALPHA
+    # significant_BH is False when p_BH is NaN (NaN < alpha = False), which
+    # is the desired behaviour for ceiling/error rows.
+    out["winner"] = out.apply(lambda r: derive_winner(r, higher_is_better), axis=1)
 
     preferred = [
-        "SPL", "ApproachA", "ApproachB",
-        "n_A", "n_B",
-        "median_A", "median_B",
-        "mean_A", "mean_B",
-        "U_statistic",
-        "A12", "A12_magnitude", "direction",
-        "p_value", "p_value_BH", "significant_BH",
+        "SPL", "Metric", "ApproachA", "ApproachB",
+        "n_pairs",
+        "median_A", "median_B", "median_delta_AminusB",
+        "W", "p_value", "p_value_BH", "significant_BH",
+        "A12", "A12_magnitude", "winner",
         "note",
     ]
     cols = [c for c in preferred if c in out.columns] + \
@@ -151,12 +150,19 @@ def enhance(df: pd.DataFrame) -> pd.DataFrame:
     return out[cols]
 
 
+def _autosize_columns(worksheet, df: pd.DataFrame) -> None:
+    for idx, col_name in enumerate(df.columns, start=1):
+        worksheet.column_dimensions[get_column_letter(idx)].width = (
+            len(str(col_name)) + 2
+        )
+
+
 # --------------------------------------------------------------------------
 # Per-operator pipeline
 # --------------------------------------------------------------------------
 def run_for_operator(operator: str) -> None:
-    input_file = RESULT_DIR / f"rq3_mannwhitneyu_{operator}.xlsx"
-    output_file = RESULT_DIR / f"rq3_effectsize_bh_{operator}.xlsx"
+    input_file = RESULT_DIR / f"rq3_pairwise_wilcoxon_{operator}.xlsx"
+    output_file = RESULT_DIR / f"rq3_pairwise_wilcoxon_{operator}_bh.xlsx"
 
     print(f"\n=== Operator: {operator} ===")
     print(f"Input  : {input_file}")
@@ -166,7 +172,7 @@ def run_for_operator(operator: str) -> None:
     if not input_file.exists():
         print(
             f"  ERROR: Missing input {input_file.name}\n"
-            f"  Run 'rq3_mannwhitneyu.py --operator {operator}' first."
+            f"  Run 'rq3_04_pairwise_wilcoxon.py --operator {operator}' first."
         )
         return
 
@@ -174,26 +180,32 @@ def run_for_operator(operator: str) -> None:
     with pd.ExcelWriter(output_file, engine="openpyxl") as writer:
         for sheet in xls.sheet_names:
             df = pd.read_excel(xls, sheet_name=sheet)
-            enhanced = enhance(df)
+            enhanced = enhance(df, sheet)
             enhanced.to_excel(writer, sheet_name=sheet, index=False)
+            _autosize_columns(writer.sheets[sheet], enhanced)
 
+            # Console summary
             n_total = len(enhanced)
-            n_ceil = enhanced["note"].fillna("").str.contains(
-                "constant and equal"
-            ).sum()
-            n_testable = n_total - n_ceil
+            n_tie = int((enhanced["winner"] == "tie").sum())
+            n_na = int((enhanced["winner"] == "n/a").sum())
+            n_testable = n_total - n_tie - n_na
             n_sig = int(enhanced["significant_BH"].sum())
             mag_counts = enhanced["A12_magnitude"].value_counts()
 
             print(f"[{sheet}]")
             print(f"  rows                    : {n_total}")
-            print(f"  ceiling (not testable)  : {n_ceil}")
+            print(f"  ties (A12=0.5 / all-eq) : {n_tie}")
+            print(f"  not testable            : {n_na}")
             print(f"  testable                : {n_testable}")
             print(f"  significant after BH    : {n_sig}")
             print(f"  effect-size distribution:")
             for mag in ("large", "medium", "small", "negligible"):
                 cnt = int(mag_counts.get(mag, 0))
                 print(f"      {mag:<12s}: {cnt}")
+            # Winner breakdown
+            wins_A = int((enhanced["winner"] == "ApproachA").sum())
+            wins_B = int((enhanced["winner"] == "ApproachB").sum())
+            print(f"  winner breakdown        : A={wins_A}  B={wins_B}  tie={n_tie}")
             print()
 
     print(f"Saved: {output_file}")
@@ -204,7 +216,7 @@ def run_for_operator(operator: str) -> None:
 # --------------------------------------------------------------------------
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Add Vargha-Delaney A12 and Benjamini-Hochberg correction to Mann-Whitney results."
+        description="Add BH-adjusted p-values and metric-aware winner column to rq3_04 output."
     )
     parser.add_argument(
         "--operator",

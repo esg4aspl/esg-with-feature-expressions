@@ -59,21 +59,40 @@ SPL_MAPPING = {
     "HockertyShirts": "HS",
 }
 
+# Full display names — added as 'SPLName' / 'ApproachLabel' columns alongside
+# the short codes 'SPL' / 'Approach'.
+SPL_FULL_NAME = {
+    "SVM":  "Soda Vending Machine",
+    "eM":   "eMail",
+    "El":   "Elevator",
+    "BAv2": "Bank Account",
+    "SAS":  "Student Attendance System",
+    "Te":   "Tesla Web Configurator",
+    "Svia": "syngo.via",
+    "HS":   "Hockerty Shirts Web Configurator",
+}
+
+APPROACH_LABEL = {
+    "ESG-Fx":     "Model Once, Generate Any",
+    "EFG":        "Structural Baseline",
+    "RandomWalk": "Stochastic Baseline",
+}
+
 APPROACH_METRICS = {
     "EFG": {
-        "TestGenTime_ms":        "Total TestGenTime(ms)",
-        "TestGenPeakMemory_MB":  "Total TestGenPeakMemory(MB)",
-        "EdgeCoverage_pct":      "Edge Coverage(%)",
+        "TestGenTime_ms":        "GuitarGenTime(ms)",
+        "TestGenPeakMemory_MB":  "TestGenPeakMemory(MB)",
+        "EdgeCoverage_pct":      "EdgeCoverage(%)",
     },
     "ESG-Fx": {
-        "TestGenTime_ms":        "Test Generation Time(ms)",
-        "TestGenPeakMemory_MB":  "Test Generation Peak Memory(MB)",
-        "EdgeCoverage_pct":      "Edge Coverage(%)",
+        "TestGenTime_ms":        "TotalTestGenTime(ms)",
+        "TestGenPeakMemory_MB":  "TestGenPeakMemory(MB)",
+        "EdgeCoverage_pct":      "EdgeCoverage(%)",
     },
     "RandomWalk": {
-        "TestGenTime_ms":        "Test Gen Time(ms)",
-        "TestGenPeakMemory_MB":  "Test Gen Peak Memory(MB)",
-        "EdgeCoverage_pct":      "Edge Coverage(%)",
+        "TestGenTime_ms":        "TotalTestGenTime(ms)",
+        "TestGenPeakMemory_MB":  "TestGenPeakMemory(MB)",
+        "EdgeCoverage_pct":      "EdgeCoverage(%)",
     },
 }
 
@@ -153,7 +172,11 @@ def main():
                     continue
 
                 stats_row = {
-                    "SPL": spl_short, "Approach": approach, "Level": level,
+                    "SPL": spl_short,
+                    "SPLName": SPL_FULL_NAME.get(spl_short, spl_short),
+                    "Approach": approach,
+                    "ApproachLabel": APPROACH_LABEL.get(approach, approach),
+                    "Level": level,
                     "Metric": metric_short,
                 }
                 stats_row.update(stats)

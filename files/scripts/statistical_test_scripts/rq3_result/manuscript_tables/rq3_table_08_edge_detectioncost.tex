@@ -1,0 +1,25 @@
+\begin{table*}[width=\textwidth,pos=htbp]
+\caption{RQ3: Median penalized percent of suite to detect on edge omission mutants, per approach, $L$ level, and SPL. The penalized metric charges a 100\% cost for each mutant the suite fails to kill, so a row of 100.0 (e.g.\ structural baseline on Hockerty Shirts) reflects pervasive mutant survival rather than a suite that only detects mutants on its very last test. Lower values indicate earlier detection. Stochastic baseline rows aggregate the 10-seed per-product median. \textbf{Bold} cells indicate values referenced as evidence for \textit{Model Once, Generate Any}.}
+\label{tab:rq3-dc-edge}
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\textwidth}{@{} l c *{8}{Y} @{}}
+\toprule
+& & \multicolumn{8}{c}{\textbf{Software Product Line$^*$}} \\
+\cmidrule(lr){3-10}
+\textbf{Approach} & \textbf{$L$} & \textbf{SVM} & \textbf{eM} & \textbf{El} & \textbf{BAv2} & \textbf{SAS} & \textbf{Svia} & \textbf{Te} & \textbf{HS} \\
+\midrule
+\multirow{3}{*}{\textit{Model Once, Generate Any}}
+& 2 & 58.1 & 54.6 & 49 & 47.1 & 39.3 & 2 & 11.4 & 5.6 \\
+& 3 & 58.1 & 21.1 & 19.6 & 44.5 & 22.8 & 2.4 & 8.5 & 3.7 \\
+& 4 & 58.1 & 12.1 & 12.3 & 50 & 14 & 2 & 8.5 & 3.2 \\
+\cmidrule(l{0pt}r{0pt}){2-10}
+\multirow{3}{*}{Structural baseline}
+& 2 & 31.7 & \textbf{100} & 50 & 35.6 & 60.1 & \textbf{100} & 6.8 & \textbf{100} \\
+& 3 & 38.4 & 60.3 & 14.1 & 38.5 & 31.4 & 7.6 & 5.7 & \textbf{100} \\
+& 4 & 43 & 24.6 & 10 & 41.4 & 22.2 & 2.5 & 4.9 & \textbf{100} \\
+\cmidrule(l{0pt}r{0pt}){2-10}
+Stochastic baseline & --- & 64.3 & 25.2 & 19.6 & 46.8 & 22.1 & 0.2 & 6.5 & 2.8 \\
+\bottomrule
+\multicolumn{10}{@{}l}{\parbox[t]{0.95\textwidth}{\footnotesize $^*$~SPL abbreviations as in Table~\ref{tab:rq1-tgen}.}} \\
+\end{tabularx}
+\end{table*}

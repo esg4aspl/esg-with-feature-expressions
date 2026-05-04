@@ -5,152 +5,487 @@ rq1_01_aggregate_shards_perRun.py
 Step 1a of the RQ1 pipeline.
 
 Reads all shard CSV files under each SPL's comparativeEfficiencyTestPipeline/
-directory and produces three Excel outputs:
+directory (per-shard summaries written by the Java pipelines) and produces:
 
-  1. Per-SPL:  files/Cases/<SPL>/RQ1_<SPL>_perShard.xlsx
-               Raw shard rows (80 shards x 11 runs per approach x level).
-               One sheet per approach x level combination.
+  1. files/Cases/<SPL>/RQ1_<SPL>_perShard.xlsx
+       Raw shard rows, one sheet per approach x level. Used for spot checks.
 
-  2. Per-SPL:  files/Cases/<SPL>/RQ1_<SPL>_perRun.xlsx
-               Shards aggregated per Run ID so each sheet has 11 rows
-               (one row per run x approach x level).
+  2. files/Cases/<SPL>/RQ1_<SPL>_perRun.xlsx
+       Shards aggregated per Run ID (sum across the 80 shards). One row per
+       run x approach x level (so 11 rows per sheet under 11-run protocols).
 
-  3. Master:   files/Cases/RQ1_SPLSummary_medians.xlsx        (article: no L1)
-               files/Cases/RQ1_SPLSummary_ForPhDThesis.xlsx   (thesis: with L1)
-               One row per SPL x approach x level, median across the 11 runs.
+  3. files/Cases/RQ1_SPLSummary_medians.xlsx       (article: drops L1)
+     files/Cases/RQ1_SPLSummary_ForPhDThesis.xlsx  (thesis: keeps L1)
+       Master summary, median across the 11 runs. One row per
+       SPL x approach x level. Sheets are ordered by approach (ESG-Fx, EFG,
+       RandomWalk) and then by L level.
 
-Aggregation rules per approach differ because time and memory columns
-have different names in the EFG, ESG-Fx, and RandomWalk CSVs.
+Conventions applied throughout (consistent with rq1_02):
 
-Usage (from any directory):
+  * Cross-approach unified column names: same concept -> same name.
+    e.g. NumberOfESGFxVertices, EdgeCoverage(%), ESGFxModelLoadTime(ms).
+  * Time columns use '(ms)' parentheses; memory uses '(MB)'; percent uses '(%)'.
+  * 'AlgTestGenTime(ms)' is the algorithmic-only time. 'TotalTestGenTime(ms)'
+    is the scope-symmetric total used to compare against the EFG baseline:
+        ESG-Fx:     AlgTestGenTime + ESGFxModelLoadTime + TestCaseRecordingTime
+        RandomWalk: AlgTestGenTime + ESGFxModelLoadTime + TestCaseRecordingTime
+        EFG:        GuitarGenTime  (already disk-to-disk; left unchanged)
+  * 'TransformationShare(%)' = TransformationTime / AlgTestGenTime * 100,
+    inserted right after TransformationTime(ms). ESG-Fx only, and only when
+    TransformationTime is present (i.e. L >= 2).
+  * Sheet order: ESG-Fx -> EFG -> RandomWalk; within each, ascending L.
+  * Each Excel column is sized to its header (header length + 2).
+  * 'None' strings (e.g. ErrorReason='None') are preserved literally.
+
+Usage (from any directory inside or next to the project tree):
     python rq1_01_aggregate_shards_perRun.py
-
-Output downstream dependency:
-    rq1_03, rq1_04, rq1_05 all read these per-Run Excel files.
 """
 
 import re
-import numpy as np
-import pandas as pd
+import sys
 from pathlib import Path
 
+import numpy as np
+import pandas as pd
+from openpyxl.utils import get_column_letter
 
-# ─── Configuration ──────────────────────────────────────────────────────────
+
+# ---------------------------------------------------------------------------
+# Configuration
+# ---------------------------------------------------------------------------
 
 SPL_NAME_MAPPING = {
-    "SodaVendingMachine": "SVM",
-    "eMail": "eM",
-    "Elevator": "El",
-    "BankAccountv2": "BAv2",
+    "SodaVendingMachine":      "SVM",
+    "eMail":                   "eM",
+    "Elevator":                "El",
+    "BankAccountv2":           "BAv2",
     "StudentAttendanceSystem": "SAS",
-    "Tesla": "Te",
-    "syngovia": "Svia",
-    "HockertyShirts": "HS",
+    "Tesla":                   "Te",
+    "syngovia":                "Svia",
+    "HockertyShirts":          "HS",
 }
 
 
 def find_project_root():
-    current = Path.cwd()
-    for p in [current, current.parent, current.parent.parent]:
-        if (p / "files" / "Cases").exists():
-            return p
-    hardcoded = Path("/Users/dilekozturk/git/esg-with-feature-expressions")
-    if (hardcoded / "files" / "Cases").exists():
-        return hardcoded
+    """Locate the project root by walking up from cwd and from this script."""
+    candidates = [Path.cwd()]
+    try:
+        candidates.append(Path(__file__).resolve().parent)
+    except NameError:
+        pass
+    for start in candidates:
+        for p in [start, *start.parents]:
+            if (p / "files" / "Cases").is_dir():
+                return p
     return None
 
 
-# ─── Aggregation Rules ──────────────────────────────────────────────────────
-# key:  kept as-is (groupby columns)
-# sum:  summed across shards
-# max:  max across shards
-# weighted_avg: weighted average across shards (value_col: weight_col)
-# safety_weighted_avg: like weighted_avg but NaN when total weight is 0
+# ---------------------------------------------------------------------------
+# Stage 1: cross-approach rename maps applied to raw shard rows.
+# Source column names mirror the Java writers; some include typos that are
+# preserved here intentionally so the rename actually matches.
+# ---------------------------------------------------------------------------
 
-EFG_RULES = {
-    'key':  ['Run ID', 'SPL Name', 'Coverage Type'],
-    'sum':  ['Total Elapsed Time(ms)', 'Total TestGenTime(ms)', 'Total Parse Time (ms)',
-             'Total NumberOfEFGVertices', 'Total NumberOfEFGEdges',
-             'Total NumberOfEFGTestCases', 'Total NumberOfEFGTestEvents',
-             'Event Coverage Analysis Time(ms)', 'Edge Coverage Analysis Time(ms)',
-             'Total TestExecTime(ms)',
-             'Total ESGFx_Vertices', 'Total ESGFx_Edges', 'Total ESGFxModelLoadTimeMs',
-             'Processed Products', 'Failed Products'],
-    'max':  ['Total TestGenPeakMemory(MB)', 'Total TestExecPeakMemory(MB)'],
-    'weighted_avg': {
-        'Event Coverage(%)': 'Processed Products',
-        'Edge Coverage(%)': 'Processed Products',
+_RENAME_MAPS = {
+    'EFG': {
+        'Total Elapsed Time(ms)':             'TotalElapsedTime(ms)',
+        'Total TestGenTime(ms)':              'GuitarGenTime(ms)',
+        'Total Parse Time (ms)':              'ParsingTime(ms)',
+        'Total TestGenPeakMemory(MB)':        'TestGenPeakMemory(MB)',
+        'Total NumberOfEFGVertices':          'NumberOfEFGVertices',
+        'Total NumberOfEFGEdges':             'NumberOfEFGEdges',
+        'Total NumberOfEFGTestCases':         'NumberOfEFGTestCases',
+        'Total NumberOfEFGTestEvents':        'NumberOfEFGTestEvents',
+        'Event Coverage(%)':                  'EventCoverage(%)',
+        'Event Coverage Analysis Time(ms)':   'EventCoverageAnalysisTime(ms)',
+        'Edge Coverage(%)':                   'EdgeCoverage(%)',
+        'Edge Coverage Analysis Time(ms)':    'EdgeCoverageAnalysisTime(ms)',
+        'Total TestExecTime(ms)':             'TestExecTime(ms)',
+        'Total TestExecPeakMemory(MB)':       'TestExecPeakMemory(MB)',
+        'Total ESGFx_Vertices':               'NumberOfESGFxVertices',
+        'Total ESGFx_Edges':                  'NumberOfESGFxEdges',
+        'Total ESGFxModelLoadTimeMs':         'ESGFxModelLoadTime(ms)',
+        'Processed Products':                 'ProcessedProducts',
+        'Failed Products':                    'FailedProducts',
+    },
+    'ESG-Fx': {
+        'Total Elapsed Time(ms)':             'TotalElapsedTime(ms)',
+        'Test Generation Time(ms)':           'AlgTestGenTime(ms)',
+        'Transformation Time(ms)':            'TransformationTime(ms)',
+        'Test Generation Peak Memory(MB)':    'TestGenPeakMemory(MB)',
+        'Number of ESGFx Vertices':           'NumberOfESGFxVertices',
+        'Number of ESGFx Edges':              'NumberOfESGFxEdges',
+        'Number of ESGFx Test Cases':         'NumberOfESGFxTestCases',
+        'Number of ESGFx Test Events':        'NumberOfESGFxTestEvents',
+        'Test Case Recording Time(ms)':       'TestCaseRecordingTime(ms)',
+        'Event Coverage(%)':                  'EventCoverage(%)',
+        'Event Coverage Analysis Time(ms)':   'EventCoverageAnalysisTime(ms)',
+        'Edge Coverage(%)':                   'EdgeCoverage(%)',
+        'Edge Coverage Analysis Time(ms)':    'EdgeCoverageAnalysisTime(ms)',
+        # L>=2 schema uses 'Coverage Analysis Time(ms)' (== edge coverage time)
+        'Coverage Analysis Time(ms)':         'EdgeCoverageAnalysisTime(ms)',
+        'Test Execution Time(ms)':            'TestExecTime(ms)',
+        'Test Execution Peak Memory(MB)':     'TestExecPeakMemory(MB)',
+        'ESGFx Model Load Time(ms)':          'ESGFxModelLoadTime(ms)',
+        'Processed Products':                 'ProcessedProducts',
+        # L1 writer has a leading-space typo on this column.
+        ' Failed Products':                   'FailedProducts',
+        'Failed Products':                    'FailedProducts',
+    },
+    'RandomWalk': {
+        'Total Elapsed Time(ms)':              'TotalElapsedTime(ms)',
+        'Model Load Time(ms)':                 'ESGFxModelLoadTime(ms)',
+        'Test Gen Time(ms)':                   'AlgTestGenTime(ms)',
+        'Test Gen Peak Memory(MB)':            'TestGenPeakMemory(MB)',
+        'Total Vertices':                      'NumberOfESGFxVertices',
+        'Total Edges':                         'NumberOfESGFxEdges',
+        'Total Test Cases':                    'NumberOfESGFxTestCases',
+        'Total Test Events':                   'NumberOfESGFxTestEvents',
+        'Aborted Sequences':                   'AbortedSequences',
+        'TestCase Recording Time(ms)':         'TestCaseRecordingTime(ms)',
+        'Event Coverage(%)':                   'EventCoverage(%)',
+        # Java writer has a double-space typo on these two.
+        'Event Coverage Analysis  Time(ms)':   'EventCoverageAnalysisTime(ms)',
+        'Edge Coverage(%)':                    'EdgeCoverage(%)',
+        'Edge Coverage Analysis  Time(ms)':    'EdgeCoverageAnalysisTime(ms)',
+        'Test Exec Time(ms)':                  'TestExecTime(ms)',
+        'Test Exec Peak Memory(MB)':           'TestExecPeakMemory(MB)',
+        'Safety Limit Hit Count':              'SafetyLimitHitCount',
+        'Avg Time on Safety Limit(ms)':        'AvgTimeOnSafetyLimit(ms)',
+        'Avg Steps on Safety Limit':           'AvgStepsOnSafetyLimit',
+        'Avg Edge Coverage on Safety Limit(%)':'AvgEdgeCoverageOnSafetyLimit(%)',
+        'Processed Products':                  'ProcessedProducts',
+        'Failed Products':                     'FailedProducts',
     },
 }
 
-ESGFX_L1_RULES = {
-    'key':  ['Run ID', 'SPL Name', 'Coverage Type'],
-    'sum':  ['Total Elapsed Time(ms)', 'Test Generation Time(ms)',
-             'Number of ESGFx Vertices', 'Number of ESGFx Edges',
-             'Number of ESGFx Test Cases', 'Number of ESGFx Test Events',
-             'Test Case Recording Time(ms)', 'Edge Coverage Analysis Time(ms)',
-             'Test Execution Time(ms)', 'ESGFx Model Load Time(ms)',
-             'Processed Products', ' Failed Products'],
-    'max':  ['Test Generation Peak Memory(MB)', 'Test Execution Peak Memory(MB)'],
-    'weighted_avg': {
-        'Edge Coverage(%)': 'Processed Products',
-    },
-}
 
-ESGFX_RULES = {
-    'key':  ['Run ID', 'SPL Name', 'Coverage Type'],
-    'sum':  ['Total Elapsed Time(ms)', 'Test Generation Time(ms)', 'Transformation Time(ms)',
-             'Number of ESGFx Vertices', 'Number of ESGFx Edges',
-             'Number of ESGFx Test Cases', 'Number of ESGFx Test Events',
-             'Test Case Recording Time(ms)', 'Coverage Analysis Time(ms)',
-             'Test Execution Time(ms)', 'ESGFx Model Load Time(ms)',
-             'Processed Products', 'Failed Products'],
-    'max':  ['Test Generation Peak Memory(MB)', 'Test Execution Peak Memory(MB)'],
-    'weighted_avg': {
-        'Edge Coverage(%)': 'Processed Products',
-    },
-}
+def apply_renames(df, approach):
+    rmap = _RENAME_MAPS.get(approach, {})
+    if rmap:
+        applicable = {k: v for k, v in rmap.items() if k in df.columns}
+        if applicable:
+            df = df.rename(columns=applicable)
+    return df
 
-RW_RULES = {
-    'key':  ['Run ID', 'SPL Name', 'Coverage Type'],
-    'sum':  ['Total Elapsed Time(ms)', 'Model Load Time(ms)', 'Test Gen Time(ms)',
-             'Total Vertices', 'Total Edges',
-             'Total Test Cases', 'Total Test Events', 'Aborted Sequences',
-             'TestCase Recording Time(ms)',
-             'Event Coverage Analysis  Time(ms)', 'Edge Coverage Analysis  Time(ms)',
-             'Test Exec Time(ms)',
-             'Safety Limit Hit Count',
-             'Processed Products', 'Failed Products'],
-    'max':  ['Test Gen Peak Memory(MB)', 'Test Exec Peak Memory(MB)'],
-    'weighted_avg': {
-        'Event Coverage(%)': 'Processed Products',
-        'Edge Coverage(%)': 'Processed Products',
+
+# ---------------------------------------------------------------------------
+# Stage 2: scope-symmetric TotalTestGenTime(ms) for ESG-Fx and RandomWalk.
+# ---------------------------------------------------------------------------
+
+_TOTAL_TGEN = 'TotalTestGenTime(ms)'
+_ALG_TGEN   = 'AlgTestGenTime(ms)'
+
+_SYMMETRIC_COMPONENTS = {
+    'ESG-Fx': {
+        'alg':       _ALG_TGEN,
+        'model_load':'ESGFxModelLoadTime(ms)',
+        'recording': 'TestCaseRecordingTime(ms)',
     },
-    'safety_weighted_avg': {
-        'Avg Time on Safety Limit(ms)': 'Safety Limit Hit Count',
-        'Avg Steps on Safety Limit': 'Safety Limit Hit Count',
-        'Avg Edge Coverage on Safety Limit(%)': 'Safety Limit Hit Count',
+    'RandomWalk': {
+        'alg':       _ALG_TGEN,
+        'model_load':'ESGFxModelLoadTime(ms)',
+        'recording': 'TestCaseRecordingTime(ms)',
     },
 }
 
 
-def get_rules(approach, coverage_type):
-    if approach == 'EFG':
-        return EFG_RULES
-    elif approach == 'ESG-Fx':
-        return ESGFX_L1_RULES if coverage_type == 'L1' else ESGFX_RULES
-    elif approach == 'RandomWalk':
-        return RW_RULES
-    return {}
+def add_total_test_gen_time(df, approach):
+    spec = _SYMMETRIC_COMPONENTS.get(approach)
+    if spec is None:
+        return df
+    needed = [spec['alg'], spec['model_load'], spec['recording']]
+    if any(c not in df.columns for c in needed):
+        return df
+
+    a = pd.to_numeric(df[spec['alg']],        errors='coerce')
+    m = pd.to_numeric(df[spec['model_load']], errors='coerce')
+    r = pd.to_numeric(df[spec['recording']],  errors='coerce')
+    total = a + m + r
+
+    if _TOTAL_TGEN in df.columns:
+        df = df.drop(columns=[_TOTAL_TGEN])
+    cols = list(df.columns)
+    insert_at = cols.index(spec['alg'])  # immediately before AlgTestGenTime
+    df.insert(insert_at, _TOTAL_TGEN, total)
+    return df
 
 
-# ─── Core Functions ─────────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
+# Stage 4: TransformationShare(%) for ESG-Fx (only when transformation exists).
+# ---------------------------------------------------------------------------
+
+_TRANSFORM_TIME  = 'TransformationTime(ms)'
+_TRANSFORM_SHARE = 'TransformationShare(%)'
+
+
+def add_transformation_share(df, approach):
+    if approach != 'ESG-Fx':
+        return df
+    if _TRANSFORM_TIME not in df.columns or _ALG_TGEN not in df.columns:
+        return df
+
+    tr  = pd.to_numeric(df[_TRANSFORM_TIME], errors='coerce')
+    alg = pd.to_numeric(df[_ALG_TGEN],       errors='coerce')
+    share = (tr / alg.where(alg != 0)) * 100.0
+
+    if _TRANSFORM_SHARE in df.columns:
+        df = df.drop(columns=[_TRANSFORM_SHARE])
+    cols = list(df.columns)
+    insert_at = cols.index(_TRANSFORM_TIME) + 1
+    df.insert(insert_at, _TRANSFORM_SHARE, share)
+    return df
+
+
+# ---------------------------------------------------------------------------
+# Stage 3: per-Run aggregation across shards.
+# Rules: time/count/event columns SUM; peak memory MAX; coverage uses
+# weighted-average over ProcessedProducts; safety-limit averages weighted
+# by SafetyLimitHitCount.
+# ---------------------------------------------------------------------------
+
+_KEY_COLS = ['SPL Name', 'Coverage Type', 'Approach', 'Run ID']
+
+_SUM_COLS = {
+    'TotalElapsedTime(ms)',
+    'AlgTestGenTime(ms)',
+    'TotalTestGenTime(ms)',
+    'GuitarGenTime(ms)',
+    'ParsingTime(ms)',
+    'TransformationTime(ms)',
+    'TestCaseRecordingTime(ms)',
+    'EventCoverageAnalysisTime(ms)',
+    'EdgeCoverageAnalysisTime(ms)',
+    'TestExecTime(ms)',
+    'ESGFxModelLoadTime(ms)',
+    'NumberOfESGFxVertices',
+    'NumberOfESGFxEdges',
+    'NumberOfESGFxTestCases',
+    'NumberOfESGFxTestEvents',
+    'NumberOfEFGVertices',
+    'NumberOfEFGEdges',
+    'NumberOfEFGTestCases',
+    'NumberOfEFGTestEvents',
+    'AbortedSequences',
+    'SafetyLimitHitCount',
+    'ProcessedProducts',
+    'FailedProducts',
+}
+
+_MAX_COLS = {
+    'TestGenPeakMemory(MB)',
+    'TestExecPeakMemory(MB)',
+}
+
+_WEIGHTED_AVG_COLS = {
+    'EventCoverage(%)':                   'ProcessedProducts',
+    'EdgeCoverage(%)':                    'ProcessedProducts',
+}
+
+_SAFETY_WEIGHTED_AVG_COLS = {
+    'AvgTimeOnSafetyLimit(ms)':           'SafetyLimitHitCount',
+    'AvgStepsOnSafetyLimit':              'SafetyLimitHitCount',
+    'AvgEdgeCoverageOnSafetyLimit(%)':    'SafetyLimitHitCount',
+}
+
+
+def aggregate_shards_per_run(raw_df):
+    """Combine N shards per (Approach, Coverage Type, Run ID) into one row.
+    Operates on the post-rename, post-derived-columns frame. Re-derives
+    TotalTestGenTime and TransformationShare AFTER summing because those
+    are non-additive ratios."""
+    if raw_df.empty:
+        return raw_df
+
+    out_rows = []
+    grouped = raw_df.groupby(['Approach', 'Coverage Type'], sort=False)
+    for (approach, cov_type), group_df in grouped:
+        # Restrict to columns that are meaningful for this approach.
+        approach_cols = set(_COLUMN_ORDER.get(approach, [])) | set(_KEY_COLS) | {'Shard ID'}
+        for run_id, run_group in group_df.groupby('Run ID', sort=True):
+            row = {'Approach': approach, 'Coverage Type': cov_type, 'Run ID': run_id}
+
+            for key_col in _KEY_COLS:
+                if key_col in run_group.columns and key_col not in row:
+                    row[key_col] = run_group[key_col].iloc[0]
+
+            for col in run_group.columns:
+                if col in {'Approach', 'Coverage Type', 'Run ID', 'Shard ID'}:
+                    continue
+                if col not in approach_cols:
+                    continue  # don't carry foreign-approach columns
+                if col in _SUM_COLS:
+                    row[col] = pd.to_numeric(run_group[col], errors='coerce').sum()
+                elif col in _MAX_COLS:
+                    row[col] = pd.to_numeric(run_group[col], errors='coerce').max()
+                elif col in _WEIGHTED_AVG_COLS:
+                    w_col = _WEIGHTED_AVG_COLS[col]
+                    if w_col in run_group.columns:
+                        v = pd.to_numeric(run_group[col],   errors='coerce')
+                        w = pd.to_numeric(run_group[w_col], errors='coerce')
+                        tw = w.sum()
+                        row[col] = (v * w).sum() / tw if tw > 0 else np.nan
+                elif col in _SAFETY_WEIGHTED_AVG_COLS:
+                    w_col = _SAFETY_WEIGHTED_AVG_COLS[col]
+                    if w_col in run_group.columns:
+                        v = pd.to_numeric(run_group[col],   errors='coerce')
+                        w = pd.to_numeric(run_group[w_col], errors='coerce')
+                        tw = w.sum()
+                        row[col] = (v * w).sum() / tw if tw > 0 else np.nan
+
+            out_rows.append(row)
+
+    result = pd.DataFrame(out_rows)
+    if result.empty:
+        return result
+
+    # Re-derive ratio columns from the summed components, per (Approach, Cov Type).
+    pieces = []
+    for (approach, cov_type), part in result.groupby(['Approach', 'Coverage Type'], sort=False):
+        part = part.copy()
+        part = add_total_test_gen_time(part, approach)
+        part = add_transformation_share(part, approach)
+        pieces.append(part)
+    return pd.concat(pieces, ignore_index=True)
+
+
+# ---------------------------------------------------------------------------
+# Stage 4b: per-SPL median across runs (master summary).
+# ---------------------------------------------------------------------------
+
+def compute_median_summary(agg_df, spl_folder_name):
+    if agg_df.empty:
+        return pd.DataFrame()
+
+    summary_rows = []
+    for (approach, cov_type), group in agg_df.groupby(['Approach', 'Coverage Type'], sort=False):
+        approach_cols = set(_COLUMN_ORDER.get(approach, [])) | set(_KEY_COLS)
+        row = {
+            'SPL Name':      SPL_NAME_MAPPING.get(spl_folder_name, spl_folder_name),
+            'Approach':      approach,
+            'Coverage Type': cov_type,
+        }
+        for col in group.columns:
+            if col in {'SPL Name', 'Approach', 'Coverage Type', 'Run ID', 'Shard ID'}:
+                continue
+            if col not in approach_cols:
+                continue  # don't carry foreign-approach columns
+            num = pd.to_numeric(group[col], errors='coerce')
+            if num.notna().any():
+                row[col] = num.median()
+        summary_rows.append(row)
+
+    df = pd.DataFrame(summary_rows)
+    if df.empty:
+        return df
+
+    # Re-derive ratios from medians (not sums of ratios).
+    pieces = []
+    for (approach, cov_type), part in df.groupby(['Approach', 'Coverage Type'], sort=False):
+        part = part.copy()
+        part = add_total_test_gen_time(part, approach)
+        part = add_transformation_share(part, approach)
+        pieces.append(part)
+    return pd.concat(pieces, ignore_index=True)
+
+
+# ---------------------------------------------------------------------------
+# Column ordering per approach (for sheets that have per-(approach,level) data).
+# ---------------------------------------------------------------------------
+
+_COMMON_HEAD = ['SPL Name', 'Approach', 'Coverage Type', 'Run ID', 'Shard ID']
+
+_COLUMN_ORDER = {
+    'ESG-Fx': _COMMON_HEAD + [
+        'TotalElapsedTime(ms)',
+        'TotalTestGenTime(ms)', 'AlgTestGenTime(ms)',
+        'ESGFxModelLoadTime(ms)', 'TestCaseRecordingTime(ms)',
+        'TransformationTime(ms)', 'TransformationShare(%)',
+        'TestGenPeakMemory(MB)',
+        'TestExecTime(ms)', 'TestExecPeakMemory(MB)',
+        'NumberOfESGFxVertices', 'NumberOfESGFxEdges',
+        'NumberOfESGFxTestCases', 'NumberOfESGFxTestEvents',
+        'EventCoverage(%)', 'EventCoverageAnalysisTime(ms)',
+        'EdgeCoverage(%)',  'EdgeCoverageAnalysisTime(ms)',
+        'ProcessedProducts', 'FailedProducts',
+    ],
+    'EFG': _COMMON_HEAD + [
+        'TotalElapsedTime(ms)',
+        'GuitarGenTime(ms)',
+        'TestGenPeakMemory(MB)',
+        'TestExecTime(ms)', 'TestExecPeakMemory(MB)',
+        'ESGFxModelLoadTime(ms)',
+        'NumberOfESGFxVertices', 'NumberOfESGFxEdges',
+        'NumberOfEFGVertices', 'NumberOfEFGEdges',
+        'NumberOfEFGTestCases', 'NumberOfEFGTestEvents',
+        'ParsingTime(ms)',
+        'EventCoverage(%)', 'EventCoverageAnalysisTime(ms)',
+        'EdgeCoverage(%)',  'EdgeCoverageAnalysisTime(ms)',
+        'ProcessedProducts', 'FailedProducts',
+    ],
+    'RandomWalk': _COMMON_HEAD + [
+        'TotalElapsedTime(ms)',
+        'TotalTestGenTime(ms)', 'AlgTestGenTime(ms)',
+        'ESGFxModelLoadTime(ms)', 'TestCaseRecordingTime(ms)',
+        'TestGenPeakMemory(MB)',
+        'TestExecTime(ms)', 'TestExecPeakMemory(MB)',
+        'NumberOfESGFxVertices', 'NumberOfESGFxEdges',
+        'NumberOfESGFxTestCases', 'NumberOfESGFxTestEvents',
+        'EventCoverage(%)', 'EventCoverageAnalysisTime(ms)',
+        'EdgeCoverage(%)',  'EdgeCoverageAnalysisTime(ms)',
+        'AbortedSequences',
+        'SafetyLimitHitCount',
+        'AvgTimeOnSafetyLimit(ms)', 'AvgStepsOnSafetyLimit',
+        'AvgEdgeCoverageOnSafetyLimit(%)',
+        'ProcessedProducts', 'FailedProducts',
+    ],
+}
+
+
+def reorder_columns(df, approach, sheet_name):
+    desired = _COLUMN_ORDER.get(approach, list(df.columns))
+    present = [c for c in desired if c in df.columns]
+    leftover = [c for c in df.columns if c not in desired]
+    if leftover:
+        print(f"  NOTE ({sheet_name}): extra columns appended at end: {leftover}")
+    return df[present + leftover]
+
+
+# ---------------------------------------------------------------------------
+# Sheet ordering and column sizing.
+# ---------------------------------------------------------------------------
+
+_APPROACH_ORDER = {'ESG-Fx': 0, 'EFG': 1, 'RandomWalk': 2}
+
+
+def _level_key(level):
+    s = str(level)
+    if s.startswith('L') and s[1:].isdigit():
+        return int(s[1:])
+    return 10**6
+
+
+def _sheet_sort_key(pair):
+    approach, level = pair
+    return (_APPROACH_ORDER.get(approach, 10**6), _level_key(level), str(level))
+
+
+def _autosize_header_widths(sheet, columns, pad=2):
+    for idx, col in enumerate(columns, start=1):
+        sheet.column_dimensions[get_column_letter(idx)].width = len(str(col)) + pad
+
+
+# ---------------------------------------------------------------------------
+# CSV reading (preserves 'None' literal strings; tolerant of comma decimals).
+# ---------------------------------------------------------------------------
 
 def read_shard_csv(filepath):
     try:
-        df = pd.read_csv(filepath, sep=';', decimal=',')
+        df = pd.read_csv(filepath, sep=';', decimal=',',
+                         keep_default_na=False, na_values=[''])
         if len(df.columns) == 1:
-            df = pd.read_csv(filepath, sep=',', decimal='.')
+            df = pd.read_csv(filepath, sep=',', decimal='.',
+                             keep_default_na=False, na_values=[''])
         df.columns = [c.strip() if not c.startswith(' ') else c for c in df.columns]
         if 'Run ID' in df.columns:
             cleaned = df['Run ID'].astype(str).str.replace(r'\.0$', '', regex=True)
@@ -161,100 +496,59 @@ def read_shard_csv(filepath):
         return None
 
 
-def aggregate_shards_per_run(raw_df):
-    if raw_df.empty:
-        return raw_df
-
-    rows = []
-    for (approach, cov_type), group_df in raw_df.groupby(['Approach', 'Coverage Type']):
-        rules = get_rules(approach, cov_type)
-        if not rules:
-            continue
-
-        for run_id, run_group in group_df.groupby('Run ID'):
-            row = {'Approach': approach, 'Coverage Type': cov_type, 'Run ID': run_id}
-
-            for col in rules.get('key', []):
-                if col in run_group.columns and col not in row:
-                    row[col] = run_group[col].iloc[0]
-
-            for col in rules.get('sum', []):
-                if col in run_group.columns:
-                    row[col] = run_group[col].sum()
-
-            for col in rules.get('max', []):
-                if col in run_group.columns:
-                    row[col] = run_group[col].max()
-
-            for col, weight_col in rules.get('weighted_avg', {}).items():
-                if col in run_group.columns and weight_col in run_group.columns:
-                    w = run_group[weight_col]
-                    v = run_group[col]
-                    tw = w.sum()
-                    row[col] = (v * w).sum() / tw if tw > 0 else np.nan
-
-            for col, weight_col in rules.get('safety_weighted_avg', {}).items():
-                if col in run_group.columns and weight_col in run_group.columns:
-                    w = run_group[weight_col]
-                    v = run_group[col]
-                    tw = w.sum()
-                    row[col] = (v * w).sum() / tw if tw > 0 else np.nan
-
-            rows.append(row)
-
-    result = pd.DataFrame(rows)
-    ordered = [c for c in raw_df.columns if c in result.columns and c != 'Shard ID']
-    extra = [c for c in result.columns if c not in ordered]
-    return result[[c for c in ordered + extra if c in result.columns]]
-
-
-def compute_median_summary(agg_df, spl_name):
-    if agg_df.empty:
-        return pd.DataFrame()
-
-    summaries = []
-    for (approach, cov_type), group in agg_df.groupby(['Approach', 'Coverage Type']):
-        numeric_cols = group.select_dtypes(include='number').columns
-        cols_to_median = [c for c in numeric_cols if c != 'Run ID']
-
-        row = {
-            'SPL Name': SPL_NAME_MAPPING.get(spl_name, spl_name),
-            'Approach': approach,
-            'Coverage Type': cov_type,
-        }
-        for c in cols_to_median:
-            row[c] = group[c].median()
-
-        summaries.append(row)
-
-    return pd.DataFrame(summaries)
-
+# ---------------------------------------------------------------------------
+# Sheet writer (per-approach-level grouping + ordering + width).
+# ---------------------------------------------------------------------------
 
 def save_to_sheets(df, output_path):
     with pd.ExcelWriter(output_path, engine='openpyxl') as writer:
         if df.empty:
             df.to_excel(writer, sheet_name='No_Data', index=False)
             return
-        for (approach, level), group_df in df.groupby(['Approach', 'Coverage Type']):
+
+        groups = dict(tuple(df.groupby(['Approach', 'Coverage Type'], sort=False)))
+        ordered_keys = sorted(groups.keys(), key=_sheet_sort_key)
+
+        for (approach, level) in ordered_keys:
+            group_df = groups[(approach, level)]
             sheet_name = f"{approach}_{level}"[:31]
-            clean = group_df.dropna(axis=1, how='all')
+
+            # Restrict to columns relevant to this approach (drop foreign cols
+            # that pandas filled with NaN during concat).
+            allowed = set(_COLUMN_ORDER.get(approach, list(group_df.columns)))
+            cols_to_keep = [c for c in group_df.columns if c in allowed]
+            extras = [c for c in group_df.columns if c not in allowed]
+            if extras:
+                # Only complain about columns that actually contain data.
+                meaningful_extras = [c for c in extras
+                                     if group_df[c].notna().any()
+                                     and not (isinstance(group_df[c].iloc[0], str)
+                                              and group_df[c].astype(str).eq('').all())]
+                if meaningful_extras:
+                    print(f"  NOTE ({sheet_name}): unmapped columns dropped: "
+                          f"{meaningful_extras}")
+            slim = group_df[cols_to_keep]
+
+            clean = reorder_columns(slim, approach, sheet_name)
+            clean = clean.dropna(axis=1, how='all')
             clean.to_excel(writer, sheet_name=sheet_name, index=False)
+            _autosize_header_widths(writer.sheets[sheet_name], clean.columns)
 
 
-# ─── Per-SPL Processing ────────────────────────────────────────────────────
+# ---------------------------------------------------------------------------
+# Per-SPL processing.
+# ---------------------------------------------------------------------------
 
-def process_spl(spl_folder_name, base_dir):
-    print(f"\n{'=' * 60}")
-    print(f"PROCESSING: {spl_folder_name}")
-    print(f"{'=' * 60}")
+def process_spl(spl_dir):
+    spl_folder = spl_dir.name
+    print(f"\n{'=' * 60}\nPROCESSING: {spl_folder}\n{'=' * 60}")
 
-    pipeline_dir = base_dir / "comparativeEfficiencyTestPipeline"
+    pipeline_dir = spl_dir / "comparativeEfficiencyTestPipeline"
     if not pipeline_dir.exists():
         print("  WARNING: comparativeEfficiencyTestPipeline not found.")
         return None
 
-    all_raw = []
-
+    raw_frames = []
     for csv_file in sorted(pipeline_dir.rglob("*.csv")):
         fname = csv_file.name
         if '_EFG_' in fname:
@@ -266,29 +560,34 @@ def process_spl(spl_folder_name, base_dir):
         else:
             continue
 
-        shard_match = re.search(r'(shard_?\d+)', str(csv_file), re.IGNORECASE)
-        shard_name = shard_match.group(1).lower() if shard_match else "shard0"
+        shard_match = re.search(r'(shard_?\d+)', csv_file.name, re.IGNORECASE)
+        shard_name = shard_match.group(1).lower() if shard_match else 'shard0'
 
         df = read_shard_csv(csv_file)
         if df is None or df.empty:
             continue
 
+        df = apply_renames(df, approach)
         df['Approach'] = approach
         df.insert(0, 'Shard ID', shard_name)
-        all_raw.append(df)
 
-    if not all_raw:
+        df = add_total_test_gen_time(df, approach)
+        df = add_transformation_share(df, approach)
+
+        raw_frames.append(df)
+
+    if not raw_frames:
         print("  No CSV files found.")
         return None
 
-    raw_combined = pd.concat(all_raw, ignore_index=True)
-    agg_combined = aggregate_shards_per_run(raw_combined)
+    raw_combined = pd.concat(raw_frames, ignore_index=True)
 
-    raw_path = base_dir / f"RQ1_{spl_folder_name}_perShard.xlsx"
+    raw_path = spl_dir / f"RQ1_{spl_folder}_perShard.xlsx"
     save_to_sheets(raw_combined, raw_path)
     print(f"  Saved: {raw_path.name}")
 
-    agg_path = base_dir / f"RQ1_{spl_folder_name}_perRun.xlsx"
+    agg_combined = aggregate_shards_per_run(raw_combined)
+    agg_path = spl_dir / f"RQ1_{spl_folder}_perRun.xlsx"
     save_to_sheets(agg_combined, agg_path)
     print(f"  Saved: {agg_path.name}")
 
@@ -297,20 +596,21 @@ def process_spl(spl_folder_name, base_dir):
 
 def main():
     root = find_project_root()
-    if not root:
-        print("ERROR: Project root (files/Cases) not found.")
-        return
+    if root is None:
+        print("ERROR: Project root (containing files/Cases) not found.",
+              file=sys.stderr)
+        sys.exit(1)
 
+    print(f"Project root: {root}")
     cases_dir = root / "files" / "Cases"
-    spls = [d for d in sorted(cases_dir.iterdir()) if d.is_dir() and not d.name.startswith('_')]
+    spls = [d for d in sorted(cases_dir.iterdir())
+            if d.is_dir() and not d.name.startswith('_')]
 
     all_summaries = []
-
     for spl_dir in spls:
-        agg_df = process_spl(spl_dir.name, spl_dir)
+        agg_df = process_spl(spl_dir)
         if agg_df is not None and not agg_df.empty:
-            median_df = compute_median_summary(agg_df, spl_dir.name)
-            all_summaries.append(median_df)
+            all_summaries.append(compute_median_summary(agg_df, spl_dir.name))
 
     if all_summaries:
         master = pd.concat(all_summaries, ignore_index=True)
@@ -324,9 +624,7 @@ def main():
         save_to_sheets(master, thesis_path)
         print(f"  Master (Thesis):  {thesis_path.name}")
 
-        print(f"\n{'=' * 60}")
-        print("rq1_01 DONE. Run rq1_02 next.")
-        print(f"{'=' * 60}")
+    print(f"\n{'=' * 60}\nrq1_01 DONE. Run rq1_02 next.\n{'=' * 60}")
 
 
 if __name__ == "__main__":

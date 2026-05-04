@@ -1,0 +1,21 @@
+\begin{table*}[width=\textwidth,pos=htbp]
+\caption{RQ3: Stochastic baseline damping factor sensitivity. Median per-SPL values at three damping levels for two metrics: AchievedEdgeCoverage (higher is better) and the penalized percent of suite to detect on edge omission (lower is better). Descriptive medians are computed across all products available at each damping factor; on Hockerty Shirts $137$ products timed out at $d = 0.8$ on the fault-detection metric and contribute only to $d = 0.85$ and $d = 0.9$. $p_{\mathit{BH}}$ is the Benjamini--Hochberg adjusted Friedman omnibus $p$-value, computed on the paired subset (the same products at every damping factor; $n$ in the table). Cells with $p_{\mathit{BH}} > 0.05$ are reported as n.s. On the small and medium-sized SPLs no metric reaches statistical significance. On Tesla, edge coverage is at the $100\%$ saturation ceiling at all three damping levels but small consistent rank shifts across the $400$ paired products yield a significant Friedman test; the corresponding post-hoc Vargha--Delaney $A_{12}$ effect sizes are `small' (supplementary material).}
+\label{tab:rq3-damping}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}} l c cccc c cccc @{}}
+\toprule
+& & \multicolumn{4}{c}{\textbf{Edge coverage (\%)}} & & \multicolumn{4}{c}{\textbf{Penalized DC, edge omission (\%)}} \\
+\cmidrule(lr){3-6} \cmidrule(lr){8-11}
+\textbf{SPL} & \textbf{$n$} & \textbf{$d{=}0.8$} & \textbf{$d{=}0.85$} & \textbf{$d{=}0.9$} & \textbf{$p_{\mathit{BH}}$} & & \textbf{$d{=}0.8$} & \textbf{$d{=}0.85$} & \textbf{$d{=}0.9$} & \textbf{$p_{\mathit{BH}}$} \\
+\midrule
+SVM & 12 & 100.0 & 100.0 & 100.0 & n.s. & & 64.3 & 64.3 & 64.3 & n.s. \\
+eM & 23 & 100.0 & 100.0 & 100.0 & n.s. & & 21.9 & 27.4 & 27.4 & n.s. \\
+El & 42 & 100.0 & 100.0 & 100.0 & n.s. & & 19.1 & 22.7 & 21.9 & n.s. \\
+BAv2 & 498 & 100.0 & 100.0 & 100.0 & n.s. & & 46.7 & 47.2 & 47.1 & n.s. \\
+SAS & 2664 & 100.0 & 100.0 & 100.0 & n.s. & & 20.5 & 22.3 & 21.8 & $6.7\!\times\!10^{-46}$ \\
+Svia & 400 & 75.2 & 84.5 & 92.2 & $1.5\!\times\!10^{-173}$ & & 0.7 & 0.4 & 0.1 & $2.4\!\times\!10^{-139}$ \\
+Te & 400 & 100.0 & 100.0 & 100.0 & $4.5\!\times\!10^{-48}$ & & 5.6 & 5.8 & 5.9 & n.s. \\
+HS & 279 & 61.3 & 96.0 & 100.0 & $2.6\!\times\!10^{-168}$ & & 44.4 & 2.9 & 2.1 & $2\!\times\!10^{-120}$ \\
+\bottomrule
+\end{tabular*}
+\end{table*}
