@@ -9,7 +9,7 @@ The feature model of the Soda Vending Machine SPL is given below. There are 4 fe
 
 The ESG-Fx model of the Soda Vending Machine SPL is given below. There are 15 vertices and 21 edges in this model. 
 
-![ESGFx_SVM](files/SoftwareProductLineTestingbasedonEventSequenceGraphswithFeatureExpressions/SPL_Figures/SVM_ESGFx.png)
+![ESGFx_SVM](SPL_Figures/SVM_ESGFx.png)
 
 The experiment results of SVM SPL are given below. The test sequences of each product configuration are generated. 
 
@@ -29,17 +29,17 @@ The experiment results of SVM SPL are given below. The test sequences of each pr
 | P12 | soda, tea, free, cancel | 4                  | 7 : pay, change, soda, serveSoda, open, take, close<br>4 : free, tea, serveTea, take<br>3 : free, cancel, return                            | 3                        | 14               | 100%                      | 14,86                              |
 |     |                         |                    |                                                                                                                                             |                          |                  |                           | **15,58**                              |
 
-[Click for downloading the PDF version of the table](files/SoftwareProductLineTestingbasedonEventSequenceGraphswithFeatureExpressions/Experiment_Results/SVM_ExperimentResults.pdf)
+[Click for downloading the PDF version of the table](Experiment_Results/SVM_ExperimentResults.pdf)
 
 # e-Mail SPL
 
 The feature model of the e-Mail SPL is given below. There are 5 features.  e-Mail SPL is a product line of email clients that offers the feature _addressbook_ for creating an addressbook of email contacts, _autoresponder_ for autoresponding incoming emails between a specified date interval, _forward_ for forwarding incoming emails, _encrypt_ for encrypting outgoing emails and, _sign_ or signing outgoing emails. A basic e-Mail client provides events for composing a new email and for reading an incoming email.
 
-![Feature Model_eM](files/SoftwareProductLineTestingbasedonEventSequenceGraphswithFeatureExpressions/SPL_Figures/eM_FeatureModel.png)
+![Feature Model_eM](SPL_Figures/eM_FeatureModel.png)
 
 The ESG-Fx model of the e-Mail SPL is given below. There are 19 vertices and 35 edges in this model. 
 
-![ESGFx_eM](files/SoftwareProductLineTestingbasedonEventSequenceGraphswithFeatureExpressions/SPL_Figures/eM_ESGFx.png)
+![ESGFx_eM](SPL_Figures/eM_ESGFx.png)
 
 The experiment results of e-Mail SPL are given below. The test sequences of each product configuration are generated. 
 
@@ -71,17 +71,17 @@ The experiment results of e-Mail SPL are given below. The test sequences of each
 | P23 | addressbook, autoresponder, encrypt, sign | 4                  | 9 : compose_new_email, enter_receiver's_email_address, enter_email_subject, enter_email_body, enter_email_body, enter_email_body, enter_email_subject, enter_receiver's_email_address, send_email<br>2 : open_mailbox, select_email<br>3 : enter_email_autoresponse_date_interval, enter_autoresponse_email_body, enter_email_autoresponse_date_interval<br>3 : create_an_addressbook_for_a_receiver, enter_the_receiver's_email_address, enter_alias_email_addresses_of_receiver<br>4 : compose_new_email, enter_receiver's_email_address, get_alias_email_addresses_of_receiver, send_email<br>5 : compose_new_email, enter_receiver's_email_address, get_receiver's_public_key, encrypt_mail_with_receiver's_public_key, send_email<br>4 : compose_new_email, enter_receiver's_email_address, sign_mail, send_email | 7                        | 30               | 100%                      | 21,18                              |
 |     |                                           |                    |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |                          |                  |                           |**20,07**                              |
 
-[Click for downloading the PDF version of the table](files/SoftwareProductLineTestingbasedonEventSequenceGraphswithFeatureExpressions/Experiment_Results/eM_ExperimentResults.pdf)
+[Click for downloading the PDF version of the table](Experiment_Results/eM_ExperimentResults.pdf)
 
 # Bank Account SPL
 
 The feature model of the Bank Account SPL is given below. There are 9 features.  Bank Account SPL is a product line of banking software that offers the_ _deposit_, _withdraw_, _cancelDeposit_ and, _cancelWithdraw_ features for money deposit, withdrawal, and cancellation of the deposit and withdrawal operations, respectively; the _overdraft_ feature for negative balance permission; the _credit_ feature for assessment of a customer credit request of a certain amount; the _interest_ and _interestEstimation_ features for calculation of the expected interest; the _dailyLimit_ feature for limitation of daily withdrawal. A basic Bank Account product provides the current balance.
 
-![Feature Model_BA](files/SoftwareProductLineTestingbasedonEventSequenceGraphswithFeatureExpressions/SPL_Figures/BA_FeatureModel.png)
+![Feature Model_BA](SPL_Figures/BA_FeatureModel.png)
 
 The ESG-Fx model of the Bank Account SPL is given below. There are 23 vertices and 42 edges in this model. 
 
-![ESGFx_BA](files/SoftwareProductLineTestingbasedonEventSequenceGraphswithFeatureExpressions/SPL_Figures/BA_ESGFx.png)
+![ESGFx_BA](SPL_Figures/BA_ESGFx.png)
 
  The experiment results of Bank Account SPL are given below. The test sequences of each product configuration are generated.   
 
@@ -132,7 +132,7 @@ The ESG-Fx model of the Bank Account SPL is given below. There are 23 vertices a
 |     |                                                                                                       |                    |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |                          |                  |                           | **21,72**                              |
 
 
-[Click for downloading the PDF version of the table](files/SoftwareProductLineTestingbasedonEventSequenceGraphswithFeatureExpressions/Experiment_Results/BA_ExperimentResults.pdf)
+[Click for downloading the PDF version of the table](Experiment_Results/BA_ExperimentResults.pdf)
 
-[Click for downloading the ESG-Fx models of SPLs](files/SoftwareProductLineTestingbasedonEventSequenceGraphswithFeatureExpressions/SPL_ESGFxs.zip)
+[Click for downloading the ESG-Fx models of SPLs](SPL_ESGFxs.zip)
 
