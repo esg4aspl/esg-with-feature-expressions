@@ -491,24 +491,26 @@ A reasonable budget envelope for a careful single reproduction with safety margi
 This repository commits files in three categories:
 
 1. **Code** — Java sources, bash scripts, and Python analysis scripts; all version-controlled normally.
-2. **Small data** — per-product CSV files for the five small and medium Software Product Lines, plus all aggregated tables and figures. Committed under `files/Cases/<SPL>/.../` and `files/scripts/statistical_test_scripts/rq{1,2,3}_result/`. Files are gzip-compressed where space permits; `pandas.read_csv` reads `.csv.gz` transparently.
-3. **Large data** — per-shard CSV files for the three industrial Software Product Lines (Tesla, syngo.via, Hockerty Shirts). These exceed GitHub's per-file 100 MB limit and are archived separately on Zenodo at <https://doi.org/10.5281/zenodo.NNNNNNN>.
+2. **Inputs** — feature-model encodings, DIMACS files, mapping files, and the UniGen3 sample files used by the original experiments. Committed under `files/Cases/<SPL>/configs/`. These are required for any reproduction (see §5) and are deliberately kept in version control.
+3. **Aggregated outputs** — manuscript-ready tables, figures, and Excel summaries produced by Phase 5. Committed under `files/scripts/statistical_test_scripts/rq{1,2,3}_result/`.
 
-To make the large files available locally, download the Zenodo archive and extract it on top of the repository's `files/Cases/` directory:
+The **raw experimental data** that the cluster produces — every per-product DOT and Event Flow Graph file, every per-product test sequence, and every per-shard measurement CSV file from RQ1, RQ2, and RQ3, for **all eight Software Product Lines** — is archived together on Zenodo at <https://doi.org/10.5281/zenodo.NNNNNNN> rather than committed to this repository. The archive comes as a single tarball that mirrors the cluster's directory layout under `files/Cases/`.
+
+To make the raw data available locally, download the Zenodo archive and extract it on top of the repository's `files/Cases/` directory:
 
 ```bash
 # Download from Zenodo (replace NNNNNNN with the DOI suffix shown above)
-curl -L -o esg-fx-large-csvs.tar.gz \
-     https://zenodo.org/record/NNNNNNN/files/esg-fx-large-csvs.tar.gz
+curl -L -o esg-fx-raw-data.tar.gz \
+     https://zenodo.org/record/NNNNNNN/files/esg-fx-raw-data.tar.gz
 
 # Extract under files/Cases/, preserving the original directory structure
 cd /path/to/repo/files/Cases
-tar -xzf /path/to/esg-fx-large-csvs.tar.gz
+tar -xzf /path/to/esg-fx-raw-data.tar.gz
 ```
 
-After extraction the repository contains the same directory tree the cluster would have produced. The Phase 5 analysis pipeline (§10) then runs unchanged.
+After extraction, the repository's `files/Cases/<SPL>/` trees contain the same DOT files, Event Flow Graphs, test sequences, and measurement CSV files the cluster produced. The Phase 5 analysis pipeline (§10) then runs unchanged.
 
-If the goal is to re-execute the experiments rather than re-analyse existing data, this archive is not needed — Phase 1 through Phase 4 regenerate every CSV file from scratch.
+**If the goal is to re-execute the experiments rather than re-analyse existing data, this archive is not needed** — Phase 1 through Phase 4 regenerate every output file from scratch, using only the inputs in `files/Cases/<SPL>/configs/`.
 
 ---
 
