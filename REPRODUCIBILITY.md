@@ -494,14 +494,14 @@ This repository commits files in three categories:
 2. **Inputs** — feature-model encodings, DIMACS files, mapping files, and the UniGen3 sample files used by the original experiments. Committed under `files/Cases/<SPL>/configs/`. These are required for any reproduction (see §5) and are deliberately kept in version control.
 3. **Aggregated outputs** — manuscript-ready tables, figures, and Excel summaries produced by Phase 5. Committed under `files/scripts/statistical_test_scripts/rq{1,2,3}_result/`.
 
-The **raw experimental data** that the cluster produces — every per-product DOT and Event Flow Graph file, every per-product test sequence, and every per-shard measurement CSV file from RQ1, RQ2, and RQ3, for **all eight Software Product Lines** — is archived together on Zenodo at <https://doi.org/10.5281/zenodo.NNNNNNN> rather than committed to this repository. The archive comes as a single tarball that mirrors the cluster's directory layout under `files/Cases/`.
+The **raw experimental data** that the cluster produces — every per-product DOT and Event Flow Graph file, every per-product test sequence, and every per-shard measurement CSV file from RQ1, RQ2, and RQ3, for **all eight Software Product Lines** — is archived together on Zenodo at <https://doi.org/10.5281/zenodo.20027555> rather than committed to this repository. The archive comes as a single tarball that mirrors the cluster's directory layout under `files/Cases/`.
 
 To make the raw data available locally, download the Zenodo archive and extract it on top of the repository's `files/Cases/` directory:
 
 ```bash
-# Download from Zenodo (replace NNNNNNN with the DOI suffix shown above)
+# Download from Zenodo (https://doi.org/10.5281/zenodo.20027555)
 curl -L -o esg-fx-raw-data.tar.gz \
-     https://zenodo.org/record/NNNNNNN/files/esg-fx-raw-data.tar.gz
+     https://zenodo.org/records/20027555/files/esg-fx-raw-data.tar.gz
 
 # Extract under files/Cases/, preserving the original directory structure
 cd /path/to/repo/files/Cases
