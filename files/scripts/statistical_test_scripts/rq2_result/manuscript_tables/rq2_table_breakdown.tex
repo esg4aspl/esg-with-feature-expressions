@@ -1,0 +1,23 @@
+\begin{table*}[width=\textwidth,pos=htbp]
+\caption{RQ2: SAT share and per-product overhead share of $T^{\mathrm{ser}}_{\mathit{pipeline}}$ at $L = 2$. SAT share is the fraction of the pipeline spent in SAT enumeration, which all three approaches share. Per-product overhead share is the residual fraction spent on the approach's own per-product work (transformation, test generation, parsing, execution). The two shares sum to approximately $100\%$ for each cell; the remainder is the product-instantiation phase, always below $3\%$. \textbf{Bold} cells indicate values referenced as evidence for \textit{Model Once, Generate Any}; \textbf{\textit{bold-italic}} cells mark cases where it is at a disadvantage.}
+\label{tab:rq2-breakdown}
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\textwidth}{@{} l *{8}{Y} @{}}
+\toprule
+& \multicolumn{8}{c}{\textbf{Software Product Line$^*$}} \\
+\cmidrule(lr){2-9}
+\textbf{Approach} & \textbf{SVM} & \textbf{eM} & \textbf{El} & \textbf{BAv2} & \textbf{SAS} & \textbf{Svia} & \textbf{Te} & \textbf{HS} \\
+\midrule
+\multicolumn{9}{@{}l}{\textbf{SAT share (\%)}} \\
+\textit{Model Once, Generate Any} & 40.2 & 49.6 & 59.8 & \textbf{84.3} & \textbf{92.2} & 24.2 & \textbf{99.6} & \textbf{99.9} \\
+Structural baseline & 4.7 & 7.8 & 9.1 & 10.8 & 9.3 & 8.0 & 19.6 & 54.1 \\
+Stochastic baseline & 85.0 & 86.5 & 90.4 & 94.5 & 95.1 & \textbf{0.6} & 98.3 & 91.0 \\
+\midrule
+\multicolumn{9}{@{}l}{\textbf{Per-product overhead share (\%)}} \\
+\textit{Model Once, Generate Any} & 59.1 & 49.5 & 39.6 & 15.3 & 7.5 & 75.6 & \textbf{0.3} & \textbf{0.1} \\
+Structural baseline & 95.2 & 92.1 & 90.8 & 89.2 & 90.7 & 92.0 & \textbf{80.4} & 45.9 \\
+Stochastic baseline & 12.3 & 12.0 & 8.6 & 5.0 & 4.5 & \textbf{99.4} & 1.6 & 9.0 \\
+\bottomrule
+\multicolumn{9}{@{}l}{\parbox[t]{0.95\textwidth}{\footnotesize $^*$~SPL abbreviations as in Table~\ref{tab:rq1-tgen}.}} \\
+\end{tabularx}
+\end{table*}

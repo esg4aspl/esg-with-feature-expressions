@@ -15,7 +15,7 @@ fi
 
 START_SHARD=${1:-0}                    
 END_SHARD=${2:-$((TARGET_SHARDS-1))}   
-TOTAL_RUNS=11
+TOTAL_RUNS=1
 
 echo "--------------------------------------------------"
 echo "Detected OS: $OSTYPE"

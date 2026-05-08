@@ -121,7 +121,7 @@ public class RQ3_FaultDetection_EventOmitter extends CaseStudyUtilities {
                     continue;
                 }
 
-                FaultDetector detector = new FaultDetector(loadedTestSuites);
+                FaultDetector detector = new FaultDetector(loadedTestSuites,productESGFx);
                 int totalEventsInSuite = detector.getTotalEventsInSuite();
 
                 int detectedMutants = 0;
@@ -197,7 +197,7 @@ public class RQ3_FaultDetection_EventOmitter extends CaseStudyUtilities {
                     continue;
                 }
 
-                FaultDetector detector = new FaultDetector(loadedTestSuites);
+                FaultDetector detector = new FaultDetector(loadedTestSuites,productESGFx);
                 int totalEventsInSuite = detector.getTotalEventsInSuite();
 
                 int detectedMutants = 0;

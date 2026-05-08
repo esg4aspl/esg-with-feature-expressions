@@ -11,27 +11,21 @@ import tr.edu.iyte.esgfx.model.ESGFx;
 
 public class FaultDetector {
 
-    // --- Kill reason constants (A3) ---
-    // Exposed so callers can classify each kill as edge-missing vs vertex-missing.
     public static final String REASON_NOT_DETECTED = "NOT_DETECTED";
     public static final String REASON_VERTEX_MISSING = "VERTEX_MISSING";
     public static final String REASON_EDGE_MISSING = "EDGE_MISSING";
 
     private Set<EventSequence> CESsOfESG;
+    private ESG originalESGFx;
     private int currentCES;
     private int eventsWalked;
     private int totalEventsInSuite;
 
-    // A3: records the reason for the LAST isFaultDetected() call.
-    // One of the REASON_* constants above.
     private String lastDetectionReason = REASON_NOT_DETECTED;
 
-    public FaultDetector() {
-        CESsOfESG = new LinkedHashSet<>();
-    }
-
-    public FaultDetector(Set<EventSequence> CESsOfESG) {
+    public FaultDetector(Set<EventSequence> CESsOfESG, ESG originalESGFx) {
         setCESsOfESG(CESsOfESG);
+        this.originalESGFx = originalESGFx;
     }
 
     public Set<EventSequence> getCESsOfESG() {
@@ -41,6 +35,14 @@ public class FaultDetector {
     public void setCESsOfESG(Set<EventSequence> cESsOfESG) {
         CESsOfESG = cESsOfESG;
         calculateTotalEventsInSuite();
+    }
+
+    public void setOriginalESGFx(ESG originalESGFx) {
+        this.originalESGFx = originalESGFx;
+    }
+
+    public ESG getOriginalESGFx() {
+        return originalESGFx;
     }
 
     public int getCurrentCES() {
@@ -55,10 +57,6 @@ public class FaultDetector {
         return totalEventsInSuite;
     }
 
-    /**
-     * A3: Returns the reason why the last isFaultDetected() call returned true/false.
-     * Values: REASON_NOT_DETECTED, REASON_VERTEX_MISSING, REASON_EDGE_MISSING.
-     */
     public String getLastDetectionReason() {
         return lastDetectionReason;
     }
@@ -75,7 +73,6 @@ public class FaultDetector {
     public boolean isFaultDetected(ESG mutantESGFx) {
         eventsWalked = 0;
         currentCES = 0;
-        // A3: reset reason at the start of every call
         lastDetectionReason = REASON_NOT_DETECTED;
 
         if (CESsOfESG == null || CESsOfESG.isEmpty()) {
@@ -96,9 +93,14 @@ public class FaultDetector {
             eventsWalked++;
 
             if (mutantPreviousVertex == null) {
-                lastDetectionReason = REASON_VERTEX_MISSING;
-                return true;
+                if (vertexInOriginal(previousVertexID)) {
+                    lastDetectionReason = REASON_VERTEX_MISSING;
+                    return true;
+                }
+                continue;
             }
+
+            boolean abortSequence = false;
 
             for (int i = 1; i < sequenceVertices.size(); i++) {
                 int currentVertexID = sequenceVertices.get(i).getID();
@@ -107,32 +109,70 @@ public class FaultDetector {
                 eventsWalked++;
 
                 if (mutantCurrentVertex == null) {
-                    lastDetectionReason = REASON_VERTEX_MISSING;
-                    return true;
-                }
-
-                boolean edgeExists = false;
-                List<Vertex> adjacencyList = ((ESGFx) mutantESGFx).getAdjacencyList(mutantPreviousVertex);
-
-                if (adjacencyList != null) {
-                    for (Vertex adj : adjacencyList) {
-                        if (adj.getID() == currentVertexID) {
-                            edgeExists = true;
-                            break;
-                        }
+                    if (vertexInOriginal(currentVertexID)) {
+                        lastDetectionReason = REASON_VERTEX_MISSING;
+                        return true;
                     }
+                    abortSequence = true;
+                    break;
                 }
 
-                if (!edgeExists) {
-                    lastDetectionReason = REASON_EDGE_MISSING;
-                    return true;
+                boolean edgeExistsInMutant = adjacencyContains(
+                        (ESGFx) mutantESGFx, mutantPreviousVertex, currentVertexID);
+
+                if (!edgeExistsInMutant) {
+                    boolean edgeExistedInOriginal = edgeInOriginal(
+                            previousVertexID, currentVertexID);
+
+                    if (edgeExistedInOriginal) {
+                        lastDetectionReason = REASON_EDGE_MISSING;
+                        return true;
+                    }
+
+                    abortSequence = true;
+                    break;
                 }
 
                 previousVertexID = currentVertexID;
                 mutantPreviousVertex = mutantCurrentVertex;
             }
+
+            if (abortSequence) {
+                continue;
+            }
         }
 
+        return false;
+    }
+
+    private boolean vertexInOriginal(int vertexID) {
+        if (originalESGFx == null) {
+            return true;
+        }
+        return originalESGFx.getVertexByID(vertexID) != null;
+    }
+
+    private boolean edgeInOriginal(int srcID, int tgtID) {
+        if (originalESGFx == null) {
+            return true;
+        }
+        Vertex origSrc = originalESGFx.getVertexByID(srcID);
+        if (origSrc == null) {
+            return false;
+        }
+        return adjacencyContains((ESGFx) originalESGFx, origSrc, tgtID);
+    }
+
+    private static boolean adjacencyContains(ESGFx graph, Vertex source, int targetID) {
+        List<Vertex> adjacencyList = graph.getAdjacencyList(source);
+        if (adjacencyList == null) {
+            return false;
+        }
+        for (Vertex adj : adjacencyList) {
+            if (adj.getID() == targetID) {
+                return true;
+            }
+        }
         return false;
     }
 }

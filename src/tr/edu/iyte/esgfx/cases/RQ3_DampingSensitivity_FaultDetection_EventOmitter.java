@@ -95,7 +95,7 @@ public class RQ3_DampingSensitivity_FaultDetection_EventOmitter extends CaseStud
                     continue;
                 }
 
-                FaultDetector detector = new FaultDetector(loadedTestSuites);
+                FaultDetector detector = new FaultDetector(loadedTestSuites,productESGFx);
                 int totalEventsInSuite = detector.getTotalEventsInSuite();
 
                 int detectedMutants = 0;

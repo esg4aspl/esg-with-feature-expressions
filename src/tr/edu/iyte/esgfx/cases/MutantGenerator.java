@@ -43,10 +43,10 @@ public class MutantGenerator extends CaseStudyUtilities {
 		Set<EventSequence> tests = buildTests(productESGFx, covarage);
 
 		if (covarage == 0 || covarage == 1) {
-			return new FaultDetector(tests);
+			return new FaultDetector(tests,productESGFx);
 		} else {
 			Set<EventSequence> newTests = EventSequenceUtilities.removeRepetitionsFromEventSequenceSet(covarage, tests);
-			return new FaultDetector(newTests);
+			return new FaultDetector(newTests,productESGFx);
 		}
 	}
 

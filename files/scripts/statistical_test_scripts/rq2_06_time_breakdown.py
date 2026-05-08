@@ -80,13 +80,33 @@ SPL_MAPPING = {
 }
 SPL_ORDER = ["SVM", "eM", "El", "BAv2", "SAS", "Svia", "Te", "HS"]
 
-# Article-relevant cells (L=2 main; thesis can extend to other levels by
-# editing this dict). Manuscript labels are used for the output.
-APPROACH_CONFIG = {
-    "ESG-Fx_L2":     "Model Once, Generate Any (L=2)",
-    "EFG_L2":        "Structural Baseline (L=2)",
-    "RandomWalk_L0": "Stochastic Baseline",
+# Approach configurations for each coverage level. The DEFAULT (L=2) is
+# the article-scope set used to generate the main manuscript tables.
+# To produce the L=3 or L=4 supplementary breakdowns, run with:
+#     python rq2_06_time_breakdown.py --levels L3
+#     python rq2_06_time_breakdown.py --levels L4
+# The output Excel and PDF filenames carry the level suffix, so existing
+# L=2 outputs are not overwritten.
+APPROACH_CONFIG_BY_LEVEL = {
+    "L2": {
+        "ESG-Fx_L2":     "Model Once, Generate Any (L=2)",
+        "EFG_L2":        "Structural Baseline (L=2)",
+        "RandomWalk_L0": "Stochastic Baseline",
+    },
+    "L3": {
+        "ESG-Fx_L3":     "Model Once, Generate Any (L=3)",
+        "EFG_L3":        "Structural Baseline (L=3)",
+        "RandomWalk_L0": "Stochastic Baseline",
+    },
+    "L4": {
+        "ESG-Fx_L4":     "Model Once, Generate Any (L=4)",
+        "EFG_L4":        "Structural Baseline (L=4)",
+        "RandomWalk_L0": "Stochastic Baseline",
+    },
 }
+
+# Backwards-compatible default: L=2 is what the manuscript main tables use.
+APPROACH_CONFIG = APPROACH_CONFIG_BY_LEVEL["L2"]
 
 COARSE_PHASES = ["SAT", "ProductGen", "Transformation", "TestGen", "TestExec", "Parsing", "Other"]
 PHASE_COLORS = {
@@ -274,8 +294,28 @@ def auto_fit_workbook(path, max_width=42):
 
 # ─── Main ──────────────────────────────────────────────────────────────
 def main():
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description=(
+            "Decompose RQ2 pipeline cost by phase and report SAT/OwnCost "
+            "shares. Default operates on L=2 (manuscript main scope); "
+            "use --levels L3 or --levels L4 for the supplementary "
+            "breakdowns."
+        )
+    )
+    parser.add_argument(
+        "--levels",
+        nargs="+",
+        default=["L2"],
+        choices=list(APPROACH_CONFIG_BY_LEVEL.keys()),
+        help="Coverage level(s) to process. Default: L2.",
+    )
+    args = parser.parse_args()
+
     print("=" * 72)
     print("rq2_06 -- Time Breakdown / SATShare / OwnCostShare")
+    print(f"Coverage levels: {', '.join(args.levels)}")
     print("=" * 72)
 
     project_root = find_project_root()
@@ -291,14 +331,33 @@ def main():
     print(f"Project root: {project_root}")
     print(f"Output dir  : {out_dir}\n")
 
-    # Aggregate every (SPL x approach x level) cell that exists.
+    # Process each requested level into its own Excel + PDF.
+    for level in args.levels:
+        approach_config = APPROACH_CONFIG_BY_LEVEL[level]
+        process_level(
+            level=level,
+            approach_config=approach_config,
+            cases_dir=cases_dir,
+            out_dir=out_dir,
+            plots_dir=plots_dir,
+            project_root=project_root,
+        )
+
+    print("\nrq2_06 DONE.")
+
+
+def process_level(level, approach_config, cases_dir, out_dir, plots_dir,
+                  project_root):
+    """Produce the breakdown Excel and stacked-bar PDF for one level."""
+    print(f"\n--- Processing {level} ---")
+
     rows = []
     for spl_folder, spl_short in SPL_MAPPING.items():
         per_shard_path = cases_dir / spl_folder / f"RQ2_perShard_{spl_folder}.xlsx"
         if not per_shard_path.exists():
             print(f"  [SKIP] {spl_short}: {per_shard_path.name} not found")
             continue
-        for sheet_name, approach_label in APPROACH_CONFIG.items():
+        for sheet_name, approach_label in approach_config.items():
             totals = aggregate_one_cell(per_shard_path, sheet_name)
             if totals is None:
                 print(f"  [SKIP] {spl_short} {sheet_name}")
@@ -313,8 +372,8 @@ def main():
                   f"Own={row['OwnCostShare(%)']:5.1f}%")
 
     if not rows:
-        print("\nERROR: no data aggregated.")
-        sys.exit(1)
+        print(f"  ERROR: no data aggregated for {level}.")
+        return
 
     df = pd.DataFrame(rows)
     df_display = df.drop(columns=["_phases", "_other"])
@@ -322,7 +381,7 @@ def main():
     # SPL row order
     df_display["_spl_order"] = df_display["SPL"].map(
         {s: i for i, s in enumerate(SPL_ORDER)})
-    approach_order = {a: i for i, a in enumerate(APPROACH_CONFIG.values())}
+    approach_order = {a: i for i, a in enumerate(approach_config.values())}
     df_display["_app_order"] = df_display["Approach"].map(approach_order)
     df_display = (df_display.sort_values(["_spl_order", "_app_order"])
                             .drop(columns=["_spl_order", "_app_order"])
@@ -332,24 +391,28 @@ def main():
     sat_pivot = df_display.pivot_table(
         index="SPL", columns="Approach", values="SATShare(%)", aggfunc="first")
     sat_pivot = sat_pivot.reindex([s for s in SPL_ORDER if s in sat_pivot.index])
-    sat_pivot = sat_pivot[[c for c in APPROACH_CONFIG.values() if c in sat_pivot.columns]]
+    sat_pivot = sat_pivot[[c for c in approach_config.values() if c in sat_pivot.columns]]
 
     own_pivot = df_display.pivot_table(
         index="SPL", columns="Approach", values="OwnCostShare(%)", aggfunc="first")
     own_pivot = own_pivot.reindex([s for s in SPL_ORDER if s in own_pivot.index])
-    own_pivot = own_pivot[[c for c in APPROACH_CONFIG.values() if c in own_pivot.columns]]
+    own_pivot = own_pivot[[c for c in approach_config.values() if c in own_pivot.columns]]
 
-    # ── Excel output ──
-    out_xlsx = out_dir / "rq2_time_breakdown.xlsx"
+    # Output filenames carry the level suffix when not L2 so existing L2
+    # outputs (manuscript main) are not overwritten.
+    suffix = "" if level == "L2" else f"_{level}"
+    out_xlsx = out_dir / f"rq2_time_breakdown{suffix}.xlsx"
+    pdf_path = plots_dir / f"rq2_time_breakdown{suffix}.pdf"
+
     with pd.ExcelWriter(out_xlsx, engine="openpyxl") as writer:
         df_display.to_excel(writer, sheet_name="breakdown", index=False)
         sat_pivot.to_excel(writer, sheet_name="sat_share_pivot")
         own_pivot.to_excel(writer, sheet_name="own_cost_share_pivot")
     auto_fit_workbook(out_xlsx)
-    print(f"\nSaved: {out_xlsx.relative_to(project_root)}")
+    print(f"  Saved: {out_xlsx.relative_to(project_root)}")
 
-    # ── PDF stacked-bar ──
-    print("Generating stacked-bar PDF ...")
+    # Stacked-bar PDF
+    print(f"  Generating stacked-bar PDF ({level}) ...")
     plot_df = pd.DataFrame(rows)
     plot_df["_spl_order"] = plot_df["SPL"].map({s: i for i, s in enumerate(SPL_ORDER)})
     plot_df["_app_order"] = plot_df["Approach"].map(approach_order)
@@ -376,24 +439,21 @@ def main():
     ax.set_xticklabels(x_labels, rotation=45, ha="right", fontsize=9)
     ax.set_ylabel("Cumulative SERIAL CPU time (hours)\n[80-shard sum of per-shard medians]", fontsize=10)
     ax.set_yscale("log")
-    ax.set_title("RQ2: End-to-end pipeline time breakdown\n"
+    ax.set_title(f"RQ2: End-to-end pipeline time breakdown ({level})\n"
                  "(T_pipeline excludes Java's double-counted Transformation and validation-only coverage analysis)",
                  fontsize=11)
     ax.legend(loc="upper left", fontsize=9, framealpha=0.95)
     ax.grid(True, axis="y", alpha=0.3, which="both")
     plt.tight_layout()
-    pdf_path = plots_dir / "rq2_time_breakdown.pdf"
     fig.savefig(pdf_path, format="pdf", bbox_inches="tight")
     plt.close(fig)
-    print(f"Saved: {pdf_path.relative_to(project_root)}")
+    print(f"  Saved: {pdf_path.relative_to(project_root)}")
 
-    # ── Console summary (most important RQ2 numbers) ──
-    print("\n--- SATShare(%) by SPL x approach ---")
-    print(sat_pivot.round(1).to_string())
-    print("\n--- OwnCostShare(%) by SPL x approach ---")
-    print(own_pivot.round(1).to_string())
-
-    print("\nrq2_06 DONE.")
+    # Console summary
+    print(f"\n  --- SATShare(%) by SPL x approach ({level}) ---")
+    print("  " + sat_pivot.round(1).to_string().replace("\n", "\n  "))
+    print(f"\n  --- OwnCostShare(%) by SPL x approach ({level}) ---")
+    print("  " + own_pivot.round(1).to_string().replace("\n", "\n  "))
 
 
 if __name__ == "__main__":

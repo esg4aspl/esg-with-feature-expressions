@@ -118,7 +118,7 @@ public class MutantGeneratorFeatureOmitter extends CaseStudyUtilities {
 				int invalidMutantFaultCount = 0;
 				for (Entry<String, ESG> entry : ((FeatureOmitter) mutationOperator).getFeatureNameMutantMap()
 						.entrySet()) {
-					FaultDetector faultDetector = new FaultDetector(CESsOfESG);
+					FaultDetector faultDetector = new FaultDetector(CESsOfESG, productESGFx);
 					String mutationElement = entry.getKey();
 					ESG mutantESGFx = entry.getValue();
 					int mutantID = ((ESGFx) mutantESGFx).getID();

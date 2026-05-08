@@ -44,8 +44,8 @@ sleep 10
 # NOTE: Commented out for local MacBook testing. 
 # Uncomment the line below when deploying to the actual cluster.
 
-echo ">>> PHASE 4: EXECUTING RQ2 (EXTREME SCALABILITY) <<<"
-bash ./RQ2_ExtremeScalability_Master.sh "$START_SHARD" "$END_SHARD"
+#echo ">>> PHASE 4: EXECUTING RQ2 (EXTREME SCALABILITY) <<<"
+#bash ./RQ2_ExtremeScalability_Master.sh "$START_SHARD" "$END_SHARD"
 
 echo "=================================================="
 echo "🏆 ALL SCHEDULED RESEARCH QUESTIONS COMPLETED ON THIS MACHINE!"

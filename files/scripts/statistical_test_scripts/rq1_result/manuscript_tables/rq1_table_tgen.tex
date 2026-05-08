@@ -1,0 +1,44 @@
+\begin{table*}[width=\textwidth,pos=htbp]
+	\caption{RQ1: Median test generation time ($T_{\mathit{gen}}$, disk-to-disk, in seconds), median edge coverage (in percent), and speedup at $L = 2, 3, 4$ across all eight SPLs. Speedup is the ratio of the structural baseline's $T_{\mathit{gen}}$ to that of \textit{Model Once, Generate Any}. Stochastic-baseline rows are reported once per SPL because the random walk targets edge coverage only and does not operate at higher $L$ levels. \textbf{Bold} cells indicate values referenced as evidence for \textit{Model Once, Generate Any}; \textbf{\textit{bold-italic}} cells mark cases where it is at a disadvantage.}
+	\label{tab:rq1-tgen}
+	\setlength{\tabcolsep}{4pt}
+	\begin{tabularx}{\textwidth}{@{} l c *{8}{Y} @{}}
+		\toprule
+		& & \multicolumn{8}{c}{\textbf{Software Product Line$^*$}} \\
+		\cmidrule(lr){3-10}
+		\textbf{Approach} & \textbf{$L$} & \textbf{SVM} & \textbf{eM} & \textbf{El} & \textbf{BAv2} & \textbf{SAS} & \textbf{Svia} & \textbf{Te} & \textbf{HS} \\
+		\midrule
+		\multicolumn{10}{@{}l}{\textbf{$T_{\mathit{gen}}$ (seconds)}} \\
+		\multirow{3}{*}{\textit{Model Once, Generate Any}}
+		& 2 & 1.3 & 2.8 & 5.8 & 21.3 & 79.6 & 645.8 & 25.7 & 32.5 \\
+		& 3 & 1.6 & 3.9 & 11.7 & 27.4 & 158.3 & 1{,}235.2 & 38.8 & 49.2 \\
+		& 4 & 1.5 & 7.3 & 18.8 & 26.5 & 292.8 & 2{,}059.6 & 49.1 & 61.2 \\
+		\cmidrule(l{0pt}r{0pt}){2-10}
+		\multirow{3}{*}{Structural baseline}
+		& 2 & 12.0 & 21.5 & 40.3 & 664.3 & 3{,}303.4 & 809.5 & 580.0 & 684.2 \\
+		& 3 & 12.2 & 20.2 & 41.9 & 662.9 & 3{,}402.4 & 861.8 & 599.3 & 695.6 \\
+		& 4 & 11.2 & 21.4 & 42.4 & 667.2 & 3{,}542.7 & 923.8 & 614.1 & 709.1 \\
+		\cmidrule(l{0pt}r{0pt}){2-10}
+		Stochastic baseline & --- & 0.6 & 1.3 & 2.3 & 13.0 & 98.7 & 730.9 & 33.1 & 383.0 \\
+		\midrule
+		\multicolumn{10}{@{}l}{\textbf{Edge coverage (\%)}} \\
+		\multirow{3}{*}{\textit{Model Once, Generate Any}}
+		& 2 & 100 & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+		& 3 & 100 & 100 & 100 & 100 & 100 & 100 & 100 & 100 \\
+		& 4 & 100 & \textbf{\textit{96.5}} & 100 & \textbf{\textit{91.6}} & 100 & 100 & 100 & 100 \\
+		\cmidrule(l{0pt}r{0pt}){2-10}
+		\multirow{3}{*}{Structural baseline}
+		& 2 & 100 & \textbf{35.8} & 98.1 & 96.4 & 68.8 & \textbf{4.1} & 92.6 & \textbf{37.4} \\
+		& 3 & 100 & 75.1 & 100 & 97.6 & 85.8 & \textbf{7.0} & 92.6 & \textbf{38.9} \\
+		& 4 & 100 & 82.1 & 100 & 98.8 & 86.9 & \textbf{10.5} & 92.6 & \textbf{40.3} \\
+		\cmidrule(l{0pt}r{0pt}){2-10}
+		Stochastic baseline & --- & 100 & 100 & 100 & 100 & 100 & \textbf{84.7} & 100 & \textbf{96.1} \\
+		\midrule
+		\multicolumn{10}{@{}l}{\textbf{Speedup ($\times$)}} \\
+		& 2 & 9.0 & 7.7 & 7.0 & \textbf{31.2} & \textbf{41.5} & 1.3 & \textbf{22.6} & \textbf{21.1} \\
+		& 3 & 7.8 & 5.2 & 3.6 & \textbf{24.2} & \textbf{21.5} & \textbf{\textit{0.7}} & 15.4 & 14.1 \\
+		& 4 & 7.5 & 2.9 & 2.3 & \textbf{25.2} & 12.1 & \textbf{\textit{0.4}} & 12.5 & 11.6 \\
+		\bottomrule
+		\multicolumn{10}{@{}l}{\parbox[t]{0.95\textwidth}{\footnotesize $^*$~SPL abbreviations: SVM = Soda Vending Machine; eM = eMail; El = Elevator; BAv2 = Bank Account; SAS = Student Attendance System; Svia = syngo.via; Te = Tesla Web Configurator; HS = Hockerty Shirts Web Configurator.}} \\
+	\end{tabularx}
+\end{table*}

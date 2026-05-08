@@ -1,0 +1,44 @@
+\begin{table*}[width=\textwidth,pos=htbp]
+\caption{RQ2: End-to-end throughput at $L = 2$ across the eight SPLs.
+\emph{HP}: handled products (cumulative across the 80 shards).
+\emph{$T^{\mathrm{ser}}_{\mathit{pipeline}}$}: serial sum across shards (single-core sequential CPU cost).
+\emph{$T^{\mathrm{wall}}_{\mathit{pipeline}}$}: maximum across shards (80-core deployment latency).
+\emph{Throughput}: handled products per wall-clock second.
+\emph{Edge coverage}: weighted average across shards.
+\textbf{Bold} cells indicate values referenced as evidence for \textit{Model Once, Generate Any}; \textbf{\textit{bold-italic}} cells mark cases where it is at a disadvantage.}
+\label{tab:rq2-throughput}
+\setlength{\tabcolsep}{4pt}
+\begin{tabularx}{\textwidth}{@{} l *{8}{Y} @{}}
+\toprule
+& \multicolumn{8}{c}{\textbf{Software Product Line$^*$}} \\
+\cmidrule(lr){2-9}
+\textbf{Approach} & \textbf{SVM} & \textbf{eM} & \textbf{El} & \textbf{BAv2} & \textbf{SAS} & \textbf{Svia} & \textbf{Te} & \textbf{HS} \\
+\midrule
+\multicolumn{9}{@{}l}{\textbf{Handled products}} \\
+\textit{Model Once, Generate Any} & 12 & 23 & 42 & 498 & 2{,}664 & 47{,}970 & 426{,}672 & \textbf{567{,}735} \\
+Structural baseline & 12 & 23 & 42 & 498 & 2{,}664 & 47{,}970 & 426{,}672 & \textbf{342{,}916} \\
+Stochastic baseline & 12 & 23 & 42 & 498 & 2{,}664 & 47{,}970 & 426{,}672 & 555{,}778 \\
+\midrule
+\multicolumn{9}{@{}l}{\textbf{$T^{\mathrm{ser}}_{\mathit{pipeline}}$ (cumulative serial cost)}} \\
+\textit{Model Once, Generate Any} & 2.4\,s & 6.3\,s & 14.3\,s & 87.4\,s & 7.6\,min & \textbf{6.1\,h} & \textbf{56.2\,h} & \textbf{442.5\,h} \\
+Structural baseline & 21.3\,s & 40.1\,s & 1.9\,min & 27.1\,min & 2.9\,h & 56.2\,h & 505.9\,h & 460.6\,h \\
+Stochastic baseline & 2.1\,s & 4.9\,s & 9.8\,s & 73.9\,s & 7.0\,min & \textbf{110.4\,h} & 56.0\,h & 445.1\,h \\
+\midrule
+\multicolumn{9}{@{}l}{\textbf{$T^{\mathrm{wall}}_{\mathit{pipeline}}$ (80-core wall-clock latency)}} \\
+\textit{Model Once, Generate Any} & 0.1\,s & 0.2\,s & 0.4\,s & 1.6\,s & 6.7\,s & \textbf{0.1\,h} & \textbf{0.7\,h} & \textbf{5.5\,h} \\
+Structural baseline & 2.1\,s & 2.2\,s & 3.4\,s & 25.8\,s & 2.5\,min & 0.8\,h & 6.9\,h & 5.8\,h \\
+Stochastic baseline & 0.1\,s & 0.2\,s & 0.3\,s & 1.6\,s & 6.9\,s & \textbf{1.5\,h} & 0.7\,h & 5.7\,h \\
+\midrule
+\multicolumn{9}{@{}l}{\textbf{Throughput (products / wall-clock second)}} \\
+\textit{Model Once, Generate Any} & 88.2 & 92.7 & 98.1 & 302.4 & 396.4 & \textbf{140.8} & 159.2 & \textbf{28.4} \\
+Structural baseline & 5.7 & 10.5 & 12.5 & 19.3 & 17.9 & 16.8 & 17.1 & \textbf{16.5} \\
+Stochastic baseline & 85.7 & 92.0 & 138.5 & 313.9 & 385.4 & \textbf{8.7} & 162.8 & 27.2 \\
+\midrule
+\multicolumn{9}{@{}l}{\textbf{Edge coverage (\%)}} \\
+\textit{Model Once, Generate Any} & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 & \textbf{100.0} & \textbf{100.0} & \textbf{100.0} \\
+Structural baseline & 100.0 & \textbf{35.8} & 98.1 & 96.4 & \textbf{68.8} & \textbf{4.3} & 99.9 & \textbf{28.3} \\
+Stochastic baseline & 100.0 & 100.0 & 100.0 & 100.0 & 100.0 & 99.8 & 100.0 & 95.0 \\
+\bottomrule
+\multicolumn{9}{@{}l}{\parbox[t]{0.95\textwidth}{\footnotesize $^*$~SPL abbreviations as in Table~\ref{tab:rq1-tgen}.}} \\
+\end{tabularx}
+\end{table*}
