@@ -141,20 +141,30 @@ esg-with-feature-expressions/
         ├── rq3_equivalent_mutants/
         │   └── rq3_03_analyze_equivalent_mutants.py
         └── statistical_test_scripts/
+            ├── CaseStudies_FeatureModel_Summary.xlsx
+            ├── make_unified_supplementary.py
+            ├── rq1&2_make_tables.py
             ├── rq1_03_per_product_scatter_spearman.py
             ├── rq1_04_scaling_regression.py
             ├── rq1_05_pairwise_wilcoxon.py
             ├── rq1_06_run_stability.py
             ├── rq1_07_mechanism_and_warmup.py
+            ├── rq1_08_make_supplementary.py
+            ├── rq1_result/
             ├── rq2_04_pairwise_wilcoxon_shards.py
             ├── rq2_06_time_breakdown.py
             ├── rq2_07_run_stability_industrial.py
+            ├── rq2_08_make_supplementary.py
+            ├── rq2_result/
             ├── rq3_04_pairwise_wilcoxon.py
             ├── rq3_05_effectsize_bh.py
             ├── rq3_06_paired_edge_vs_event.py
             ├── rq3_07_damping_sensitivity.py
             ├── rq3_08_multiseed_stability.py
-            └── rq3_09_make_tables.py
+            ├── rq3_09_make_tables.py
+            ├── rq3_10_make_supplementary.py
+            ├── rq3_result/
+            └── supplementary_unified.tex
 ```
 
 ---
@@ -330,16 +340,29 @@ Three phases. **Phase 1** generates Random Walk test suites for damping factors 
 **`RQ2_ExtremeScalability_Master.sh` — RQ2 (Scalability).**
 Operates on the full configuration space of every Software Product Line for which exhaustive enumeration is tractable; on the three industrial Software Product Lines it operates on the same UniGen3 samples introduced in RQ0. The repetition count is **11** for small and medium Software Product Lines and **3** for the industrial ones (Tesla, syngo.via, Hockerty Shirts), where throughput rather than variance is the measurement target. The Random Walk seed is fixed at `42` for this Research Question.
 
-### 6.5 Local-only mode (smoke test)
+### 6.5 Local-only mode (smoke test or full RQ3)
 
-Each Master script auto-detects macOS (`OSTYPE = darwin*`) and falls back to `TARGET_SHARDS=4` for local execution. To verify the pipeline end-to-end on a laptop before going to the cluster:
+Each Master script auto-detects macOS (`OSTYPE = darwin*`) and falls back to 
+`TARGET_SHARDS=4` for local execution. To verify the pipeline end-to-end on 
+a laptop before going to the cluster:
 
 ```bash
 cd files/bashscripts
 bash Global_Orchestrator.sh 0 3
 ```
 
-This runs every RQ on a 4-shard partition. The same CSV files are produced; only the volume differs.
+This runs every RQ on a 4-shard partition. The same CSV files are produced; 
+only the volume differs.
+
+The local-only mode is also a fully valid execution environment for RQ3 on 
+its own. RQ3 (Fault Detection) reports two metrics — mutation score and 
+penalized percent of suite to detect — that are deterministic functions of 
+the test suite and the mutated model, independent of execution hardware or 
+shard count. The original experiments executed RQ3 in the local-only mode on 
+a single workstation (Apple M2, 8 GB RAM, macOS, `TARGET_SHARDS=4`) to save 
+cluster time, and the resulting numbers are reported in the manuscript. 
+Reviewers may either reproduce RQ3 in the same local-only mode or run it on 
+the full 80-shard cluster; both produce the same results.
 
 ---
 
@@ -484,6 +507,11 @@ The April invoice covered approximately **three iterations** of the full pipelin
 
 A reasonable budget envelope for a careful single reproduction with safety margin is therefore **7 to 10 days of wall-clock time and 250 to 400 USD before any country-specific Value-Added Tax**.
 
+> Note: The cost figures cover the cluster execution of RQ0, RQ1, RQ2, and 
+> the original RQ3 run. The RQ3 results in the current manuscript come from a 
+> re-run executed on a local workstation (see §6.5), which contributes no 
+> additional cluster cost.
+
 ---
 
 ## 12. Data Archive
@@ -562,3 +590,9 @@ The DigitalOcean cluster used to produce the experimental results in this artefa
 If you use this artefact, please cite the accompanying manuscript (forthcoming). For the precursor work introducing the ESG-Fx model itself, please cite:
 
 > D. Ö. Kaya, T. Tuglular and F. Belli, "Software Product Line Testing based on Event Sequence Graphs with Feature Expressions," *2023 8th International Conference on Computer Science and Engineering (UBMK)*, Burdur, Turkiye, 2023, pp. 175–180, doi: [10.1109/UBMK59864.2023.10286660](https://doi.org/10.1109/UBMK59864.2023.10286660).
+
+For the dataset, please cite:
+
+> D. Öztürk, T. Tuglular, F. Belli, "Variability-Aware Event Sequence Graphs 
+> for Scalable Software Product Line Testing — Raw Experimental Data," 
+> Zenodo, 2026. doi: [10.5281/zenodo.20027554]([https://doi.org/10.5281/zenodo.<CONCEPT_DOI>](https://doi.org/10.5281/zenodo.20027554)).
