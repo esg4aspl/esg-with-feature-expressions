@@ -18,37 +18,33 @@ import tr.edu.iyte.esgfx.mutationtesting.mutationoperators.EdgeOmitter;
 import tr.edu.iyte.esgfx.mutationtesting.resultutils.FaultDetectionResultRecorder;
 import tr.edu.iyte.esgfx.testgeneration.FileToTestSuiteConverter;
 
-/**
- * Edge Omission fault detection with multi-seed Random Walk support.
- *
- * Deterministic approaches (ESG-Fx L0-4, EFG L2-4): run once per approach.
- * Random Walk (ESG-Fx_L0): ALSO iterated over 10 seeds to capture stochastic variation.
- *
- * IMPORTANT: ESG-Fx_L0 appears in BOTH deterministic and multi-seed loops:
- * - Deterministic: Uses seed (42+productID) from /L0/PXXXX_RandomWalk.txt
- * - Multi-seed: Uses seeds 42-51 from /L0/seedYY/PXXXX_RandomWalk.txt
- *
- * Extensions (A2, A3, A4, AffectedEdges):
- *  - A2: PenalizedPercentageOfSuiteToDetect(%) treats missed mutants as if the
- *        full test suite was walked (100%), producing an unbiased median over
- *        all mutants rather than only the detected ones.
- *  - A3: KillsByEdgeMissing / KillsByVertexMissing split DetectedMutants by the
- *        kill branch that fired in FaultDetector.
- *  - A4: Per-feature histogram maps each feature expression key to its (kills,
- *        total) pair. For Edge Omission the key is "srcFE >> tgtFE".
- *  - AffectedEdgesTotal: for Edge Omission this is always equal to totalMutants
- *        (every mutant removes exactly one edge); recorded for symmetry with
- *        Event Omission.
- */
 public class RQ3_FaultDetection_EdgeOmitter extends CaseStudyUtilities {
 
     private static final long[] SEEDS = {42L, 43L, 44L, 45L, 46L, 47L, 48L, 49L, 50L, 51L};
+
+    // =====================================================================
+    // IN-MEMORY MODE — CONSTANTS BEGIN
+    // =====================================================================
+    private static final double IN_MEMORY_RW_DAMPING = 0.85;
+    private static final long IN_MEMORY_RW_DET_SEED = 42L;
+    // =====================================================================
+    // IN-MEMORY MODE — CONSTANTS END
+    // =====================================================================
 
     public void evaluateFaultDetection() throws Exception {
         System.out.println("RQ3 FAULT DETECTION (EDGE OMISSION, MULTI-SEED RW) - SPL: " + SPLName + " STARTED");
 
         int N_SHARDS = Integer.parseInt(System.getenv().getOrDefault("N_SHARDS", "1"));
         int CURRENT_SHARD = Integer.parseInt(System.getenv().getOrDefault("SHARD", "0"));
+
+        // =====================================================================
+        // IN-MEMORY MODE — DISPATCH FLAG BEGIN
+        // =====================================================================
+        boolean inMemoryMode = TestSuiteFactory.isInMemoryMode();
+        System.out.println("RQ3_MODE = " + (inMemoryMode ? "memory" : "file"));
+        // =====================================================================
+        // IN-MEMORY MODE — DISPATCH FLAG END
+        // =====================================================================
 
         featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFile, ESGFxFile);
 
@@ -94,22 +90,58 @@ public class RQ3_FaultDetection_EdgeOmitter extends CaseStudyUtilities {
             handledProducts++;
             String productName = dotFile.getName().replaceAll("(?i)\\.dot", "");
 
+            // =====================================================================
+            // IN-MEMORY MODE — PER-PRODUCT CONFIG REFRESH BEGIN
+            // =====================================================================
+            // In-memory generators evaluate feature expressions per product.
+            // Apply config unconditionally so file-mode and memory-mode see
+            // consistent feature truth values.
+            String configFilePath = productConfigurationFolder + productName + ".config";
+            updateFeatureExpressionMapFromConfigFile(configFilePath);
+            // =====================================================================
+            // IN-MEMORY MODE — PER-PRODUCT CONFIG REFRESH END
+            // =====================================================================
+
             ESG productESGFx = DOTFileToESGFxConverter.parseDOTFileForESGFxCreation(
                     dotFile.getAbsolutePath(), featureExpressionMapFromFeatureModel);
             List<Edge> productESGFxEdges = productESGFx.getRealEdgeList();
             int totalMutants = productESGFxEdges.size();
 
-            // --- Deterministic approaches ---
             for (String approach : deterministicApproaches) {
 
-                Set<EventSequence> loadedTestSuites = FileToTestSuiteConverter
-                        .loadTestSequencesFromFile(productName, approach, productESGFx);
+                Set<EventSequence> loadedTestSuites;
+
+                // =====================================================================
+                // IN-MEMORY MODE — DETERMINISTIC SUITE SOURCING BEGIN
+                // =====================================================================
+                if (inMemoryMode) {
+                    if ("ESG-Fx_L0".equals(approach)) {
+                        loadedTestSuites = TestSuiteFactory.generateRandomWalkSuite(
+                                productESGFx, IN_MEMORY_RW_DAMPING, IN_MEMORY_RW_DET_SEED);
+                    } else {
+                        int level = TestSuiteFactory.approachToLevel(approach);
+                        if (level >= 1) {
+                            loadedTestSuites = TestSuiteFactory.generateESGFxSuite(
+                                    productESGFx, level, featureExpressionMapFromFeatureModel);
+                        } else {
+                            // EFG_* approaches: GUITAR-produced, no in-memory generator.
+                            loadedTestSuites = FileToTestSuiteConverter
+                                    .loadTestSequencesFromFile(productName, approach, productESGFx);
+                        }
+                    }
+                } else {
+                    loadedTestSuites = FileToTestSuiteConverter
+                            .loadTestSequencesFromFile(productName, approach, productESGFx);
+                }
+                // =====================================================================
+                // IN-MEMORY MODE — DETERMINISTIC SUITE SOURCING END
+                // =====================================================================
 
                 if (loadedTestSuites == null || loadedTestSuites.isEmpty()) {
                     continue;
                 }
 
-                FaultDetector detector = new FaultDetector(loadedTestSuites,productESGFx);
+                FaultDetector detector = new FaultDetector(loadedTestSuites, productESGFx);
                 int totalEventsInSuite = detector.getTotalEventsInSuite();
 
                 int detectedMutants = 0;
@@ -118,20 +150,17 @@ public class RQ3_FaultDetection_EdgeOmitter extends CaseStudyUtilities {
                 List<Integer> stepsToDetectList = new ArrayList<>();
                 List<Double> percentagesToDetectList = new ArrayList<>();
                 List<Double> penalizedPercentagesList = new ArrayList<>();
-                // A4: feature-expression histogram keyed by "srcFE >> tgtFE"
-                // Value: int[]{kills, total}
                 Map<String, int[]> featureHistogram = new LinkedHashMap<>();
 
                 int mutantID = 0;
                 for (Edge edgeToOmit : productESGFxEdges) {
                     mutantID++;
-                    // A4: derive feature-expression key for this edge
                     String srcFE = FaultDetectionResultRecorder.extractFeatureExpressionKey(edgeToOmit.getSource());
                     String tgtFE = FaultDetectionResultRecorder.extractFeatureExpressionKey(edgeToOmit.getTarget());
                     String feKey = srcFE + " >> " + tgtFE;
                     int[] kt = featureHistogram.get(feKey);
                     if (kt == null) { kt = new int[]{0, 0}; featureHistogram.put(feKey, kt); }
-                    kt[1]++; // increment total
+                    kt[1]++;
 
                     ESG mutant = edgeOmitter.createSingleMutant(productESGFx, edgeToOmit, mutantID);
 
@@ -139,7 +168,7 @@ public class RQ3_FaultDetection_EdgeOmitter extends CaseStudyUtilities {
 
                     if (detected) {
                         detectedMutants++;
-                        kt[0]++; // increment kills
+                        kt[0]++;
                         int stepsWalked = detector.getEventsWalked();
                         double percentageWalked = totalEventsInSuite > 0
                                 ? ((double) stepsWalked / totalEventsInSuite) * 100.0
@@ -167,7 +196,6 @@ public class RQ3_FaultDetection_EdgeOmitter extends CaseStudyUtilities {
 
                 int distinctFE = featureHistogram.size();
                 String histogramStr = FaultDetectionResultRecorder.encodeFeatureHistogram(featureHistogram);
-                // Edge Omission: each mutant removes exactly one edge
                 int affectedEdgesTotal = totalMutants;
 
                 FaultDetectionResultRecorder.writeRQ3PerProductLog(deterministicLogPath, SPLName, productName,
@@ -177,17 +205,28 @@ public class RQ3_FaultDetection_EdgeOmitter extends CaseStudyUtilities {
                         distinctFE, histogramStr, affectedEdgesTotal);
             }
 
-            // --- Multi-seed Random Walk ---
             for (long seed : SEEDS) {
 
-                Set<EventSequence> loadedTestSuites = FileToTestSuiteConverter
-                        .loadTestSequencesFromFile(productName, "ESG-Fx_L0", productESGFx, seed);
+                // =====================================================================
+                // IN-MEMORY MODE — MULTI-SEED RW SUITE SOURCING BEGIN
+                // =====================================================================
+                Set<EventSequence> loadedTestSuites;
+                if (inMemoryMode) {
+                    loadedTestSuites = TestSuiteFactory.generateRandomWalkSuite(
+                            productESGFx, IN_MEMORY_RW_DAMPING, seed);
+                } else {
+                    loadedTestSuites = FileToTestSuiteConverter
+                            .loadTestSequencesFromFile(productName, "ESG-Fx_L0", productESGFx, seed);
+                }
+                // =====================================================================
+                // IN-MEMORY MODE — MULTI-SEED RW SUITE SOURCING END
+                // =====================================================================
 
                 if (loadedTestSuites == null || loadedTestSuites.isEmpty()) {
                     continue;
                 }
 
-                FaultDetector detector = new FaultDetector(loadedTestSuites,productESGFx);
+                FaultDetector detector = new FaultDetector(loadedTestSuites, productESGFx);
                 int totalEventsInSuite = detector.getTotalEventsInSuite();
 
                 int detectedMutants = 0;
@@ -261,28 +300,18 @@ public class RQ3_FaultDetection_EdgeOmitter extends CaseStudyUtilities {
     }
 
     private double calculateMedian(List<Integer> values) {
-        if (values == null || values.isEmpty()) {
-            return 0.0;
-        }
+        if (values == null || values.isEmpty()) return 0.0;
         Collections.sort(values);
         int size = values.size();
-        if (size % 2 == 1) {
-            return values.get(size / 2);
-        } else {
-            return (values.get(size / 2 - 1) + values.get(size / 2)) / 2.0;
-        }
+        if (size % 2 == 1) return values.get(size / 2);
+        return (values.get(size / 2 - 1) + values.get(size / 2)) / 2.0;
     }
 
     private double calculateMedianDouble(List<Double> values) {
-        if (values == null || values.isEmpty()) {
-            return 0.0;
-        }
+        if (values == null || values.isEmpty()) return 0.0;
         Collections.sort(values);
         int size = values.size();
-        if (size % 2 == 1) {
-            return values.get(size / 2);
-        } else {
-            return (values.get(size / 2 - 1) + values.get(size / 2)) / 2.0;
-        }
+        if (size % 2 == 1) return values.get(size / 2);
+        return (values.get(size / 2 - 1) + values.get(size / 2)) / 2.0;
     }
 }

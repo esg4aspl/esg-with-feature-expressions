@@ -19,19 +19,32 @@ import tr.edu.iyte.esgfx.mutationtesting.mutationoperators.EventOmitter;
 import tr.edu.iyte.esgfx.mutationtesting.resultutils.FaultDetectionResultRecorder;
 import tr.edu.iyte.esgfx.testgeneration.FileToTestSuiteConverter;
 
-/**
- * Damping factor sensitivity analysis: Event Omission fault detection.
- * Same A2 + A3 + A4 + AffectedEdges instrumentation as RQ3_FaultDetection_EventOmitter.
- */
 public class RQ3_DampingSensitivity_FaultDetection_EventOmitter extends CaseStudyUtilities {
 
     private static final double[] DAMPING_FACTORS = {0.80, 0.85, 0.90};
+
+    // =====================================================================
+    // IN-MEMORY MODE — CONSTANTS BEGIN
+    // =====================================================================
+    private static final long IN_MEMORY_RW_DET_SEED = 42L;
+    // =====================================================================
+    // IN-MEMORY MODE — CONSTANTS END
+    // =====================================================================
 
     public void evaluateFaultDetection() throws Exception {
         System.out.println("DAMPING SENSITIVITY (EVENT OMISSION) - SPL: " + SPLName + " STARTED");
 
         int N_SHARDS = Integer.parseInt(System.getenv().getOrDefault("N_SHARDS", "1"));
         int CURRENT_SHARD = Integer.parseInt(System.getenv().getOrDefault("SHARD", "0"));
+
+        // =====================================================================
+        // IN-MEMORY MODE — DISPATCH FLAG BEGIN
+        // =====================================================================
+        boolean inMemoryMode = TestSuiteFactory.isInMemoryMode();
+        System.out.println("RQ3_MODE = " + (inMemoryMode ? "memory" : "file"));
+        // =====================================================================
+        // IN-MEMORY MODE — DISPATCH FLAG END
+        // =====================================================================
 
         featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFile, ESGFxFile);
 
@@ -69,12 +82,20 @@ public class RQ3_DampingSensitivity_FaultDetection_EventOmitter extends CaseStud
             handledProducts++;
             String productName = dotFile.getName().replaceAll("(?i)\\.dot", "");
 
+            // =====================================================================
+            // IN-MEMORY MODE — PER-PRODUCT CONFIG REFRESH BEGIN
+            // =====================================================================
+            String configFilePath = productConfigurationFolder + productName + ".config";
+            updateFeatureExpressionMapFromConfigFile(configFilePath);
+            // =====================================================================
+            // IN-MEMORY MODE — PER-PRODUCT CONFIG REFRESH END
+            // =====================================================================
+
             ESG productESGFx = DOTFileToESGFxConverter.parseDOTFileForESGFxCreation(
                     dotFile.getAbsolutePath(), featureExpressionMapFromFeatureModel);
             List<Vertex> productESGFxVertices = productESGFx.getRealVertexList();
             int totalMutants = productESGFxVertices.size();
 
-            // Precompute incident-edge count per vertex
             List<Edge> allEdges = productESGFx.getEdgeList();
             Map<Integer, Integer> incidentEdgeCount = new LinkedHashMap<>();
             for (Edge e : allEdges) {
@@ -88,14 +109,27 @@ public class RQ3_DampingSensitivity_FaultDetection_EventOmitter extends CaseStud
 
             for (double dampingFactor : DAMPING_FACTORS) {
 
-                Set<EventSequence> loadedTestSuites = FileToTestSuiteConverter
-                        .loadTestSequencesForDamping(productName, productESGFx, dampingFactor);
+                Set<EventSequence> loadedTestSuites;
+
+                // =====================================================================
+                // IN-MEMORY MODE — DAMPING SUITE SOURCING BEGIN
+                // =====================================================================
+                if (inMemoryMode) {
+                    loadedTestSuites = TestSuiteFactory.generateRandomWalkSuite(
+                            productESGFx, dampingFactor, IN_MEMORY_RW_DET_SEED);
+                } else {
+                    loadedTestSuites = FileToTestSuiteConverter
+                            .loadTestSequencesForDamping(productName, productESGFx, dampingFactor);
+                }
+                // =====================================================================
+                // IN-MEMORY MODE — DAMPING SUITE SOURCING END
+                // =====================================================================
 
                 if (loadedTestSuites == null || loadedTestSuites.isEmpty()) {
                     continue;
                 }
 
-                FaultDetector detector = new FaultDetector(loadedTestSuites,productESGFx);
+                FaultDetector detector = new FaultDetector(loadedTestSuites, productESGFx);
                 int totalEventsInSuite = detector.getTotalEventsInSuite();
 
                 int detectedMutants = 0;
@@ -169,28 +203,18 @@ public class RQ3_DampingSensitivity_FaultDetection_EventOmitter extends CaseStud
     }
 
     private double calculateMedian(List<Integer> values) {
-        if (values == null || values.isEmpty()) {
-            return 0.0;
-        }
+        if (values == null || values.isEmpty()) return 0.0;
         Collections.sort(values);
         int size = values.size();
-        if (size % 2 == 1) {
-            return values.get(size / 2);
-        } else {
-            return (values.get(size / 2 - 1) + values.get(size / 2)) / 2.0;
-        }
+        if (size % 2 == 1) return values.get(size / 2);
+        return (values.get(size / 2 - 1) + values.get(size / 2)) / 2.0;
     }
 
     private double calculateMedianDouble(List<Double> values) {
-        if (values == null || values.isEmpty()) {
-            return 0.0;
-        }
+        if (values == null || values.isEmpty()) return 0.0;
         Collections.sort(values);
         int size = values.size();
-        if (size % 2 == 1) {
-            return values.get(size / 2);
-        } else {
-            return (values.get(size / 2 - 1) + values.get(size / 2)) / 2.0;
-        }
+        if (size % 2 == 1) return values.get(size / 2);
+        return (values.get(size / 2 - 1) + values.get(size / 2)) / 2.0;
     }
 }

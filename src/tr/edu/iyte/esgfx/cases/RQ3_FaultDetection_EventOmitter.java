@@ -19,33 +19,33 @@ import tr.edu.iyte.esgfx.mutationtesting.mutationoperators.EventOmitter;
 import tr.edu.iyte.esgfx.mutationtesting.resultutils.FaultDetectionResultRecorder;
 import tr.edu.iyte.esgfx.testgeneration.FileToTestSuiteConverter;
 
-/**
- * Event Omission fault detection with multi-seed Random Walk support.
- *
- * Same A2 + A3 + A4 + AffectedEdges instrumentation as RQ3_FaultDetection_EdgeOmitter,
- * with two operator-specific differences:
- *
- *  - A4 histogram key is just the vertex feature expression (single FE),
- *    not a "srcFE >> tgtFE" pair.
- *  - AffectedEdgesTotal is the sum over all mutants of the incident-edge
- *    count at each omitted vertex. For Event Omission this is strictly
- *    >= totalMutants because removing a vertex also removes every edge
- *    touching it. The asymmetry between Edge and Event operators becomes
- *    explicit in this column.
- *
- * Expected A3 behavior: for Event Omission, REASON_VERTEX_MISSING dominates
- * because the detector hits the null-vertex branch before the missing-edge
- * branch can fire.
- */
 public class RQ3_FaultDetection_EventOmitter extends CaseStudyUtilities {
 
     private static final long[] SEEDS = {42L, 43L, 44L, 45L, 46L, 47L, 48L, 49L, 50L, 51L};
+
+    // =====================================================================
+    // IN-MEMORY MODE — CONSTANTS BEGIN
+    // =====================================================================
+    private static final double IN_MEMORY_RW_DAMPING = 0.85;
+    private static final long IN_MEMORY_RW_DET_SEED = 42L;
+    // =====================================================================
+    // IN-MEMORY MODE — CONSTANTS END
+    // =====================================================================
 
     public void evaluateFaultDetection() throws Exception {
         System.out.println("RQ3 FAULT DETECTION (EVENT OMISSION, MULTI-SEED RW) - SPL: " + SPLName + " STARTED");
 
         int N_SHARDS = Integer.parseInt(System.getenv().getOrDefault("N_SHARDS", "1"));
         int CURRENT_SHARD = Integer.parseInt(System.getenv().getOrDefault("SHARD", "0"));
+
+        // =====================================================================
+        // IN-MEMORY MODE — DISPATCH FLAG BEGIN
+        // =====================================================================
+        boolean inMemoryMode = TestSuiteFactory.isInMemoryMode();
+        System.out.println("RQ3_MODE = " + (inMemoryMode ? "memory" : "file"));
+        // =====================================================================
+        // IN-MEMORY MODE — DISPATCH FLAG END
+        // =====================================================================
 
         featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFile, ESGFxFile);
 
@@ -91,15 +91,20 @@ public class RQ3_FaultDetection_EventOmitter extends CaseStudyUtilities {
             handledProducts++;
             String productName = dotFile.getName().replaceAll("(?i)\\.dot", "");
 
+            // =====================================================================
+            // IN-MEMORY MODE — PER-PRODUCT CONFIG REFRESH BEGIN
+            // =====================================================================
+            String configFilePath = productConfigurationFolder + productName + ".config";
+            updateFeatureExpressionMapFromConfigFile(configFilePath);
+            // =====================================================================
+            // IN-MEMORY MODE — PER-PRODUCT CONFIG REFRESH END
+            // =====================================================================
+
             ESG productESGFx = DOTFileToESGFxConverter.parseDOTFileForESGFxCreation(
                     dotFile.getAbsolutePath(), featureExpressionMapFromFeatureModel);
             List<Vertex> productESGFxVertices = productESGFx.getRealVertexList();
             int totalMutants = productESGFxVertices.size();
 
-            // Precompute incident-edge count per vertex (AffectedEdges):
-            // incidentEdgeCount[v] = number of edges in the original graph that
-            // have v as source or target. This is exactly what EventOmitter
-            // removes when generating the mutant for v.
             List<Edge> allEdges = productESGFx.getEdgeList();
             Map<Integer, Integer> incidentEdgeCount = new LinkedHashMap<>();
             for (Edge e : allEdges) {
@@ -111,17 +116,40 @@ public class RQ3_FaultDetection_EventOmitter extends CaseStudyUtilities {
                 }
             }
 
-            // --- Deterministic approaches ---
             for (String approach : deterministicApproaches) {
 
-                Set<EventSequence> loadedTestSuites = FileToTestSuiteConverter
-                        .loadTestSequencesFromFile(productName, approach, productESGFx);
+                Set<EventSequence> loadedTestSuites;
+
+                // =====================================================================
+                // IN-MEMORY MODE — DETERMINISTIC SUITE SOURCING BEGIN
+                // =====================================================================
+                if (inMemoryMode) {
+                    if ("ESG-Fx_L0".equals(approach)) {
+                        loadedTestSuites = TestSuiteFactory.generateRandomWalkSuite(
+                                productESGFx, IN_MEMORY_RW_DAMPING, IN_MEMORY_RW_DET_SEED);
+                    } else {
+                        int level = TestSuiteFactory.approachToLevel(approach);
+                        if (level >= 1) {
+                            loadedTestSuites = TestSuiteFactory.generateESGFxSuite(
+                                    productESGFx, level, featureExpressionMapFromFeatureModel);
+                        } else {
+                            loadedTestSuites = FileToTestSuiteConverter
+                                    .loadTestSequencesFromFile(productName, approach, productESGFx);
+                        }
+                    }
+                } else {
+                    loadedTestSuites = FileToTestSuiteConverter
+                            .loadTestSequencesFromFile(productName, approach, productESGFx);
+                }
+                // =====================================================================
+                // IN-MEMORY MODE — DETERMINISTIC SUITE SOURCING END
+                // =====================================================================
 
                 if (loadedTestSuites == null || loadedTestSuites.isEmpty()) {
                     continue;
                 }
 
-                FaultDetector detector = new FaultDetector(loadedTestSuites,productESGFx);
+                FaultDetector detector = new FaultDetector(loadedTestSuites, productESGFx);
                 int totalEventsInSuite = detector.getTotalEventsInSuite();
 
                 int detectedMutants = 0;
@@ -136,13 +164,11 @@ public class RQ3_FaultDetection_EventOmitter extends CaseStudyUtilities {
                 int mutantID = 0;
                 for (Vertex eventToOmit : productESGFxVertices) {
                     mutantID++;
-                    // A4: feature-expression key for this vertex
                     String feKey = FaultDetectionResultRecorder.extractFeatureExpressionKey(eventToOmit);
                     int[] kt = featureHistogram.get(feKey);
                     if (kt == null) { kt = new int[]{0, 0}; featureHistogram.put(feKey, kt); }
                     kt[1]++;
 
-                    // AffectedEdges: incident edges that will be removed with this vertex
                     affectedEdgesTotal += incidentEdgeCount.getOrDefault(eventToOmit.getID(), 0);
 
                     ESG mutant = eventOmitter.createSingleMutant(productESGFx, eventToOmit, mutantID);
@@ -187,17 +213,28 @@ public class RQ3_FaultDetection_EventOmitter extends CaseStudyUtilities {
                         distinctFE, histogramStr, affectedEdgesTotal);
             }
 
-            // --- Multi-seed Random Walk ---
             for (long seed : SEEDS) {
 
-                Set<EventSequence> loadedTestSuites = FileToTestSuiteConverter
-                        .loadTestSequencesFromFile(productName, "ESG-Fx_L0", productESGFx, seed);
+                // =====================================================================
+                // IN-MEMORY MODE — MULTI-SEED RW SUITE SOURCING BEGIN
+                // =====================================================================
+                Set<EventSequence> loadedTestSuites;
+                if (inMemoryMode) {
+                    loadedTestSuites = TestSuiteFactory.generateRandomWalkSuite(
+                            productESGFx, IN_MEMORY_RW_DAMPING, seed);
+                } else {
+                    loadedTestSuites = FileToTestSuiteConverter
+                            .loadTestSequencesFromFile(productName, "ESG-Fx_L0", productESGFx, seed);
+                }
+                // =====================================================================
+                // IN-MEMORY MODE — MULTI-SEED RW SUITE SOURCING END
+                // =====================================================================
 
                 if (loadedTestSuites == null || loadedTestSuites.isEmpty()) {
                     continue;
                 }
 
-                FaultDetector detector = new FaultDetector(loadedTestSuites,productESGFx);
+                FaultDetector detector = new FaultDetector(loadedTestSuites, productESGFx);
                 int totalEventsInSuite = detector.getTotalEventsInSuite();
 
                 int detectedMutants = 0;
@@ -271,28 +308,18 @@ public class RQ3_FaultDetection_EventOmitter extends CaseStudyUtilities {
     }
 
     private double calculateMedian(List<Integer> values) {
-        if (values == null || values.isEmpty()) {
-            return 0.0;
-        }
+        if (values == null || values.isEmpty()) return 0.0;
         Collections.sort(values);
         int size = values.size();
-        if (size % 2 == 1) {
-            return values.get(size / 2);
-        } else {
-            return (values.get(size / 2 - 1) + values.get(size / 2)) / 2.0;
-        }
+        if (size % 2 == 1) return values.get(size / 2);
+        return (values.get(size / 2 - 1) + values.get(size / 2)) / 2.0;
     }
 
     private double calculateMedianDouble(List<Double> values) {
-        if (values == null || values.isEmpty()) {
-            return 0.0;
-        }
+        if (values == null || values.isEmpty()) return 0.0;
         Collections.sort(values);
         int size = values.size();
-        if (size % 2 == 1) {
-            return values.get(size / 2);
-        } else {
-            return (values.get(size / 2 - 1) + values.get(size / 2)) / 2.0;
-        }
+        if (size % 2 == 1) return values.get(size / 2);
+        return (values.get(size / 2 - 1) + values.get(size / 2)) / 2.0;
     }
 }
