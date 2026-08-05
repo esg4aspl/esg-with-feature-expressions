@@ -8,7 +8,11 @@ import tr.edu.iyte.esg.model.Edge;
 import tr.edu.iyte.esg.model.Vertex;
 import tr.edu.iyte.esgfx.model.ESGFx;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 public class StronglyConnectedBalancedESGFxGeneration {
@@ -51,11 +55,38 @@ public class StronglyConnectedBalancedESGFxGeneration {
 		}
 		
 		//System.out.println(balancedAndStronglyConnectedESG.edgeSet().size());
-		Iterator<Edge> edgeSetIterator = balancedAndStronglyConnectedESG.edgeSet().iterator();
-		
-		while(edgeSetIterator.hasNext()) {
-			Edge edge = edgeSetIterator.next();
-			
+		// The balancing step emits the edges it adds in an order that varies
+		// between runs. That order reaches the adjacency map, and the Euler
+		// cycle generators take the head of each adjacency list, so leaving it
+		// alone makes the generated test suite differ run to run on an
+		// unchanged model.
+		//
+		// Only the added edges are reordered, and they keep their place behind
+		// the model's own edges: the generators walk the original edges first,
+		// and disturbing that ordering costs coverage. Added edges are keyed on
+		// event names rather than IDs so that a model read back from a DOT file
+		// and one built in memory, which number their vertices differently,
+		// still agree.
+		Set<Edge> balancedEdgeSet = balancedAndStronglyConnectedESG.edgeSet();
+		Set<Edge> originalEdgeSet = new LinkedHashSet<>(ESG.getEdgeList());
+
+		List<Edge> orderedEdgeList = new ArrayList<>(balancedEdgeSet.size());
+		List<Edge> addedEdgeList = new ArrayList<>();
+
+		for(Edge edge : balancedEdgeSet) {
+			if(originalEdgeSet.contains(edge)) {
+				orderedEdgeList.add(edge);
+			} else {
+				addedEdgeList.add(edge);
+			}
+		}
+
+		addedEdgeList.sort(Comparator
+				.comparing((Edge edge) -> edge.getSource().getEvent().getName())
+				.thenComparing(edge -> edge.getTarget().getEvent().getName()));
+		orderedEdgeList.addAll(addedEdgeList);
+
+		for(Edge edge : orderedEdgeList) {
 			((ESGFx)ESGFx).addEdge(edge);
 		}
 		
