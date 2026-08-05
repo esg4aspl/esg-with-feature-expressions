@@ -213,7 +213,7 @@ public final class SingleProductTestGenerationAPI {
 		return selection;
 	}
 
-	private static List<FeatureExpression> buildFeatureExpressionList(
+	static List<FeatureExpression> buildFeatureExpressionList(
 			Map<String, FeatureExpression> featureExpressionMap) {
 		List<FeatureExpression> featureExpressionList = new ArrayList<FeatureExpression>(
 				featureExpressionMap.size() + 1);
