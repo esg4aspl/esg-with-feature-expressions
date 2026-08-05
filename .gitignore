@@ -41,7 +41,10 @@ files/Cases/*/testsequenceanalysis/
 files/Cases/*/testsequences/
 files/Cases/SodaVendingMachinev2/
 
-# Ignore the generated configurations text file for every case
+# Ignore the generated configurations text file for every case, under both the
+# older <SPL>_ProductConfigurations.txt name and the productConfigurations_<SPL>.txt
+# name the pipelines write today
 files/Cases/*/*_ProductConfigurations.txt
+files/Cases/*/productConfigurations_*.txt
 *.zip
 *.tar.gz
