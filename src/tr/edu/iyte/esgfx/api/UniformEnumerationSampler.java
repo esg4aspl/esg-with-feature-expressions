@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import org.sat4j.core.VecInt;
 import org.sat4j.minisat.SolverFactory;
 import org.sat4j.specs.ISolver;
 import org.sat4j.tools.ModelIterator;
@@ -86,20 +85,17 @@ public final class UniformEnumerationSampler implements ProductConfigurationSamp
 				featureExpressionList.get(i).setTruthValue(modelArray[i] > 0);
 			}
 
-			VecInt blockingClause = new VecInt();
-			for (int i = 0; i < modelArray.length; i++) {
-				blockingClause.push(-modelArray[i]);
-			}
-			solver.addClause(blockingClause);
+			boolean exhausted = SingleProductTestGenerationAPI.blockCurrentModel(solver, modelArray);
 
-			if (!validator.validate(featureModel, featureExpressionMap)) {
-				continue;
+			if (validator.validate(featureModel, featureExpressionMap)) {
+				productId++;
+				if (productId == targets.get(nextTarget)) {
+					sampled.add(new SampledConfiguration(productId, currentSelection(featureExpressionMap)));
+					nextTarget++;
+				}
 			}
-
-			productId++;
-			if (productId == targets.get(nextTarget)) {
-				sampled.add(new SampledConfiguration(productId, currentSelection(featureExpressionMap)));
-				nextTarget++;
+			if (exhausted) {
+				break;
 			}
 		}
 

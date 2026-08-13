@@ -12,6 +12,7 @@ import java.util.Set;
 
 import org.sat4j.core.VecInt;
 import org.sat4j.minisat.SolverFactory;
+import org.sat4j.specs.ContradictionException;
 import org.sat4j.specs.ISolver;
 import org.sat4j.tools.ModelIterator;
 
@@ -168,17 +169,37 @@ public final class SingleProductTestGenerationAPI {
 					fe.setTruthValue(modelArray[i] > 0);
 				}
 
-				VecInt blockingClause = new VecInt();
-				for (int i = 0; i < modelArray.length; i++) {
-					blockingClause.push(-modelArray[i]);
-				}
-				solver.addClause(blockingClause);
+				boolean exhausted = blockCurrentModel(solver, modelArray);
 
 				if (validator.validate(featureModel, featureExpressionMap)) {
 					validCount++;
 				}
+				if (exhausted) {
+					break;
+				}
 			}
 			return validCount;
+		}
+	}
+
+	/**
+	 * Excludes the model just returned so the search moves on. The solver
+	 * refuses the clause once no other model can satisfy the constraints, which
+	 * is how a search over a model with a single valid configuration ends;
+	 * that refusal is the termination signal, not a failure.
+	 *
+	 * @return true when the model space is exhausted
+	 */
+	static boolean blockCurrentModel(ISolver solver, int[] modelArray) {
+		VecInt blockingClause = new VecInt();
+		for (int i = 0; i < modelArray.length; i++) {
+			blockingClause.push(-modelArray[i]);
+		}
+		try {
+			solver.addClause(blockingClause);
+			return false;
+		} catch (ContradictionException e) {
+			return true;
 		}
 	}
 

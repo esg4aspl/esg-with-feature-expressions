@@ -5,7 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.sat4j.core.VecInt;
 import org.sat4j.minisat.SolverFactory;
 import org.sat4j.specs.ISolver;
 import org.sat4j.tools.ModelIterator;
@@ -55,19 +54,16 @@ public final class AllProductsTestGenerationAPI {
 					featureExpressionList.get(i).setTruthValue(modelArray[i] > 0);
 				}
 
-				VecInt blockingClause = new VecInt();
-				for (int i = 0; i < modelArray.length; i++) {
-					blockingClause.push(-modelArray[i]);
-				}
-				solver.addClause(blockingClause);
+				boolean exhausted = SingleProductTestGenerationAPI.blockCurrentModel(solver, modelArray);
 
-				if (!validator.validate(featureModel, featureExpressionMap)) {
-					continue;
+				if (validator.validate(featureModel, featureExpressionMap)) {
+					productId++;
+					results.add(SingleProductTestGenerationAPI.generate(model, productId,
+							currentSelection(featureExpressionMap), coverageLength));
 				}
-
-				productId++;
-				results.add(SingleProductTestGenerationAPI.generate(model, productId,
-						currentSelection(featureExpressionMap), coverageLength));
+				if (exhausted) {
+					break;
+				}
 			}
 
 			return results;
