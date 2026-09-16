@@ -51,7 +51,8 @@ public final class SingleProductTestGenerationAPI {
 			applySelection(model.getFeatureExpressionMap(), selection);
 
 			ProductConfigurationValidator validator = new ProductConfigurationValidator();
-			boolean isValid = validator.validate(model.getFeatureModel(), model.getFeatureExpressionMap());
+			boolean isValid = validator.validate(model.getFeatureModel(), model.getFeatureExpressionMap())
+					&& ConstraintEvaluator.allSatisfied(model.getFeatureModel(), model.getFeatureExpressionMap());
 
 			if (!isValid) {
 				return new ValidationResult(false,
