@@ -148,6 +148,18 @@ public final class SingleProductTestGenerationAPI {
 	}
 
 	public static long countValidConfigurations(LoadedSplModel model) throws Exception {
+		return countValidConfigurations(model, Long.MAX_VALUE);
+	}
+
+	/**
+	 * Counts valid configurations but stops once {@code cap} of them have been
+	 * seen. Counting walks the configuration space one solution at a time, which
+	 * takes minutes on a line with hundreds of thousands of products; a caller
+	 * that only needs the count for display can bound it and show "cap+" instead
+	 * of waiting. The uncapped overload is kept for the sampler, which needs the
+	 * exact size of the space it draws from.
+	 */
+	public static long countValidConfigurations(LoadedSplModel model, long cap) throws Exception {
 		synchronized (model) {
 			Map<String, FeatureExpression> featureExpressionMap = model.getFeatureExpressionMap();
 			FeatureModel featureModel = model.getFeatureModel();
@@ -174,6 +186,9 @@ public final class SingleProductTestGenerationAPI {
 
 				if (validator.validate(featureModel, featureExpressionMap)) {
 					validCount++;
+					if (validCount >= cap) {
+						break;
+					}
 				}
 				if (exhausted) {
 					break;
