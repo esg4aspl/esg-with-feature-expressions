@@ -12,8 +12,14 @@ import tr.edu.iyte.esgfx.api.LoadedSplModel;
  * Where Phi_d comes from. {@link #ENGINE}: the clauses of
  * {@code SATSolverGenerationFromFeatureModel}, recorded by
  * {@code FeatureModelCnf}, which the enumeration of Chapter 6 used.
- * {@link #DIMACS}: FeatureIDE's DIMACS export of the feature model. Both mark
- * the features that model.xml declares abstract as non-concrete.
+ * {@link #DIMACS}: the CNF of the feature model under the standard semantics,
+ * read from {@code configs/<abbr>.dimacs}. DIMACS names the file format, not
+ * the semantics. For SVM, Tesla, syngo.via and Hockerty Shirts the files were
+ * written by the engine's {@code FeatureModelToDimacsExporter} (the files the
+ * UniGen samples were drawn from); for eMail, Elevator, Bank Account and
+ * Student Attendance by {@link FeatureModelDimacsExport}. Neither is
+ * FeatureIDE's export. Both sources mark the features that model.xml declares
+ * abstract as non-concrete.
  */
 public enum PhiDSource {
 

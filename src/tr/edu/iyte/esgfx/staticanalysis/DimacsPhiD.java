@@ -18,7 +18,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * Reads Phi_d from FeatureIDE's DIMACS export of the feature model:
+ * Reads Phi_d from the DIMACS file of the feature model (standard semantics;
+ * see {@link PhiDSource#DIMACS} for which exporter wrote each file):
  * {@code <abbr>.dimacs} with {@code <abbr>_dimacsmapping.txt}, and takes the
  * abstract features from {@code model.xml}. DIMACS variable {@code i} is
  * variable {@code i} of the result, so UniGen samples drawn from the same file

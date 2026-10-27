@@ -18,8 +18,8 @@ import tr.edu.iyte.esgfx.api.LoadedSplModel;
  *
  * <p>Two sources exist (see {@link PhiDSource}): the clauses of
  * {@code SATSolverGenerationFromFeatureModel.addSATClauses}, the encoding the
- * enumeration of Chapter 6 used, and FeatureIDE's DIMACS export of the feature
- * model ({@link DimacsPhiD}).
+ * enumeration of Chapter 6 used, and the DIMACS file of the feature model,
+ * which holds its CNF under the standard semantics ({@link DimacsPhiD}).
  *
  * <p>A configuration assigns every variable. A product is the restriction of a
  * configuration to the concrete variables, the features that are not abstract
