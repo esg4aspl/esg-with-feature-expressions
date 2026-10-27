@@ -1,0 +1,11 @@
+c DIMACS of files/Cases/eMail/configs/model.xml, standard feature-model semantics, written by tr.edu.iyte.esgfx.staticanalysis.FeatureModelDimacsExport
+p cnf 8 9
+1 0
+-2 1 0
+-3 1 0
+-4 1 0
+-5 1 0
+-6 5 0
+-7 1 0
+-8 7 0
+-6 -4 0

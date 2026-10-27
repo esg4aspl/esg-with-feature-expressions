@@ -1,0 +1,12 @@
+1 ElevatorSystem
+2 ControlButtons
+3 EmergencyFeatures
+4 Alarm
+5 Intercom
+6 ManualDoorControl
+7 FirefighterService
+8 AccessControl
+9 CardReader
+10 MobileKey
+11 PinPad
+12 ExecutiveFloor
