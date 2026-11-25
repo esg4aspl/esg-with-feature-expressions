@@ -27,13 +27,11 @@ public class EdgeCoverageAnalyser {
     public double analyseEdgeCoverage(ESG ESGFx, Set<EventSequence> CESsOfESGFx,
             Map<String, FeatureExpression> featureExpressionMap) {
 
-        Set<String> mustCoveredEdges = detectMustCoveredEdges(ESGFx);
-        List<String> coveredEdges = detectCoveredEdges(CESsOfESGFx);
-
-        Map<String, Integer> edgeCoverageMap = edgeCoverageMap(mustCoveredEdges, coveredEdges);
-        Set<String> uncoveredEdges = detectUncoveredEdges(edgeCoverageMap);
-
-        return percentageOfCoverage(mustCoveredEdges.size(), uncoveredEdges.size());
+        // Event-couple coverage of the product-level model, counted by vertex
+        // identity on the unfolded sequences.
+        return new tr.edu.iyte.esgfx.testgeneration.SequenceCoverageAnalyser(ESGFx)
+                .coverage(tr.edu.iyte.esgfx.testgeneration.SequenceCoverageAnalyser.unfold(CESsOfESGFx), 2)
+                .percentage();
     }
 
     public static Set<String> detectUncoveredEdges(Map<String, Integer> edgeCoverageMap) {

@@ -45,8 +45,24 @@ public class SequenceESGFxTransformer {
 		CompatibilityChecker compatibilityChecker = new CompatibilityChecker();
 		Comparator<Vertex> vertexComparator = new VertexComparator();
 		Comparator<Sequence<Vertex>> sequenceComparator = new SequenceComparator<Vertex>(vertexComparator);
+		// Number of events in an ordinary vertex of the k-ESG. A vertex with fewer
+		// events is a complete event sequence that was kept by an earlier step.
+		int ordinarySize = 0;
+		for (Vertex vertex : kESGFx.getVertexList()) {
+			if (!vertex.isPseudoStartVertex() && !vertex.isPseudoEndVertex()) {
+				ordinarySize = Math.max(ordinarySize, ((VertexRefinedBySequence) vertex).getSequence().getSize());
+			}
+		}
 		for (Edge qr : kESGFx.getEdgeList()) {
 			VertexRefinedBySequence r = (VertexRefinedBySequence) qr.getTarget();
+			if (!r.isPseudoEndVertex() && !r.isPseudoStartVertex() && r.getSequence().getSize() < ordinarySize) {
+				// r is a complete event sequence kept by an earlier step: keep it again.
+				if (((VertexRefinedBySequence) qr.getSource()).isPseudoStartVertex()) {
+					keepCompleteSequence(kp1ESGFx, r.getSequence(), oneESGFx, sequenceComparator, compatibilityChecker);
+				}
+				continue;
+			}
+//			r.getSequence().forEach(e -> System.out.println("r " + e.getEvent().getName()));
 //			r.getSequence().forEach(e -> System.out.println("r " + e.getEvent().getName()));
 			if (!r.isPseudoEndVertex()) {
 				VertexRefinedBySequence q = (VertexRefinedBySequence) qr.getSource();
@@ -154,17 +170,71 @@ public class SequenceESGFxTransformer {
 							}
 
 						} else {
-							// q is start and b1 is end.
-							// if the only following vertex of rLast is the end vertex in the 1-ESG,
-							// then k-sequence r cannot be included in a longer sequence.
-							// such sequences are discarded.
-							// to include each of them, two edges must be added (start,r) and (r,end).
+							// q is the pseudo-start vertex and b1 the pseudo-end vertex, so r is a
+							// complete event sequence that is too short to be part of a longer
+							// sequence. It is kept as a vertex of its own, with an edge from the
+							// pseudo-start vertex and an edge to the pseudo-end vertex, so that the
+							// suite still contains it.
+							keepCompleteSequence(kp1ESGFx, r.getSequence(), oneESGFx, sequenceComparator,
+									compatibilityChecker);
 						}
 					}
 				}
 			}
 		}
 		return kp1ESGFx;
+	}
+
+		/**
+	 * Adds a complete event sequence to the (k+1)-ESG as one vertex, with an
+	 * edge from the pseudo-start vertex and an edge to the pseudo-end vertex.
+	 */
+	private void keepCompleteSequence(ESG kp1ESGFx, Sequence<Vertex> complete, ESG oneESGFx,
+			Comparator<Sequence<Vertex>> sequenceComparator, CompatibilityChecker compatibilityChecker) {
+		Sequence<Vertex> startSequence = new Sequence<Vertex>();
+		startSequence.addElements(((VertexRefinedBySequence) oneESGFx.getPseudoStartVertex()).getSequence());
+		Sequence<Vertex> endSequence = new Sequence<Vertex>();
+		endSequence.addElements(((VertexRefinedBySequence) oneESGFx.getPseudoEndVertex()).getSequence());
+		Sequence<Vertex> kept = new Sequence<Vertex>();
+		kept.addElements(complete);
+
+		VertexRefinedBySequence start = findOrAddVertex(kp1ESGFx, startSequence, sequenceComparator,
+				compatibilityChecker);
+		VertexRefinedBySequence middle = findOrAddVertex(kp1ESGFx, kept, sequenceComparator, compatibilityChecker);
+		VertexRefinedBySequence end = findOrAddVertex(kp1ESGFx, endSequence, sequenceComparator, compatibilityChecker);
+		if (start == null || middle == null || end == null) {
+			return;
+		}
+		for (Edge edge : kp1ESGFx.getEdgeList()) {
+			if (edge.getSource() == start && edge.getTarget() == middle) {
+				return;
+			}
+		}
+		kp1ESGFx.addEdge(new EdgeSimple(kp1ESGFx.getNextEdgeID(), start, middle));
+		kp1ESGFx.addEdge(new EdgeSimple(kp1ESGFx.getNextEdgeID(), middle, end));
+	}
+
+	private VertexRefinedBySequence findOrAddVertex(ESG kp1ESGFx, Sequence<Vertex> sequence,
+			Comparator<Sequence<Vertex>> sequenceComparator, CompatibilityChecker compatibilityChecker) {
+		VertexRefinedBySequence vertex = (VertexRefinedBySequence) SequenceESGUtilities
+				.getVertexByVertexSequence(kp1ESGFx, sequence, sequenceComparator);
+		if (vertex != null) {
+			return vertex;
+		}
+		Event event = new EventSimple(kp1ESGFx.getNextEventID(),
+				VertexSequenceUtilities.getStringFormWithContextedEvents(sequence));
+		vertex = new VertexRefinedBySequence(kp1ESGFx.getNextVertexID(), event, sequence);
+		vertex.setFeatureExpression();
+		if (!vertex.isPseudoStartVertex() && !vertex.isPseudoEndVertex()) {
+			compatibilityChecker.fillFeatureTruthValueMap(vertex);
+			boolean compatible = compatibilityChecker.isCompatible(vertex);
+			compatibilityChecker.clearFeatureTruthValueMap();
+			if (!compatible) {
+				return null;
+			}
+		}
+		kp1ESGFx.addVertex(vertex);
+		return vertex;
 	}
 
 	public ESG transformIncludingShorterSequences(ESG kESGFx, ESG oneESGFx) {

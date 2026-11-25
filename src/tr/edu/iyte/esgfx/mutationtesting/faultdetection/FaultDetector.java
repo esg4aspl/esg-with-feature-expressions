@@ -109,7 +109,10 @@ public class FaultDetector {
                 eventsWalked++;
 
                 if (mutantCurrentVertex == null) {
-                    if (vertexInOriginal(currentVertexID)) {
+                    // The event is missing in the mutant. It counts as a detection only
+                    // if the test reaches it by a step of the original model; a sequence
+                    // with a step the original model does not allow is abandoned there.
+                    if (vertexInOriginal(currentVertexID) && edgeInOriginal(previousVertexID, currentVertexID)) {
                         lastDetectionReason = REASON_VERTEX_MISSING;
                         return true;
                     }

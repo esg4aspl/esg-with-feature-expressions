@@ -1,374 +1,199 @@
 package tr.edu.iyte.esgfx.testgeneration.eventcoverage;
 
-import java.util.Map;
-
-import java.util.Set;
-
-import tr.edu.iyte.esg.model.ESG;
-import tr.edu.iyte.esg.model.Edge;
-import tr.edu.iyte.esg.model.Vertex;
-import tr.edu.iyte.esg.conversion.ESGToJgraphConverter;
-import tr.edu.iyte.esgfx.model.VertexRefinedByFeatureExpression;
-import tr.edu.iyte.esgfx.model.featureexpression.FeatureExpression;
-import tr.edu.iyte.esgfx.model.featureexpression.Negation;
-import tr.edu.iyte.esgfx.model.featuremodel.Feature;
-import tr.edu.iyte.esgfx.model.ESGFx;
-
-import java.util.Iterator;
-import java.util.LinkedHashMap;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack;
-import java.util.ArrayList;
+import java.util.Map;
+import java.util.Set;
 
-import org.jgrapht.Graph;
-import org.jgrapht.GraphPath;
-import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
-import org.jgrapht.alg.interfaces.ShortestPathAlgorithm.SingleSourcePaths;
+import tr.edu.iyte.esg.model.ESG;
+import tr.edu.iyte.esg.model.Vertex;
+import tr.edu.iyte.esgfx.model.ESGFx;
+import tr.edu.iyte.esgfx.model.VertexRefinedByFeatureExpression;
+import tr.edu.iyte.esgfx.model.featureexpression.FeatureExpression;
 
+/**
+ * Test generation for event coverage.
+ *
+ * The generator walks the product-level model from the pseudo-start vertex.
+ * At every step it moves to the nearest event that is not covered yet: an
+ * uncovered successor if there is one, otherwise along a shortest path to
+ * the nearest uncovered event. The pseudo-end vertex is joined to the
+ * pseudo-start vertex for this search, so a path that runs through the
+ * pseudo-end vertex closes the current sequence and opens the next one.
+ * When every event is covered, the walk is closed with a shortest path to
+ * the pseudo-end vertex.
+ *
+ * Every step of every sequence is therefore an edge of the product-level
+ * model, every sequence starts at a successor of the pseudo-start vertex
+ * and ends at a predecessor of the pseudo-end vertex.
+ *
+ * The model is used as it is; it does not have to be strongly connected or
+ * balanced. If a strongly connected, balanced copy is passed, its
+ * duplicated edges and the edges that enter the pseudo-start vertex are
+ * ignored, and the result is the same.
+ *
+ * The result is kept in the order expected by
+ * EulerCycleToTestSequenceGenerator, which reads the vertex list from its
+ * last element to its first.
+ */
 public class EulerCycleGeneratorForEventCoverage {
 
 	private Set<Vertex> toCover;
-	private Map<Feature, Boolean> featureTruthValueMap;
-	private List<Vertex> vertexStack;
 	private List<Vertex> eulerCycle;
 	private Map<Vertex, List<Vertex>> adjacencyMap;
-	
-	private DijkstraShortestPath<Vertex, Edge> dijkstraAlgorithm;
+	private Set<Vertex> unreachableEvents;
+
+	public EulerCycleGeneratorForEventCoverage() {
+		this.toCover = new LinkedHashSet<>();
+		this.eulerCycle = new LinkedList<>();
+		this.adjacencyMap = new HashMap<>();
+		this.unreachableEvents = new LinkedHashSet<>();
+	}
 
 	public EulerCycleGeneratorForEventCoverage(Map<String, FeatureExpression> featureExpressionMap) {
-		this.toCover = new LinkedHashSet<>();
-		this.featureTruthValueMap = new LinkedHashMap<>();
-		this.vertexStack = new Stack<>();
-		this.eulerCycle = new LinkedList<>();
-		this.adjacencyMap = new LinkedHashMap<>();
-
+		this();
 	}
 
 	public void reset() {
 		this.toCover.clear();
-		this.featureTruthValueMap.clear();
-		this.vertexStack.clear();
 		this.eulerCycle.clear();
 		this.adjacencyMap.clear();
-		dijkstraAlgorithm = null;
+		this.unreachableEvents.clear();
 	}
 
-	private boolean containsOnlyOnePseudoEnd(List<Vertex> adjacentVertexList) {
-
-		// //System.out.println("containsOnlyOnePseudoEnd");
-		if (adjacentVertexList.size() == 1) {
-			if (adjacentVertexList.get(0).isPseudoEndVertex()) {
-//				//System.out.println("containsOnlyOnePseudoEnd" + "TRUE");
-				return true;
-			} else
-				return false;
-		} else
+	private static boolean isEnabledEvent(Vertex vertex) {
+		if (vertex.isPseudoStartVertex() || vertex.isPseudoEndVertex()) {
 			return false;
-
-	}
-
-	private void findToCover(ESG ESGFx) {
-		List<Vertex> vertexList = ESGFx.getRealVertexList();
-
-		// System.out.println("FINDTOCOVER METHOD START");
-		for (Vertex vertex : vertexList) {
-			VertexRefinedByFeatureExpression vertexRefinedByFeatureExpression = (VertexRefinedByFeatureExpression) vertex;
-//			//System.out.println(vertexRefinedByFeatureExpression.getEvent().getName() + " "	+ vertexRefinedByFeatureExpression.getFeatureExpression().getFeature().getName() + " " + vertexRefinedByFeatureExpression.getFeatureExpression().evaluate());
-
-			if (vertexRefinedByFeatureExpression.getFeatureExpression().evaluate()) {
-				toCover.add(vertexRefinedByFeatureExpression);
-
-			}
-
 		}
-		// System.out.println("FINDTOCOVER METHOD FINISH");
+		if (vertex instanceof VertexRefinedByFeatureExpression) {
+			FeatureExpression featureExpression = ((VertexRefinedByFeatureExpression) vertex).getFeatureExpression();
+			return featureExpression == null || featureExpression.evaluate();
+		}
+		return true;
 	}
 
-	private void findAdjMap() {
-
-		Iterator<Vertex> keySetIterator = adjacencyMap.keySet().iterator();
-
-		while (keySetIterator.hasNext()) {
-			Vertex key = keySetIterator.next();
-			Iterator<Vertex> adjacentVertexListIterator = adjacencyMap.get(key).iterator();
-			while (adjacentVertexListIterator.hasNext()) {
-				Vertex adjVertex = adjacentVertexListIterator.next();
-//				 //System.out.println("adjVertex " + adjVertex);
-				if (!toCover.contains(adjVertex) && !adjVertex.isPseudoStartVertex()
-						&& !adjVertex.isPseudoEndVertex()) {
-//					//System.out.println("adjVertex " + adjVertex + " is removed");
-					adjacentVertexListIterator.remove();
+	/**
+	 * Successors of every vertex, restricted to the events whose feature
+	 * expression is true and to the pseudo-end vertex, without duplicates.
+	 */
+	private void buildAdjacency(ESGFx graph, Vertex pseudoStart, Vertex pseudoEnd) {
+		List<Vertex> sources = new ArrayList<>();
+		sources.add(pseudoStart);
+		for (Vertex vertex : graph.getVertexList()) {
+			if (isEnabledEvent(vertex)) {
+				sources.add(vertex);
+				toCover.add(vertex);
+			}
+		}
+		for (Vertex source : sources) {
+			Set<Vertex> successors = new LinkedHashSet<>();
+			for (Vertex target : graph.getAdjacencyList(source)) {
+				if (target.isPseudoEndVertex() || isEnabledEvent(target)) {
+					successors.add(target);
 				}
 			}
+			adjacencyMap.put(source, new ArrayList<>(successors));
 		}
-		/*
-		 * while (keySetIterator.hasNext()) { Vertex key = keySetIterator.next();
-		 * System.out.print("Vertex " + key + " -> "); Iterator<Vertex>
-		 * adjacentVertexListIterator = adjacencyMap.get(key).iterator(); while
-		 * (adjacentVertexListIterator.hasNext()) {
-		 * System.out.print(adjacentVertexListIterator.next().getEvent().getName()); }
-		 * //System.out.println(); }
-		 */
+		// Only for the search: leaving the pseudo-end vertex means starting a new sequence.
+		adjacencyMap.put(pseudoEnd, Collections.singletonList(pseudoStart));
 	}
 
-	public void generateEulerCycle(ESG stronglyConnectedBalancedESGFx) {
+	/**
+	 * Breadth-first search from 'from'. Returns the vertices after 'from' on a
+	 * shortest path to the nearest vertex accepted by the target test, or null
+	 * if there is none. Successors are visited in the order of the model, so
+	 * the result is deterministic.
+	 */
+	private List<Vertex> shortestPath(Vertex from, boolean toPseudoEnd) {
+		Map<Vertex, Vertex> parent = new HashMap<>();
+		Deque<Vertex> queue = new ArrayDeque<>();
+		Set<Vertex> visited = new LinkedHashSet<>();
+		queue.add(from);
+		visited.add(from);
+		while (!queue.isEmpty()) {
+			Vertex vertex = queue.poll();
+			List<Vertex> successors = adjacencyMap.get(vertex);
+			if (successors == null) {
+				continue;
+			}
+			for (Vertex next : successors) {
+				if (!visited.add(next)) {
+					continue;
+				}
+				parent.put(next, vertex);
+				boolean isTarget = toPseudoEnd ? next.isPseudoEndVertex() : toCover.contains(next);
+				if (isTarget) {
+					LinkedList<Vertex> path = new LinkedList<>();
+					for (Vertex v = next; v != from; v = parent.get(v)) {
+						path.addFirst(v);
+					}
+					return path;
+				}
+				if (toPseudoEnd && next.isPseudoStartVertex()) {
+					continue;
+				}
+				queue.add(next);
+			}
+		}
+		return null;
+	}
+
+	public void generateEulerCycle(ESG productESGFx) {
 		reset();
-		ESG ESGFx = new ESGFx(stronglyConnectedBalancedESGFx);
-		
-		ESGToJgraphConverter ESGToJgraphConverter = new ESGToJgraphConverter();
-		Graph<Vertex, Edge> jGraph = ESGToJgraphConverter.buildJGraphFromESG(ESGFx);
-		this.dijkstraAlgorithm = new DijkstraShortestPath<>(jGraph);
-		
-		findToCover(ESGFx);
-		// System.out.println("toCover " + toCover);
-		adjacencyMap.putAll(((ESGFx) ESGFx).getAdjacencyMap());
-		findAdjMap();
-		Vertex currentVertex = ESGFx.getPseudoStartVertex();
-		((Stack<Vertex>) vertexStack).push(currentVertex);
-		boolean generationStarted = false;
+		ESGFx graph = (productESGFx instanceof ESGFx) ? (ESGFx) productESGFx : new ESGFx(productESGFx);
+		Vertex pseudoStart = graph.getPseudoStartVertex();
+		Vertex pseudoEnd = graph.getPseudoEndVertex();
+		buildAdjacency(graph, pseudoStart, pseudoEnd);
 
-		while (!vertexStack.isEmpty()) {
-			// System.out.println("currentVertex " + currentVertex);
-			List<Vertex> adjacentVertexList = adjacencyMap.get(currentVertex);
-			Iterator<Vertex> adjacentVertexListIterator = adjacentVertexList.iterator();
+		List<Vertex> walk = new ArrayList<>();
+		walk.add(pseudoStart);
+		Vertex current = pseudoStart;
 
-			// System.out.println("adjacentVertexList " + adjacentVertexList);
-			// System.out.println("toCover " + toCover);
-
-			if (currentVertex.isPseudoStartVertex()) {
-				// System.out.println("currentVertex isPseudoStartVertex " +
-				// currentVertex.isPseudoStartVertex());
-				featureTruthValueMap.clear();
-			} else if (!currentVertex.isPseudoStartVertex() && !currentVertex.isPseudoEndVertex()) {
-				if (!featureTruthValueMap.containsKey(
-						((VertexRefinedByFeatureExpression) currentVertex).getFeatureExpression().getFeature())) {
-					fillFeatureTruthValueMap(currentVertex);
-				}
+		while (!toCover.isEmpty()) {
+			List<Vertex> path = shortestPath(current, false);
+			if (path == null) {
+				// The remaining events cannot be reached; the model is not well-formed.
+				unreachableEvents.addAll(toCover);
+				toCover.clear();
+				break;
 			}
-
-			if (!adjacentVertexList.isEmpty() && !toCover.isEmpty()) {
-				((Stack<Vertex>) vertexStack).push(currentVertex);
-				Vertex nextVertex = null;
-				if (currentVertex.isPseudoEndVertex()) {
-					// System.out.println("currentVertex isPseudoEndVertex " +
-					// currentVertex.isPseudoEndVertex());
-					// System.out.println(adjacentVertexList.size());
-					Vertex candidateVertex = adjacentVertexListIterator.next();
-					// System.out.println(candidateVertex.toString());
-					nextVertex = candidateVertex;
-					// break;
-				} else {
-					while (adjacentVertexListIterator.hasNext()) {
-						Vertex candidateVertex = adjacentVertexListIterator.next();
-						// System.out.println("candidateVertex " + candidateVertex.toString());
-						if (!candidateVertex.isPseudoStartVertex() && !candidateVertex.isPseudoEndVertex()) {
-							if (!featureTruthValueMap.containsKey(((VertexRefinedByFeatureExpression) candidateVertex)
-									.getFeatureExpression().getFeature())) {
-								fillFeatureTruthValueMap(candidateVertex);
-							}
-						}
-
-						if (candidateVertex.isPseudoEndVertex()) {
-							nextVertex = candidateVertex;
-							break;
-						} else if (isCompatible(candidateVertex)) {
-							if (allOfAdjacentVerticesCoveredBefore(adjacentVertexList)) {
-								// System.out.println("allOfAdjacentVerticesCoveredBefore".toUpperCase());
-								nextVertex = findPrior(ESGFx, adjacentVertexList);
-								break;
-							} else if (anyOfAdjacentVerticesCoveredBefore(adjacentVertexList)) {
-								// System.out.println("anyOfAdjacentVerticesCoveredBefore".toUpperCase());
-								nextVertex = candidateVertex;
-								break;
-							} else {
-								// List<Vertex> notCoveredList =
-								// adjacentVerticesNOTCoveredBefore(adjacentVertexList);
-								// System.out.println("someOfAdjacentVerticesCoveredBefore".toUpperCase());
-								List<Vertex> verticesNOTcoveredYet = adjacentVerticesNOTCoveredBefore(
-										adjacentVertexList);
-								nextVertex = verticesNOTcoveredYet.get(0);
-								break;
-							}
-						}
-//						break;
-					}
-				}
-				adjacentVertexListIterator.remove();
-				if (!currentVertex.isPseudoStartVertex() && !currentVertex.isPseudoEndVertex()) {
-					toCover.remove(currentVertex);
-				}
-				currentVertex = nextVertex;
-
-				// continue;
-			} else if (!adjacentVertexList.isEmpty() && toCover.isEmpty()
-//					&& containsOnlyOnePseudoEnd(adjacentVertexList)
-					&& (!currentVertex.isPseudoStartVertex() && !currentVertex.isPseudoEndVertex())
-					&& !generationStarted) {
-				// System.out.println("EXPECTED");
-				((Stack<Vertex>) vertexStack).push(currentVertex);
-				currentVertex = adjacentVertexListIterator.next();
-				adjacentVertexListIterator.remove();
-			} else {
-				// System.out.println("EULER CYCLE");
-				generationStarted = true;
-
-				eulerCycle.add(currentVertex);
-				currentVertex = ((Stack<Vertex>) vertexStack).pop();
-			}
+			walk.addAll(path);
+			toCover.removeAll(path);
+			current = path.get(path.size() - 1);
 		}
 
-//		 System.out.println(eulerCycle);
-//		 System.out.println("------------------------------------------------------------");
-
-	}
-
-	// toCover contains any
-	private boolean allOfAdjacentVerticesCoveredBefore(List<Vertex> adjacentVertexList) {
-		for (Vertex vertex : adjacentVertexList) {
-			if (toCover.contains(vertex)) {
-				return false;
+		if (!current.isPseudoStartVertex()) {
+			List<Vertex> closing = shortestPath(current, true);
+			if (closing == null) {
+				throw new IllegalStateException("Event coverage: the pseudo-end vertex cannot be reached from "
+						+ current.getEvent().getName());
 			}
-		}
-		return true;
-	}
-
-	// toCover contains all
-	private boolean anyOfAdjacentVerticesCoveredBefore(List<Vertex> adjacentVertexList) {
-
-		for (Vertex vertex : adjacentVertexList) {
-			if (!toCover.contains(vertex)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	private List<Vertex> adjacentVerticesNOTCoveredBefore(List<Vertex> adjacentVertexList) {
-		List<Vertex> notCoveredList = new ArrayList<>();
-
-		for (Vertex vertex : adjacentVertexList) {
-			if (toCover.contains(vertex)) {
-				notCoveredList.add(vertex);
-			}
-		}
-
-		return notCoveredList;
-	}
-
-	private Vertex findPrior(ESG ESGFx, List<Vertex> adjacentVertexList) {
-//		System.out.println("FINDPRIOR METHOD START");
-
-		GraphPath<Vertex, Edge> bestPath = null;
-		double minLength = Double.MAX_VALUE; // Use double for length in JGraphT generally, or int if weighted 1
-
-		// 2. Optimization: Instead of calculating path for every (source, target) pair,
-		// calculate all paths starting from 'source' once.
-		for (Vertex source : adjacentVertexList) {
-			
-			// Compute Shortest Path Tree from this source to ALL other nodes
-			SingleSourcePaths<Vertex, Edge> pathsFromSource = dijkstraAlgorithm.getPaths(source);
-
-			for (Vertex target : toCover) {
-				// Efficient lookup from the pre-calculated tree
-				GraphPath<Vertex, Edge> path = pathsFromSource.getPath(target);
-
-				if (path != null) {
-//					System.out.println("Considering path from " + source + " to " + target + " with length " + path.getLength());
-					// Check if this path is shorter than the current best
-					if (path.getLength() < minLength) {
-						minLength = path.getLength();
-						bestPath = path;
-					}
-				}
-			}
-		}
-
-//		System.out.println("FINDPRIOR METHOD FINISH - Found path length: " + (bestPath != null ? bestPath.getLength() : "None"));
-
-		if (bestPath != null) {
-			return bestPath.getStartVertex();
+			walk.addAll(closing);
 		} else {
-			return null;
+			walk.remove(walk.size() - 1);
 		}
+
+		Collections.reverse(walk);
+		eulerCycle.addAll(walk);
 	}
 
-	private void fillFeatureTruthValueMap(Vertex currentVertex) {
-		// System.out.println("fillFeatureTruthValueMap METHOD START");
-		VertexRefinedByFeatureExpression vertexRefinedByFeatureExpression = (VertexRefinedByFeatureExpression) currentVertex;
-		FeatureExpression featureExpression = vertexRefinedByFeatureExpression.getFeatureExpression();
-		Feature feature = featureExpression.getFeature();
-		// System.out.println(currentVertex.toString());
-		// System.out.println("featureTruthValueMap.containsKey(feature) " +
-		// featureTruthValueMap.containsKey(feature));
-		if (featureTruthValueMap.containsKey(feature)) {
-			// System.out.println("fillFeatureTruthValueMap METHOD FINISH");
-			return;
-		} else {
-			if (featureExpression instanceof Negation) {
-				featureTruthValueMap.put(feature, false);
-			} else {
-				featureTruthValueMap.put(feature, true);
-			}
-		}
-
-		// System.out.println(featureTruthValueMap);
-		// System.out.println("fillFeatureTruthValueMap METHOD FINISH");
-	}
-
-	private boolean isCompatible(Vertex candidateVertex) {
-		// System.out.println("isCompatible METHOD START");
-
-		VertexRefinedByFeatureExpression vertexRefinedByFeatureExpression = (VertexRefinedByFeatureExpression) candidateVertex;
-		FeatureExpression featureExpression = vertexRefinedByFeatureExpression.getFeatureExpression();
-		Feature feature = featureExpression.getFeature();
-		// System.out.println(candidateVertex.toString());
-		boolean result = false;
-
-		if (featureTruthValueMap.isEmpty()) {
-			result = true;
-		} else {
-			if (((featureExpression instanceof Negation) && (featureTruthValueMap.get(feature) == false))
-					|| (!(featureExpression instanceof Negation) && (featureTruthValueMap.get(feature) == true))) {
-				result = true;
-			}
-		}
-		// System.out.println("result is " + result);
-		// System.out.println("isCompatible METHOD FINISH");
-		return result;
+	/** Events that could not be reached from the pseudo-start vertex in the last run. */
+	public Set<Vertex> getUnreachableEvents() {
+		return unreachableEvents;
 	}
 
 	public Set<Vertex> getToCover() {
 		return toCover;
 	}
 
-	public void setToCover(Set<Vertex> toCover) {
-		this.toCover = toCover;
-	}
-
-	public Map<Feature, Boolean> getFeatureTruthValueMap() {
-		return featureTruthValueMap;
-	}
-
-	public void setFeatureTruthValueMap(Map<Feature, Boolean> featureExpressionTruthValueMap) {
-		this.featureTruthValueMap = featureExpressionTruthValueMap;
-	}
-
-	public List<Vertex> getVertexStack() {
-		return vertexStack;
-	}
-
-	public void setVertexStack(List<Vertex> vertexStack) {
-		this.vertexStack = vertexStack;
-	}
-
 	public List<Vertex> getEulerCycle() {
 		return eulerCycle;
-	}
-
-	public void setEulerCycle(List<Vertex> eulerCycle) {
-		this.eulerCycle = eulerCycle;
 	}
 
 	public Map<Vertex, List<Vertex>> getAdjacencyMap() {

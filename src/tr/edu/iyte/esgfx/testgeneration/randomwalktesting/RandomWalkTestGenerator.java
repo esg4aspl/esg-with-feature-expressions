@@ -64,7 +64,8 @@ public class RandomWalkTestGenerator {
     public Set<EventSequence> generateWalkUntilEdgeCoverage(double targetCoveragePercentage, int maxStepsSafetyLimit) {
         long startTime = System.nanoTime();
 
-        Set<EventSequence> cesSet = new HashSet<>();
+        // Kept in the order of generation: the detection cost depends on the order of the suite.
+        Set<EventSequence> cesSet = new java.util.LinkedHashSet<>();
         Set<Integer> globallyVisitedEdgeIDs = new HashSet<>();
         
         List<Vertex> currentSequenceBuffer = new ArrayList<>();
@@ -148,6 +149,54 @@ public class RandomWalkTestGenerator {
             this.safetyLimitHit = false;
         }
 
+        return cesSet;
+    }
+
+    /**
+     * Random walk with a budget instead of a coverage target: complete
+     * sequences are added until the suite holds at least 'eventBudget' events.
+     * The last sequence is not cut, so every sequence of the suite is a
+     * complete event sequence. The walk also stops after 'maxStepsSafetyLimit'
+     * steps.
+     */
+    public Set<EventSequence> generateWalkUntilEvents(int eventBudget, int maxStepsSafetyLimit) {
+        long startTime = System.nanoTime();
+        Set<EventSequence> cesSet = new java.util.LinkedHashSet<>();
+        List<Vertex> currentSequenceBuffer = new ArrayList<>();
+        Vertex startVertex = findPseudoStartVertex();
+        if (startVertex == null)
+            throw new IllegalStateException("Graph does not contain '['.");
+        Vertex current = startVertex;
+        int steps = 0;
+        int events = 0;
+        boolean budgetReached = eventBudget <= 0;
+        while (!budgetReached && steps < maxStepsSafetyLimit) {
+            Vertex next = getNextVertex(current, startVertex);
+            if (current.isPseudoEndVertex()) {
+                if (!currentSequenceBuffer.isEmpty()) {
+                    EventSequence ces = new EventSequence();
+                    ces.setEventSequence(new ArrayList<>(currentSequenceBuffer));
+                    if (cesSet.add(ces)) {
+                        events += currentSequenceBuffer.size();
+                    }
+                }
+                currentSequenceBuffer.clear();
+                if (events >= eventBudget) {
+                    budgetReached = true;
+                    break;
+                }
+            } else if (next.isPseudoStartVertex() && !current.isPseudoEndVertex()) {
+                currentSequenceBuffer.clear();
+                abortedSequenceCount++;
+            } else if (!next.isPseudoEndVertex()) {
+                currentSequenceBuffer.add(next);
+            }
+            current = next;
+            steps++;
+        }
+        this.executionTimeMs = (System.nanoTime() - startTime) / 1_000_000;
+        this.stepsTaken = steps;
+        this.safetyLimitHit = !budgetReached;
         return cesSet;
     }
 

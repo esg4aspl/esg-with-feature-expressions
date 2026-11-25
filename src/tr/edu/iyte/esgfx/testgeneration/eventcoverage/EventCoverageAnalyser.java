@@ -23,13 +23,11 @@ public class EventCoverageAnalyser {
     public double analyseEventCoverage(ESG ESGFx, Set<EventSequence> CESsOfESGFx,
             Map<String, FeatureExpression> featureExpressionMap) {
 
-        Set<String> mustCoveredEvents = detectMustCoveredEvents(ESGFx);
-        Set<String> coveredEvents = detectCoveredEvents(CESsOfESGFx);
-
-        Set<String> uncoveredEvents = new LinkedHashSet<>(mustCoveredEvents);
-        uncoveredEvents.removeAll(coveredEvents);
-
-        return percentageOfCoverage(mustCoveredEvents, uncoveredEvents);
+        // Counted by vertex identity: an event name may contain a comma or a
+        // trailing number, so names are not compared.
+        return new tr.edu.iyte.esgfx.testgeneration.SequenceCoverageAnalyser(ESGFx)
+                .coverage(tr.edu.iyte.esgfx.testgeneration.SequenceCoverageAnalyser.unfold(CESsOfESGFx), 1)
+                .percentage();
     }
 
     // --- Normalization (same logic as EdgeCoverageAnalyser) ---
