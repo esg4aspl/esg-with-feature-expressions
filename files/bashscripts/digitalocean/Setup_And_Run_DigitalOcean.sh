@@ -28,14 +28,15 @@ if [ "$MODE" != "full" ] && [ "$MODE" != "rehearsal" ]; then
     exit 1
 fi
 
-# The branch every node clones, and the commit it must be at.
+# The branch every node clones, and the commit it must be at. The node list ips.txt is
+# local to a run and is left out of the comparison.
 GIT_BRANCH="v3-experiments"
 EXPECTED_COMMIT="$(git -C "$FILES_DIR" rev-parse "origin/$GIT_BRANCH" 2>/dev/null)"
 if [ -z "$EXPECTED_COMMIT" ]; then
     echo "❌ ERROR: origin/$GIT_BRANCH not found. Push the branch first (git fetch to refresh)."
     exit 1
 fi
-if [ "$(git -C "$FILES_DIR" rev-parse HEAD)" != "$EXPECTED_COMMIT" ] || [ -n "$(git -C "$FILES_DIR" status --porcelain --untracked-files=no)" ]; then
+if [ "$(git -C "$FILES_DIR" rev-parse HEAD)" != "$EXPECTED_COMMIT" ] || [ -n "$(git -C "$FILES_DIR" status --porcelain --untracked-files=no -- . ':(exclude)bashscripts/digitalocean/ips.txt')" ]; then
     echo "❌ ERROR: the local working tree is not the pushed commit $EXPECTED_COMMIT of $GIT_BRANCH."
     echo "   The nodes would run other code than this machine. Commit and push, then start again."
     exit 1
