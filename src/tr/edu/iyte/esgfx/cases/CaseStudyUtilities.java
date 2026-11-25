@@ -27,6 +27,11 @@ public class CaseStudyUtilities {
 	protected Map<String, FeatureExpression> featureExpressionMapFromFeatureModel;
 
 	protected static String SPLName;
+	/**
+	 * Features that the experiments treat as mandatory although the feature
+	 * model file declares them optional. Empty unless a case study sets it.
+	 */
+	protected static String[] mandatoryFeatures = new String[0];
 	protected static String caseStudyFolder;
 	protected static String featureModelFile;
 	protected static String ESGFxFile;

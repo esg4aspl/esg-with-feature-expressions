@@ -15,7 +15,7 @@ import tr.edu.iyte.esgfx.testgeneration.randomwalktesting.RandomWalkTestGenerato
 
 public class RQ3_RandomWalkMultiSeed_TestGenerator extends CaseStudyUtilities {
 
-    private static final long[] SEEDS = {42L, 43L, 44L, 45L, 46L, 47L, 48L, 49L, 50L, 51L};
+    private static final long[] SEEDS = TestSuiteFactory.randomWalkSeeds();
     private static final double DAMPING_FACTOR = 0.85;
 
     public void generateMultiSeedRandomWalkTests() throws Exception {

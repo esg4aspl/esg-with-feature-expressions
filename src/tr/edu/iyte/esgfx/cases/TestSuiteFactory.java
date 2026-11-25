@@ -63,6 +63,19 @@ public final class TestSuiteFactory {
     private TestSuiteFactory() { /* static helpers only */ }
 
     /**
+     * Seeds of the random baseline: 0 to 99, or 0 to RW_SEEDS - 1 if the
+     * environment variable RW_SEEDS is set.
+     */
+    public static long[] randomWalkSeeds() {
+        int count = Integer.parseInt(System.getenv().getOrDefault("RW_SEEDS", "100"));
+        long[] seeds = new long[count];
+        for (int i = 0; i < count; i++) {
+            seeds[i] = i;
+        }
+        return seeds;
+    }
+
+    /**
      * Default safety limit for Random-Walk generation, matching
      * RQ3_RandomWalkMultiSeed_TestGenerator and the damping generator.
      */
@@ -89,12 +102,11 @@ public final class TestSuiteFactory {
 
         if (L == 1) {
             // Mirrors RQ1_ComparativeEfficiency_ESGFx_L1.
-            ESG balanced = StronglyConnectedBalancedESGFxGeneration
-                    .getStronglyConnectedBalancedESGFxGeneration(productESGFx);
+            // Event coverage walks the product-level model itself.
 
             EulerCycleGeneratorForEventCoverage eulerGen =
                     new EulerCycleGeneratorForEventCoverage(featureExpressionMap);
-            eulerGen.generateEulerCycle(balanced);
+            eulerGen.generateEulerCycle(productESGFx);
             List<Vertex> eulerCycle = eulerGen.getEulerCycle();
 
             EulerCycleToTestSequenceGenerator cesGen = new EulerCycleToTestSequenceGenerator();
@@ -102,7 +114,6 @@ public final class TestSuiteFactory {
 
             cesGen.reset();
             eulerGen.reset();
-            balanced = null;
             // L=1 visits original MOGA vertices directly; no decomposition.
             return suite != null ? suite : new LinkedHashSet<>();
         }

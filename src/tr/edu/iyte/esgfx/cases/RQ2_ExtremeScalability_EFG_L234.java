@@ -51,13 +51,17 @@ import tr.edu.iyte.esgfx.testexecution.TestExecutor;
 public class RQ2_ExtremeScalability_EFG_L234 extends CaseStudyUtilities {
 
     public void measureEFGScalability() throws Exception {
+        RunMeasurements.markStart();
+        RunMeasurements.Totals checkTotals = new RunMeasurements.Totals();
+        long maxChildPeakRssKb = -1;
+        long ownSatTimeNanos = 0, skippedSatTimeNanos = 0, skippedConfigurations = 0, enumeratedConfigurations = 0;
         
         int CURRENT_SHARD = Integer.parseInt(System.getenv().getOrDefault("SHARD", "0"));
         int N_SHARDS = Integer.parseInt(System.getenv().getOrDefault("N_SHARDS", "1"));
         int L_LEVEL = Integer.parseInt(System.getenv().getOrDefault("L_LEVEL", "2"));
         int runID = Integer.parseInt(System.getenv().getOrDefault("runID", "1"));
         int timeoutHours = Integer.parseInt(System.getenv().getOrDefault("TIMEOUT_HOURS", "0"));
-        long maxDurationNanos = timeoutHours > 0 ? timeoutHours * 60L * 60L * 1_000_000_000L : Long.MAX_VALUE;
+        long maxDurationNanos = RunMeasurements.timeBudgetNanos();
         
         String EFGCoverageType = "L" + L_LEVEL;
         coverageLength = L_LEVEL;
@@ -90,10 +94,9 @@ public class RQ2_ExtremeScalability_EFG_L234 extends CaseStudyUtilities {
         featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFile, ESGFxFile);
         List<FeatureExpression> featureExpressionList = getFeatureExpressionList(featureExpressionMapFromFeatureModel);
 
-        SATSolverGenerationFromFeatureModel satSolverGenerationFromFeatureModel = new SATSolverGenerationFromFeatureModel();
-        ISolver solver = SolverFactory.newDefault();
-        satSolverGenerationFromFeatureModel.addSATClauses(solver, featureModel, featureExpressionMapFromFeatureModel,
-                featureExpressionList);
+        // The products are enumerated from the DIMACS file of the feature model.
+        ProductSpace productSpace = ProductSpace.open(DIMACSFile, DIMACSMappingFile, featureModelFile,
+                featureExpressionMapFromFeatureModel, mandatoryFeatures);
 
         int productID = 0;
         int handledProducts = 0;
@@ -101,46 +104,77 @@ public class RQ2_ExtremeScalability_EFG_L234 extends CaseStudyUtilities {
 
         ProductESGFxGenerator productESGFxGenerator = new ProductESGFxGenerator();
 
+        String stopReason = "Completed";
+        long budgetExcludedNanos = 0;
+        long globalPeakGenAboveBaselineBytes = 0;
+        // One row per product, with the configuration, so that distributions over products and
+        // the throughput over time can be computed afterwards.
+        java.io.PrintWriter productRecord = RunMeasurements.openProductRecord(
+                extremeScalabilityTestPipelineMeasurementFolder + "perProduct/",
+                String.format("%s_%s_shard%02d_run%d", SPLName, "EFG_L" + coverageLength, CURRENT_SHARD, runID),
+                "# features: " + RunMeasurements.featureNames(featureExpressionList) + "\n"
+                        + "ProductNumber;Selection;Vertices;Edges;Sequences;Events;ProductGenTime(us);TestGenTime(us);"
+                        + "TestExecTime(us);GenPeakAboveBaseline(kB);ElapsedSinceStart(ms);Status");
         long satStart = System.nanoTime();
 
         while (true) {
             
-            if (System.nanoTime() - startTime1 >= maxDurationNanos) {
+            if (System.nanoTime() - startTime1 - budgetExcludedNanos >= maxDurationNanos) {
+                stopReason = "TimeBudget";
                 System.out.println("Timeout reached. Processed products: " + handledProducts);
                 break;
             }
 
-            boolean isSatisfiable = solver.isSatisfiable();
+            boolean isSatisfiable;
+            try {
+                isSatisfiable = productSpace.next();
+            } catch (OutOfMemoryError oom) {
+                // The clauses that exclude the enumerated products no longer fit in the heap.
+                productSpace = null;
+                System.gc();
+                stopReason = "OutOfMemoryInEnumeration";
+                break;
+            }
             long satEnd = System.nanoTime();
-            totalSatTimeNanos += (satEnd - satStart);
+            long configurationSatNanos = satEnd - satStart;
+            totalSatTimeNanos += configurationSatNanos;
 
-            if (!isSatisfiable) break;
+            if (!isSatisfiable) break; // every product has been enumerated
 
             productID++;
 
-            int[] model = solver.model();
-            for (int i = 0; i < model.length; i++) {
-                FeatureExpression fe = featureExpressionList.get(i);
-                fe.setTruthValue(model[i] > 0);
-            }
 
             long blockingStart = System.nanoTime();
-            VecInt blockingClause = new VecInt();
-            for (int literal : solver.model()) {
-                blockingClause.push(-literal);
+            try {
+                productSpace.exclude();
+            } catch (OutOfMemoryError oom) {
+                productSpace = null;
+                System.gc();
+                stopReason = "OutOfMemoryInEnumeration";
+                break;
             }
-            solver.addClause(blockingClause);
-            totalSatTimeNanos += (System.nanoTime() - blockingStart);
+            long blockingNanos = System.nanoTime() - blockingStart;
+            totalSatTimeNanos += blockingNanos;
+            configurationSatNanos += blockingNanos;
+            enumeratedConfigurations++;
 
             boolean isProductConfigurationValid = isProductConfigurationValid(featureModel,
                     featureExpressionMapFromFeatureModel);
 
             if (!isProductConfigurationValid || ((productID - 1) % N_SHARDS) != CURRENT_SHARD) {
+                // Enumerated here but generated by another shard (or not valid).
+                skippedSatTimeNanos += configurationSatNanos;
+                skippedConfigurations++;
                 satStart = System.nanoTime();
                 continue;
             }
+            ownSatTimeNanos += configurationSatNanos;
 
             handledProducts++;
+            long p0ProdGen = totalProdGenTimeNanos, p0TestGen = totalTestGenTimeNanos, p0Exec = totalTestExecTimeNanos;
+            long p0Cases = globalTotalTestCases, p0Events = globalTotalTestEvents;
+            long pGenPeakAbove = -1;
+            String productStatus = "SUCCESS";
             String productName = ProductIDUtil.format(productID);
             
             // Temporary files (will be deleted after measurement)
@@ -163,6 +197,7 @@ public class RQ2_ExtremeScalability_EFG_L234 extends CaseStudyUtilities {
 
                 // 2. EFG TRANSFORMATION (ESGFx → EFG XML)
                 resetPeakMemoryCounters();
+                long heapAtGenStart = RunMeasurements.usedHeapBytes();
                 
                 long efgTransformStart = System.nanoTime();
                 ESGToEFGFileWriter.writeESGFxToEFGFile(productESGFx, productName, EFGFolder);
@@ -180,6 +215,7 @@ public class RQ2_ExtremeScalability_EFG_L234 extends CaseStudyUtilities {
                 long testGenStart = System.nanoTime();
                 GuitarExecutionWrapper.generateTestsFromEFG(efgFilePath, EFGTestSequencesFolderPerProduct, L_LEVEL);
                 totalTestGenTimeNanos += (System.nanoTime() - testGenStart);
+                maxChildPeakRssKb = Math.max(maxChildPeakRssKb, GuitarExecutionWrapper.getLastChildPeakRssKb());
 
                 // 4. PARSE GUITAR OUTPUT TO EVENT SEQUENCES (CRITICAL FIX!)
                 long parseStart = System.nanoTime();
@@ -199,6 +235,10 @@ public class RQ2_ExtremeScalability_EFG_L234 extends CaseStudyUtilities {
                 }
 
                 long currentPeakGenBytes = getPeakHeapMemoryBytes();
+                // The heap also holds the clauses of the enumeration; this is the growth during generation.
+                pGenPeakAbove = Math.max(0, currentPeakGenBytes - heapAtGenStart);
+                if (pGenPeakAbove > globalPeakGenAboveBaselineBytes)
+                    globalPeakGenAboveBaselineBytes = pGenPeakAbove;
                 if (currentPeakGenBytes > globalPeakMemoryGenBytes) {
                     globalPeakMemoryGenBytes = currentPeakGenBytes;
                 }
@@ -238,14 +278,35 @@ public class RQ2_ExtremeScalability_EFG_L234 extends CaseStudyUtilities {
                 globalTotalEdgeCoverageAnalysisTimeNanos += (edgeCovAnalysisEnd - edgeCovAnalysisStart);
                 globalTotalEdgeCoverage += currentEdgeCoverage;
 
+                // Outside every timer: replay check and sequence coverage.
+                RunMeasurements.check(productESGFx, testSequences, checkTotals, 2, coverageLength);
+                // The check is not part of the time budget.
+                budgetExcludedNanos += RunMeasurements.lastCheckNanos();
+
             } catch (OutOfMemoryError oom) {
                 failedProducts++;
+                productStatus = "OutOfMemory";
                 System.err.println("OOM on product " + productID);
                 System.gc();
             } catch (Exception e) {
                 failedProducts++;
+                productStatus = "Exception: " + e.getClass().getSimpleName() + ": " + e.getMessage();
                 System.err.println("GUITAR/EFG failure on product " + productID + ": " + e.getMessage());
+            } catch (Throwable t) {
+                failedProducts++;
+                productStatus = "Error: " + t;
             } finally {
+                productRecord.println(productID + ";" + RunMeasurements.selectionBits(featureExpressionList) + ";"
+                        + (productESGFx != null ? productESGFx.getVertexList().size() : -1) + ";"
+                        + (productESGFx != null ? productESGFx.getEdgeList().size() : -1) + ";"
+                        + (globalTotalTestCases - p0Cases) + ";" + (globalTotalTestEvents - p0Events) + ";"
+                        + ((totalProdGenTimeNanos - p0ProdGen) / 1000) + ";" + ((totalTestGenTimeNanos - p0TestGen) / 1000) + ";"
+                        + ((totalTestExecTimeNanos - p0Exec) / 1000) + ";" + (pGenPeakAbove < 0 ? -1 : pGenPeakAbove / 1024) + ";"
+                        + (long) RunMeasurements.elapsedMs() + ";"
+                        + String.valueOf(productStatus).replace(';', ',').replace('\n', ' '));
+                if (handledProducts % 200 == 0) {
+                    productRecord.flush();
+                }
                 // 7. CLEANUP - DELETE TEMPORARY FILES (STREAMING PIPELINE!)
                 deleteEFGTemporaryFiles(efgFilePath, EFGTestSequencesFolderPerProduct);
                 
@@ -302,6 +363,15 @@ public class RQ2_ExtremeScalability_EFG_L234 extends CaseStudyUtilities {
                 testExecTimeMs, peakExecMemoryMB, 
                 handledProducts, failedProducts, 
                 summaryResultPath, SPLName, coverageType);
+
+        productRecord.close();
+        RunMeasurements.writeJvmRow(summaryResultPath, runID, CURRENT_SHARD, N_SHARDS, "EFG", "L" + coverageLength,
+                handledProducts, failedProducts, maxChildPeakRssKb,
+                "StopReason;GenPeakAboveBaseline(MB);EnumeratedConfigurations;SkippedConfigurations;OwnSatTime(ms);SkippedSatTime(ms);" + RunMeasurements.Totals.COLUMNS,
+                stopReason + ";" + (globalPeakGenAboveBaselineBytes / (1024 * 1024)) + ";" + enumeratedConfigurations + ";"
+                        + skippedConfigurations + ";"
+                        + String.format(Locale.ROOT, "%.3f", ownSatTimeNanos / 1_000_000.0) + ";"
+                        + String.format(Locale.ROOT, "%.3f", skippedSatTimeNanos / 1_000_000.0) + ";" + checkTotals.toRow());
 
         System.out.println(String.format(Locale.ROOT,
                 "EFG L=%d %s FINISHED. Processed: %d, Failed: %d, Avg Edge Coverage: %.2f%%, Peak Memory: %.2fMB",

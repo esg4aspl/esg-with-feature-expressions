@@ -21,7 +21,7 @@ import tr.edu.iyte.esgfx.testgeneration.FileToTestSuiteConverter;
 
 public class RQ3_FaultDetection_EventOmitter extends CaseStudyUtilities {
 
-    private static final long[] SEEDS = {42L, 43L, 44L, 45L, 46L, 47L, 48L, 49L, 50L, 51L};
+    private static final long[] SEEDS = TestSuiteFactory.randomWalkSeeds();
 
     // =====================================================================
     // IN-MEMORY MODE — CONSTANTS BEGIN

@@ -1,6 +1,6 @@
 package tr.edu.iyte.esgfx.cases.syngovia;
 
-import tr.edu.iyte.esgfx.cases.SamplesToProductESGFx;
+import tr.edu.iyte.esgfx.cases.ProductESGFxToEFGAndDOTFileWriter;
 
 public class ProductESGFxToEFGAndDOTFileWriter_Svia extends CaseStudyUtilities_Svia {
 
@@ -9,9 +9,9 @@ public class ProductESGFxToEFGAndDOTFileWriter_Svia extends CaseStudyUtilities_S
 		coverageLength = 2;
 		CaseStudyUtilities_Svia.initializeFilePaths();
 		
-		SamplesToProductESGFx samplesToProductESGFx = new SamplesToProductESGFx();
-		samplesToProductESGFx.writeProductESGFxToFile();
-		
+		// syngo.via has 219 products; all of them are written, without sampling.
+		ProductESGFxToEFGAndDOTFileWriter writer = new ProductESGFxToEFGAndDOTFileWriter();
+		writer.writeProductESGFxToFile();
 	}
 
 }

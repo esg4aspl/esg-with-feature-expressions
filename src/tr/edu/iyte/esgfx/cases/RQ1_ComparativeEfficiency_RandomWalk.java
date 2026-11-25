@@ -24,6 +24,11 @@ public class RQ1_ComparativeEfficiency_RandomWalk extends CaseStudyUtilities {
 
     public void measurePipeLineForRandomWalk() throws Exception {
 
+        RunMeasurements.markStart();
+        // RW_SEED set: every product uses this seed (as in RQ3). Not set: 42 + product number.
+        String seedSetting = System.getenv().getOrDefault("RW_SEED", "").trim();
+        boolean fixedSeed = !seedSetting.isEmpty();
+        String seedLabel = fixedSeed ? seedSetting : "42+product";
         System.out.println("Total Time Measurement L=0 (Random Walk Pipeline) " + SPLName + " STARTED");
 
         int N_SHARDS = Integer.parseInt(System.getenv().getOrDefault("N_SHARDS", "1"));
@@ -72,6 +77,7 @@ public class RQ1_ComparativeEfficiency_RandomWalk extends CaseStudyUtilities {
         }
 
         File logFile = new File(RWPerProductLog);
+        RunMeasurements.refuseLogOfEarlierVersion(logFile);
         boolean writeHeader = !logFile.exists() || logFile.length() == 0;
         if (logFile.getParentFile() != null)
             logFile.getParentFile().mkdirs();
@@ -91,13 +97,21 @@ public class RQ1_ComparativeEfficiency_RandomWalk extends CaseStudyUtilities {
 
         Arrays.sort(dotFiles, (f1, f2) -> f1.getName().compareTo(f2.getName()));
 
+        // One store per seed, written in the first run of that seed.
+        PrintWriter suiteStore = (runID == 1)
+                ? RunMeasurements.openSuiteStore(testsequencesFolder + coverageType + "/stored/",
+                        String.format("%s_RandomWalk_seed%s_shard%02d", SPLName, seedLabel.replace("+", "plus"),
+                                CURRENT_SHARD))
+                : null;
+
         try (PrintWriter RWPerProductLogWriter = new PrintWriter(new FileWriter(logFile, true))) {
 
             if (writeHeader) {
                 RWPerProductLogWriter.println("RunID;ProductID;ModelLoadTime(ms);TestGenTime(ms);TestGenPeakMemory(MB);"
                         + "Vertices;Edges;TestCases;TestEvents;AbortedSequences;TestCaseRecordingTime(ms);"
                         + "EventCoverage(%);EventCoverageTime(ms);EdgeCoverage(%);EdgeCoverageTime(ms);"
-                        + "TestExecTime(ms);TestExecPeakMemory(MB);SafetyLimitHit;AchievedCoverageIfHit;Status;ErrorReason");
+                        + "TestExecTime(ms);TestExecPeakMemory(MB);SafetyLimitHit;AchievedCoverageIfHit;Status;ErrorReason;"
+                        + RunMeasurements.PRODUCT_COLUMNS + ";Seed;ProcessPeakRSS(kB)");
             }
 
             int productID = 0;
@@ -113,6 +127,8 @@ public class RQ1_ComparativeEfficiency_RandomWalk extends CaseStudyUtilities {
 
                 String configFilePath = productConfigurationFolder + productName + ".config";
 
+                String checkColumns = RunMeasurements.check(null, null, null);
+                long usedSeed = -1;
                 double currentModelLoadTimeMs = 0.0, currentGenTimeMs = 0.0, currentPeakGenMemMB = 0.0;
                 int currentVertices = 0, currentEdges = 0, currentTestCases = 0, currentTestEvents = 0;
                 long currentAbortedSequences = 0;
@@ -154,7 +170,8 @@ public class RQ1_ComparativeEfficiency_RandomWalk extends CaseStudyUtilities {
                     	    5 * currentVertices * currentVertices * currentVertices,
                     	    2_000_000
                     	);
-                    long seed = 42L + productID;
+                    long seed = fixedSeed ? Long.parseLong(seedSetting) : 42L + productID;
+                    usedSeed = seed;
                     rwGenerator = new RandomWalkTestGenerator((ESGFx) productESGFx, dampingFactor, seed);
                     testSequences = rwGenerator.generateWalkUntilEdgeCoverage(targetCoverage, safetyLimit);
                     long testGenEnd = System.nanoTime();
@@ -231,6 +248,12 @@ public class RQ1_ComparativeEfficiency_RandomWalk extends CaseStudyUtilities {
                     currentRecordingTimeMs = (recEnd - recStart) / 1_000_000.0;
                     globalTotalTestCaseRecordingTimeNanos += (recEnd - recStart);
 
+                    // Outside every timer: replay check, sequence coverage, stored suite.
+                    checkColumns = RunMeasurements.check(productESGFx, testSequences, null, 1, 2, 3, 4);
+                    RunMeasurements.storeSuite(suiteStore, productName, productESGFx, testSequences);
+                    // What the check and the store left behind is collected here.
+                    System.gc();
+
                 } catch (OutOfMemoryError oom) {
                     status = "FAILED";
                     errorReason = "OutOfMemory";
@@ -240,6 +263,10 @@ public class RQ1_ComparativeEfficiency_RandomWalk extends CaseStudyUtilities {
                     status = "FAILED";
                     errorReason = "Exception: " + e.getClass().getSimpleName();
                     failedProducts++;
+                } catch (Throwable t) {
+                	status = "FAILED";
+                	errorReason = "Error: " + t.getClass().getSimpleName();
+                	failedProducts++;
                 } finally {
                     RWPerProductLogWriter.println(runID + ";" + productName + ";" + df.format(currentModelLoadTimeMs)
                             + ";" + df.format(currentGenTimeMs) + ";" + df.format(currentPeakGenMemMB) + ";"
@@ -249,7 +276,8 @@ public class RQ1_ComparativeEfficiency_RandomWalk extends CaseStudyUtilities {
                             + df.format(currentEdgeCoverage) + ";" + df.format(currentEdgeCovTimeMs) + ";"
                             + df.format(currentExecTimeMs) + ";" + df.format(currentPeakExecMemMB) + ";"
                             + hitSafetyLimit + ";" + df.format(limitAchievedCoverage) + ";" + status + ";"
-                            + errorReason);
+                            + errorReason + ";" + checkColumns + ";" + usedSeed + ";"
+                            + RunMeasurements.processPeakRssKb());
                     RWPerProductLogWriter.flush();
 
                     productESGFx = null;
@@ -312,6 +340,12 @@ public class RQ1_ComparativeEfficiency_RandomWalk extends CaseStudyUtilities {
                 testCaseRecordingTimeMs, avgEventCoverage, evCovTimeMs, avgEdgeCoverage, edCovTimeMs, testExecTimeMs,
                 peakExecMemMB, safetyLimitHitCount, avgTimeOnSafetyLimitMs, avgStepsOnSafetyLimit,
                 avgCoverageOnSafetyLimit, handledProducts, failedProducts, summaryResultPath, SPLName, coverageType);
+
+        if (suiteStore != null) {
+            suiteStore.close();
+        }
+        RunMeasurements.writeJvmRow(summaryResultPath, runID, CURRENT_SHARD, N_SHARDS, "RandomWalk", "L0",
+                handledProducts, failedProducts, -1, "Seed", seedLabel);
 
         System.out.println("Total Time Measurement L=0 " + SPLName + " FINISHED");
     }

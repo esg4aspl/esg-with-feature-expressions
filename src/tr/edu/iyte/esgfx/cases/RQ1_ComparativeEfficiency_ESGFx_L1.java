@@ -25,6 +25,8 @@ import tr.edu.iyte.esgfx.testexecution.TestExecutor;
 public class RQ1_ComparativeEfficiency_ESGFx_L1 extends CaseStudyUtilities {
 
     public void measurePipelineForEventCoverage() throws Exception {
+        RunMeasurements.markStart();
+        int WARM_REPEATS = Integer.parseInt(System.getenv().getOrDefault("WARM_REPEATS", "0"));
         System.out.println("Test Generation And Execution for ESG-Fx Pipeline L=1 " + SPLName + " STARTED");
 
         int N_SHARDS = Integer.parseInt(System.getenv().getOrDefault("N_SHARDS", "1"));
@@ -73,6 +75,7 @@ public class RQ1_ComparativeEfficiency_ESGFx_L1 extends CaseStudyUtilities {
         DecimalFormat df = new DecimalFormat("#.##", symbols);
 
         File logFile = new File(ESGFxPerProductLog);
+        RunMeasurements.refuseLogOfEarlierVersion(logFile);
         boolean writeHeader = !logFile.exists() || logFile.length() == 0;
 
         if (logFile.getParentFile() != null) {
@@ -81,6 +84,12 @@ public class RQ1_ComparativeEfficiency_ESGFx_L1 extends CaseStudyUtilities {
 
         featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFile,
                 ESGFxFile);
+
+        // The suites are the same in every run, so they are stored in the first run only.
+        PrintWriter suiteStore = (runID == 1)
+                ? RunMeasurements.openSuiteStore(testsequencesFolder + coverageType + "/stored/",
+                        String.format("%s_ESG-Fx_L%d_shard%02d", SPLName, coverageLength, CURRENT_SHARD))
+                : null;
 
         try (PrintWriter ESGFxPerProductLogWriter = new PrintWriter(new FileWriter(logFile, true))) {
 
@@ -92,7 +101,8 @@ public class RQ1_ComparativeEfficiency_ESGFx_L1 extends CaseStudyUtilities {
                         + "TestCaseRecordingTime(ms);"
                         + "EventCoverage(%);EventCoverageAnalysisTime(ms);"
                         + "TestExecTimeMs;TestExecPeakMemoryMB;ESGFxModelLoadTimeMs;"
-                        + "Status;ErrorReason");
+                        + "Status;ErrorReason;"
+                        + RunMeasurements.PRODUCT_COLUMNS + ";WarmTestGenTime(ms);ProcessPeakRSS(kB)");
             }
 
             for (int i = 0; i < dotFiles.length; i++) {
@@ -121,6 +131,8 @@ public class RQ1_ComparativeEfficiency_ESGFx_L1 extends CaseStudyUtilities {
                 double esgfxModelLoadTimeMs = 0.0;
                 String status = "SUCCESS";
                 String errorReason = "None";
+                String checkColumns = RunMeasurements.check(null, null, null);
+                double warmGenTimeMs = -1.0;
 
                 ESG productESGFx = null;
                 Set<EventSequence> testSequences = null;
@@ -154,10 +166,8 @@ public class RQ1_ComparativeEfficiency_ESGFx_L1 extends CaseStudyUtilities {
                     eulerCycleGeneratorForEventCoverage = new EulerCycleGeneratorForEventCoverage(
                             featureExpressionMapFromFeatureModel);
                     eulerCycleToTestSequenceGenerator = new EulerCycleToTestSequenceGenerator();
-                    stronglyConnectedBalancedESGFx = StronglyConnectedBalancedESGFxGeneration
-                            .getStronglyConnectedBalancedESGFxGeneration(productESGFx);
-                    
-                    eulerCycleGeneratorForEventCoverage.generateEulerCycle(stronglyConnectedBalancedESGFx);
+                    // Event coverage walks the product-level model itself.
+                    eulerCycleGeneratorForEventCoverage.generateEulerCycle(productESGFx);
                     eulerCycle = eulerCycleGeneratorForEventCoverage.getEulerCycle();
 
                     testSequences = eulerCycleToTestSequenceGenerator.CESgenerator(eulerCycle);
@@ -217,6 +227,25 @@ public class RQ1_ComparativeEfficiency_ESGFx_L1 extends CaseStudyUtilities {
                     
                     testCaseRecordingTimeMs = (testCaseRecordingEnd - testCaseRecordingStart) / 1_000_000.0;
                     globalTotalTestCaseRecordingTimeNanos += (testCaseRecordingEnd - testCaseRecordingStart);
+
+                    // Outside every timer: replay check, sequence coverage, stored suite.
+                    checkColumns = RunMeasurements.check(productESGFx, testSequences, null, 1, 2, 3, 4);
+                    RunMeasurements.storeSuite(suiteStore, productName, productESGFx, testSequences);
+
+                    // Outside every timer: the same generation again in the warmed JVM.
+                    if (WARM_REPEATS > 0) {
+                        EulerCycleGeneratorForEventCoverage warmGenerator = new EulerCycleGeneratorForEventCoverage();
+                        for (int w = 0; w < WARM_REPEATS; w++) {
+                            warmGenerator.generateEulerCycle(productESGFx);
+                            new EulerCycleToTestSequenceGenerator().CESgenerator(warmGenerator.getEulerCycle());
+                        }
+                        long warmStart = System.nanoTime();
+                        warmGenerator.generateEulerCycle(productESGFx);
+                        new EulerCycleToTestSequenceGenerator().CESgenerator(warmGenerator.getEulerCycle());
+                        warmGenTimeMs = (System.nanoTime() - warmStart) / 1_000_000.0;
+                    }
+                    // What the check, the store and the repeats left behind is collected here.
+                    System.gc();
                     
                 } catch (OutOfMemoryError oom) {
                     status = "FAILED";
@@ -228,13 +257,18 @@ public class RQ1_ComparativeEfficiency_ESGFx_L1 extends CaseStudyUtilities {
                     errorReason = "Exception: " + e.getClass().getSimpleName();
                     failedProducts++;
                     e.printStackTrace(); 
+                } catch (Throwable t) {
+                	status = "FAILED";
+                	errorReason = "Error: " + t.getClass().getSimpleName();
+                	failedProducts++;
                 } finally {
                     
                     ESGFxPerProductLogWriter.println(runID + ";" + productName + ";" + df.format(genTimeMs) + ";"
                             + df.format(currentPeakGenMemMB) + ";" + esgfxVertices + ";" + esgfxEdges + ";" + currentTestCases
                             + ";" + currentTestEvents + ";" + df.format(testCaseRecordingTimeMs) + ";" + df.format(currentCoverage) + ";" 
                             + df.format(currentCoverageAnalysisTimeMs) + ";" + df.format(execTimeMs) + ";" + df.format(currentPeakExecMemMB)
-                            + ";" + df.format(esgfxModelLoadTimeMs) + ";" + status + ";" + errorReason);
+                            + ";" + df.format(esgfxModelLoadTimeMs) + ";" + status + ";" + errorReason + ";" + checkColumns
+                            + ";" + df.format(warmGenTimeMs) + ";" + RunMeasurements.processPeakRssKb());
 
                     ESGFxPerProductLogWriter.flush();
 
@@ -283,6 +317,12 @@ public class RQ1_ComparativeEfficiency_ESGFx_L1 extends CaseStudyUtilities {
                 globalTotalESGFxTestCases, globalTotalESGFxTestEvents, testCaseRecordingTimeMs, totalCoverage,
                 coverageAnalysisTimeMs, testExecTimeMs, globalPeakMemoryExecMB, esgfxModelLoadTimeMs, handledProducts, failedProducts,
                 summaryResultPath, SPLName, "L" + coverageLength);
+
+        if (suiteStore != null) {
+            suiteStore.close();
+        }
+        RunMeasurements.writeJvmRow(summaryResultPath, runID, CURRENT_SHARD, N_SHARDS, "ESG-Fx", "L1",
+                handledProducts, failedProducts, -1, "", "");
 
         System.out.println("Total Time Measurement L=1 " + SPLName + " FINISHED.");
     }

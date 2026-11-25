@@ -25,6 +25,10 @@ import tr.edu.iyte.esgfx.testgeneration.guitar.EFGMetricsExtractor.EFGMetrics;
 public class RQ1_ComparativeEfficiency_EFG_L234 extends CaseStudyUtilities {
 
     public void measureTotalTimeForEFGPipeline() throws Exception {
+        RunMeasurements.markStart();
+        long maxChildPeakRssKb = -1;
+        // Fixed cost of starting GUITAR on this machine, measured before the products.
+        double guitarStartupMs = GuitarExecutionWrapper.measureStartupMs(5);
 
         int N_SHARDS = Integer.parseInt(System.getenv().getOrDefault("N_SHARDS", "1"));
         int CURRENT_SHARD = Integer.parseInt(System.getenv().getOrDefault("SHARD", "0"));
@@ -83,6 +87,7 @@ public class RQ1_ComparativeEfficiency_EFG_L234 extends CaseStudyUtilities {
         DecimalFormat df = new DecimalFormat("#.##", symbols);
 
         File logFile = new File(EFGPerProductLog);
+        RunMeasurements.refuseLogOfEarlierVersion(logFile);
         boolean writeHeader = !logFile.exists() || logFile.length() == 0;
 
         if (logFile.getParentFile() != null) {
@@ -92,13 +97,20 @@ public class RQ1_ComparativeEfficiency_EFG_L234 extends CaseStudyUtilities {
         featureExpressionMapFromFeatureModel = generateFeatureExpressionMapFromFeatureModel(featureModelFile,
                 ESGFxFile);
 
+        // The suites are the same in every run, so they are stored in the first run only.
+        PrintWriter suiteStore = (runID == 1)
+                ? RunMeasurements.openSuiteStore(efg_testsequencesFolder + "stored/",
+                        String.format("%s_EFG_L%d_shard%02d", SPLName, L_LEVEL, CURRENT_SHARD))
+                : null;
+
         try (PrintWriter EFGPerProductLogWriter = new PrintWriter(new FileWriter(logFile, true))) {
 
             if (writeHeader) {
                 EFGPerProductLogWriter.println("RunID;ProductID;" + "GuitarGenTime(ms);ParsingTimeMs;ParentPeakMemory(MB);"
                         + "NumberOfEFGVertices;NumberOfEFGEdges;" + "NumberOfEFGTestCases;NumberOfEFGTestEvents;"
                         +   "EventCoverage;EventCoverageAnalysisTimeMs;EdgeCoverage;EdgeCoverageAnalysisTimeMs;TestExecTimeMs;TestExecPeakMemoryMB;"
-                        + "ESGFx_Vertices;ESGFx_Edges;ESGFxModelLoadTimeMs;" + "Status;ErrorReason");
+                        + "ESGFx_Vertices;ESGFx_Edges;ESGFxModelLoadTimeMs;" + "Status;ErrorReason;"
+                        + RunMeasurements.PRODUCT_COLUMNS + ";GuitarProcessPeakRSS(kB);ProcessPeakRSS(kB)");
             }
 
             for (File dotFile : dotFiles) {
@@ -115,6 +127,8 @@ public class RQ1_ComparativeEfficiency_EFG_L234 extends CaseStudyUtilities {
 
                 String configFilePath = productConfigurationFolder + productName + ".config";
 
+                String checkColumns = RunMeasurements.check(null, null, null);
+                long childPeakRssKb = -1;
                 double guitarGenTimeMs = 0.0;
                 double parseTimeMs = 0.0;
                 double currentPeakGenMemMB = 0.0;
@@ -163,9 +177,20 @@ public class RQ1_ComparativeEfficiency_EFG_L234 extends CaseStudyUtilities {
 
                     resetPeakMemoryCounters();
                     
+                    // Test files of an earlier run of this product must not be read as part of this suite.
+                    File[] earlierTests = new File(EFGTestSequencesFolderPerProduct)
+                            .listFiles((dir, name) -> name.toLowerCase().endsWith(".tst"));
+                    if (earlierTests != null) {
+                        for (File earlierTest : earlierTests) {
+                            earlierTest.delete();
+                        }
+                    }
+
                     long genStart = System.nanoTime();
                     GuitarExecutionWrapper.generateTestsFromEFG(efgFilePath, EFGTestSequencesFolderPerProduct, L_LEVEL);
                     long genEnd = System.nanoTime();
+                    childPeakRssKb = GuitarExecutionWrapper.getLastChildPeakRssKb();
+                    maxChildPeakRssKb = Math.max(maxChildPeakRssKb, childPeakRssKb);
                     
                     guitarGenTimeMs = (genEnd - genStart) / 1_000_000.0;
                     globalTotalGuitarGenTimeNanos += (genEnd - genStart);
@@ -234,6 +259,12 @@ public class RQ1_ComparativeEfficiency_EFG_L234 extends CaseStudyUtilities {
                     globalTotalEdgeCoverageAnalysisTimeNanos += (coverageAnalysisEnd - coverageAnalysisStart);
                     globalTotalEdgeCoverage += currentEdgeCoverage;
 
+                    // Outside every timer: replay check, sequence coverage, stored suite.
+                    checkColumns = RunMeasurements.check(productESGFx, testSequences, null, 1, 2, 3, 4);
+                    RunMeasurements.storeSuite(suiteStore, productName, productESGFx, testSequences);
+                    // What the check and the store left behind is collected here.
+                    System.gc();
+
                 } catch (OutOfMemoryError oom) {
                     status = "FAILED";
                     errorReason = "OutOfMemory";
@@ -243,6 +274,10 @@ public class RQ1_ComparativeEfficiency_EFG_L234 extends CaseStudyUtilities {
                     status = "FAILED";
                     errorReason = "Exception: " + e.getClass().getSimpleName();
                     failedProducts++;
+                } catch (Throwable t) {
+                	status = "FAILED";
+                	errorReason = "Error: " + t.getClass().getSimpleName();
+                	failedProducts++;
                 } finally {
 
                     EFGPerProductLogWriter.println(
@@ -265,7 +300,8 @@ public class RQ1_ComparativeEfficiency_EFG_L234 extends CaseStudyUtilities {
                             esgfxEdges + ";" +
                             df.format(esgfxModelLoadTimeMs) + ";" + 
                             status + ";" + 
-                            errorReason);
+                            errorReason + ";" + checkColumns + ";" + childPeakRssKb + ";"
+                            + RunMeasurements.processPeakRssKb());
 
                     EFGPerProductLogWriter.flush();
 
@@ -307,6 +343,13 @@ public class RQ1_ComparativeEfficiency_EFG_L234 extends CaseStudyUtilities {
                 totalExecTimeMs, globalPeakMemoryExecMB, globalTotalESGFxVertices, globalTotalESGFxEdges,
                 totalESGFxModelLoadTimeMs, handledProducts, failedProducts, summaryResultPath, SPLName,
                 EFGCoverageType);
+
+        if (suiteStore != null) {
+            suiteStore.close();
+        }
+        RunMeasurements.writeJvmRow(summaryResultPath, runID, CURRENT_SHARD, N_SHARDS, "EFG", EFGCoverageType,
+                handledProducts, failedProducts, maxChildPeakRssKb, "GuitarStartup(ms)",
+                String.format(Locale.ROOT, "%.3f", guitarStartupMs));
 
         System.out.println("Pipeline " + EFGCoverageType + " FINISHED.");
     }

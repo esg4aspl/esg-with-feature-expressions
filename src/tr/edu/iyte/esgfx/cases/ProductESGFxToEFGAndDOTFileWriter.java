@@ -5,10 +5,6 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.List;
 
-import org.sat4j.core.VecInt;
-import org.sat4j.minisat.SolverFactory;
-import org.sat4j.specs.ISolver;
-import org.sat4j.tools.ModelIterator;
 
 import tr.edu.iyte.esg.model.ESG;
 import tr.edu.iyte.esgfx.conversion.dot.ESGFxToDOTFileConverter;
@@ -16,7 +12,6 @@ import tr.edu.iyte.esgfx.conversion.xml.ESGToEFGFileWriter;
 
 import tr.edu.iyte.esgfx.model.featureexpression.FeatureExpression;
 
-import tr.edu.iyte.esgfx.productconfigurationgeneration.SATSolverGenerationFromFeatureModel;
 import tr.edu.iyte.esgfx.productmodelgeneration.ProductESGFxGenerator;
 
 public class ProductESGFxToEFGAndDOTFileWriter extends CaseStudyUtilities {
@@ -29,13 +24,12 @@ public class ProductESGFxToEFGAndDOTFileWriter extends CaseStudyUtilities {
 
         List<FeatureExpression> featureExpressionList = getFeatureExpressionList(featureExpressionMapFromFeatureModel);
 
-        SATSolverGenerationFromFeatureModel satSolverGenerationFromFeatureModel = new SATSolverGenerationFromFeatureModel();
-        ISolver solver = new ModelIterator(SolverFactory.newDefault());
-
         System.out.println("EFG, DOT & CONFIG FILE WRITER " + SPLName + " STARTED");
 
-        satSolverGenerationFromFeatureModel.addSATClauses(solver, featureModel, featureExpressionMapFromFeatureModel,
-                featureExpressionList);
+        // The products are enumerated from the DIMACS file of the feature model:
+        // one product for every distinct assignment to the concrete features.
+        ProductSpace productSpace = ProductSpace.open(DIMACSFile, DIMACSMappingFile, featureModelFile,
+                featureExpressionMapFromFeatureModel, mandatoryFeatures);
         ProductESGFxGenerator productESGFxGenerator = new ProductESGFxGenerator();
 
         String csvFilePathEFG = EFGFolder + SPLName + "_EFGFile_Generation_Times.csv";
@@ -43,6 +37,14 @@ public class ProductESGFxToEFGAndDOTFileWriter extends CaseStudyUtilities {
         String txtFilePath = caseStudyFolder + SPLName + "_ProductConfigurations.txt";
 
         String productConfigsFolder = caseStudyFolder + "productConfigurations/";
+
+        // The drivers read every file of these folders, so the product files of an
+        // earlier product set must not stay in them. They are moved, not deleted.
+        String archiveFolder = caseStudyFolder + "productFilesBefore_"
+                + new java.text.SimpleDateFormat("yyyyMMdd_HHmmss").format(new java.util.Date()) + "/";
+        moveProductFiles(new File(productConfigsFolder), ".config", new File(archiveFolder + "productConfigurations"));
+        moveProductFiles(new File(DOTFolder + coverageType), ".dot", new File(archiveFolder + "DOTs_" + coverageType));
+        moveProductFiles(new File(EFGFolder), ".efg", new File(archiveFolder + "EFGs"));
         File configDir = new File(productConfigsFolder);
         if (!configDir.exists()) {
             configDir.mkdirs();
@@ -57,25 +59,10 @@ public class ProductESGFxToEFGAndDOTFileWriter extends CaseStudyUtilities {
             csvWriter1.println("ProductID,EFG File Generation Time (ms)"); 
             csvWriter2.println("ProductID,DOT File Generation Time (ms)"); 
 
-            while (solver.isSatisfiable()) {
+            while (productSpace.next()) {
 
                 productID++;
-
-                int[] model = solver.model();
-                for (int i = 0; i < model.length; i++) {
-                    FeatureExpression featureExpression = featureExpressionList.get(i);
-                    if (model[i] > 0) {
-                        featureExpression.setTruthValue(true);
-                    } else {
-                        featureExpression.setTruthValue(false);
-                    }
-                }
-
-                VecInt blockingClause = new VecInt();
-                for (int i = 0; i < model.length; i++) {
-                    blockingClause.push(-model[i]);
-                }
-                solver.addClause(blockingClause);
+                productSpace.exclude();
 
                 boolean isProductConfigurationValid = isProductConfigurationValid(featureModel,
                         featureExpressionMapFromFeatureModel);
@@ -88,17 +75,14 @@ public class ProductESGFxToEFGAndDOTFileWriter extends CaseStudyUtilities {
                     StringBuilder productConfiguration = new StringBuilder(productName + ": <");
                     StringBuilder individualConfigFileContent = new StringBuilder();
                     
-                    for (int i = 0; i < model.length; i++) {
-                        FeatureExpression fe = featureExpressionList.get(i);
+                    for (FeatureExpression fe : featureExpressionList) {
                         String fname = fe.getFeature().getName();
-                        
-                        if (model[i] > 0) {
-                            fe.setTruthValue(true);
+
+                        if (fe.evaluate()) {
                             productConfiguration.append(fname).append(", ");
                             individualConfigFileContent.append(fname).append("=true\n");
                             numberOfFeatures++;
                         } else {
-                            fe.setTruthValue(false);
                             individualConfigFileContent.append(fname).append("=false\n");
                         }
                     }
@@ -149,4 +133,16 @@ public class ProductESGFxToEFGAndDOTFileWriter extends CaseStudyUtilities {
 
     }
 
+    /** Moves the files with the given extension out of a folder, if there are any. */
+    private static void moveProductFiles(File folder, String extension, File target) throws java.io.IOException {
+        File[] files = folder.listFiles((dir, name) -> name.toLowerCase().endsWith(extension));
+        if (files == null || files.length == 0) {
+            return;
+        }
+        target.mkdirs();
+        for (File file : files) {
+            java.nio.file.Files.move(file.toPath(), new File(target, file.getName()).toPath());
+        }
+        System.out.println("Moved " + files.length + " " + extension + " files of " + folder + " to " + target);
+    }
 }
