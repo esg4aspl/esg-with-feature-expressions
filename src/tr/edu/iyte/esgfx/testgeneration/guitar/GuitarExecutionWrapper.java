@@ -114,11 +114,18 @@ public class GuitarExecutionWrapper {
         return repeats % 2 == 1 ? times[repeats / 2] : (times[repeats / 2 - 1] + times[repeats / 2]) / 2.0;
     }
 
-    /** Heap limit of the GUITAR process, from the environment variable GUITAR_XMX (for example 4g). */
+    /** Heap limit (GUITAR_XMX, for example 4g) and further JVM options (GUITAR_JVM_FLAGS) of the GUITAR process. */
     private static void addHeapLimit(java.util.List<String> command) {
         String limit = System.getenv("GUITAR_XMX");
         if (limit != null && !limit.trim().isEmpty()) {
             command.add("-Xmx" + limit.trim());
+        }
+        // Further options of the GUITAR JVM, separated by spaces (GUITAR_JVM_FLAGS).
+        String flags = System.getenv("GUITAR_JVM_FLAGS");
+        if (flags != null && !flags.trim().isEmpty()) {
+            for (String flag : flags.trim().split("\\s+")) {
+                command.add(flag);
+            }
         }
     }
 

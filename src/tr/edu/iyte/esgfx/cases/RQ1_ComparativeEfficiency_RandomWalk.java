@@ -25,6 +25,7 @@ public class RQ1_ComparativeEfficiency_RandomWalk extends CaseStudyUtilities {
     public void measurePipeLineForRandomWalk() throws Exception {
 
         RunMeasurements.markStart();
+        int WARM_REPEATS = Integer.parseInt(System.getenv().getOrDefault("WARM_REPEATS", "0"));
         // RW_SEED set: every product uses this seed (as in RQ3). Not set: 42 + product number.
         String seedSetting = System.getenv().getOrDefault("RW_SEED", "").trim();
         boolean fixedSeed = !seedSetting.isEmpty();
@@ -111,7 +112,8 @@ public class RQ1_ComparativeEfficiency_RandomWalk extends CaseStudyUtilities {
                         + "Vertices;Edges;TestCases;TestEvents;AbortedSequences;TestCaseRecordingTime(ms);"
                         + "EventCoverage(%);EventCoverageTime(ms);EdgeCoverage(%);EdgeCoverageTime(ms);"
                         + "TestExecTime(ms);TestExecPeakMemory(MB);SafetyLimitHit;AchievedCoverageIfHit;Status;ErrorReason;"
-                        + RunMeasurements.PRODUCT_COLUMNS + ";Seed;ProcessPeakRSS(kB)");
+                        + RunMeasurements.PRODUCT_COLUMNS + ";Seed;ProcessPeakRSS(kB);"
+                        + "StepsTaken;DuplicateSequences;WarmTestGenTime(ms);TestGenPeakAboveStart(MB)");
             }
 
             int productID = 0;
@@ -128,7 +130,10 @@ public class RQ1_ComparativeEfficiency_RandomWalk extends CaseStudyUtilities {
                 String configFilePath = productConfigurationFolder + productName + ".config";
 
                 String checkColumns = RunMeasurements.check(null, null, null);
+                double genPeakAboveStartMB = -1.0;
                 long usedSeed = -1;
+                int stepsTaken = -1, duplicateSequences = -1;
+                double warmGenTimeMs = -1.0;
                 double currentModelLoadTimeMs = 0.0, currentGenTimeMs = 0.0, currentPeakGenMemMB = 0.0;
                 int currentVertices = 0, currentEdges = 0, currentTestCases = 0, currentTestEvents = 0;
                 long currentAbortedSequences = 0;
@@ -147,9 +152,9 @@ public class RQ1_ComparativeEfficiency_RandomWalk extends CaseStudyUtilities {
                 EdgeCoverageAnalyser edAnalyser = null;
 
                 try {
-                    updateFeatureExpressionMapFromConfigFile(configFilePath);
-
+                    // Reading the configuration of the product is part of loading its model.
                     long loadStart = System.nanoTime();
+                    updateFeatureExpressionMapFromConfigFile(configFilePath);
                     productESGFx = DOTFileToESGFxConverter.parseDOTFileForESGFxCreation(dotFile.getAbsolutePath(),
                             featureExpressionMapFromFeatureModel);
                     long loadEnd = System.nanoTime();
@@ -164,6 +169,7 @@ public class RQ1_ComparativeEfficiency_RandomWalk extends CaseStudyUtilities {
                     }
 
                     resetPeakMemoryCounters();
+                    long heapAtGenStart = RunMeasurements.usedHeapBytes();
 
                     long testGenStart = System.nanoTime();
                     int safetyLimit = Math.min(
@@ -189,6 +195,8 @@ public class RQ1_ComparativeEfficiency_RandomWalk extends CaseStudyUtilities {
                     }
 
                     currentAbortedSequences = rwGenerator.getAbortedSequenceCount();
+                    stepsTaken = rwGenerator.getStepsTaken();
+                    duplicateSequences = rwGenerator.getDuplicateSequenceCount();
                     globalTotalAbortedSequences += currentAbortedSequences;
 
                     if (testSequences != null) {
@@ -200,6 +208,7 @@ public class RQ1_ComparativeEfficiency_RandomWalk extends CaseStudyUtilities {
                     }
 
                     long currentPeakGenBytes = getPeakHeapMemoryBytes();
+                    genPeakAboveStartMB = Math.max(0, currentPeakGenBytes - heapAtGenStart) / (1024.0 * 1024.0);
                     currentPeakGenMemMB = currentPeakGenBytes / (1024.0 * 1024.0);
                     if (currentPeakGenBytes > globalPeakMemoryGenBytes)
                         globalPeakMemoryGenBytes = currentPeakGenBytes;
@@ -251,6 +260,18 @@ public class RQ1_ComparativeEfficiency_RandomWalk extends CaseStudyUtilities {
                     // Outside every timer: replay check, sequence coverage, stored suite.
                     checkColumns = RunMeasurements.check(productESGFx, testSequences, null, 1, 2, 3, 4);
                     RunMeasurements.storeSuite(suiteStore, productName, productESGFx, testSequences);
+
+                    // Outside every timer: the same walk again in the warmed JVM.
+                    if (WARM_REPEATS > 0) {
+                        for (int w = 0; w < WARM_REPEATS; w++) {
+                            new RandomWalkTestGenerator((ESGFx) productESGFx, dampingFactor, usedSeed)
+                                    .generateWalkUntilEdgeCoverage(targetCoverage, safetyLimit);
+                        }
+                        long warmStart = System.nanoTime();
+                        new RandomWalkTestGenerator((ESGFx) productESGFx, dampingFactor, usedSeed)
+                                .generateWalkUntilEdgeCoverage(targetCoverage, safetyLimit);
+                        warmGenTimeMs = (System.nanoTime() - warmStart) / 1_000_000.0;
+                    }
                     // What the check and the store left behind is collected here.
                     System.gc();
 
@@ -277,7 +298,8 @@ public class RQ1_ComparativeEfficiency_RandomWalk extends CaseStudyUtilities {
                             + df.format(currentExecTimeMs) + ";" + df.format(currentPeakExecMemMB) + ";"
                             + hitSafetyLimit + ";" + df.format(limitAchievedCoverage) + ";" + status + ";"
                             + errorReason + ";" + checkColumns + ";" + usedSeed + ";"
-                            + RunMeasurements.processPeakRssKb());
+                            + RunMeasurements.processPeakRssKb() + ";" + stepsTaken + ";" + duplicateSequences + ";"
+                            + df.format(warmGenTimeMs) + ";" + df.format(genPeakAboveStartMB));
                     RWPerProductLogWriter.flush();
 
                     productESGFx = null;

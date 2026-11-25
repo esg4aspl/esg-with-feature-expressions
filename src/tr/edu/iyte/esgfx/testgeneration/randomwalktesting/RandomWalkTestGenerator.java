@@ -26,6 +26,7 @@ public class RandomWalkTestGenerator {
     private double achievedCoverage = 0.0;
     
     private int abortedSequenceCount = 0;
+    private int duplicateSequenceCount = 0;
 
     public RandomWalkTestGenerator(ESGFx graph, double dampingFactor, long seed) {
         this.graph = graph;
@@ -55,6 +56,11 @@ public class RandomWalkTestGenerator {
 
     public double getAchievedCoverage() {
         return achievedCoverage;
+    }
+
+    /** Complete sequences that the walk produced again and that were not added to the suite a second time. */
+    public int getDuplicateSequenceCount() {
+        return duplicateSequenceCount;
     }
 
     public int getAbortedSequenceCount() {
@@ -103,7 +109,9 @@ public class RandomWalkTestGenerator {
                 if (!currentSequenceBuffer.isEmpty()) {
                     EventSequence ces = new EventSequence();
                     ces.setEventSequence(new ArrayList<>(currentSequenceBuffer));
-                    cesSet.add(ces);
+                    if (!cesSet.add(ces)) {
+                        duplicateSequenceCount++;
+                    }
                     
                     // FIX: Sequence is valid. Now commit its edges to the global coverage
                     globallyVisitedEdgeIDs.addAll(currentSequenceEdgeIDs);
@@ -178,6 +186,8 @@ public class RandomWalkTestGenerator {
                     ces.setEventSequence(new ArrayList<>(currentSequenceBuffer));
                     if (cesSet.add(ces)) {
                         events += currentSequenceBuffer.size();
+                    } else {
+                        duplicateSequenceCount++;
                     }
                 }
                 currentSequenceBuffer.clear();

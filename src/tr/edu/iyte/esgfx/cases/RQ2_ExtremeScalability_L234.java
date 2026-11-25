@@ -89,7 +89,8 @@ public class RQ2_ExtremeScalability_L234 extends CaseStudyUtilities {
                 String.format("%s_%s_shard%02d_run%d", SPLName, "ESG-Fx_L" + coverageLength, CURRENT_SHARD, runID),
                 "# features: " + RunMeasurements.featureNames(featureExpressionList) + "\n"
                         + "ProductNumber;Selection;Vertices;Edges;Sequences;Events;ProductGenTime(us);TestGenTime(us);"
-                        + "TestExecTime(us);GenPeakAboveBaseline(kB);ElapsedSinceStart(ms);Status");
+                        + "TestExecTime(us);GenPeakAboveBaseline(kB);ElapsedSinceStart(ms);Status;"
+                        + RunMeasurements.PRODUCT_COLUMNS);
         long satStart = System.nanoTime();
 
         while (true) {
@@ -150,6 +151,7 @@ public class RQ2_ExtremeScalability_L234 extends CaseStudyUtilities {
             long p0Cases = globalTotalTestCases, p0Events = globalTotalTestEvents;
             long pGenPeakAbove = -1;
             String productStatus = "SUCCESS";
+            String productCheck = RunMeasurements.check(null, null, null);
             String productName = ProductIDUtil.format(productID);
 
             ESG productESGFx = null;
@@ -240,7 +242,7 @@ public class RQ2_ExtremeScalability_L234 extends CaseStudyUtilities {
                 globalTotalCoverage += currentCoverage;
 
                 // Outside every timer: replay check and sequence coverage.
-                RunMeasurements.check(productESGFx, testSequences, checkTotals, 2, coverageLength);
+                productCheck = RunMeasurements.check(productESGFx, testSequences, checkTotals, 2, coverageLength);
                 // The check is not part of the time budget.
                 budgetExcludedNanos += RunMeasurements.lastCheckNanos();
 
@@ -262,7 +264,7 @@ public class RQ2_ExtremeScalability_L234 extends CaseStudyUtilities {
                         + ((totalProdGenTimeNanos - p0ProdGen) / 1000) + ";" + ((totalTestGenTimeNanos - p0TestGen) / 1000) + ";"
                         + ((totalTestExecTimeNanos - p0Exec) / 1000) + ";" + (pGenPeakAbove < 0 ? -1 : pGenPeakAbove / 1024) + ";"
                         + (long) RunMeasurements.elapsedMs() + ";"
-                        + String.valueOf(productStatus).replace(';', ',').replace('\n', ' '));
+                        + String.valueOf(productStatus).replace(';', ',').replace('\n', ' ') + ";" + productCheck);
                 if (handledProducts % 200 == 0) {
                     productRecord.flush();
                 }

@@ -124,7 +124,7 @@ public class RQ1_ComparativeEfficiency_ESGFx_L234 extends CaseStudyUtilities {
 								+ "EdgeCoverage(%);EdgeCoverageAnalysisTime(ms);"
 								+ "TestExecTimeMs;TestExecPeakMemoryMB;ESGFxModelLoadTimeMs;" + "Status;ErrorReason;"
 								+ RunMeasurements.PRODUCT_COLUMNS + ";WarmTestGenTime(ms);ProcessPeakRSS(kB);"
-								+ "BalancingTime(ms);EulerCycleTime(ms);SequenceBuildTime(ms)");
+								+ "BalancingTime(ms);EulerCycleTime(ms);SequenceBuildTime(ms);TestGenPeakAboveStart(MB)");
 			}
 
 			for (int i = 0; i < dotFiles.length; i++) {
@@ -155,6 +155,7 @@ public class RQ1_ComparativeEfficiency_ESGFx_L234 extends CaseStudyUtilities {
 				String status = "SUCCESS";
 				String errorReason = "None";
 				String checkColumns = RunMeasurements.check(null, null, null);
+				double genPeakAboveStartMB = -1.0;
 				double warmGenTimeMs = -1.0;
 				double balancingTimeMs = 0.0, eulerTimeMs = 0.0, sequenceBuildTimeMs = 0.0;
 
@@ -171,9 +172,9 @@ public class RQ1_ComparativeEfficiency_ESGFx_L234 extends CaseStudyUtilities {
 				TestExecutor testExecutor = null;
 
 				try {
-					updateFeatureExpressionMapFromConfigFile(configFilePath);
-
+					// Reading the configuration of the product is part of loading its model.
 					long loadStart = System.nanoTime();
+					updateFeatureExpressionMapFromConfigFile(configFilePath);
 					productESGFx = DOTFileToESGFxConverter.parseDOTFileForESGFxCreation(dotFile.getAbsolutePath(),
 							featureExpressionMapFromFeatureModel);
 					long loadEnd = System.nanoTime();
@@ -189,6 +190,7 @@ public class RQ1_ComparativeEfficiency_ESGFx_L234 extends CaseStudyUtilities {
 					}
 
 					resetPeakMemoryCounters();
+					long heapAtGenStart = RunMeasurements.usedHeapBytes();
 
 					long testGenStart = System.nanoTime();
 					transformedESGFxGenerator = new TransformedESGFxGenerator();
@@ -237,6 +239,7 @@ public class RQ1_ComparativeEfficiency_ESGFx_L234 extends CaseStudyUtilities {
 					}
 
 					long currentPeakGenBytes = getPeakHeapMemoryBytes();
+					genPeakAboveStartMB = Math.max(0, currentPeakGenBytes - heapAtGenStart) / (1024.0 * 1024.0);
 					currentPeakGenMemMB = currentPeakGenBytes / (1024.0 * 1024.0);
 					if (currentPeakGenBytes > globalPeakMemoryGenBytes)
 						globalPeakMemoryGenBytes = currentPeakGenBytes;
@@ -318,7 +321,8 @@ public class RQ1_ComparativeEfficiency_ESGFx_L234 extends CaseStudyUtilities {
 							+ df.format(currentPeakExecMemMB) + ";" + df.format(esgfxModelLoadTimeMs) + ";" + status
 							+ ";" + errorReason + ";" + checkColumns + ";" + df.format(warmGenTimeMs) + ";"
 							+ RunMeasurements.processPeakRssKb() + ";" + df.format(balancingTimeMs) + ";"
-							+ df.format(eulerTimeMs) + ";" + df.format(sequenceBuildTimeMs));
+							+ df.format(eulerTimeMs) + ";" + df.format(sequenceBuildTimeMs) + ";"
+							+ df.format(genPeakAboveStartMB));
 
 					ESGFxPerProductLogWriter.flush();
 

@@ -114,7 +114,8 @@ public class RQ2_ExtremeScalability_EFG_L234 extends CaseStudyUtilities {
                 String.format("%s_%s_shard%02d_run%d", SPLName, "EFG_L" + coverageLength, CURRENT_SHARD, runID),
                 "# features: " + RunMeasurements.featureNames(featureExpressionList) + "\n"
                         + "ProductNumber;Selection;Vertices;Edges;Sequences;Events;ProductGenTime(us);TestGenTime(us);"
-                        + "TestExecTime(us);GenPeakAboveBaseline(kB);ElapsedSinceStart(ms);Status");
+                        + "TestExecTime(us);GenPeakAboveBaseline(kB);ElapsedSinceStart(ms);Status;"
+                        + RunMeasurements.PRODUCT_COLUMNS);
         long satStart = System.nanoTime();
 
         while (true) {
@@ -175,11 +176,16 @@ public class RQ2_ExtremeScalability_EFG_L234 extends CaseStudyUtilities {
             long p0Cases = globalTotalTestCases, p0Events = globalTotalTestEvents;
             long pGenPeakAbove = -1;
             String productStatus = "SUCCESS";
+            String productCheck = RunMeasurements.check(null, null, null);
             String productName = ProductIDUtil.format(productID);
             
             // Temporary files (will be deleted after measurement)
-            String efgFilePath = EFGFolder + productName + ".EFG";
-            String EFGTestSequencesFolderPerProduct = efg_testsequencesFolder + productName + "/" + EFGCoverageType + "/";
+            // One folder per JVM, so that rows of the same product line that run side by side
+            // (another level, another run) do not write the same file names.
+            String temporaryFolder = EFGFolder + String.format("rq2tmp_%s_run%d_shard%02d/", EFGCoverageType, runID,
+                    CURRENT_SHARD);
+            String efgFilePath = temporaryFolder + productName + ".EFG";
+            String EFGTestSequencesFolderPerProduct = temporaryFolder + productName + "_tests/";
             
             int efgVertices = 0, efgEdges = 0;
 
@@ -200,7 +206,7 @@ public class RQ2_ExtremeScalability_EFG_L234 extends CaseStudyUtilities {
                 long heapAtGenStart = RunMeasurements.usedHeapBytes();
                 
                 long efgTransformStart = System.nanoTime();
-                ESGToEFGFileWriter.writeESGFxToEFGFile(productESGFx, productName, EFGFolder);
+                ESGToEFGFileWriter.writeESGFxToEFGFile(productESGFx, productName, temporaryFolder);
                 long efgTransformEnd = System.nanoTime();
                 totalEFGTransformationTimeNanos += (efgTransformEnd - efgTransformStart);
 
@@ -279,7 +285,7 @@ public class RQ2_ExtremeScalability_EFG_L234 extends CaseStudyUtilities {
                 globalTotalEdgeCoverage += currentEdgeCoverage;
 
                 // Outside every timer: replay check and sequence coverage.
-                RunMeasurements.check(productESGFx, testSequences, checkTotals, 2, coverageLength);
+                productCheck = RunMeasurements.check(productESGFx, testSequences, checkTotals, 2, coverageLength);
                 // The check is not part of the time budget.
                 budgetExcludedNanos += RunMeasurements.lastCheckNanos();
 
@@ -303,7 +309,7 @@ public class RQ2_ExtremeScalability_EFG_L234 extends CaseStudyUtilities {
                         + ((totalProdGenTimeNanos - p0ProdGen) / 1000) + ";" + ((totalTestGenTimeNanos - p0TestGen) / 1000) + ";"
                         + ((totalTestExecTimeNanos - p0Exec) / 1000) + ";" + (pGenPeakAbove < 0 ? -1 : pGenPeakAbove / 1024) + ";"
                         + (long) RunMeasurements.elapsedMs() + ";"
-                        + String.valueOf(productStatus).replace(';', ',').replace('\n', ' '));
+                        + String.valueOf(productStatus).replace(';', ',').replace('\n', ' ') + ";" + productCheck);
                 if (handledProducts % 200 == 0) {
                     productRecord.flush();
                 }

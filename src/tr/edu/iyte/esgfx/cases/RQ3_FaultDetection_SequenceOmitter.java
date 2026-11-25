@@ -72,6 +72,16 @@ public class RQ3_FaultDetection_SequenceOmitter extends CaseStudyUtilities {
 				+ String.format("%02d", CURRENT_SHARD) + ".csv";
 		String budgetLogPath = perProductLogDir + SPLName + "_SequenceOmission_BudgetRW_shard"
 				+ String.format("%02d", CURRENT_SHARD) + ".csv";
+		// One row for every random suite of the damping study and of the equal-budget baseline:
+		// its size and the time it took to generate.
+		File randomSuitesFile = new File(perProductLogDir + SPLName + "_RandomSuites_shard"
+				+ String.format("%02d", CURRENT_SHARD) + ".csv");
+		boolean randomSuitesHeader = !randomSuitesFile.exists() || randomSuitesFile.length() == 0;
+		java.io.PrintWriter randomSuites = new java.io.PrintWriter(new java.io.FileWriter(randomSuitesFile, true));
+		if (randomSuitesHeader) {
+			randomSuites.println("SPL;ProductID;Mode;DampingFactor;Level;Seed;EventBudget;Sequences;Events;Steps;"
+					+ "AbortedSequences;DuplicateSequences;StepLimitHit;GenerationTime(us)");
+		}
 
 		int productID = 0;
 		int handledProducts = 0;
@@ -120,8 +130,16 @@ public class RQ3_FaultDetection_SequenceOmitter extends CaseStudyUtilities {
 			int safetyLimit = TestSuiteFactory.defaultRwSafetyLimit(productESGFx);
 			for (double damping : DAMPING_FACTORS) {
 				for (long seed : seeds) {
-					Set<EventSequence> suite = new RandomWalkTestGenerator((ESGFx) productESGFx, damping, seed)
-							.generateWalkUntilEdgeCoverage(100.0, safetyLimit);
+					RandomWalkTestGenerator generator = new RandomWalkTestGenerator((ESGFx) productESGFx, damping, seed);
+					long generationStart = System.nanoTime();
+					Set<EventSequence> suite = generator.generateWalkUntilEdgeCoverage(100.0, safetyLimit);
+					long generationNanos = System.nanoTime() - generationStart;
+					randomSuites.println(SPLName + ";" + productName + ";UntilEventCoupleCoverage;"
+							+ String.format(java.util.Locale.ROOT, "%.2f", damping) + ";-1;" + seed + ";-1;" + suite.size()
+							+ ";" + SequenceCoverageAnalyser.numberOfEvents(suite) + ";" + generator.getStepsTaken() + ";"
+							+ generator.getAbortedSequenceCount() + ";" + generator.getDuplicateSequenceCount() + ";"
+							+ generator.isSafetyLimitHit() + ";"
+							+ (generationNanos / 1000));
 					write(dampingLogPath, productName,
 							String.format(java.util.Locale.ROOT, "RW_d%.2f_seed%d", damping, seed), analyser, suite);
 				}
@@ -134,16 +152,28 @@ public class RQ3_FaultDetection_SequenceOmitter extends CaseStudyUtilities {
 					continue;
 				}
 				for (long seed : seeds) {
-					Set<EventSequence> suite = new RandomWalkTestGenerator((ESGFx) productESGFx, RW_DAMPING, seed)
-							.generateWalkUntilEvents(eventBudgetOfLevel[level], safetyLimit);
+					RandomWalkTestGenerator generator = new RandomWalkTestGenerator((ESGFx) productESGFx, RW_DAMPING,
+							seed);
+					long generationStart = System.nanoTime();
+					Set<EventSequence> suite = generator.generateWalkUntilEvents(eventBudgetOfLevel[level], safetyLimit);
+					long generationNanos = System.nanoTime() - generationStart;
+					randomSuites.println(SPLName + ";" + productName + ";EqualBudget;"
+							+ String.format(java.util.Locale.ROOT, "%.2f", RW_DAMPING) + ";" + level + ";" + seed + ";"
+							+ eventBudgetOfLevel[level] + ";" + suite.size() + ";"
+							+ SequenceCoverageAnalyser.numberOfEvents(suite) + ";" + generator.getStepsTaken() + ";"
+							+ generator.getAbortedSequenceCount() + ";" + generator.getDuplicateSequenceCount() + ";"
+							+ generator.isSafetyLimitHit() + ";"
+							+ (generationNanos / 1000));
 					write(budgetLogPath, productName, "RW_budgetL" + level + "_seed" + seed, analyser, suite);
 				}
 			}
 
+			randomSuites.flush();
 			if (handledProducts % 50 == 0) {
 				System.out.println("Handled products: " + handledProducts);
 			}
 		}
+		randomSuites.close();
 		System.out.println("RQ3 FAULT DETECTION (SEQUENCE OMISSION) - SPL: " + SPLName + " FINISHED, products: "
 				+ handledProducts);
 	}

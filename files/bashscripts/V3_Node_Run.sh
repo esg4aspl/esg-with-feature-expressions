@@ -9,14 +9,25 @@
 #                                      three random seeds, five minutes per
 #                                      row on the three large product lines
 #
-# One job starts one JVM per shard of this node and waits for them. Four lanes
-# run side by side, so a node needs four times as many cores as it has shards
-# (8 shards per node on a 32-core node):
-#   lane 1  RQ1 and RQ3 of every product line, then RQ2 of the six smaller ones
-#   lane 2  RQ2 of Tesla
-#   lane 3  RQ2 of Hockerty Shirts, the approach at its four levels
-#   lane 4  RQ2 of Hockerty Shirts, the two baselines
-# Every lane runs its first repetition of every row before the second.
+# One job starts one JVM per shard of this node and waits for them. Every JVM,
+# GUITAR included, is started as a one-processor JVM, so that one JVM uses one
+# core whatever the machine has.
+#
+# RQ1 measures the time of one product, so it runs first and alone: one job at
+# a time, the other cores of the node idle. After it, four lanes run side by
+# side, so a node needs four times as many cores as it has shards (8 shards per
+# node on a 32-core node):
+#   lane 1  RQ3 of every product line, RQ2 of the six smaller ones, then rows
+#           of the second and third run of Tesla
+#   lane 2  RQ2 of Tesla, first run, then rows of its second run
+#   lane 3  RQ2 of Hockerty Shirts, the approach at its four levels (6 h per
+#           row), then rows of the second and third run of Tesla
+#   lane 4  RQ2 of Hockerty Shirts, the two baselines (6 h per row), then
+#           rows of the third run of Tesla
+#   In lanes 3 and 4 the rows of Hockerty Shirts run twice more with a budget
+#   of one hour, right after the six-hour run.
+# Hockerty Shirts is enumerated in the same order in every run, so the first
+# hour of the three runs handles the same products.
 #
 # Results of earlier runs found in the working tree are moved to
 # files/archive_before_<time>/ before anything starts; nothing is deleted.
@@ -39,11 +50,15 @@ mkdir -p "$LOG_ROOT"
 JOBS_CSV="$LOG_ROOT/jobs.csv"
 
 if [ "$MODE" = "rehearsal" ]; then
-  SMALL_RUNS=1; LARGE_RUNS=1; RQ1_RUNS=1; SEEDS=3; LARGE_TIMEOUT_MINUTES=5
+  # V3_REHEARSAL_LARGE_RUNS and V3_REHEARSAL_MINUTES let a rehearsal also go through the
+  # later runs of the two large lines.
+  SMALL_RUNS=1; LARGE_RUNS=${V3_REHEARSAL_LARGE_RUNS:-1}; RQ1_RUNS=1; SEEDS=3
+  LARGE_TIMEOUT_MINUTES=${V3_REHEARSAL_MINUTES:-5}
 else
   SMALL_RUNS=11; LARGE_RUNS=3; RQ1_RUNS=11; SEEDS=100; LARGE_TIMEOUT_MINUTES=0
 fi
 HOCKERTY_TIMEOUT_HOURS=6
+HOCKERTY_SHORT_TIMEOUT_HOURS=1
 
 ALL_CASES=("SodaVendingMachine SVM" "eMail eM" "Elevator El" "BankAccountv2 BAv2"
            "StudentAttendanceSystem SAS" "syngovia Svia" "Tesla Te" "HockertyShirts HS")
@@ -58,7 +73,7 @@ SMALLER_CASES=("SodaVendingMachine SVM" "eMail eM" "Elevator El" "BankAccountv2 
   echo "host: $(hostname)"
   echo "commit: $(git rev-parse HEAD 2>/dev/null)"
   echo "branch: $(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
-  echo "uncommitted files: $(git status --porcelain 2>/dev/null | wc -l)"
+  echo "changed source files: $(git status --porcelain --untracked-files=no -- src pom.xml guitar-libs 2>/dev/null | wc -l)"
   echo "--- lscpu"; lscpu 2>/dev/null
   echo "--- memory"; free -m 2>/dev/null
   echo "--- java"; java -version 2>&1
@@ -86,7 +101,15 @@ echo "Building..."
 mvn clean package dependency:copy-dependencies -DskipTests -Dfile.encoding=UTF-8 > "$LOG_ROOT/build_${STAMP}.log" 2>&1 \
   || { echo "BUILD FAILED, see $LOG_ROOT/build_${STAMP}.log"; exit 1; }
 CP="target/classes:target/dependency/*"
-JAVA_OPTS="-Xms512m -Xmx1500m -XX:+UseG1GC"
+# -XX:ActiveProcessorCount=1: the JVM sizes its garbage collector and its compiler threads for
+# one processor instead of for all the cores of the node.
+ONE_CPU="-XX:ActiveProcessorCount=1"
+JAVA_OPTS="-Xms512m -Xmx1500m -XX:+UseG1GC $ONE_CPU"
+export GUITAR_JVM_FLAGS="$ONE_CPU"
+# RQ2 of the two large lines: every shard enumerates the whole configuration space and keeps one
+# clause per configuration, so its heap grows with the enumeration.
+JAVA_OPTS_TESLA_RQ2="-Xms512m -Xmx2500m -XX:+UseG1GC $ONE_CPU"
+JAVA_OPTS_HOCKERTY_RQ2="-Xms512m -Xmx3000m -XX:+UseG1GC $ONE_CPU"
 # Heap limit of every GUITAR process (the default of the 16 GB machines of the earlier runs).
 export GUITAR_XMX=4g
 LAUNCHER="tr.edu.iyte.esgfx.cases.ExperimentLauncher"
@@ -100,9 +123,14 @@ run_job() {
   local log_dir="$LOG_ROOT/lane$lane/$job"
   mkdir -p "$log_dir"
   local start=$(date +%s) pids=() failed=0
+  local opts="$JAVA_OPTS"
+  case "$driver:$short" in
+    RQ2_*:Te) opts="$JAVA_OPTS_TESLA_RQ2" ;;
+    RQ2_*:HS) opts="$JAVA_OPTS_HOCKERTY_RQ2" ;;
+  esac
   for shard in $(seq "$START_SHARD" "$END_SHARD"); do
     env N_SHARDS=$TOTAL_SHARDS SHARD=$shard "$@" \
-      java $JAVA_OPTS -cp "$CP" "$LAUNCHER" "$case_pkg" "$short" "$driver" \
+      java $opts -cp "$CP" "$LAUNCHER" "$case_pkg" "$short" "$driver" \
       > "$log_dir/shard$(printf '%02d' "$shard").log" 2>&1 &
     pids+=($!)
   done
@@ -112,12 +140,12 @@ run_job() {
   [ "$failed" -gt 0 ] && echo "lane $lane: $job finished with $failed failed JVMs" || echo "lane $lane: $job finished"
 }
 
-timeout_args() {   # <short name> -> environment for the time budget of a row
-  local short=$1
+timeout_args() {   # <short name> [hours for Hockerty Shirts] -> environment for the time budget of a row
+  local short=$1 hockerty_hours=${2:-$HOCKERTY_TIMEOUT_HOURS}
   if [ "$LARGE_TIMEOUT_MINUTES" -gt 0 ] && { [ "$short" = "HS" ] || [ "$short" = "Te" ]; }; then
     echo "TIMEOUT_MINUTES=$LARGE_TIMEOUT_MINUTES"
   elif [ "$short" = "HS" ]; then
-    echo "TIMEOUT_HOURS=$HOCKERTY_TIMEOUT_HOURS"
+    echo "TIMEOUT_HOURS=$hockerty_hours"
   else
     echo "TIMEOUT_HOURS=0"
   fi
@@ -134,18 +162,30 @@ for entry in "${ALL_CASES[@]}"; do
 done
 
 # ------------------------------------------------------------------ lanes ---
-rq1_and_rq3() {    # <lane> <case package> <short name>
+rq1() {            # <lane> <case package> <short name>
   local lane=$1 c=$2 s=$3
   for run in $(seq 1 "$RQ1_RUNS"); do
-    run_job "$lane" "RQ1_${s}_L1_run$run"  "$c" "$s" RQ1_ESGFx_L1   runID=$run WARM_REPEATS=3
+    run_job "$lane" "RQ1_${s}_L1_run$run"  "$c" "$s" RQ1_ESGFx_L1   runID=$run
     for level in 2 3 4; do
-      run_job "$lane" "RQ1_${s}_L${level}_run$run"     "$c" "$s" RQ1_ESGFx_L234 runID=$run L_LEVEL=$level WARM_REPEATS=3
+      run_job "$lane" "RQ1_${s}_L${level}_run$run"     "$c" "$s" RQ1_ESGFx_L234 runID=$run L_LEVEL=$level
       run_job "$lane" "RQ1_${s}_EFG_L${level}_run$run" "$c" "$s" RQ1_EFG_L234   runID=$run L_LEVEL=$level
     done
   done
   for seed in $(seq 0 $((SEEDS - 1))); do
     run_job "$lane" "RQ1_${s}_RW_seed$seed" "$c" "$s" RQ1_RandomWalk runID=1 RW_SEED=$seed
   done
+  # Warmed times, in runs of their own (run 0), so that the repeated generations do not warm
+  # the JVM of a run whose times are reported. Each product is generated three times without
+  # measurement and then once with.
+  run_job "$lane" "RQ1_${s}_L1_warm" "$c" "$s" RQ1_ESGFx_L1 runID=0 WARM_REPEATS=3
+  for level in 2 3 4; do
+    run_job "$lane" "RQ1_${s}_L${level}_warm" "$c" "$s" RQ1_ESGFx_L234 runID=0 L_LEVEL=$level WARM_REPEATS=3
+  done
+  run_job "$lane" "RQ1_${s}_RW_warm" "$c" "$s" RQ1_RandomWalk runID=0 RW_SEED=0 WARM_REPEATS=3
+}
+
+rq3() {            # <lane> <case package> <short name>
+  local lane=$1 c=$2 s=$3
   # RQ3 reads the GUITAR suites that RQ1 wrote on this node.
   run_job "$lane" "RQ3_${s}_EdgeOmission"     "$c" "$s" RQ3_EdgeOmitter     RQ3_MODE=memory RW_SEEDS=$SEEDS
   run_job "$lane" "RQ3_${s}_EventOmission"    "$c" "$s" RQ3_EventOmitter    RQ3_MODE=memory RW_SEEDS=$SEEDS
@@ -154,7 +194,7 @@ rq1_and_rq3() {    # <lane> <case package> <short name>
 
 rq2_rows() {       # <lane> <case package> <short name> <run> <row> [<row> ...]
   local lane=$1 c=$2 s=$3 run=$4; shift 4
-  local budget; budget=$(timeout_args "$s")
+  local budget; budget=$(timeout_args "$s" "${HOCKERTY_HOURS_OF_THIS_CALL:-}")
   for row in "$@"; do
     case $row in
       RW)    run_job "$lane" "RQ2_${s}_RW_run$run" "$c" "$s" RQ2_RandomWalk runID=$run $budget ;;
@@ -167,17 +207,50 @@ rq2_rows() {       # <lane> <case package> <short name> <run> <row> [<row> ...]
   done
 }
 
+# The rows of Tesla beyond its first run are spread over the lanes that become free.
+tesla() { [ "$LARGE_RUNS" -ge "$2" ] && rq2_rows "$1" Tesla Te "$2" "${@:3}"; }
+
+# Second and third run of Hockerty Shirts with the short budget. They follow the six-hour run
+# in the same two lanes, two rows side by side as in that run and while the other two lanes
+# are still busy, so that the first hour of the three runs is measured under the same load.
+hockerty_short() {  # <lane> <row> <row>
+  [ "$LARGE_RUNS" -ge 2 ] || return 0
+  for run in $(seq 2 "$LARGE_RUNS"); do
+    HOCKERTY_HOURS_OF_THIS_CALL=$HOCKERTY_SHORT_TIMEOUT_HOURS rq2_rows "$1" HockertyShirts HS "$run" "${@:2}"
+  done
+}
+
 lane1() {
-  for entry in "${ALL_CASES[@]}"; do set -- $entry; rq1_and_rq3 1 "$1" "$2"; done
+  for entry in "${ALL_CASES[@]}"; do set -- $entry; rq3 1 "$1" "$2"; done
   for run in $(seq 1 "$SMALL_RUNS"); do
     for entry in "${SMALLER_CASES[@]}"; do
       set -- $entry; rq2_rows 1 "$1" "$2" "$run" L1 L2 L3 L4 RW EFG2 EFG3 EFG4
     done
   done
+  tesla 1 2 EFG3
+  tesla 1 2 EFG4
+  tesla 1 3 L1 L2 L3 L4 RW
+  tesla 1 3 EFG3
 }
-lane2() { for run in $(seq 1 "$LARGE_RUNS"); do rq2_rows 2 Tesla Te "$run" L1 L2 L3 L4 RW EFG2 EFG3 EFG4; done; }
-lane3() { for run in $(seq 1 "$LARGE_RUNS"); do rq2_rows 3 HockertyShirts HS "$run" L1 L2 L3 L4; done; }
-lane4() { for run in $(seq 1 "$LARGE_RUNS"); do rq2_rows 4 HockertyShirts HS "$run" RW EFG2 EFG3 EFG4; done; }
+lane2() {
+  rq2_rows 2 Tesla Te 1 L1 L2 L3 L4 RW EFG2 EFG3 EFG4
+  tesla 2 2 EFG2
+}
+lane3() {
+  rq2_rows 3 HockertyShirts HS 1 L1 L2 L3 L4
+  hockerty_short 3 L1 L2 L3 L4
+  tesla 3 2 L1 L2 L3 L4 RW
+  tesla 3 3 EFG4
+}
+lane4() {
+  rq2_rows 4 HockertyShirts HS 1 RW EFG2 EFG3 EFG4
+  hockerty_short 4 RW EFG2 EFG3 EFG4
+  tesla 4 3 EFG2
+}
+
+# RQ1 first and alone.
+for entry in "${ALL_CASES[@]}"; do set -- $entry; rq1 0 "$1" "$2"; done > "$LOG_ROOT/rq1_${STAMP}.log" 2>&1
+echo "RQ1 finished: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
 lane1 > "$LOG_ROOT/lane1_${STAMP}.log" 2>&1 &
 lane2 > "$LOG_ROOT/lane2_${STAMP}.log" 2>&1 &

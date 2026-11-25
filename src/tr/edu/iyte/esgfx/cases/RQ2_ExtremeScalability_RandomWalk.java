@@ -46,7 +46,8 @@ import tr.edu.iyte.esgfx.testexecution.TestExecutor;
  */
 public class RQ2_ExtremeScalability_RandomWalk extends CaseStudyUtilities {
 
-    private static final int RANDOM_WALK_SEED = 42;  // Fixed for RQ2
+    // RQ2 uses one seed, the first of the seeds 0 to 99 of RQ1 and RQ3.
+    private static final int RANDOM_WALK_SEED = 0;
     private static final double DAMPING_FACTOR = 0.85;
     private static final double TARGET_EDGE_COVERAGE = 100.0;  // Aim for 100%
 
@@ -116,7 +117,8 @@ public class RQ2_ExtremeScalability_RandomWalk extends CaseStudyUtilities {
                 String.format("%s_%s_shard%02d_run%d", SPLName, "RandomWalk", CURRENT_SHARD, runID),
                 "# features: " + RunMeasurements.featureNames(featureExpressionList) + "\n"
                         + "ProductNumber;Selection;Vertices;Edges;Sequences;Events;ProductGenTime(us);TestGenTime(us);"
-                        + "TestExecTime(us);GenPeakAboveBaseline(kB);ElapsedSinceStart(ms);Status");
+                        + "TestExecTime(us);GenPeakAboveBaseline(kB);ElapsedSinceStart(ms);Status;"
+                        + RunMeasurements.PRODUCT_COLUMNS);
         long satStart = System.nanoTime();
 
         while (true) {
@@ -177,6 +179,7 @@ public class RQ2_ExtremeScalability_RandomWalk extends CaseStudyUtilities {
             long p0Cases = globalTotalTestCases, p0Events = globalTotalTestEvents;
             long pGenPeakAbove = -1;
             String productStatus = "SUCCESS";
+            String productCheck = RunMeasurements.check(null, null, null);
             String productName = ProductIDUtil.format(productID);
 
             ESG productESGFx = null;
@@ -201,6 +204,8 @@ public class RQ2_ExtremeScalability_RandomWalk extends CaseStudyUtilities {
                 resetPeakMemoryCounters();
                 long heapAtGenStart = RunMeasurements.usedHeapBytes();
                 
+                long testGenStart = System.nanoTime();
+
                 // FIX: Instantiate generator per product (stateless)
                 randomWalkGenerator = new RandomWalkTestGenerator(
                         (ESGFx) productESGFx,  // Correct type casting
@@ -210,8 +215,7 @@ public class RQ2_ExtremeScalability_RandomWalk extends CaseStudyUtilities {
                 // Calculate safety limit: 5|V|³
                 int vertexCount = productESGFx.getVertexList().size();
                 int safetyLimit = calculateSafetyLimit(vertexCount);
-                
-                long testGenStart = System.nanoTime();
+
                 
                 // FIX: Use correct API
                 testSequences = randomWalkGenerator.generateWalkUntilEdgeCoverage(
@@ -281,7 +285,7 @@ public class RQ2_ExtremeScalability_RandomWalk extends CaseStudyUtilities {
                 globalTotalEdgeCoverage += currentEdgeCoverage;
 
                 // Outside every timer: replay check and sequence coverage.
-                RunMeasurements.check(productESGFx, testSequences, checkTotals, 1, 2);
+                productCheck = RunMeasurements.check(productESGFx, testSequences, checkTotals, 1, 2);
                 // The check is not part of the time budget.
                 budgetExcludedNanos += RunMeasurements.lastCheckNanos();
 
@@ -306,7 +310,7 @@ public class RQ2_ExtremeScalability_RandomWalk extends CaseStudyUtilities {
                         + ((totalProdGenTimeNanos - p0ProdGen) / 1000) + ";" + ((totalTestGenTimeNanos - p0TestGen) / 1000) + ";"
                         + ((totalTestExecTimeNanos - p0Exec) / 1000) + ";" + (pGenPeakAbove < 0 ? -1 : pGenPeakAbove / 1024) + ";"
                         + (long) RunMeasurements.elapsedMs() + ";"
-                        + String.valueOf(productStatus).replace(';', ',').replace('\n', ' '));
+                        + String.valueOf(productStatus).replace(';', ',').replace('\n', ' ') + ";" + productCheck);
                 if (handledProducts % 200 == 0) {
                     productRecord.flush();
                 }
