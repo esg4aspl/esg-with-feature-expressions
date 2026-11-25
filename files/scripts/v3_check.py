@@ -206,15 +206,23 @@ def check_rq3(root):
 def check_stores(root):
     stores = find(root, "*.txt.gz")
     report(bool(stores), "stored suite files found (%d)" % len(stores))
-    unreadable = empty = 0
+    unreadable = empty = damaged = 0
     for path in stores:
         try:
             with gzip.open(path, "rt", encoding="utf-8") as handle:
-                if not any(line.startswith("S;") for line in handle):
+                has_sequence = False
+                for line in handle:
+                    if line.startswith("S;"):
+                        has_sequence = True
+                    # An event name written without UTF-8 ("?berturbine Wheels" for "\u00dcberturbine Wheels").
+                    elif "\ufffd" in line or ("berturbine" in line and "\u00dcberturbine" not in line):
+                        damaged += 1
+                if not has_sequence:
                     empty += 1
         except Exception:
             unreadable += 1
     report(unreadable == 0, "stored suite files that cannot be read to the end: %d" % unreadable)
+    report(damaged == 0, "stored event names damaged by the character encoding: %d" % damaged)
     print("      stored suite files without a sequence (shards without a product): %d" % empty)
 
 

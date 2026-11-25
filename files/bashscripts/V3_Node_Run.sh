@@ -104,6 +104,12 @@ CP="target/classes:target/dependency/*"
 # -XX:ActiveProcessorCount=1: the JVM sizes its garbage collector and its compiler threads for
 # one processor instead of for all the cores of the node.
 ONE_CPU="-XX:ActiveProcessorCount=1"
+# Event names contain letters outside ASCII (Tesla: "Überturbine Wheels"). Without a fixed
+# encoding the JVM takes it from the locale of the session that started the node, and an
+# unknown locale makes it write such a letter as "?". Every JVM reads and writes UTF-8.
+export LC_ALL=C.UTF-8 LANG=C.UTF-8
+UTF8="-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8"
+ONE_CPU="$ONE_CPU $UTF8"
 JAVA_OPTS="-Xms512m -Xmx1500m -XX:+UseG1GC $ONE_CPU"
 export GUITAR_JVM_FLAGS="$ONE_CPU"
 # RQ2 of the two large lines: every shard enumerates the whole configuration space and keeps one
