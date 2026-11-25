@@ -100,18 +100,24 @@ public class ProductESGFxToEFGAndDOTFileWriter extends CaseStudyUtilities {
                     
                     ESG productESGFx = productESGFxGenerator.generateProductESGFx(productID, productName, ESGFx);
 
-                    long startTime1 = System.nanoTime();
-                    ESGToEFGFileWriter.writeESGFxToEFGFile(productESGFx, productName, EFGFolder);
-                    long endTime1 = System.nanoTime();
-                    double timeInMilliseconds1 = (endTime1 - startTime1) / 1_000_000.0;
-                    csvWriter1.println(ProductIDUtil.format(productID) + ";" + String.valueOf(timeInMilliseconds1).replace('.', ','));
-
                     long startTime2 = System.nanoTime();
                     ESGFxToDOTFileConverter.buildDOTFileFromESGFx(productESGFx, DOTFolder + coverageType + "/",
                             productName);
                     long endTime2 = System.nanoTime();
                     double timeInMilliseconds2 = (endTime2 - startTime2) / 1_000_000.0;
                     csvWriter2.println(ProductIDUtil.format(productID) + ";" + String.valueOf(timeInMilliseconds2).replace('.', ','));
+
+                    // The experiments read the product-level model from its DOT file. The Event Flow Graph
+                    // file is written from the model read back from that file, so that the identifiers
+                    // of its events are the vertex IDs the experiments see.
+                    ESG productFromDOT = tr.edu.iyte.esgfx.conversion.dot.DOTFileToESGFxConverter.parseDOTFileForESGFxCreation(
+                            DOTFolder + coverageType + "/" + productName + ".DOT", featureExpressionMapFromFeatureModel);
+
+                    long startTime1 = System.nanoTime();
+                    ESGToEFGFileWriter.writeESGFxToEFGFile(productFromDOT, productName, EFGFolder);
+                    long endTime1 = System.nanoTime();
+                    double timeInMilliseconds1 = (endTime1 - startTime1) / 1_000_000.0;
+                    csvWriter1.println(ProductIDUtil.format(productID) + ";" + String.valueOf(timeInMilliseconds1).replace('.', ','));
                     
                     productESGFx = null;
                     if (productID % 100 == 0) {

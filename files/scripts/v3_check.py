@@ -83,6 +83,14 @@ def check_rq1(root, full):
             counts["rows"] += 1
             if row["Status"] != "SUCCESS":
                 counts["rows not SUCCESS"] += 1
+            if approach == "EFG":
+                # GUITAR writes one test for every sequence of its length; with a correct Event
+                # Flow Graph file its suite covers all of them and all event couples.
+                required, covered = LEVEL_COLUMNS[level]
+                if row[required] != row[covered] or row["CouplesRequired"] != row["CouplesCovered"]:
+                    counts["structural suites below 100%% at their length or at event-couple level"] += 1
+                if level == 2 and row["NumberOfEFGEdges"] != row["CouplesRequired"]:
+                    counts["Event Flow Graph files whose edge count is not the number of event couples"] += 1
             if approach != "EFG" and row["ReplayViolations"] != "0":
                 counts["suites of the approach or of random with a replay violation"] += 1
             if approach == "ESG-Fx":
@@ -95,6 +103,9 @@ def check_rq1(root, full):
                     and row["CouplesRequired"] != row["CouplesCovered"]:
                 counts["random suites that stopped below full event-couple coverage without the step limit"] += 1
     report(counts["rows"] > 0, "RQ1 rows read: %d" % counts["rows"])
+    for text in ("structural suites below 100%% at their length or at event-couple level",
+                 "Event Flow Graph files whose edge count is not the number of event couples"):
+        report(counts[text] == 0, "RQ1 %s: %d" % (text.replace("%%", "%"), counts[text]))
     for text in ("rows with a wrong number of columns", "rows not SUCCESS",
                  "suites of the approach or of random with a replay violation",
                  "suites of the approach below 100%% at or under their level",

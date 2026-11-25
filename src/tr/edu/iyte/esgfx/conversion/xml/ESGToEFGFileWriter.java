@@ -69,6 +69,20 @@ public class ESGToEFGFileWriter {
     /**
      * Main method to orchestrate the EFG XML content generation.
      */
+    /**
+     * The events of a model in the order in which they are written to the
+     * Event Flow Graph file: the vertices of the model without the pseudo-start
+     * and the pseudo-end vertex. Event e<i> of the file is element i.
+     */
+    public static List<Vertex> eventsInOrder(ESG esg) {
+        List<Vertex> vertices = new ArrayList<>();
+        for (Vertex v : esg.getVertexList()) {
+            if (v.isPseudoStartVertex() || v.isPseudoEndVertex()) continue;
+            vertices.add(v);
+        }
+        return vertices;
+    }
+
     private static String generateEFGContent(ESG esg) {
 
         // 0) Find pseudo start/end ('[' and ']') if they exist
@@ -81,11 +95,7 @@ public class ESGToEFGFileWriter {
         }
 
         // 1) List of vertices to process: excluding '[' and ']'
-        List<Vertex> vertices = new ArrayList<>();
-        for (Vertex v : esg.getVertexList()) {
-            if (v.equals(pseudoStartVertex) || v.equals(pseudoEndVertex)) continue;
-            vertices.add(v);
-        }
+        List<Vertex> vertices = eventsInOrder(esg);
 
         // 2) Initial set: entryVertexSet (fallback: successors of pseudoStart)
         Set<Vertex> entrySet = safeGetEntrySet(esg);
@@ -104,13 +114,43 @@ public class ESGToEFGFileWriter {
         // 3) F matrix (immediate followed-by) — only between filtered vertices
         int n = vertices.size();
         boolean[][] F = new boolean[n][n];
-        Map<Vertex, Set<Vertex>> vmap = esg.getVertexMap();
+        // Every edge between two events, taken from the list of edges, so that an edge from an
+        // event to itself is part of the event graph as well.
+        Map<Vertex, Integer> positionOf = new java.util.HashMap<>();
         for (int i = 0; i < n; i++) {
-            Vertex src = vertices.get(i);
-            Set<Vertex> succ = vmap.getOrDefault(src, new HashSet<>());
+            positionOf.put(vertices.get(i), i);
+        }
+        for (tr.edu.iyte.esg.model.Edge edge : esg.getEdgeList()) {
+            Integer i = positionOf.get(edge.getSource());
+            Integer j = positionOf.get(edge.getTarget());
+            if (i != null && j != null) {
+                F[i][j] = true;
+            }
+        }
+        // GUITAR distinguishes two kinds of edges. Every edge says that the second event may
+        // follow the first. The edges of kind "reaching" say in addition how an event is
+        // reached from an initial event: GUITAR puts a path of such edges in front of a test.
+        // Its search for that path goes backwards and gives up on some graphs with cycles, so
+        // exactly one way is marked for every event: the edges of a breadth-first tree from
+        // the initial events. The path GUITAR finds is then a shortest one, and it exists for
+        // every event that can be reached.
+        boolean[][] reaching = new boolean[n][n];
+        boolean[] reached = new boolean[n];
+        java.util.ArrayDeque<Integer> queue = new java.util.ArrayDeque<>();
+        for (int i = 0; i < n; i++) {
+            if (initialVertices.contains(vertices.get(i))) {
+                reached[i] = true;
+                queue.add(i);
+            }
+        }
+        while (!queue.isEmpty()) {
+            int i = queue.poll();
             for (int j = 0; j < n; j++) {
-                Vertex dst = vertices.get(j);
-                if (succ.contains(dst)) F[i][j] = true;
+                if (F[i][j] && !reached[j]) {
+                    reached[j] = true;
+                    reaching[i][j] = true;
+                    queue.add(j);
+                }
             }
         }
 
@@ -125,7 +165,7 @@ public class ESGToEFGFileWriter {
         // Add the <EventGraph> block (Matrix ONLY)
         // This will satisfy the GraphUtil constructor that crashed.
         // We pass the 'F' matrix to it.
-        xml.append(generateEventGraphSection(vertices, F));
+        xml.append(generateEventGraphSection(vertices, F, reaching));
 
         // We explicitly DO NOT generate <FollowsRelations>
         
@@ -143,9 +183,16 @@ public class ESGToEFGFileWriter {
     private static String generateEventsSection(List<Vertex> vertexList, Set<Vertex> initialVertices) {
         StringBuilder events = new StringBuilder();
         events.append("    <Events>\n");
-        for (Vertex vertex : vertexList) {
+        for (int position = 0; position < vertexList.size(); position++) {
+            Vertex vertex = vertexList.get(position);
             Event event = vertex.getEvent();
-            int eventId = event.getID();
+            // The identifier of an event is its position in this list, which is also its row
+            // and column in the matrix of the event graph: e0 is the first event, e1 the
+            // second. GUITAR writes tests for every edge only when identifiers and positions
+            // agree. A test is read back against the same model, whose events are listed in
+            // the same order (eventsInOrder), so an event is found by its position and not by
+            // its name (names may repeat in a model and may contain line breaks).
+            int eventId = position;
             String eventName = event.getName();
             
             // This check now works based on the ESG.getEntryVertexSet() data.
@@ -175,7 +222,7 @@ public class ESGToEFGFileWriter {
      * @return A string containing the <EventGraph> XML block.
      */
     private static String generateEventGraphSection(List<Vertex> vertexList,
-                                                  boolean[][] F) {
+                                                  boolean[][] F, boolean[][] reaching) {
         StringBuilder graph = new StringBuilder();
         graph.append("    <EventGraph>\n");
         int n = vertexList.size();
@@ -184,11 +231,9 @@ public class ESGToEFGFileWriter {
         for (int i = 0; i < n; i++) {
             graph.append("        <Row>\n");
             for (int j = 0; j < n; j++) {
-                // --- CRITICAL CHANGE ---
-                // We use '2' (REACHING_EDGE) because the SequenceLengthCoverage
-                // plugin appears to look for this value, not '1'.
-                int v = F[i][j] ? 2 : 0;
-                
+                // 0: no edge. 1: the second event may follow the first. 2: it may follow, and
+                // this edge is on the way from an initial event to the second event.
+                int v = !F[i][j] ? 0 : (reaching[i][j] ? 2 : 1);
                 graph.append("            <E>").append(v).append("</E>\n");
             }
             graph.append("        </Row>\n");
