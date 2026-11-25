@@ -201,7 +201,7 @@ The number of samples drawn for each industrial Software Product Line is fixed a
 | Tesla | 426,672 | 400 |
 | Hockerty Shirts | 124,201,479,600 | 416 |
 
-The 416-sample size for Hockerty Shirts adds a buffer above the analytical minimum (approximately 385) given the vastly larger population.
+UniGen3 was asked for 400 samples for each product line; for Hockerty Shirts it returned 416 (it may return more than requested), and all 416 are kept. The original runs used UniGen3's default seed, 1, written out in the commands below.
 
 ### 5.4 Running UniGen3
 
@@ -209,18 +209,18 @@ For each industrial Software Product Line, run UniGen3 once with the `--samples`
 
 ```bash
 # syngo.via, 400 samples
-./unigen --samples 400 \
+./unigen --seed 1 --samples 400 \
          --sampleout /path/to/repo/files/Cases/syngovia/configs/Svia_400.samples \
          /path/to/repo/files/Cases/syngovia/configs/Svia.dimacs
 
 # Tesla, 400 samples
-./unigen --samples 400 \
+./unigen --seed 1 --samples 400 \
          --sampleout /path/to/repo/files/Cases/Tesla/configs/Te_400.samples \
          /path/to/repo/files/Cases/Tesla/configs/Te.dimacs
 
-# Hockerty Shirts, 416 samples
-./unigen --samples 416 \
-         --sampleout /path/to/repo/files/Cases/HockertyShirts/configs/HS_416.samples \
+# Hockerty Shirts, 400 samples requested (UniGen3 returned 416)
+./unigen --seed 1 --samples 400 \
+         --sampleout /path/to/repo/files/Cases/HockertyShirts/configs/HS_400.samples \
          /path/to/repo/files/Cases/HockertyShirts/configs/HS.dimacs
 ```
 
