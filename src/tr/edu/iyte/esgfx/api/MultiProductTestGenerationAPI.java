@@ -44,6 +44,7 @@ public final class MultiProductTestGenerationAPI {
 
 			List<SingleProductTestResult> results = new ArrayList<SingleProductTestResult>(selections.size());
 			for (int i = 0; i < selections.size(); i++) {
+				SingleProductTestGenerationAPI.stopIfInterrupted();
 				results.add(SingleProductTestGenerationAPI.generate(model, i + 1, selections.get(i), coverageLength));
 			}
 			return results;

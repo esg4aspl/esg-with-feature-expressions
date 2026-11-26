@@ -112,11 +112,14 @@ public final class SingleProductTestGenerationAPI {
 
 				ESG transformedProductESGFx = transformedESGFxGenerator.generateTransformedESGFx(coverageLength,
 						productESGFx);
+				stopIfInterrupted();
 				ESG stronglyConnectedBalancedESGFx = StronglyConnectedBalancedESGFxGeneration
 						.getStronglyConnectedBalancedESGFxGeneration(transformedProductESGFx);
 
+				stopIfInterrupted();
 				eulerCycleGeneratorForEdgeCoverage.generateEulerCycle(stronglyConnectedBalancedESGFx);
 				List<Vertex> eulerCycle = eulerCycleGeneratorForEdgeCoverage.getEulerCycle();
+				stopIfInterrupted();
 
 				testSequences = eulerCycleToTestSequenceGenerator.CESgenerator(eulerCycle);
 
@@ -173,28 +176,60 @@ public final class SingleProductTestGenerationAPI {
 
 			ProductConfigurationValidator validator = new ProductConfigurationValidator();
 
-			long validCount = 0;
-			while (solver.isSatisfiable()) {
-				int[] modelArray = solver.model();
+			try {
+				long validCount = 0;
+				while (solver.isSatisfiable()) {
+					stopIfInterrupted();
+					int[] modelArray = solver.model();
 
-				for (int i = 0; i < modelArray.length; i++) {
-					FeatureExpression fe = featureExpressionList.get(i);
-					fe.setTruthValue(modelArray[i] > 0);
-				}
+					for (int i = 0; i < modelArray.length; i++) {
+						FeatureExpression fe = featureExpressionList.get(i);
+						fe.setTruthValue(modelArray[i] > 0);
+					}
 
-				boolean exhausted = blockCurrentModel(solver, modelArray);
-
-				if (validator.validate(featureModel, featureExpressionMap)) {
-					validCount++;
-					if (validCount >= cap) {
-						break;
+					// The ModelIterator has already excluded this model from the rest of
+					// the search; blocking it a second time only doubled the clauses the
+					// solver holds, without changing the order it walks in.
+					if (validator.validate(featureModel, featureExpressionMap)) {
+						validCount++;
+						if (validCount >= cap) {
+							break;
+						}
 					}
 				}
-				if (exhausted) {
-					break;
-				}
+				return validCount;
+			} finally {
+				releaseSolver(solver);
 			}
-			return validCount;
+		}
+	}
+
+	/**
+	 * Lets go of a solver once a walk over it is done, whichever way the walk
+	 * ended. sat4j starts a timer thread for its timeout on the first search and,
+	 * under a {@link ModelIterator}, never cancels it; that thread keeps the
+	 * solver reachable, and with it a blocking clause for every configuration
+	 * the walk passed. Without this, each walk over a large line would stay in
+	 * the heap for the life of the process.
+	 *
+	 * <p>Only the timer is cancelled. {@code reset()} would cancel it too, but it
+	 * removes the learnt clauses one by one at a cost quadratic in their number,
+	 * which after a walk over a few hundred thousand configurations takes
+	 * minutes; dropping the solver lets the collector reclaim them at once.
+	 */
+	static void releaseSolver(ISolver solver) {
+		solver.expireTimeout();
+	}
+
+	/**
+	 * Lets a caller that runs generation on a worker thread stop it by
+	 * interrupting that thread: the long loops call this once per iteration, so
+	 * cancelled work ends promptly and what it built becomes garbage, instead of
+	 * running on and holding memory after nobody waits for the result.
+	 */
+	static void stopIfInterrupted() throws InterruptedException {
+		if (Thread.interrupted()) {
+			throw new InterruptedException("Generation was cancelled");
 		}
 	}
 

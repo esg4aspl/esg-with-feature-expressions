@@ -2,6 +2,7 @@ package tr.edu.iyte.esgfx.api;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
@@ -136,20 +137,33 @@ public final class UniGenSampler implements ProductConfigurationSampler {
 			input.write(dimacs.getBytes(StandardCharsets.UTF_8));
 		}
 
-		String output = readFully(process);
-		String errors = readErrors(process);
+		// The streams are drained on their own threads so that this one waits on
+		// the process itself, which is what an interrupt or the timeout can end.
+		// Blocked in a read instead, a cancelled request would leave the bridge
+		// running until it finished on its own.
+		StreamCollector output = new StreamCollector(process.getInputStream());
+		StreamCollector errors = new StreamCollector(process.getErrorStream());
 
-		if (!process.waitFor(timeoutSeconds, TimeUnit.SECONDS)) {
+		boolean finished;
+		try {
+			finished = process.waitFor(timeoutSeconds, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+			process.destroyForcibly();
+			throw e;
+		}
+		if (!finished) {
 			process.destroyForcibly();
 			throw new SamplerUnavailableException(
 					"The UniGen bridge did not finish within " + timeoutSeconds + " seconds.");
 		}
+		String outputText = output.text();
+		String errorText = errors.text();
 		if (process.exitValue() != 0) {
 			throw new SamplerUnavailableException("The UniGen bridge failed: "
-					+ (errors.isEmpty() ? output : errors).trim());
+					+ (errorText.isEmpty() ? outputText : errorText).trim());
 		}
 
-		return parseSamples(output);
+		return parseSamples(outputText);
 	}
 
 	static List<int[]> parseSamples(String output) {
@@ -192,15 +206,36 @@ public final class UniGenSampler implements ProductConfigurationSampler {
 		return text.toString();
 	}
 
-	private static String readErrors(Process process) throws IOException {
-		StringBuilder text = new StringBuilder();
-		try (BufferedReader reader = new BufferedReader(
-				new InputStreamReader(process.getErrorStream(), StandardCharsets.UTF_8))) {
-			String line;
-			while ((line = reader.readLine()) != null) {
-				text.append(line).append('\n');
-			}
+	/** Reads a process stream to its end on a thread of its own. */
+	private static final class StreamCollector {
+
+		private final StringBuilder text = new StringBuilder();
+		private final Thread thread;
+		private IOException failure;
+
+		StreamCollector(InputStream stream) {
+			thread = new Thread(() -> {
+				try (BufferedReader reader = new BufferedReader(
+						new InputStreamReader(stream, StandardCharsets.UTF_8))) {
+					String line;
+					while ((line = reader.readLine()) != null) {
+						text.append(line).append('\n');
+					}
+				} catch (IOException e) {
+					failure = e;
+				}
+			}, "unigen-bridge-stream");
+			thread.setDaemon(true);
+			thread.start();
 		}
-		return text.toString();
+
+		/** Called once the process has exited, so the stream is about to end. */
+		String text() throws IOException, InterruptedException {
+			thread.join();
+			if (failure != null) {
+				throw failure;
+			}
+			return text.toString();
+		}
 	}
 }

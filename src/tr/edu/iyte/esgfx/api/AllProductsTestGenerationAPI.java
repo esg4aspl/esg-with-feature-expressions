@@ -43,30 +43,33 @@ public final class AllProductsTestGenerationAPI {
 			ProductConfigurationValidator validator = new ProductConfigurationValidator();
 			List<SingleProductTestResult> results = new ArrayList<SingleProductTestResult>();
 
-			// Product IDs count valid configurations only, matching the numbering the
-			// research pipelines write their per-product files under.
-			int productId = 0;
+			try {
+				// Product IDs count valid configurations only, matching the numbering the
+				// research pipelines write their per-product files under.
+				int productId = 0;
 
-			while (solver.isSatisfiable()) {
-				int[] modelArray = solver.model();
+				while (solver.isSatisfiable()) {
+					SingleProductTestGenerationAPI.stopIfInterrupted();
+					int[] modelArray = solver.model();
 
-				for (int i = 0; i < modelArray.length; i++) {
-					featureExpressionList.get(i).setTruthValue(modelArray[i] > 0);
+					for (int i = 0; i < modelArray.length; i++) {
+						featureExpressionList.get(i).setTruthValue(modelArray[i] > 0);
+					}
+
+					// The ModelIterator has already excluded this model from the rest of
+					// the search; blocking it a second time only doubled the clauses the
+					// solver holds, without changing the order it walks in.
+					if (validator.validate(featureModel, featureExpressionMap)) {
+						productId++;
+						results.add(SingleProductTestGenerationAPI.generate(model, productId,
+								currentSelection(featureExpressionMap), coverageLength));
+					}
 				}
 
-				boolean exhausted = SingleProductTestGenerationAPI.blockCurrentModel(solver, modelArray);
-
-				if (validator.validate(featureModel, featureExpressionMap)) {
-					productId++;
-					results.add(SingleProductTestGenerationAPI.generate(model, productId,
-							currentSelection(featureExpressionMap), coverageLength));
-				}
-				if (exhausted) {
-					break;
-				}
+				return results;
+			} finally {
+				SingleProductTestGenerationAPI.releaseSolver(solver);
 			}
-
-			return results;
 		}
 	}
 

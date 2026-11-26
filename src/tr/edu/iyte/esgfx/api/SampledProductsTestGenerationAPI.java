@@ -30,6 +30,7 @@ public final class SampledProductsTestGenerationAPI {
 
 			List<SingleProductTestResult> results = new ArrayList<SingleProductTestResult>(sampled.size());
 			for (SampledConfiguration configuration : sampled) {
+				SingleProductTestGenerationAPI.stopIfInterrupted();
 				// The sampled configuration keeps its position in the full
 				// enumeration, so a sampled result can be compared against the
 				// same product from an all-products run.

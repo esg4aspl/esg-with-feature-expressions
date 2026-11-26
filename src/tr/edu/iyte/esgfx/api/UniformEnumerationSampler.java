@@ -75,31 +75,34 @@ public final class UniformEnumerationSampler implements ProductConfigurationSamp
 		ProductConfigurationValidator validator = new ProductConfigurationValidator();
 		List<SampledConfiguration> sampled = new ArrayList<SampledConfiguration>(targets.size());
 
-		int productId = 0;
-		int nextTarget = 0;
+		try {
+			int productId = 0;
+			int nextTarget = 0;
 
-		while (nextTarget < targets.size() && solver.isSatisfiable()) {
-			int[] modelArray = solver.model();
+			while (nextTarget < targets.size() && solver.isSatisfiable()) {
+				SingleProductTestGenerationAPI.stopIfInterrupted();
+				int[] modelArray = solver.model();
 
-			for (int i = 0; i < modelArray.length; i++) {
-				featureExpressionList.get(i).setTruthValue(modelArray[i] > 0);
-			}
+				for (int i = 0; i < modelArray.length; i++) {
+					featureExpressionList.get(i).setTruthValue(modelArray[i] > 0);
+				}
 
-			boolean exhausted = SingleProductTestGenerationAPI.blockCurrentModel(solver, modelArray);
-
-			if (validator.validate(featureModel, featureExpressionMap)) {
-				productId++;
-				if (productId == targets.get(nextTarget)) {
-					sampled.add(new SampledConfiguration(productId, currentSelection(featureExpressionMap)));
-					nextTarget++;
+				// The ModelIterator has already excluded this model from the rest of
+				// the search; blocking it a second time only doubled the clauses the
+				// solver holds, without changing the order it walks in.
+				if (validator.validate(featureModel, featureExpressionMap)) {
+					productId++;
+					if (productId == targets.get(nextTarget)) {
+						sampled.add(new SampledConfiguration(productId, currentSelection(featureExpressionMap)));
+						nextTarget++;
+					}
 				}
 			}
-			if (exhausted) {
-				break;
-			}
-		}
 
-		return sampled;
+			return sampled;
+		} finally {
+			SingleProductTestGenerationAPI.releaseSolver(solver);
+		}
 	}
 
 	private static Map<String, Boolean> currentSelection(Map<String, FeatureExpression> featureExpressionMap) {
