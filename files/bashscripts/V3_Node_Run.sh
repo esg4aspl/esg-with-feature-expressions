@@ -8,6 +8,9 @@
 #                           rehearsal  the same pipeline, shortened: one run,
 #                                      three random seeds, five minutes per
 #                                      row on the three large product lines
+#                           rq2        RQ2 only, measured again: one row at a
+#                                      time, the other cores of the node idle
+#                           rq2-rehearsal  the same, shortened
 #
 # One job starts one JVM per shard of this node and waits for them. Every JVM,
 # GUITAR included, is started as a one-processor JVM, so that one JVM uses one
@@ -28,6 +31,15 @@
 #   of one hour, right after the six-hour run.
 # Hockerty Shirts is enumerated in the same order in every run, so the first
 # hour of the three runs handles the same products.
+#
+# Mode rq2: the rows of RQ2 run one after the other, in the order of rq2_alone below, so that
+# every row is measured with the same number of busy cores (the shards of this node and
+# nothing else). The random baseline runs with the step limit of RQ1 and RQ3
+# (min(5|V|^3, 2,000,000)).
+#
+# Next to the log of every JVM, GNU time writes shardNN.time: elapsed seconds; processor
+# seconds in user mode; in kernel mode; peak resident memory (kB); exit status. The processor
+# seconds include the processes the JVM started and waited for (GUITAR).
 #
 # Results of earlier runs found in the working tree are moved to
 # files/archive_before_<time>/ before anything starts; nothing is deleted.
@@ -54,9 +66,17 @@ if [ "$MODE" = "rehearsal" ]; then
   # later runs of the two large lines.
   SMALL_RUNS=1; LARGE_RUNS=${V3_REHEARSAL_LARGE_RUNS:-1}; RQ1_RUNS=1; SEEDS=3
   LARGE_TIMEOUT_MINUTES=${V3_REHEARSAL_MINUTES:-5}
-else
+elif [ "$MODE" = "rq2-rehearsal" ]; then
+  SMALL_RUNS=1; LARGE_RUNS=2; RQ1_RUNS=0; SEEDS=0
+  LARGE_TIMEOUT_MINUTES=${V3_REHEARSAL_MINUTES:-2}
+elif [ "$MODE" = "full" ] || [ "$MODE" = "rq2" ]; then
   SMALL_RUNS=11; LARGE_RUNS=3; RQ1_RUNS=11; SEEDS=100; LARGE_TIMEOUT_MINUTES=0
+else
+  echo "Unknown mode: $MODE"; exit 1
 fi
+# Step limit of the random baseline in RQ2 (0: 5|V|^3 without an upper limit, as in the run
+# of mode full).
+case "$MODE" in rq2*) RQ2_RW_STEP_CAP=2000000 ;; *) RQ2_RW_STEP_CAP=0 ;; esac
 HOCKERTY_TIMEOUT_HOURS=6
 HOCKERTY_SHORT_TIMEOUT_HOURS=1
 
@@ -70,6 +90,7 @@ SMALLER_CASES=("SodaVendingMachine SVM" "eMail eM" "Elevator El" "BankAccountv2 
   echo "time: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
   echo "mode: $MODE"
   echo "shards: $START_SHARD-$END_SHARD of $TOTAL_SHARDS"
+  echo "RQ2 random step cap (RW_STEP_CAP): $RQ2_RW_STEP_CAP"
   echo "host: $(hostname)"
   echo "commit: $(git rev-parse HEAD 2>/dev/null)"
   echo "branch: $(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
@@ -136,6 +157,7 @@ run_job() {
   esac
   for shard in $(seq "$START_SHARD" "$END_SHARD"); do
     env N_SHARDS=$TOTAL_SHARDS SHARD=$shard "$@" \
+      /usr/bin/time -o "$log_dir/shard$(printf '%02d' "$shard").time" -f '%e;%U;%S;%M;%x' \
       java $opts -cp "$CP" "$LAUNCHER" "$case_pkg" "$short" "$driver" \
       > "$log_dir/shard$(printf '%02d' "$shard").log" 2>&1 &
     pids+=($!)
@@ -203,7 +225,7 @@ rq2_rows() {       # <lane> <case package> <short name> <run> <row> [<row> ...]
   local budget; budget=$(timeout_args "$s" "${HOCKERTY_HOURS_OF_THIS_CALL:-}")
   for row in "$@"; do
     case $row in
-      RW)    run_job "$lane" "RQ2_${s}_RW_run$run" "$c" "$s" RQ2_RandomWalk runID=$run $budget ;;
+      RW)    run_job "$lane" "RQ2_${s}_RW_run$run" "$c" "$s" RQ2_RandomWalk runID=$run RW_STEP_CAP=$RQ2_RW_STEP_CAP $budget ;;
       L1)    run_job "$lane" "RQ2_${s}_L1_run$run" "$c" "$s" RQ2_L1         runID=$run $budget ;;
       L2|L3|L4)
              run_job "$lane" "RQ2_${s}_${row}_run$run" "$c" "$s" RQ2_L234   runID=$run L_LEVEL=${row#L} $budget ;;
@@ -253,6 +275,25 @@ lane4() {
   hockerty_short 4 RW EFG2 EFG3 EFG4
   tesla 4 3 EFG2
 }
+
+# Mode rq2: every row alone on the node. The six smaller lines and Tesla first, Hockerty
+# Shirts last (six hours per row, then the runs of one hour).
+rq2_alone() {
+  local rows="L1 L2 L3 L4 RW EFG2 EFG3 EFG4"
+  for run in $(seq 1 "$SMALL_RUNS"); do
+    for entry in "${SMALLER_CASES[@]}"; do set -- $entry; rq2_rows 0 "$1" "$2" "$run" $rows; done
+  done
+  for run in $(seq 1 "$LARGE_RUNS"); do rq2_rows 0 Tesla Te "$run" $rows; done
+  rq2_rows 0 HockertyShirts HS 1 $rows
+  hockerty_short 0 $rows
+}
+case "$MODE" in rq2*)
+  rq2_alone > "$LOG_ROOT/rq2_${STAMP}.log" 2>&1
+  echo "finished: $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$LOG_ROOT/node_info_${STAMP}.txt"
+  touch "$LOG_ROOT/ALL_DONE"
+  echo "RQ2 FINISHED"
+  exit 0 ;;
+esac
 
 # RQ1 first and alone.
 for entry in "${ALL_CASES[@]}"; do set -- $entry; rq1 0 "$1" "$2"; done > "$LOG_ROOT/rq1_${STAMP}.log" 2>&1

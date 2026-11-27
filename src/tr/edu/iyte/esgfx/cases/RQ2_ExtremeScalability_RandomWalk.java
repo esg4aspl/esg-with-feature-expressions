@@ -394,20 +394,21 @@ public class RQ2_ExtremeScalability_RandomWalk extends CaseStudyUtilities {
     }
     
     /**
-     * Calculate safety limit: 5|V|³
-     * 
-     * Based on Feige (1995) cover time bound for random walks.
-     * ESG-Fx graphs are directed, so we use a conservative 5× multiplier.
+     * Step limit of the walk: 5|V|^3, and at most RW_STEP_CAP steps when that
+     * environment variable is set to a positive number. RQ1 and RQ3 stop at
+     * min(5|V|^3, 2,000,000); with RW_STEP_CAP=2000000 this driver uses the
+     * same limit. Without the variable the limit is 5|V|^3, as in the runs
+     * made before the variable existed.
      */
     private int calculateSafetyLimit(int vertexCount) {
-        // Safety limit = 5 × |V|³
         long limit = 5L * vertexCount * vertexCount * vertexCount;
-        
-        // Cap at Integer.MAX_VALUE to prevent overflow
+        long cap = Long.parseLong(System.getenv().getOrDefault("RW_STEP_CAP", "0"));
+        if (cap > 0 && limit > cap) {
+            limit = cap;
+        }
         if (limit > Integer.MAX_VALUE) {
             return Integer.MAX_VALUE;
         }
-        
         return (int) limit;
     }
 }
