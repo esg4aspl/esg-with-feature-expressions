@@ -276,6 +276,24 @@ lane4() {
   tesla 4 3 EFG2
 }
 
+# syngo.via is the only line whose 5|V|^3 exceeds 2,000,000, so its random baseline is also
+# measured without the cap (the rule of the earlier runs of RQ2). These records are kept apart,
+# in files/Cases/syngovia/RQ2_RandomWalk_NoStepCap, and the records with the cap stay in place.
+svia_random_without_cap() {
+  local base="$FILES_DIR/Cases/syngovia/extremeScalabilityTestPipeline"
+  local keep="$FILES_DIR/Cases/syngovia/RQ2_RandomWalk_NoStepCap"
+  local aside="$FILES_DIR/Cases/syngovia/RQ2_RandomWalk_aside"
+  [ "$RQ2_RW_STEP_CAP" -gt 0 ] && [ ! -e "$keep" ] && [ -d "$base/RandomWalk" ] || return 0
+  mkdir -p "$aside/perProduct" "$keep/perProduct"
+  mv "$base/RandomWalk" "$aside/RandomWalk" && mv "$base"/perProduct/Svia_RandomWalk_* "$aside/perProduct/" || return 1
+  for run in $(seq 1 "$SMALL_RUNS"); do
+    run_job 0 "RQ2_Svia_RWnocap_run$run" syngovia Svia RQ2_RandomWalk runID=$run RW_STEP_CAP=0 TIMEOUT_HOURS=0
+  done
+  mv "$base/RandomWalk" "$keep/RandomWalk"; mv "$base"/perProduct/Svia_RandomWalk_* "$keep/perProduct/"
+  mv "$aside/RandomWalk" "$base/RandomWalk" && mv "$aside"/perProduct/* "$base/perProduct/" \
+    && rmdir "$aside/perProduct" "$aside"
+}
+
 # Mode rq2: every row alone on the node. The six smaller lines and Tesla first, Hockerty
 # Shirts last (six hours per row, then the runs of one hour).
 rq2_alone() {
@@ -283,6 +301,7 @@ rq2_alone() {
   for run in $(seq 1 "$SMALL_RUNS"); do
     for entry in "${SMALLER_CASES[@]}"; do set -- $entry; rq2_rows 0 "$1" "$2" "$run" $rows; done
   done
+  svia_random_without_cap
   for run in $(seq 1 "$LARGE_RUNS"); do rq2_rows 0 Tesla Te "$run" $rows; done
   rq2_rows 0 HockertyShirts HS 1 $rows
   hockerty_short 0 $rows

@@ -48,7 +48,8 @@ while IFS= read -r line || [ -n "$line" ]; do
         files/Cases/*/testsequences files/Cases/*/comparativeEfficiencyTestPipeline \
         files/Cases/*/extremeScalabilityTestPipeline files/Cases/*/faultdetection files/Cases/*/EFGs/efg_results \
         files/Cases/*/EFGs/efg_testsequences/stored files/Cases/*/*_ProductConfigurations.txt \
-        files/Cases/*/EFGs/*_Generation_Times.csv files/Cases/*/DOTs/*_Generation_Times.csv 2> /root/${TAG}_pack.err; \
+        files/Cases/*/EFGs/*_Generation_Times.csv files/Cases/*/DOTs/*_Generation_Times.csv \
+        \$(ls -d files/Cases/*/RQ2_RandomWalk_NoStepCap 2>/dev/null) 2> /root/${TAG}_pack.err; \
         echo tar=\$? >> /root/${TAG}_pack.err; \
         tar cf - files/logs $MAIN_LOG 2>> /root/${TAG}_pack.err | xz -T0 -3 > /root/${TAG}_${node}_logs.tar.xz; \
         echo \$(stat -c %s /root/${TAG}_$node.tgz) \$(stat -c %s /root/${TAG}_${node}_logs.tar.xz) \
